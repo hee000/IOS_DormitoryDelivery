@@ -7,18 +7,69 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2B3D521B3533FEE0A8A4E829 /* Pods_DormitoryDelivery.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E8B9CEFF718CF6B412D748A6 /* Pods_DormitoryDelivery.framework */; };
 		DA4D2D1E27422FE300678FA8 /* DormitoryDeliveryApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4D2D1D27422FE300678FA8 /* DormitoryDeliveryApp.swift */; };
 		DA4D2D2027422FE300678FA8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4D2D1F27422FE300678FA8 /* ContentView.swift */; };
-		DA4D2D2227422FE500678FA8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA4D2D2127422FE500678FA8 /* Assets.xcassets */; };
 		DA4D2D2527422FE500678FA8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA4D2D2427422FE500678FA8 /* Preview Assets.xcassets */; };
+		DA4D2D2C2742306300678FA8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4D2D2B2742306300678FA8 /* AppDelegate.swift */; };
+		DA4D2D2E2742309500678FA8 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DA4D2D2D2742309500678FA8 /* Launch Screen.storyboard */; };
+		DA4D2D322742355800678FA8 /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4D2D312742355800678FA8 /* Login.swift */; };
+		DA4D2D342742367F00678FA8 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4D2D332742367F00678FA8 /* User.swift */; };
+		DA4D2D362742378400678FA8 /* TabViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4D2D352742378400678FA8 /* TabViews.swift */; };
+		DA68335027553B860048E809 /* logintest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA68334F27553B860048E809 /* logintest.swift */; };
+		DA683352275652730048E809 /* NaverLoginAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA683351275652730048E809 /* NaverLoginAPI.swift */; };
+		DA68335427566A260048E809 /* SwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA68335327566A260048E809 /* SwiftUIView.swift */; };
+		DA8837AA275BC81C0034481F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA4D2D2127422FE500678FA8 /* Assets.xcassets */; };
+		DA9702BA275C8CC700BB8B53 /* hashtag.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9702B9275C8CC700BB8B53 /* hashtag.swift */; };
+		DA9702BC275C9E1F00BB8B53 /* ddddddddd.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9702BB275C9E1F00BB8B53 /* ddddddddd.swift */; };
+		DAB437B72753A8B100296452 /* test.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB437B62753A8B100296452 /* test.swift */; };
+		DAB5E98C274364BC00EF5B6A /* Signup.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB5E98B274364BC00EF5B6A /* Signup.swift */; };
+		DAB5E99027436B9B00EF5B6A /* Delivery.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB5E98F27436B9B00EF5B6A /* Delivery.swift */; };
+		DAB5E992274374E100EF5B6A /* Join.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB5E991274374E100EF5B6A /* Join.swift */; };
+		DAB5E9942743906400EF5B6A /* DeliveryList.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB5E9932743906400EF5B6A /* DeliveryList.swift */; };
+		DABCFE5D2743ACCF00B89781 /* MyPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DABCFE5C2743ACCF00B89781 /* MyPage.swift */; };
+		DABCFE632743B0F500B89781 /* CreateRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = DABCFE622743B0F500B89781 /* CreateRoom.swift */; };
+		DAC252D0275A303600EA2BFD /* SwiftUIView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC252CF275A303600EA2BFD /* SwiftUIView2.swift */; };
+		DAC252D2275B4E0100EA2BFD /* NaverLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC252D1275B4E0100EA2BFD /* NaverLogin.swift */; };
+		DAC252D8275B4EC800EA2BFD /* NaverLoginFunc.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC252D7275B4EC800EA2BFD /* NaverLoginFunc.swift.swift */; };
+		DAC252DA275B551B00EA2BFD /* Loading.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC252D9275B551B00EA2BFD /* Loading.swift */; };
+		DAE94525274654A9000C8D3D /* TEST.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE94524274654A9000C8D3D /* TEST.swift */; };
+		DAE945272746560E000C8D3D /* SocketIOManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE945262746560E000C8D3D /* SocketIOManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		736BA1325AD7A59AFCD0C77A /* Pods-DormitoryDelivery.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DormitoryDelivery.release.xcconfig"; path = "Target Support Files/Pods-DormitoryDelivery/Pods-DormitoryDelivery.release.xcconfig"; sourceTree = "<group>"; };
+		8266E739250669536F01CDAC /* Pods-DormitoryDelivery.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DormitoryDelivery.debug.xcconfig"; path = "Target Support Files/Pods-DormitoryDelivery/Pods-DormitoryDelivery.debug.xcconfig"; sourceTree = "<group>"; };
 		DA4D2D1A27422FE300678FA8 /* DormitoryDelivery.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DormitoryDelivery.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA4D2D1D27422FE300678FA8 /* DormitoryDeliveryApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DormitoryDeliveryApp.swift; sourceTree = "<group>"; };
 		DA4D2D1F27422FE300678FA8 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		DA4D2D2127422FE500678FA8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		DA4D2D2127422FE500678FA8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = DormitoryDelivery/Assets.xcassets; sourceTree = SOURCE_ROOT; };
 		DA4D2D2427422FE500678FA8 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		DA4D2D2B2742306300678FA8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		DA4D2D2D2742309500678FA8 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		DA4D2D312742355800678FA8 /* Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
+		DA4D2D332742367F00678FA8 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		DA4D2D352742378400678FA8 /* TabViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViews.swift; sourceTree = "<group>"; };
+		DA68334F27553B860048E809 /* logintest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = logintest.swift; sourceTree = "<group>"; };
+		DA683351275652730048E809 /* NaverLoginAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverLoginAPI.swift; sourceTree = "<group>"; };
+		DA68335327566A260048E809 /* SwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIView.swift; sourceTree = "<group>"; };
+		DA9702B9275C8CC700BB8B53 /* hashtag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = hashtag.swift; sourceTree = "<group>"; };
+		DA9702BB275C9E1F00BB8B53 /* ddddddddd.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ddddddddd.swift; sourceTree = "<group>"; };
+		DAB437B62753A8B100296452 /* test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = test.swift; path = ../../../../test.swift; sourceTree = "<group>"; };
+		DAB5E98B274364BC00EF5B6A /* Signup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Signup.swift; sourceTree = "<group>"; };
+		DAB5E98F27436B9B00EF5B6A /* Delivery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Delivery.swift; sourceTree = "<group>"; };
+		DAB5E991274374E100EF5B6A /* Join.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Join.swift; sourceTree = "<group>"; };
+		DAB5E9932743906400EF5B6A /* DeliveryList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryList.swift; sourceTree = "<group>"; };
+		DABCFE5C2743ACCF00B89781 /* MyPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPage.swift; sourceTree = "<group>"; };
+		DABCFE622743B0F500B89781 /* CreateRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateRoom.swift; sourceTree = "<group>"; };
+		DAC252CF275A303600EA2BFD /* SwiftUIView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIView2.swift; sourceTree = "<group>"; };
+		DAC252D1275B4E0100EA2BFD /* NaverLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverLogin.swift; sourceTree = "<group>"; };
+		DAC252D7275B4EC800EA2BFD /* NaverLoginFunc.swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverLoginFunc.swift.swift; sourceTree = "<group>"; };
+		DAC252D9275B551B00EA2BFD /* Loading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loading.swift; sourceTree = "<group>"; };
+		DAE94524274654A9000C8D3D /* TEST.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TEST.swift; sourceTree = "<group>"; };
+		DAE945262746560E000C8D3D /* SocketIOManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketIOManager.swift; sourceTree = "<group>"; };
+		DAE9452C274671F4000C8D3D /* info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = info.plist; sourceTree = SOURCE_ROOT; };
+		E8B9CEFF718CF6B412D748A6 /* Pods_DormitoryDelivery.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DormitoryDelivery.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -26,17 +77,37 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2B3D521B3533FEE0A8A4E829 /* Pods_DormitoryDelivery.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9241FD044F9FDD77BC065DA6 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E8B9CEFF718CF6B412D748A6 /* Pods_DormitoryDelivery.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		96602EC5794014BD04662618 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				8266E739250669536F01CDAC /* Pods-DormitoryDelivery.debug.xcconfig */,
+				736BA1325AD7A59AFCD0C77A /* Pods-DormitoryDelivery.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		DA4D2D1127422FE300678FA8 = {
 			isa = PBXGroup;
 			children = (
 				DA4D2D1C27422FE300678FA8 /* DormitoryDelivery */,
 				DA4D2D1B27422FE300678FA8 /* Products */,
+				96602EC5794014BD04662618 /* Pods */,
+				9241FD044F9FDD77BC065DA6 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -51,10 +122,25 @@
 		DA4D2D1C27422FE300678FA8 /* DormitoryDelivery */ = {
 			isa = PBXGroup;
 			children = (
+				DAE9452C274671F4000C8D3D /* info.plist */,
 				DA4D2D1D27422FE300678FA8 /* DormitoryDeliveryApp.swift */,
+				DA68334F27553B860048E809 /* logintest.swift */,
+				DA683351275652730048E809 /* NaverLoginAPI.swift */,
+				DA68335327566A260048E809 /* SwiftUIView.swift */,
+				DAC252CF275A303600EA2BFD /* SwiftUIView2.swift */,
 				DA4D2D1F27422FE300678FA8 /* ContentView.swift */,
+				DAC252D9275B551B00EA2BFD /* Loading.swift */,
+				DABCFE5F2743AE8900B89781 /* UserData */,
+				DABCFE5E2743AE4200B89781 /* Previous */,
+				DA4D2D352742378400678FA8 /* TabViews.swift */,
+				DABCFE602743AEC900B89781 /* Tab1 */,
+				DABCFE612743AED000B89781 /* Tab2 */,
+				DA4D2D2D2742309500678FA8 /* Launch Screen.storyboard */,
 				DA4D2D2127422FE500678FA8 /* Assets.xcassets */,
+				DA4D2D2B2742306300678FA8 /* AppDelegate.swift */,
 				DA4D2D2327422FE500678FA8 /* Preview Content */,
+				DAE94524274654A9000C8D3D /* TEST.swift */,
+				DAE945262746560E000C8D3D /* SocketIOManager.swift */,
 			);
 			path = DormitoryDelivery;
 			sourceTree = "<group>";
@@ -67,6 +153,47 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		DABCFE5E2743AE4200B89781 /* Previous */ = {
+			isa = PBXGroup;
+			children = (
+				DA4D2D312742355800678FA8 /* Login.swift */,
+				DAC252D1275B4E0100EA2BFD /* NaverLogin.swift */,
+				DAC252D7275B4EC800EA2BFD /* NaverLoginFunc.swift.swift */,
+				DAB5E98B274364BC00EF5B6A /* Signup.swift */,
+			);
+			path = Previous;
+			sourceTree = "<group>";
+		};
+		DABCFE5F2743AE8900B89781 /* UserData */ = {
+			isa = PBXGroup;
+			children = (
+				DA4D2D332742367F00678FA8 /* User.swift */,
+			);
+			path = UserData;
+			sourceTree = "<group>";
+		};
+		DABCFE602743AEC900B89781 /* Tab1 */ = {
+			isa = PBXGroup;
+			children = (
+				DAB5E98F27436B9B00EF5B6A /* Delivery.swift */,
+				DA9702BB275C9E1F00BB8B53 /* ddddddddd.swift */,
+				DA9702B9275C8CC700BB8B53 /* hashtag.swift */,
+				DAB437B62753A8B100296452 /* test.swift */,
+				DAB5E9932743906400EF5B6A /* DeliveryList.swift */,
+				DAB5E991274374E100EF5B6A /* Join.swift */,
+				DABCFE622743B0F500B89781 /* CreateRoom.swift */,
+			);
+			path = Tab1;
+			sourceTree = "<group>";
+		};
+		DABCFE612743AED000B89781 /* Tab2 */ = {
+			isa = PBXGroup;
+			children = (
+				DABCFE5C2743ACCF00B89781 /* MyPage.swift */,
+			);
+			path = Tab2;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -74,9 +201,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DA4D2D2827422FE500678FA8 /* Build configuration list for PBXNativeTarget "DormitoryDelivery" */;
 			buildPhases = (
+				3E8205C95EBE681393D40E16 /* [CP] Check Pods Manifest.lock */,
 				DA4D2D1627422FE300678FA8 /* Sources */,
 				DA4D2D1727422FE300678FA8 /* Frameworks */,
 				DA4D2D1827422FE300678FA8 /* Resources */,
+				58925DC375224D593741E8BF /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -125,20 +254,85 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA4D2D2E2742309500678FA8 /* Launch Screen.storyboard in Resources */,
+				DA8837AA275BC81C0034481F /* Assets.xcassets in Resources */,
 				DA4D2D2527422FE500678FA8 /* Preview Assets.xcassets in Resources */,
-				DA4D2D2227422FE500678FA8 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		3E8205C95EBE681393D40E16 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-DormitoryDelivery-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		58925DC375224D593741E8BF /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-DormitoryDelivery/Pods-DormitoryDelivery-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-DormitoryDelivery/Pods-DormitoryDelivery-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DormitoryDelivery/Pods-DormitoryDelivery-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		DA4D2D1627422FE300678FA8 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DAB5E98C274364BC00EF5B6A /* Signup.swift in Sources */,
+				DABCFE5D2743ACCF00B89781 /* MyPage.swift in Sources */,
+				DA68335427566A260048E809 /* SwiftUIView.swift in Sources */,
+				DA4D2D2C2742306300678FA8 /* AppDelegate.swift in Sources */,
+				DAC252D8275B4EC800EA2BFD /* NaverLoginFunc.swift.swift in Sources */,
+				DAC252D2275B4E0100EA2BFD /* NaverLogin.swift in Sources */,
+				DA68335027553B860048E809 /* logintest.swift in Sources */,
 				DA4D2D2027422FE300678FA8 /* ContentView.swift in Sources */,
 				DA4D2D1E27422FE300678FA8 /* DormitoryDeliveryApp.swift in Sources */,
+				DA9702BA275C8CC700BB8B53 /* hashtag.swift in Sources */,
+				DA4D2D342742367F00678FA8 /* User.swift in Sources */,
+				DAB5E9942743906400EF5B6A /* DeliveryList.swift in Sources */,
+				DAE945272746560E000C8D3D /* SocketIOManager.swift in Sources */,
+				DAB5E992274374E100EF5B6A /* Join.swift in Sources */,
+				DA9702BC275C9E1F00BB8B53 /* ddddddddd.swift in Sources */,
+				DABCFE632743B0F500B89781 /* CreateRoom.swift in Sources */,
+				DAC252DA275B551B00EA2BFD /* Loading.swift in Sources */,
+				DAE94525274654A9000C8D3D /* TEST.swift in Sources */,
+				DA4D2D362742378400678FA8 /* TabViews.swift in Sources */,
+				DA683352275652730048E809 /* NaverLoginAPI.swift in Sources */,
+				DAB5E99027436B9B00EF5B6A /* Delivery.swift in Sources */,
+				DAC252D0275A303600EA2BFD /* SwiftUIView2.swift in Sources */,
+				DAB437B72753A8B100296452 /* test.swift in Sources */,
+				DA4D2D322742355800678FA8 /* Login.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -263,17 +457,22 @@
 		};
 		DA4D2D2927422FE500678FA8 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8266E739250669536F01CDAC /* Pods-DormitoryDelivery.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"DormitoryDelivery/Preview Content\"";
+				DEVELOPMENT_TEAM = P6Z9B6CV2H;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = /Users/cho/Documents/Swift/DormitoryDelivery/info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -291,17 +490,22 @@
 		};
 		DA4D2D2A27422FE500678FA8 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 736BA1325AD7A59AFCD0C77A /* Pods-DormitoryDelivery.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"DormitoryDelivery/Preview Content\"";
+				DEVELOPMENT_TEAM = P6Z9B6CV2H;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = /Users/cho/Documents/Swift/DormitoryDelivery/info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
