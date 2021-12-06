@@ -8,56 +8,17 @@
 import SwiftUI
 import SocketIO
 
-struct Delivery: View {
+struct DeliveryView: View {
+  @EnvironmentObject var rooms: RoomData
+  
   @State var isRoomLinkActive = false
   @State var selectedTab = Tabs.FirstTab
   var socket: SocketIOClient! = SocketIOManager.shared.socket
-  @State var test: TTest!
+  
   
   let category = ["한식", "중식", "일식", "양식", "돼지고기", "치킨", "피자", "떡", "페스트푸드"]
-  
-  func subscribeEmit(){
-    
-    let subscribeForm: [String: Any] = [
-        "userId": "qwer",
-        "category": "korean",
-    ] as Dictionary
-    
-    
-    print("구독시작")
-    socket.emitWithAck("subscribe", subscribeForm).timingOut(after: 2, callback: { (data) in
-//        print(data[0])
-      do {
-        let data2 = try JSONSerialization.data(withJSONObject: data[0], options: .prettyPrinted)
-//          print(String(data: data2, encoding: .utf8)!)
-        let session = try JSONDecoder().decode(TTest.self, from: data2)
-        self.test = session
-//        print(session.data[0])
-//        print(session.data[1])
-      }
-      catch {
-        print(error)
-      }
-    })
-    
-  }
-
-func newArriveOn(){
-  print("On 시작")
-  
-    socket.on("new-arrive") { (dataArray, ack) in
-      do {
-        var data = try JSONSerialization.data(withJSONObject: dataArray[0], options: .prettyPrinted)
-        let session = try JSONDecoder().decode(TTTest.self, from: data)
-        self.test.data.append(session)
-      }
-      catch {
-        print(error)
-      }
-    }
-}
-  
   let sections = ["전체", "창조", "나래", "호연", "비봉"]
+  
   @State var mysection = "전체"
   
     var body: some View {
@@ -66,8 +27,6 @@ func newArriveOn(){
           VStack(alignment: .leading){
             HStack() {
 
-              
-                
               Menu(self.mysection) {
                 ForEach(0 ..< sections.count, id: \.self) { index in
                   Button(action: {
@@ -197,16 +156,17 @@ func newArriveOn(){
                 }.frame(height: 50)
 //                  .padding(.leading)
                 
-                if (test != nil) {
+                if (rooms.data != nil) {
                   ScrollView(){
                     VStack(spacing: 2) {
-                  ForEach(test.data.indices, id: \.self) { index in
-                    DeliveryList(deliveryTitle: test.data[index].shopName, deliveryZone: test.data[index].section,
-                                 deliveryPayTip: test.data[index].priceAtLeast,
-                                 deliveryPayTotal: test.data[index].total,
-                                 deliveryId: test.data[index].id,
-                                 purchaserName: test.data[index].purchaserName,
-                                 createdAt: test.data[index].createdAt
+                      ForEach(rooms.data!.data.indices, id: \.self) { index in
+                    RoomCard(deliveryTitle: rooms.data!.data[index].shopName,
+                             deliveryZone: rooms.data!.data[index].section,
+                                 deliveryPayTip: rooms.data!.data[index].priceAtLeast,
+                                 deliveryPayTotal: rooms.data!.data[index].total,
+                                 deliveryId: rooms.data!.data[index].id,
+                                 purchaserName: rooms.data!.data[index].purchaserName,
+                                 createdAt: rooms.data!.data[index].createdAt
                     )
                   }
                     }
@@ -239,7 +199,6 @@ func newArriveOn(){
         .navigationBarTitle("") //this must be empty
         .navigationBarHidden(true)
       }.onAppear {
-        
         let tokenvalue = UserDefaults.standard.string(forKey: "AccessToken")!
         
         let usertoken: [String: Any] = [
@@ -247,21 +206,85 @@ func newArriveOn(){
         ] as Dictionary
         
         socket.connect(withPayload: ["auth": usertoken])
-        newArriveOn()
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-          subscribeEmit()
+        DispatchQueue.global(qos: .default).async {
+           while true {
+              DispatchQueue.main.async {
+                if socket.status == SocketIOStatus.connected {
+                subscribeEmit()
+                newArriveOn()
+                }
+              }
+              if socket.status == SocketIOStatus.connected {
+                break
+              }
+              sleep(1)
+           }
         }
         
       }
+    }
+  
+func subscribeEmit(){
+//  if !(socket.status == SocketIOStatus.connected){
+//    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
+//      subscribeEmit()
+//    }
+//  }
+  
+  let subscribeForm: [String: Any] = [
+      "userId": "qwer",
+      "category": "korean",
+  ] as Dictionary
+  
+  
+  print("구독시작")
+  socket.emitWithAck("subscribe", subscribeForm).timingOut(after: 2, callback: { (data) in
+    do {
+      if data[0] as? String != "NO ACK" {
+        let data2 = try JSONSerialization.data(withJSONObject: data[0], options: .prettyPrinted)
+  //        self.rooms.data = MyJsonDecoder(data2)
+        let session = try JSONDecoder().decode(roomsdata.self, from: data2)
+        self.rooms.data = session
+//        print("-------------")
+//        print(self.rooms.data?.data ?? "읍다넹")
+//        print("-------------")
       }
+    }
+    catch {
+      print(error)
+    }
+  })
+  
+}
+
+func newArriveOn(){
+//  if !(socket.status == SocketIOStatus.connected){
+//    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
+//      newArriveOn()
+//    }
+//  }
+  print("On 시작")
+  
+    socket.on("new-arrive") { (dataArray, ack) in
+      do {
+        let data = try JSONSerialization.data(withJSONObject: dataArray[0], options: .prettyPrinted)
+        let session = try JSONDecoder().decode(roomdata.self, from: data)
+        self.rooms.data!.data.append(session)
+      }
+      catch {
+        print(error)
+      }
+    }
+}
+  
   
 }
 
 struct Delivery_Previews: PreviewProvider {
     static var previews: some View {
       Group {
-        Delivery()
+        DeliveryView()
       }
     }
 }
@@ -272,150 +295,3 @@ enum Tabs {
     case SecondTab
     case ThirdTab
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-////
-////  Delivery.swift
-////  DormitoryDelivery
-////
-////  Created by cch on 2021/11/16.
-////
-//
-//import SwiftUI
-//
-//struct Delivery: View {
-//  @State var isRoomLinkActive = false
-//
-//
-//    var body: some View {
-//      NavigationView{
-//        VStack{
-//          VStack(alignment: .leading){
-//            HStack() {
-//              Text("나래생활관")
-//                .frame(height: 50)
-//                .padding(.leading)
-//              Label("Toggle Favorite", systemImage: "star.fill")
-//                  .labelStyle(.iconOnly)
-//                  .foregroundColor(Color.yellow)
-//
-//              Spacer()
-//
-//              Label("돋보기", systemImage: "magnifyingglass")
-//                  .labelStyle(.iconOnly)
-//                  .foregroundColor(Color.gray)
-//              Label("종", systemImage: "bell")
-//                  .labelStyle(.iconOnly)
-//                  .foregroundColor(Color.gray)
-//                  .padding(.trailing)
-//            }
-////            HStack{
-////              Spacer()
-//
-////              NavigationLink(destination: CreateRoom(), isActive: $isRoomLinkActive) {
-////                  Button(action: {
-////                      self.isRoomLinkActive = true
-////                  }) {
-////                      Text("방만들기")
-////                  }
-////              }
-////              .padding(.trailing)
-////            }
-//          }
-//
-//          Divider()
-//
-//
-////            .font(35)
-//
-//          List {
-//            Text("바로 배달방")
-//            DeliveryList(deliveryTitle: "맥날", deliveryZone: "비봉", deliveryPay: "8000원/4000원", deliveryId: 14)
-//              .listRowSeparator(.hidden)
-//            DeliveryList(deliveryTitle: "버거킹", deliveryZone: "나래", deliveryPay: "12000원/9000원", deliveryId: 3)
-//              .listRowSeparator(.hidden)
-//            DeliveryList(deliveryTitle: "피자", deliveryZone: "창조", deliveryPay: "16000원/7000원", deliveryId: 6)
-//              .listRowSeparator(.hidden)
-//
-//
-//          }.listStyle(PlainListStyle())
-//
-//          List {
-//            Text("전체 배달방")
-//            DeliveryList(deliveryTitle: "맥날", deliveryZone: "비봉", deliveryPay: "8000원/4000원", deliveryId: 14)
-//              .listRowSeparator(.hidden)
-//            DeliveryList(deliveryTitle: "버거킹", deliveryZone: "나래", deliveryPay: "12000원/9000원", deliveryId: 3)
-//              .listRowSeparator(.hidden)
-//            DeliveryList(deliveryTitle: "피자", deliveryZone: "창조", deliveryPay: "16000원/7000원", deliveryId: 6)
-//              .listRowSeparator(.hidden)
-//            DeliveryList(deliveryTitle: "맥날", deliveryZone: "비봉", deliveryPay: "8000원/4000원", deliveryId: 14)
-//              .listRowSeparator(.hidden)
-//            DeliveryList(deliveryTitle: "버거킹", deliveryZone: "나래", deliveryPay: "12000원/9000원", deliveryId: 3)
-//              .listRowSeparator(.hidden)
-//            DeliveryList(deliveryTitle: "피자", deliveryZone: "창조", deliveryPay: "16000원/7000원", deliveryId: 6)
-//              .listRowSeparator(.hidden)
-//            DeliveryList(deliveryTitle: "맥날", deliveryZone: "비봉", deliveryPay: "8000원/4000원", deliveryId: 14)
-//              .listRowSeparator(.hidden)
-//            DeliveryList(deliveryTitle: "버거킹", deliveryZone: "나래", deliveryPay: "12000원/9000원", deliveryId: 3)
-//              .listRowSeparator(.hidden)
-//            DeliveryList(deliveryTitle: "피자", deliveryZone: "창조", deliveryPay: "16000원/7000원", deliveryId: 6)
-//              .listRowSeparator(.hidden)
-//
-//
-//          }.listStyle(PlainListStyle())
-//
-//        }
-//        .navigationBarTitle("") //this must be empty
-//        .navigationBarHidden(true)
-//      }
-//      }
-//
-//}
-//
-//struct Delivery_Previews: PreviewProvider {
-//    static var previews: some View {
-//      Group {
-//        Delivery()
-//      }
-//    }
-//}

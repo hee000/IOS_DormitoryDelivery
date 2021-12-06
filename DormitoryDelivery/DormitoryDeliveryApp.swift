@@ -17,10 +17,9 @@ struct DormitoryDeliveryApp: App {
     var body: some Scene {
         WindowGroup {
           ContentView()
-//            .environmentObject(User())
-//            .environmentObject(StateLogin())
-            .environmentObject(NaverLoginF())
-//            .environmentObject(NaverToken())
+            .environmentObject(NaverLogin())
+            .environmentObject(DateCheck())
+            .environmentObject(RoomData())
             .onOpenURL(perform: { url in
               NaverThirdPartyLoginConnection
               .getSharedInstance()?

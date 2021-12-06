@@ -9,8 +9,7 @@ import SwiftUI
 import SocketIO
 import Alamofire
 
-struct CreateRoom: View {
-  
+struct CreateRoomView: View {
   var socket: SocketIOClient! = SocketIOManager.shared.socket
   var deliveryZone = ["Narae", "Hoyoen", "Changzo", "Bibong"]
   
@@ -23,21 +22,27 @@ struct CreateRoom: View {
   
 
   func subscribeEmit(){
-    var createForm: [String: Any] = [
-        "shopName": self.shopName,
-        "deliveryPriceAtLeast": Int(self.deliveryPriceAtLeast),
-        "shopLink": self.shopLink,
-        "category": self.category,
-        "section": self.deliveryZone[self.section],
-    ] as Dictionary
     
+//    var createForm: [String: Any] = [
+//        "shopName": self.shopName,
+//        "deliveryPriceAtLeast": Int(self.deliveryPriceAtLeast),
+//        "shopLink": self.shopLink,
+//        "category": self.category,
+//        "section": self.deliveryZone[self.section],
+//    ] as Dictionary
     
+    var createform = createroomdata(shopName: self.shopName,
+                                    shopLink: self.shopLink,
+                                    category: self.category,
+                                    section: self.deliveryZone[self.section],
+                                    deliveryPriceAtLeast: Int(self.deliveryPriceAtLeast) ?? 0
+                      )
 //    socket.emitWithAck("create", createForm).timingOut(after: 2, callback: { (data) in
 ////              print(data)
 //    })
     
   
-            let url = "http://192.168.10.104:3000/room"
+            let url = createroomposturl
             let headers : [String: String] = [
               "Authorization": UserDefaults.standard.string(forKey: "AccessToken")!
             ] as Dictionary
@@ -52,8 +57,10 @@ struct CreateRoom: View {
             // httpBody 에 parameters 추가
      
             do {
-                try request.httpBody = JSONSerialization.data(withJSONObject: createForm, options: [])
+              print("인코딩 시작")
+                try request.httpBody = JSONEncoder().encode(createform)
                 try request.allHTTPHeaderFields = headers
+              print("인코딩 성공")
             } catch {
                 print("http Body Error")
             }
@@ -151,6 +158,6 @@ struct CreateRoom: View {
 
 struct CreateRoom_Previews: PreviewProvider {
     static var previews: some View {
-        CreateRoom()
+        CreateRoomView()
     }
 }

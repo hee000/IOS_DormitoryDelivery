@@ -40,7 +40,7 @@ struct modelm: Decodable, Identifiable {
 
 
 
-struct Join: View {
+struct ChattingView: View {
   var Id_room: String
   @State private var message22 = "input"
   @ObservedObject var models = model()
@@ -153,6 +153,6 @@ struct Join: View {
 
 struct Join_Previews: PreviewProvider {
     static var previews: some View {
-        Join(Id_room: "14")
+        ChattingView(Id_room: "14")
     }
 }

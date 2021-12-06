@@ -8,22 +8,13 @@
 
 import SwiftUI
 
-struct NaverLogin: View {
-  @EnvironmentObject var naverLogin: NaverLoginF
+struct LoginView: View {
+  @EnvironmentObject var naverLogin: NaverLogin
   
     var body: some View {
-//        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-//      ZStack{
-//        Image("LaunchScreenImage")
-//          .resizable()
-//          .aspectRatio(contentMode: .fill)
-//          .frame(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height)
-        
-//      VStack{
-        
 
       Spacer()
-//      Spacer()
+
       VStack {
         HStack {
           Text("1/n")
@@ -76,7 +67,7 @@ struct NaverLogin: View {
 
 struct NaverLogin_Previews: PreviewProvider {
     static var previews: some View {
-        NaverLogin()
+        LoginView()
     }
 }
 

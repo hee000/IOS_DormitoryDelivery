@@ -13,28 +13,31 @@
 		DA4D2D2527422FE500678FA8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA4D2D2427422FE500678FA8 /* Preview Assets.xcassets */; };
 		DA4D2D2C2742306300678FA8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4D2D2B2742306300678FA8 /* AppDelegate.swift */; };
 		DA4D2D2E2742309500678FA8 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DA4D2D2D2742309500678FA8 /* Launch Screen.storyboard */; };
-		DA4D2D322742355800678FA8 /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4D2D312742355800678FA8 /* Login.swift */; };
-		DA4D2D342742367F00678FA8 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4D2D332742367F00678FA8 /* User.swift */; };
 		DA4D2D362742378400678FA8 /* TabViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4D2D352742378400678FA8 /* TabViews.swift */; };
-		DA68335027553B860048E809 /* logintest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA68334F27553B860048E809 /* logintest.swift */; };
-		DA683352275652730048E809 /* NaverLoginAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA683351275652730048E809 /* NaverLoginAPI.swift */; };
-		DA68335427566A260048E809 /* SwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA68335327566A260048E809 /* SwiftUIView.swift */; };
 		DA8837AA275BC81C0034481F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA4D2D2127422FE500678FA8 /* Assets.xcassets */; };
 		DA9702BA275C8CC700BB8B53 /* hashtag.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9702B9275C8CC700BB8B53 /* hashtag.swift */; };
 		DA9702BC275C9E1F00BB8B53 /* ddddddddd.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9702BB275C9E1F00BB8B53 /* ddddddddd.swift */; };
-		DAB437B72753A8B100296452 /* test.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB437B62753A8B100296452 /* test.swift */; };
 		DAB5E98C274364BC00EF5B6A /* Signup.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB5E98B274364BC00EF5B6A /* Signup.swift */; };
-		DAB5E99027436B9B00EF5B6A /* Delivery.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB5E98F27436B9B00EF5B6A /* Delivery.swift */; };
-		DAB5E992274374E100EF5B6A /* Join.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB5E991274374E100EF5B6A /* Join.swift */; };
-		DAB5E9942743906400EF5B6A /* DeliveryList.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB5E9932743906400EF5B6A /* DeliveryList.swift */; };
+		DAB5E99027436B9B00EF5B6A /* DeliveryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB5E98F27436B9B00EF5B6A /* DeliveryView.swift */; };
+		DAB5E992274374E100EF5B6A /* ChattingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB5E991274374E100EF5B6A /* ChattingView.swift */; };
+		DAB5E9942743906400EF5B6A /* RoomCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB5E9932743906400EF5B6A /* RoomCard.swift */; };
 		DABCFE5D2743ACCF00B89781 /* MyPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DABCFE5C2743ACCF00B89781 /* MyPage.swift */; };
-		DABCFE632743B0F500B89781 /* CreateRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = DABCFE622743B0F500B89781 /* CreateRoom.swift */; };
-		DAC252D0275A303600EA2BFD /* SwiftUIView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC252CF275A303600EA2BFD /* SwiftUIView2.swift */; };
-		DAC252D2275B4E0100EA2BFD /* NaverLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC252D1275B4E0100EA2BFD /* NaverLogin.swift */; };
+		DABCFE632743B0F500B89781 /* CreateRoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DABCFE622743B0F500B89781 /* CreateRoomView.swift */; };
+		DAC252D2275B4E0100EA2BFD /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC252D1275B4E0100EA2BFD /* LoginView.swift */; };
 		DAC252D8275B4EC800EA2BFD /* NaverLoginFunc.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC252D7275B4EC800EA2BFD /* NaverLoginFunc.swift.swift */; };
 		DAC252DA275B551B00EA2BFD /* Loading.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC252D9275B551B00EA2BFD /* Loading.swift */; };
 		DAE94525274654A9000C8D3D /* TEST.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE94524274654A9000C8D3D /* TEST.swift */; };
 		DAE945272746560E000C8D3D /* SocketIOManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE945262746560E000C8D3D /* SocketIOManager.swift */; };
+		DAFF71BF275D589400A45D29 /* CreateRoomData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFF71BE275D589400A45D29 /* CreateRoomData.swift */; };
+		DAFF71C1275D589D00A45D29 /* RoomData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFF71C0275D589D00A45D29 /* RoomData.swift */; };
+		DAFF71C3275D58A300A45D29 /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFF71C2275D58A300A45D29 /* UserData.swift */; };
+		DAFF71C5275D58C500A45D29 /* ChatData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFF71C4275D58C500A45D29 /* ChatData.swift */; };
+		DAFF71C7275D593300A45D29 /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFF71C6275D593300A45D29 /* ChatView.swift */; };
+		DAFF71C9275D5A1700A45D29 /* 각종 모아두기.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFF71C8275D5A1700A45D29 /* 각종 모아두기.swift */; };
+		DAFF71D1275D5FF900A45D29 /* SectionCategoryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFF71D0275D5FF900A45D29 /* SectionCategoryData.swift */; };
+		DAFF71D3275D60D600A45D29 /* RoomDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFF71D2275D60D600A45D29 /* RoomDetail.swift */; };
+		DAFF71D5275DBEE900A45D29 /* ServerUrl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFF71D4275DBEE900A45D29 /* ServerUrl.swift */; };
+		DAFF71D7275DD50200A45D29 /* DateCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFF71D6275DD50200A45D29 /* DateCheck.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,28 +50,31 @@
 		DA4D2D2427422FE500678FA8 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		DA4D2D2B2742306300678FA8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DA4D2D2D2742309500678FA8 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
-		DA4D2D312742355800678FA8 /* Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
-		DA4D2D332742367F00678FA8 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		DA4D2D352742378400678FA8 /* TabViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViews.swift; sourceTree = "<group>"; };
-		DA68334F27553B860048E809 /* logintest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = logintest.swift; sourceTree = "<group>"; };
-		DA683351275652730048E809 /* NaverLoginAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverLoginAPI.swift; sourceTree = "<group>"; };
-		DA68335327566A260048E809 /* SwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIView.swift; sourceTree = "<group>"; };
 		DA9702B9275C8CC700BB8B53 /* hashtag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = hashtag.swift; sourceTree = "<group>"; };
 		DA9702BB275C9E1F00BB8B53 /* ddddddddd.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ddddddddd.swift; sourceTree = "<group>"; };
-		DAB437B62753A8B100296452 /* test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = test.swift; path = ../../../../test.swift; sourceTree = "<group>"; };
 		DAB5E98B274364BC00EF5B6A /* Signup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Signup.swift; sourceTree = "<group>"; };
-		DAB5E98F27436B9B00EF5B6A /* Delivery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Delivery.swift; sourceTree = "<group>"; };
-		DAB5E991274374E100EF5B6A /* Join.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Join.swift; sourceTree = "<group>"; };
-		DAB5E9932743906400EF5B6A /* DeliveryList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryList.swift; sourceTree = "<group>"; };
+		DAB5E98F27436B9B00EF5B6A /* DeliveryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryView.swift; sourceTree = "<group>"; };
+		DAB5E991274374E100EF5B6A /* ChattingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChattingView.swift; sourceTree = "<group>"; };
+		DAB5E9932743906400EF5B6A /* RoomCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomCard.swift; sourceTree = "<group>"; };
 		DABCFE5C2743ACCF00B89781 /* MyPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPage.swift; sourceTree = "<group>"; };
-		DABCFE622743B0F500B89781 /* CreateRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateRoom.swift; sourceTree = "<group>"; };
-		DAC252CF275A303600EA2BFD /* SwiftUIView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIView2.swift; sourceTree = "<group>"; };
-		DAC252D1275B4E0100EA2BFD /* NaverLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverLogin.swift; sourceTree = "<group>"; };
+		DABCFE622743B0F500B89781 /* CreateRoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateRoomView.swift; sourceTree = "<group>"; };
+		DAC252D1275B4E0100EA2BFD /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		DAC252D7275B4EC800EA2BFD /* NaverLoginFunc.swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverLoginFunc.swift.swift; sourceTree = "<group>"; };
 		DAC252D9275B551B00EA2BFD /* Loading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loading.swift; sourceTree = "<group>"; };
 		DAE94524274654A9000C8D3D /* TEST.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TEST.swift; sourceTree = "<group>"; };
 		DAE945262746560E000C8D3D /* SocketIOManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketIOManager.swift; sourceTree = "<group>"; };
 		DAE9452C274671F4000C8D3D /* info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = info.plist; sourceTree = SOURCE_ROOT; };
+		DAFF71BE275D589400A45D29 /* CreateRoomData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateRoomData.swift; sourceTree = "<group>"; };
+		DAFF71C0275D589D00A45D29 /* RoomData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomData.swift; sourceTree = "<group>"; };
+		DAFF71C2275D58A300A45D29 /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
+		DAFF71C4275D58C500A45D29 /* ChatData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatData.swift; sourceTree = "<group>"; };
+		DAFF71C6275D593300A45D29 /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
+		DAFF71C8275D5A1700A45D29 /* 각종 모아두기.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "각종 모아두기.swift"; sourceTree = "<group>"; };
+		DAFF71D0275D5FF900A45D29 /* SectionCategoryData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionCategoryData.swift; sourceTree = "<group>"; };
+		DAFF71D2275D60D600A45D29 /* RoomDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomDetail.swift; sourceTree = "<group>"; };
+		DAFF71D4275DBEE900A45D29 /* ServerUrl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerUrl.swift; sourceTree = "<group>"; };
+		DAFF71D6275DD50200A45D29 /* DateCheck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateCheck.swift; sourceTree = "<group>"; };
 		E8B9CEFF718CF6B412D748A6 /* Pods_DormitoryDelivery.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DormitoryDelivery.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -122,25 +128,23 @@
 		DA4D2D1C27422FE300678FA8 /* DormitoryDelivery */ = {
 			isa = PBXGroup;
 			children = (
+				DAFF71B7275D577B00A45D29 /* Module */,
 				DAE9452C274671F4000C8D3D /* info.plist */,
+				DA4D2D2B2742306300678FA8 /* AppDelegate.swift */,
 				DA4D2D1D27422FE300678FA8 /* DormitoryDeliveryApp.swift */,
-				DA68334F27553B860048E809 /* logintest.swift */,
-				DA683351275652730048E809 /* NaverLoginAPI.swift */,
-				DA68335327566A260048E809 /* SwiftUIView.swift */,
-				DAC252CF275A303600EA2BFD /* SwiftUIView2.swift */,
 				DA4D2D1F27422FE300678FA8 /* ContentView.swift */,
 				DAC252D9275B551B00EA2BFD /* Loading.swift */,
-				DABCFE5F2743AE8900B89781 /* UserData */,
-				DABCFE5E2743AE4200B89781 /* Previous */,
+				DAC252D1275B4E0100EA2BFD /* LoginView.swift */,
 				DA4D2D352742378400678FA8 /* TabViews.swift */,
-				DABCFE602743AEC900B89781 /* Tab1 */,
-				DABCFE612743AED000B89781 /* Tab2 */,
-				DA4D2D2D2742309500678FA8 /* Launch Screen.storyboard */,
+				DABCFE602743AEC900B89781 /* Delivery */,
+				DABCFE612743AED000B89781 /* CreateRoom */,
+				DAFF71B4275D571C00A45D29 /* Chatting */,
+				DAFF71B5275D572900A45D29 /* MyPage */,
+				DABCFE5F2743AE8900B89781 /* Data */,
+				DAFF71B6275D576500A45D29 /* TEST */,
 				DA4D2D2127422FE500678FA8 /* Assets.xcassets */,
-				DA4D2D2B2742306300678FA8 /* AppDelegate.swift */,
+				DA4D2D2D2742309500678FA8 /* Launch Screen.storyboard */,
 				DA4D2D2327422FE500678FA8 /* Preview Content */,
-				DAE94524274654A9000C8D3D /* TEST.swift */,
-				DAE945262746560E000C8D3D /* SocketIOManager.swift */,
 			);
 			path = DormitoryDelivery;
 			sourceTree = "<group>";
@@ -153,45 +157,74 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		DABCFE5E2743AE4200B89781 /* Previous */ = {
+		DABCFE5F2743AE8900B89781 /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				DA4D2D312742355800678FA8 /* Login.swift */,
-				DAC252D1275B4E0100EA2BFD /* NaverLogin.swift */,
-				DAC252D7275B4EC800EA2BFD /* NaverLoginFunc.swift.swift */,
-				DAB5E98B274364BC00EF5B6A /* Signup.swift */,
+				DAFF71BE275D589400A45D29 /* CreateRoomData.swift */,
+				DAFF71C0275D589D00A45D29 /* RoomData.swift */,
+				DAFF71C2275D58A300A45D29 /* UserData.swift */,
+				DAFF71C4275D58C500A45D29 /* ChatData.swift */,
+				DAFF71D0275D5FF900A45D29 /* SectionCategoryData.swift */,
+				DAFF71D4275DBEE900A45D29 /* ServerUrl.swift */,
 			);
-			path = Previous;
+			path = Data;
 			sourceTree = "<group>";
 		};
-		DABCFE5F2743AE8900B89781 /* UserData */ = {
+		DABCFE602743AEC900B89781 /* Delivery */ = {
 			isa = PBXGroup;
 			children = (
-				DA4D2D332742367F00678FA8 /* User.swift */,
+				DAB5E98F27436B9B00EF5B6A /* DeliveryView.swift */,
+				DAB5E9932743906400EF5B6A /* RoomCard.swift */,
+				DAFF71D2275D60D600A45D29 /* RoomDetail.swift */,
 			);
-			path = UserData;
+			path = Delivery;
 			sourceTree = "<group>";
 		};
-		DABCFE602743AEC900B89781 /* Tab1 */ = {
+		DABCFE612743AED000B89781 /* CreateRoom */ = {
 			isa = PBXGroup;
 			children = (
-				DAB5E98F27436B9B00EF5B6A /* Delivery.swift */,
-				DA9702BB275C9E1F00BB8B53 /* ddddddddd.swift */,
-				DA9702B9275C8CC700BB8B53 /* hashtag.swift */,
-				DAB437B62753A8B100296452 /* test.swift */,
-				DAB5E9932743906400EF5B6A /* DeliveryList.swift */,
-				DAB5E991274374E100EF5B6A /* Join.swift */,
-				DABCFE622743B0F500B89781 /* CreateRoom.swift */,
+				DABCFE622743B0F500B89781 /* CreateRoomView.swift */,
 			);
-			path = Tab1;
+			path = CreateRoom;
 			sourceTree = "<group>";
 		};
-		DABCFE612743AED000B89781 /* Tab2 */ = {
+		DAFF71B4275D571C00A45D29 /* Chatting */ = {
+			isa = PBXGroup;
+			children = (
+				DAFF71C6275D593300A45D29 /* ChatView.swift */,
+				DAB5E991274374E100EF5B6A /* ChattingView.swift */,
+			);
+			path = Chatting;
+			sourceTree = "<group>";
+		};
+		DAFF71B5275D572900A45D29 /* MyPage */ = {
 			isa = PBXGroup;
 			children = (
 				DABCFE5C2743ACCF00B89781 /* MyPage.swift */,
 			);
-			path = Tab2;
+			path = MyPage;
+			sourceTree = "<group>";
+		};
+		DAFF71B6275D576500A45D29 /* TEST */ = {
+			isa = PBXGroup;
+			children = (
+				DAB5E98B274364BC00EF5B6A /* Signup.swift */,
+				DAE94524274654A9000C8D3D /* TEST.swift */,
+				DAFF71C8275D5A1700A45D29 /* 각종 모아두기.swift */,
+				DA9702BB275C9E1F00BB8B53 /* ddddddddd.swift */,
+				DA9702B9275C8CC700BB8B53 /* hashtag.swift */,
+			);
+			path = TEST;
+			sourceTree = "<group>";
+		};
+		DAFF71B7275D577B00A45D29 /* Module */ = {
+			isa = PBXGroup;
+			children = (
+				DAE945262746560E000C8D3D /* SocketIOManager.swift */,
+				DAC252D7275B4EC800EA2BFD /* NaverLoginFunc.swift.swift */,
+				DAFF71D6275DD50200A45D29 /* DateCheck.swift */,
+			);
+			path = Module;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -309,30 +342,33 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DAFF71BF275D589400A45D29 /* CreateRoomData.swift in Sources */,
 				DAB5E98C274364BC00EF5B6A /* Signup.swift in Sources */,
 				DABCFE5D2743ACCF00B89781 /* MyPage.swift in Sources */,
-				DA68335427566A260048E809 /* SwiftUIView.swift in Sources */,
+				DAFF71C5275D58C500A45D29 /* ChatData.swift in Sources */,
+				DAFF71C7275D593300A45D29 /* ChatView.swift in Sources */,
 				DA4D2D2C2742306300678FA8 /* AppDelegate.swift in Sources */,
 				DAC252D8275B4EC800EA2BFD /* NaverLoginFunc.swift.swift in Sources */,
-				DAC252D2275B4E0100EA2BFD /* NaverLogin.swift in Sources */,
-				DA68335027553B860048E809 /* logintest.swift in Sources */,
+				DAC252D2275B4E0100EA2BFD /* LoginView.swift in Sources */,
 				DA4D2D2027422FE300678FA8 /* ContentView.swift in Sources */,
 				DA4D2D1E27422FE300678FA8 /* DormitoryDeliveryApp.swift in Sources */,
 				DA9702BA275C8CC700BB8B53 /* hashtag.swift in Sources */,
-				DA4D2D342742367F00678FA8 /* User.swift in Sources */,
-				DAB5E9942743906400EF5B6A /* DeliveryList.swift in Sources */,
+				DAB5E9942743906400EF5B6A /* RoomCard.swift in Sources */,
+				DAFF71C9275D5A1700A45D29 /* 각종 모아두기.swift in Sources */,
+				DAFF71D1275D5FF900A45D29 /* SectionCategoryData.swift in Sources */,
 				DAE945272746560E000C8D3D /* SocketIOManager.swift in Sources */,
-				DAB5E992274374E100EF5B6A /* Join.swift in Sources */,
+				DAFF71D3275D60D600A45D29 /* RoomDetail.swift in Sources */,
+				DAFF71C3275D58A300A45D29 /* UserData.swift in Sources */,
+				DAB5E992274374E100EF5B6A /* ChattingView.swift in Sources */,
 				DA9702BC275C9E1F00BB8B53 /* ddddddddd.swift in Sources */,
-				DABCFE632743B0F500B89781 /* CreateRoom.swift in Sources */,
+				DABCFE632743B0F500B89781 /* CreateRoomView.swift in Sources */,
+				DAFF71D5275DBEE900A45D29 /* ServerUrl.swift in Sources */,
 				DAC252DA275B551B00EA2BFD /* Loading.swift in Sources */,
 				DAE94525274654A9000C8D3D /* TEST.swift in Sources */,
 				DA4D2D362742378400678FA8 /* TabViews.swift in Sources */,
-				DA683352275652730048E809 /* NaverLoginAPI.swift in Sources */,
-				DAB5E99027436B9B00EF5B6A /* Delivery.swift in Sources */,
-				DAC252D0275A303600EA2BFD /* SwiftUIView2.swift in Sources */,
-				DAB437B72753A8B100296452 /* test.swift in Sources */,
-				DA4D2D322742355800678FA8 /* Login.swift in Sources */,
+				DAFF71D7275DD50200A45D29 /* DateCheck.swift in Sources */,
+				DAFF71C1275D589D00A45D29 /* RoomData.swift in Sources */,
+				DAB5E99027436B9B00EF5B6A /* DeliveryView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

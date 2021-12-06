@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct TabViews: View {
-//  @ObservedObject var user: User
   
   @State var tabSelect = 0
   
@@ -16,7 +15,8 @@ struct TabViews: View {
     
     TabView(selection: $tabSelect) {
       
-      Delivery().tabItem {
+      DeliveryView()
+        .tabItem {
 
         if self.tabSelect == 0 {
           Label("홈", image: "a_홈")
@@ -27,7 +27,7 @@ struct TabViews: View {
       }
       .tag(0)
       
-      CreateRoom().tabItem {
+      CreateRoomView().tabItem {
         if self.tabSelect == 1 {
           Label("개설", image: "a_개설")
         } else {

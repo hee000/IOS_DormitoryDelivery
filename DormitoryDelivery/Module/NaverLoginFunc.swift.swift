@@ -24,37 +24,48 @@ class NaverToken: ObservableObject{
 }
 
 
-class NaverLoginF: UIViewController, NaverThirdPartyLoginConnectionDelegate, ObservableObject {
+class NaverLogin: UIViewController, NaverThirdPartyLoginConnectionDelegate, ObservableObject {
   let loginInstance = NaverThirdPartyLoginConnection.getSharedInstance()
-//  loginInstance?.delegate = self
-  @Published var IsLogin: Bool = false
-  @Published var IsValidAccessToken: Bool = false
-//  @EnvironmentObject var naverToken: NaverToken
+  
+  @Published var isValidAccessToken: Bool = false
 
-  @Published var AToken: String = UserDefaults.standard.object(forKey: "AccessToken") as? String ?? "ddddddd"{
+  @Published var AToken: String = UserDefaults.standard.object(forKey: "AccessToken") as? String ?? "empty"{
     didSet {
         UserDefaults.standard.set(AToken, forKey: "AccessToken")
     }
+  }
+    
+  @Published var RToken: String = UserDefaults.standard.object(forKey: "RefreshToken") as? String ?? "empty"{
+    didSet {
+        UserDefaults.standard.set(RToken, forKey: "RefreshToken")
+    }
+  }
+  
+  @Published var isLoggedIn: Bool = UserDefaults.standard.object(forKey: "IsLoggedIn") as? Bool ?? false {
+      didSet {
+          UserDefaults.standard.set(isLoggedIn, forKey: "IsLoggedIn")
+      }
   }
     
   func oauth20ConnectionDidFinishRequestACTokenWithAuthCode() {
       print("Success login")
 //      getInfo()
       self.AToken = loginInstance?.accessToken ?? ""
-      self.IsValidAccessToken = loginInstance?.isValidAccessTokenExpireTimeNow() ?? false
-      self.IsLogin = true
-    print(UserDefaults.standard.string(forKey: "AccessToken")!)
+      self.isValidAccessToken = loginInstance?.isValidAccessTokenExpireTimeNow() ?? false
+      self.isLoggedIn = true
   }
   
   // referesh token
   func oauth20ConnectionDidFinishRequestACTokenWithRefreshToken() {
-//      loginInstance?.accessToken
+    self.AToken = loginInstance?.accessToken ?? ""
+//    print("리프레시 성공")
+//    print(loginInstance?.isValidAccessTokenExpireTimeNow())
   }
   
   // 로그아웃
   func oauth20ConnectionDidFinishDeleteToken() {
       print("log out")
-    self.IsLogin = false
+    self.isLoggedIn = false
   }
   
   // 모든 error
@@ -62,44 +73,24 @@ class NaverLoginF: UIViewController, NaverThirdPartyLoginConnectionDelegate, Obs
       print("error = \(error.localizedDescription)")
   }
   
-  func isValidAccessToken() -> Bool{
-//    print(self.AToken)
-//    self.IsValidAccessToken = loginInstance?.isValidAccessTokenExpireTimeNow() ?? false
-//    print("isValidAccessToken 검사")
-//    print(self.IsValidAccessToken)
-//    print(self.AToken)
-    return false
+  func validcheck(){
+    self.isValidAccessToken = loginInstance?.isValidAccessTokenExpireTimeNow() ?? false
   }
   
-  func postRefreshToken() {
-    // 리프레스 토큰 갱신 코드
+  func tokenrefresh() {
+    loginInstance?.delegate = self
+    loginInstance?.requestAccessTokenWithRefreshToken()
   }
   
   func logout(){
     loginInstance?.delegate = self
         loginInstance?.requestDeleteToken()
   }
+  
   func login(){
     print("로그인 시도중")
     loginInstance?.delegate = self
-//    func login() {
-//    print("onClickButton");
-//    loginInstance?.delegate = self
-//       print(test.login)
-//       test.login = "99999999999993"
-//       print(test.login)
-//    print(self.AToken)
     loginInstance?.requestThirdPartyLogin()
-
-//    print(loginInstance?.accessToken ?? "없대")
-//    self.NaverToken. =  loginInstance?.loginInstance?.accessToken else { return }
-    
-//    loginInstance?.requestDeleteToken()
-//          loginInstance?.requestDeleteToken()
-
-//    let isValidAccessToken = loginInstance?.isValidAccessTokenExpireTimeNow()
-
-//      return isValidAccessToken
   }
   
   func getInfo() {
