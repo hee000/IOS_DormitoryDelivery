@@ -35,11 +35,7 @@ struct CreateRoomView: View {
                                     shopLink: self.shopLink,
                                     category: self.category,
                                     section: self.deliveryZone[self.section],
-                                    deliveryPriceAtLeast: Int(self.deliveryPriceAtLeast) ?? 0
-                      )
-//    socket.emitWithAck("create", createForm).timingOut(after: 2, callback: { (data) in
-////              print(data)
-//    })
+                                    deliveryPriceAtLeast: Int(self.deliveryPriceAtLeast) ?? 0 )
     
   
             let url = createroomposturl
@@ -50,11 +46,7 @@ struct CreateRoomView: View {
             request.httpMethod = "POST"
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
             request.timeoutInterval = 10
-//            request.headers = JSONSerialization.data(withJSONObject: headers, options: [])
-            // POST 로 보낼 정보
-//            let params = ["userId":"qwer", "password":"qwer"] as Dictionary
 
-            // httpBody 에 parameters 추가
      
             do {
               print("인코딩 시작")
@@ -72,19 +64,6 @@ struct CreateRoomView: View {
                   print(value)
                   print("=======")
       
-//                  do {
-//                    let data = try JSONSerialization.data(withJSONObject: value, options: .prettyPrinted)
-//
-//                    let session = try JSONDecoder().decode(UserSession.self, from: data)
-//  //                  session.sessionId
-//
-//  //                  uersd.sessionId = session.sessionId
-//                  }
-//                  catch {
-//
-//                  }
-//                  print(uersd.sessionId)
-                
                 case .failure(let error):
                     print("🚫 Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
                 }
@@ -96,6 +75,7 @@ struct CreateRoomView: View {
   
   
     var body: some View {
+      
       VStack{
 //        Text("방 만들기 폼").frame(height: 50)
 //        Divider()
@@ -144,8 +124,11 @@ struct CreateRoomView: View {
 //      .onTapGesture {
 //            self.endTextEditing()
 //      }
-      .navigationBarTitle(Text("방 만들기 폼")) //this must be empty
-//        .navigationBarHidden(true)
+//      .navigationBarTitle(Text("방 만들기 폼")) //this must be empty
+////        .navigationBarHidden(true)
+      ///
+      .navigationTitle("")
+      .navigationBarHidden(true)
     }
 }
 

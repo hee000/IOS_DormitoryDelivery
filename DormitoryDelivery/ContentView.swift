@@ -37,6 +37,7 @@ struct ContentView: View {
             .onAppear {
               naverLogin.validcheck()
               naverLogin.tokenrefresh()
+              naverLogin.validcheck()
           }
         }
       }

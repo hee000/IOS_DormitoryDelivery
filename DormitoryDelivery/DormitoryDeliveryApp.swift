@@ -20,6 +20,7 @@ struct DormitoryDeliveryApp: App {
             .environmentObject(NaverLogin())
             .environmentObject(DateCheck())
             .environmentObject(RoomData())
+            .environmentObject(RoomDetailData())
             .onOpenURL(perform: { url in
               NaverThirdPartyLoginConnection
               .getSharedInstance()?

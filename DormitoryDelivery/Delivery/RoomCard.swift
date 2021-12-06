@@ -26,7 +26,7 @@ struct RoomCard: View {
   
     var body: some View {
       HStack{
-      NavigationLink(destination: RoomDetail()) {
+        NavigationLink(destination: RoomDetail(matchid: self.deliveryId)) {
         VStack(spacing: 2){
           HStack{ //타이틀, 업체명
             VStack(alignment: .leading, spacing: 3){

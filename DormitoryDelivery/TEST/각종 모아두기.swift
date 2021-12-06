@@ -133,3 +133,21 @@
 //
 //    }
 //}
+
+
+
+
+
+
+//class NaverToken: ObservableObject{
+//  @Published var RToken: String {
+//    didSet {
+//        UserDefaults.standard.set(RToken, forKey: "RefreshToken")
+//    }
+//  }
+//
+//
+//  init() {
+//    self.RToken = UserDefaults.standard.object(forKey: "RefreshToken") as? String ?? ""
+//  }
+//}

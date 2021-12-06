@@ -26,8 +26,19 @@ struct roomsdata: Codable {
 
 class RoomData: ObservableObject {
   @Published var data: roomsdata? = nil
-  
-//  init() {
-//    self.data = nil
-//  }
+}
+
+
+struct roomdetaildata: Codable {
+  var id: String
+  var shopName: String
+  var category: String
+  var section: String
+  var shopLink: String
+  var atLeast: Int;
+  var participants: Int;
+}
+
+class RoomDetailData: ObservableObject {
+  @Published var data: roomdetaildata? = nil
 }

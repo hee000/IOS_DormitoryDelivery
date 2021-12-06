@@ -10,18 +10,6 @@ import UIKit
 import NaverThirdPartyLogin
 import Alamofire
 
-class NaverToken: ObservableObject{
-  @Published var RToken: String {
-    didSet {
-        UserDefaults.standard.set(RToken, forKey: "RefreshToken")
-    }
-  }
-  
-
-  init() {
-    self.RToken = UserDefaults.standard.object(forKey: "RefreshToken") as? String ?? ""
-  }
-}
 
 
 class NaverLogin: UIViewController, NaverThirdPartyLoginConnectionDelegate, ObservableObject {
@@ -58,6 +46,7 @@ class NaverLogin: UIViewController, NaverThirdPartyLoginConnectionDelegate, Obse
   // referesh token
   func oauth20ConnectionDidFinishRequestACTokenWithRefreshToken() {
     self.AToken = loginInstance?.accessToken ?? ""
+    self.isValidAccessToken = loginInstance?.isValidAccessTokenExpireTimeNow() ?? false
 //    print("리프레시 성공")
 //    print(loginInstance?.isValidAccessTokenExpireTimeNow())
   }

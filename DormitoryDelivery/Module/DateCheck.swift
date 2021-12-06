@@ -23,12 +23,12 @@ class DateCheck : NSObject, ObservableObject{
   }
   
   func checkTimeTrigger() {
-    realTime = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(updateCounter), userInfo: nil, repeats: true)
+    realTime = Timer.scheduledTimer(timeInterval: 60, target: self, selector: #selector(updateCounter), userInfo: nil, repeats: true)
     timeTrigger = false
   }
 
   @objc func updateCounter() {
     nowDate = Date()
-    print("주기 업데이트 됨")
+//    print("주기 업데이트 됨")
   }
 }

@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct MyPage: View {
-//  @ObservedObject var user: User
-  
+    @EnvironmentObject var naverLogin: NaverLogin
+
     var body: some View {
       
       VStack{
@@ -19,7 +19,7 @@ struct MyPage: View {
         Spacer()
         
         Button(action: {
-//          self.user.isLoggedIn = false
+          naverLogin.logout()
         }) {
           Text("로그아웃")
         }
