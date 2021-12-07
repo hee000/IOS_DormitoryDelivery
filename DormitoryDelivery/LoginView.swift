@@ -12,6 +12,7 @@ struct LoginView: View {
   @EnvironmentObject var naverLogin: NaverLogin
   
     var body: some View {
+      NavigationView{
 
       Spacer()
 
@@ -59,8 +60,7 @@ struct LoginView: View {
         }
         .frame(width: 300, height: 50)
 
-//      }
-        
+    }
     }
 }
 

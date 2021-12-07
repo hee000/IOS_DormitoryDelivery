@@ -26,9 +26,12 @@
 		DAC252D2275B4E0100EA2BFD /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC252D1275B4E0100EA2BFD /* LoginView.swift */; };
 		DAC252D8275B4EC800EA2BFD /* NaverLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC252D7275B4EC800EA2BFD /* NaverLogin.swift */; };
 		DAC252DA275B551B00EA2BFD /* Loading.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC252D9275B551B00EA2BFD /* Loading.swift */; };
+		DAC45266275F522B00D05BB0 /* ChatDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC45265275F522B00D05BB0 /* ChatDB.swift */; };
+		DAC4526A275F5DF900D05BB0 /* ChatModule.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC45269275F5DF900D05BB0 /* ChatModule.swift.swift */; };
 		DAE94525274654A9000C8D3D /* TEST.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE94524274654A9000C8D3D /* TEST.swift */; };
 		DAE945272746560E000C8D3D /* SocketIOManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE945262746560E000C8D3D /* SocketIOManager.swift */; };
 		DAF616D8275E3FE50011C508 /* JoinButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAF616D7275E3FE50011C508 /* JoinButton.swift */; };
+		DAF616DA275E7F300011C508 /* realmbackup.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAF616D9275E7F300011C508 /* realmbackup.swift.swift */; };
 		DAFF71BF275D589400A45D29 /* CreateRoomData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFF71BE275D589400A45D29 /* CreateRoomData.swift */; };
 		DAFF71C1275D589D00A45D29 /* RoomData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFF71C0275D589D00A45D29 /* RoomData.swift */; };
 		DAFF71C3275D58A300A45D29 /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFF71C2275D58A300A45D29 /* UserData.swift */; };
@@ -63,10 +66,13 @@
 		DAC252D1275B4E0100EA2BFD /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		DAC252D7275B4EC800EA2BFD /* NaverLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverLogin.swift; sourceTree = "<group>"; };
 		DAC252D9275B551B00EA2BFD /* Loading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loading.swift; sourceTree = "<group>"; };
+		DAC45265275F522B00D05BB0 /* ChatDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatDB.swift; sourceTree = "<group>"; };
+		DAC45269275F5DF900D05BB0 /* ChatModule.swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatModule.swift.swift; sourceTree = "<group>"; };
 		DAE94524274654A9000C8D3D /* TEST.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TEST.swift; sourceTree = "<group>"; };
 		DAE945262746560E000C8D3D /* SocketIOManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketIOManager.swift; sourceTree = "<group>"; };
 		DAE9452C274671F4000C8D3D /* info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = info.plist; sourceTree = SOURCE_ROOT; };
 		DAF616D7275E3FE50011C508 /* JoinButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinButton.swift; sourceTree = "<group>"; };
+		DAF616D9275E7F300011C508 /* realmbackup.swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = realmbackup.swift.swift; sourceTree = "<group>"; };
 		DAFF71BE275D589400A45D29 /* CreateRoomData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateRoomData.swift; sourceTree = "<group>"; };
 		DAFF71C0275D589D00A45D29 /* RoomData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomData.swift; sourceTree = "<group>"; };
 		DAFF71C2275D58A300A45D29 /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
@@ -130,6 +136,7 @@
 		DA4D2D1C27422FE300678FA8 /* DormitoryDelivery */ = {
 			isa = PBXGroup;
 			children = (
+				DAC45264275F521500D05BB0 /* Databases */,
 				DAFF71B7275D577B00A45D29 /* Module */,
 				DAE9452C274671F4000C8D3D /* info.plist */,
 				DA4D2D2B2742306300678FA8 /* AppDelegate.swift */,
@@ -190,11 +197,20 @@
 			path = CreateRoom;
 			sourceTree = "<group>";
 		};
+		DAC45264275F521500D05BB0 /* Databases */ = {
+			isa = PBXGroup;
+			children = (
+				DAC45265275F522B00D05BB0 /* ChatDB.swift */,
+			);
+			path = Databases;
+			sourceTree = "<group>";
+		};
 		DAFF71B4275D571C00A45D29 /* Chatting */ = {
 			isa = PBXGroup;
 			children = (
 				DAFF71C6275D593300A45D29 /* ChatView.swift */,
 				DAB5E991274374E100EF5B6A /* ChattingView.swift */,
+				DAC45269275F5DF900D05BB0 /* ChatModule.swift.swift */,
 			);
 			path = Chatting;
 			sourceTree = "<group>";
@@ -215,6 +231,7 @@
 				DAFF71C8275D5A1700A45D29 /* 각종 모아두기.swift */,
 				DA9702BB275C9E1F00BB8B53 /* ddddddddd.swift */,
 				DA9702B9275C8CC700BB8B53 /* hashtag.swift */,
+				DAF616D9275E7F300011C508 /* realmbackup.swift.swift */,
 			);
 			path = TEST;
 			sourceTree = "<group>";
@@ -351,6 +368,7 @@
 				DAFF71C5275D58C500A45D29 /* ChatData.swift in Sources */,
 				DAFF71C7275D593300A45D29 /* ChatView.swift in Sources */,
 				DA4D2D2C2742306300678FA8 /* AppDelegate.swift in Sources */,
+				DAF616DA275E7F300011C508 /* realmbackup.swift.swift in Sources */,
 				DAC252D8275B4EC800EA2BFD /* NaverLogin.swift in Sources */,
 				DAC252D2275B4E0100EA2BFD /* LoginView.swift in Sources */,
 				DA4D2D2027422FE300678FA8 /* ContentView.swift in Sources */,
@@ -373,6 +391,8 @@
 				DAFF71C1275D589D00A45D29 /* RoomData.swift in Sources */,
 				DAB5E99027436B9B00EF5B6A /* DeliveryView.swift in Sources */,
 				DAF616D8275E3FE50011C508 /* JoinButton.swift in Sources */,
+				DAC45266275F522B00D05BB0 /* ChatDB.swift in Sources */,
+				DAC4526A275F5DF900D05BB0 /* ChatModule.swift.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

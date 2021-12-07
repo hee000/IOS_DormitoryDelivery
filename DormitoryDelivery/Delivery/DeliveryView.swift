@@ -22,7 +22,7 @@ struct DeliveryView: View {
   @State var mysection = "전체"
   
     var body: some View {
-      NavigationView{
+//      NavigationView{
         VStack{
           VStack(alignment: .leading){
             HStack() {
@@ -195,10 +195,12 @@ struct DeliveryView: View {
 //        .navigationBarTitle("") //this must be empty
 //        .navigationBarHidden(true)
       
-        }
-        .navigationBarTitle("") //this must be empty
-        .navigationBarHidden(true)
-      }.onAppear {
+//        }
+        
+      }
+      .navigationBarTitle("") //this must be empty
+      .navigationBarHidden(true)
+      .onAppear {
         let tokenvalue = UserDefaults.standard.string(forKey: "AccessToken")!
         
         let usertoken: [String: Any] = [

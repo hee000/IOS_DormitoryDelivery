@@ -18,24 +18,7 @@ import Combine
 //  let message: String
 //}
 
-class model: ObservableObject {
-  @Published var messages: [modelm] {
-    didSet {
-//        UserDefaults.standard.set(sessionId, forKey: "sessionId")
-    }
-}
 
-  init() {
-    self.messages = []
-  }
-}
-
-struct modelm: Decodable, Identifiable {
-  let id: UUID
-  let message: String
-  let user: String
-  let userID: Bool
-}
 
 
 

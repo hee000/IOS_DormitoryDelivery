@@ -12,7 +12,7 @@ struct TabViews: View {
   @State var tabSelect = 0
   
   var body: some View {
-    
+    NavigationView{
     TabView(selection: $tabSelect) {
       
       DeliveryView()
@@ -59,6 +59,7 @@ struct TabViews: View {
       UITabBar.appearance().barTintColor = .white
     }
     .accentColor(Color(.sRGB, red: 112/255, green: 52/255, blue: 255/255, opacity: 1))
+    }
   }
 }
 
