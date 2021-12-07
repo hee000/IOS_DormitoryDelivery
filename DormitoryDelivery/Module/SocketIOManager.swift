@@ -8,8 +8,10 @@ class SocketIOManager:NSObject {
   static let shared = SocketIOManager()
   override init() {
         super.init()
-  //      socket = self.manager.defaultSocket
-    socket = self.manager.socket(forNamespace: "/match")
+        socket = self.manager.defaultSocket
+//    socket = self.manager.socket(forNamespace: "/match")
+      socket2 = self.manager.socket(forNamespace: "/match")
+      socket3 = self.manager.socket(forNamespace: "/room")
 //    manager.connectSocket(socket, withPayload: ["auth": UserDefaults.standard.string(forKey: "sessionId")!])
     
     }
@@ -23,6 +25,8 @@ class SocketIOManager:NSObject {
   ]) ])
   
     var socket : SocketIOClient!
+    var socket2 : SocketIOClient!
+    var socket3 : SocketIOClient!
   
     func establishConnection(){
       print("연결시작")

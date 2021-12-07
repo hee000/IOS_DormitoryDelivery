@@ -10,14 +10,15 @@ import SocketIO
 import Alamofire
 
 struct CreateRoomView: View {
+  @EnvironmentObject var naverLogin: NaverLogin
   var socket: SocketIOClient! = SocketIOManager.shared.socket
   var deliveryZone = ["Narae", "Hoyoen", "Changzo", "Bibong"]
   
-  @State var userId: String = ""
-  @State var shopName: String = ""
-  @State var deliveryPriceAtLeast: String = ""
-  @State var shopLink: String = ""
-  @State var category: String = ""
+  @State var userId: String = "sadasd"
+  @State var shopName: String = "asdasd"
+  @State var deliveryPriceAtLeast: String = "133"
+  @State var shopLink: String = "123123"
+  @State var category: String = "korean"
   @State var section = 0
   
 
@@ -51,7 +52,10 @@ struct CreateRoomView: View {
             do {
               print("인코딩 시작")
                 try request.httpBody = JSONEncoder().encode(createform)
-                try request.allHTTPHeaderFields = headers
+              if let token = naverLogin.loginInstance?.accessToken {
+                try request.allHTTPHeaderFields = (["Authorization": token])
+              }
+//                try request.allHTTPHeaderFields = (["token": naverLogin.loginInstance?.accessToken ?? ""])
               print("인코딩 성공")
             } catch {
                 print("http Body Error")

@@ -7,13 +7,18 @@
 
 import SwiftUI
 import SocketIO
+import Foundation
+import RealmSwift
 
 struct DeliveryView: View {
   @EnvironmentObject var rooms: RoomData
+  @EnvironmentObject var chatlist: ChatData
   
   @State var isRoomLinkActive = false
   @State var selectedTab = Tabs.FirstTab
-  var socket: SocketIOClient! = SocketIOManager.shared.socket
+//  var socket: SocketIOClient! = SocketIOManager.shared.socket
+//  var socket2: SocketIOClient! = SocketIOManager.shared.socket2
+  @EnvironmentObject var naverLogin: NaverLogin
   
   
   let category = ["한식", "중식", "일식", "양식", "돼지고기", "치킨", "피자", "떡", "페스트푸드"]
@@ -206,18 +211,27 @@ struct DeliveryView: View {
         let usertoken: [String: Any] = [
             "token": tokenvalue,
         ] as Dictionary
+//        print(usertoken)
+//        naverLogin.getInfo()
+        SocketIOManager.shared.socket.connect(withPayload: ["auth": usertoken])
+
+        SocketIOManager.shared.socket2.connect(withPayload: ["token": naverLogin.loginInstance?.accessToken])
+
+        SocketIOManager.shared.socket3.connect(withPayload: ["token": naverLogin.loginInstance?.accessToken])
+
         
-        socket.connect(withPayload: ["auth": usertoken])
-        
+
         DispatchQueue.global(qos: .default).async {
            while true {
               DispatchQueue.main.async {
-                if socket.status == SocketIOStatus.connected {
+                if SocketIOManager.shared.socket.status == SocketIOStatus.connected {
+                  print(SocketIOStatus.connected)
                 subscribeEmit()
                 newArriveOn()
+                chaton()
                 }
               }
-              if socket.status == SocketIOStatus.connected {
+             if SocketIOManager.shared.socket.status == SocketIOStatus.connected {
                 break
               }
               sleep(1)
@@ -241,7 +255,7 @@ func subscribeEmit(){
   
   
   print("구독시작")
-  socket.emitWithAck("subscribe", subscribeForm).timingOut(after: 2, callback: { (data) in
+  SocketIOManager.shared.socket2.emitWithAck("subscribe", subscribeForm).timingOut(after: 2, callback: { (data) in
     do {
       if data[0] as? String != "NO ACK" {
         let data2 = try JSONSerialization.data(withJSONObject: data[0], options: .prettyPrinted)
@@ -268,7 +282,7 @@ func newArriveOn(){
 //  }
   print("On 시작")
   
-    socket.on("new-arrive") { (dataArray, ack) in
+  SocketIOManager.shared.socket2.on("new-arrive") { (dataArray, ack) in
       do {
         let data = try JSONSerialization.data(withJSONObject: dataArray[0], options: .prettyPrinted)
         let session = try JSONDecoder().decode(roomdata.self, from: data)
@@ -279,9 +293,53 @@ func newArriveOn(){
       }
     }
 }
+
   
-  
+  func chaton(){
+
+    SocketIOManager.shared.socket3.off("chat")
+    print("채팅 온")
+    SocketIOManager.shared.socket3.on("chat") { (dataArray, ack) in
+//                print("-------------")
+//      print(dataArray[0])
+//                print("-------------")
+//      print(ack)
+//      print("-------------"
+        
+      
+      do {
+        var jsonResult = dataArray[0] as? Dictionary<String, AnyObject>
+        if let messages = jsonResult?["messages"] as? NSArray {
+          let message = try! JSONSerialization.data(withJSONObject: messages.firstObject!, options: .prettyPrinted)
+//          print(messages)
+//          print(String(data: messages, encoding: .utf8)!)
+          let json = try JSONDecoder().decode(ChatMessageDetail.self, from: message)
+          
+          let realm = try! Realm()
+          let chatroom = realm.object(ofType: ChatDB.self, forPrimaryKey: "0")
+          try! realm.write {
+            chatroom?.messages.append(json)
+          }
+
+          
+        }
+        
+        let data = try! JSONSerialization.data(withJSONObject: dataArray[0], options: .prettyPrinted)
+        print("파싱결과")
+//        print(String(data: data, encoding: .utf8)!)
+//        let json = try JSONDecoder().decode(ChatDB.self, from: data)
+//        addChatting(json)
+        
+        print("암것도아님")
+      } catch {
+        print(error)
+      }
+      }
+  }
+
 }
+
+
 
 struct Delivery_Previews: PreviewProvider {
     static var previews: some View {

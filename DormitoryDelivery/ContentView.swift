@@ -17,6 +17,8 @@ struct ContentView: View {
   }
 
     var body: some View {
+
+      
       
       if !naverLogin.isLoggedIn {
         LoginView()
@@ -24,20 +26,15 @@ struct ContentView: View {
           .edgesIgnoringSafeArea(.all)
 
       } else {
-        
+
         if datecheck.startAction() { }
-        
-        if naverLogin.isValidAccessToken {
+
+        if naverLogin.loginInstance!.isValidAccessTokenExpireTimeNow() {
           TabViews()
-            .onAppear {
-              naverLogin.validcheck()
-          }
         } else {
           Loading()
             .onAppear {
-              naverLogin.validcheck()
-              naverLogin.tokenrefresh()
-              naverLogin.validcheck()
+              naverLogin.loginInstance?.requestAccessTokenWithRefreshToken()
           }
         }
       }

@@ -47,7 +47,7 @@ class NaverLogin: UIViewController, NaverThirdPartyLoginConnectionDelegate, Obse
   func oauth20ConnectionDidFinishRequestACTokenWithRefreshToken() {
     self.AToken = loginInstance?.accessToken ?? ""
     self.isValidAccessToken = loginInstance?.isValidAccessTokenExpireTimeNow() ?? false
-//    print("리프레시 성공")
+    print("리프레시 성공")
 //    print(loginInstance?.isValidAccessTokenExpireTimeNow())
   }
   
@@ -64,6 +64,8 @@ class NaverLogin: UIViewController, NaverThirdPartyLoginConnectionDelegate, Obse
   
   func validcheck(){
     self.isValidAccessToken = loginInstance?.isValidAccessTokenExpireTimeNow() ?? false
+    print(loginInstance?.isValidAccessTokenExpireTimeNow())
+    print(loginInstance?.accessToken)
   }
   
   func tokenrefresh() {
@@ -83,6 +85,8 @@ class NaverLogin: UIViewController, NaverThirdPartyLoginConnectionDelegate, Obse
   }
   
   func getInfo() {
+    
+    print("==================================================================================")
     guard let isValidAccessToken = loginInstance?.isValidAccessTokenExpireTimeNow() else { return }
     print("========")
     print(isValidAccessToken)
@@ -98,15 +102,34 @@ class NaverLogin: UIViewController, NaverThirdPartyLoginConnectionDelegate, Obse
     let urlStr = "https://openapi.naver.com/v1/nid/me"
     let url = URL(string: urlStr)!
     
-    print("================================")
+    print("============이건 지금====================")
 //    print(tokenType)
-    print(refreshToken)
-//    print(accessToken)
+//    print(refreshToken)
+    print(accessToken)
+    print("================================")
+    
+    print("============이건 과거====================")
+//    print(tokenType)
+//    print(refreshToken)
+    print(self.AToken)
     print("================================")
     
     let authorization = "\(tokenType) \(accessToken)"
     
     let req = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: ["Authorization": authorization])
+    
+    req.response { response in
+      print(response)
+      print(response.value)
+      print(response.data)
+      print(response)
+      do {
+//        let datas = try JSONSerialization.data(withJSONObject: response.data!, options: .prettyPrinted)
+        print(String(data: response.data!, encoding: .utf8))
+      } catch{
+        print(error)
+      }
+    }
     
     req.responseJSON { response in
       guard let result = response.value as? [String: Any] else { return }
@@ -114,7 +137,7 @@ class NaverLogin: UIViewController, NaverThirdPartyLoginConnectionDelegate, Obse
 //      guard let name = object["name"] as? String else { return }
 //      guard let email = object["email"] as? String else { return }
 //      guard let id = object["id"] as? String else {return}
-      
+      print(response)
       print(object)
       
 //      self.nameLabel.text = "\(name)"

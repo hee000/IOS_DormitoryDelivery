@@ -120,6 +120,9 @@ struct ChattingView: View {
             }
 //            models.messages.append(modelm(id: UUID(), message: message22, user: "name", userID: true))
 //            print(modelm(id: UUID(), message: message22))
+            chatemit(text: message22)
+            
+            
           }) { // 3
             Image(systemName: "arrowshape.turn.up.right")
               .font(.system(size: 20))
@@ -132,6 +135,11 @@ struct ChattingView: View {
       }
       
     }
+}
+
+func chatemit (text: String) {
+  SocketIOManager.shared.socket3.emitWithAck("chat", text).timingOut(after: 2, callback: { (data) in
+  })
 }
 
 struct Join_Previews: PreviewProvider {

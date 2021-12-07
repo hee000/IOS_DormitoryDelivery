@@ -13,7 +13,7 @@ import NaverThirdPartyLogin
 struct DormitoryDeliveryApp: App {
   @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
   
-  
+
     var body: some Scene {
         WindowGroup {
           ContentView()
@@ -21,6 +21,7 @@ struct DormitoryDeliveryApp: App {
             .environmentObject(DateCheck())
             .environmentObject(RoomData())
             .environmentObject(RoomDetailData())
+            .environmentObject(ChatData())
             .onOpenURL(perform: { url in
               NaverThirdPartyLoginConnection
               .getSharedInstance()?
