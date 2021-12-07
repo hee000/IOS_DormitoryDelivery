@@ -7,19 +7,16 @@
 
 import Foundation
 
-
-
 class DateCheck : NSObject, ObservableObject{
   var timeTrigger = true
   var realTime = Timer()
   
   @Published var nowDate: Date = Date()
   
-  func startAction() -> Bool{
+  func startAction(){
     if timeTrigger {
       checkTimeTrigger()
     }
-    return false
   }
   
   func checkTimeTrigger() {

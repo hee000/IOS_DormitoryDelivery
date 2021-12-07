@@ -8,18 +8,6 @@
 import SwiftUI
 import RealmSwift
 
-func remove(realmURL: URL) {
-        let realmURLs = [
-            realmURL,
-            realmURL.appendingPathExtension("lock"),
-            realmURL.appendingPathExtension("note"),
-            realmURL.appendingPathExtension("management"),
-            ]
-        for URL in realmURLs {
-            try? FileManager.default.removeItem(at: URL)
-        }}
-
-
 
 struct MyPage: View {
     @EnvironmentObject var naverLogin: NaverLogin
@@ -29,18 +17,11 @@ struct MyPage: View {
   
     var body: some View {
     
-      
       VStack{
-        Button {
-          remove(realmURL: Realm.Configuration.defaultConfiguration.fileURL!)
-//          print(state.chatlist)
-          
-          
-        } label: {
-          Text("버튼")
-        }
-        Text("마이페이지").frame(height: 50)
+        Text("마이페이지")
+          .frame(height: 50)
           .onAppear {
+            print(chatdata.chatlist.count)
             print(chatdata.chatlist)
           }
         Divider()
@@ -55,6 +36,8 @@ struct MyPage: View {
         
         Spacer()
       }
+      .navigationTitle("")
+      .navigationBarHidden(true)
     }
 }
 

@@ -137,11 +137,6 @@ struct ChattingView: View {
     }
 }
 
-func chatemit (text: String) {
-  SocketIOManager.shared.socket3.emitWithAck("chat", text).timingOut(after: 2, callback: { (data) in
-  })
-}
-
 struct Join_Previews: PreviewProvider {
     static var previews: some View {
         ChattingView(Id_room: "14")

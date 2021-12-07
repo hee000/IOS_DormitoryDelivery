@@ -27,10 +27,15 @@
 		DAC252D8275B4EC800EA2BFD /* NaverLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC252D7275B4EC800EA2BFD /* NaverLogin.swift */; };
 		DAC252DA275B551B00EA2BFD /* Loading.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC252D9275B551B00EA2BFD /* Loading.swift */; };
 		DAC45266275F522B00D05BB0 /* ChatDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC45265275F522B00D05BB0 /* ChatDB.swift */; };
-		DAC4526A275F5DF900D05BB0 /* ChatModule.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC45269275F5DF900D05BB0 /* ChatModule.swift.swift */; };
+		DAC45273275FEAAF00D05BB0 /* roomJoin.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC45272275FEAAF00D05BB0 /* roomJoin.swift */; };
+		DAC45275275FEBA400D05BB0 /* createRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC45274275FEBA400D05BB0 /* createRoom.swift */; };
+		DAC45277275FFA9500D05BB0 /* onChat.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC45276275FFA9500D05BB0 /* onChat.swift */; };
+		DAC45279275FFB5D00D05BB0 /* emitSubscribe.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC45278275FFB5D00D05BB0 /* emitSubscribe.swift */; };
+		DAC4527C2760133100D05BB0 /* onArrive.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC4527B2760133100D05BB0 /* onArrive.swift */; };
+		DAC4527E2760190600D05BB0 /* 디비_비우기.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC4527D2760190600D05BB0 /* 디비_비우기.swift */; };
 		DAE94525274654A9000C8D3D /* TEST.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE94524274654A9000C8D3D /* TEST.swift */; };
 		DAE945272746560E000C8D3D /* SocketIOManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE945262746560E000C8D3D /* SocketIOManager.swift */; };
-		DAF616D8275E3FE50011C508 /* JoinButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAF616D7275E3FE50011C508 /* JoinButton.swift */; };
+		DAF616D8275E3FE50011C508 /* getRoomDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAF616D7275E3FE50011C508 /* getRoomDetail.swift */; };
 		DAF616DA275E7F300011C508 /* realmbackup.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAF616D9275E7F300011C508 /* realmbackup.swift.swift */; };
 		DAFF71BF275D589400A45D29 /* CreateRoomData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFF71BE275D589400A45D29 /* CreateRoomData.swift */; };
 		DAFF71C1275D589D00A45D29 /* RoomData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFF71C0275D589D00A45D29 /* RoomData.swift */; };
@@ -67,11 +72,16 @@
 		DAC252D7275B4EC800EA2BFD /* NaverLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverLogin.swift; sourceTree = "<group>"; };
 		DAC252D9275B551B00EA2BFD /* Loading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loading.swift; sourceTree = "<group>"; };
 		DAC45265275F522B00D05BB0 /* ChatDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatDB.swift; sourceTree = "<group>"; };
-		DAC45269275F5DF900D05BB0 /* ChatModule.swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatModule.swift.swift; sourceTree = "<group>"; };
+		DAC45272275FEAAF00D05BB0 /* roomJoin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = roomJoin.swift; sourceTree = "<group>"; };
+		DAC45274275FEBA400D05BB0 /* createRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = createRoom.swift; sourceTree = "<group>"; };
+		DAC45276275FFA9500D05BB0 /* onChat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = onChat.swift; sourceTree = "<group>"; };
+		DAC45278275FFB5D00D05BB0 /* emitSubscribe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = emitSubscribe.swift; sourceTree = "<group>"; };
+		DAC4527B2760133100D05BB0 /* onArrive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = onArrive.swift; sourceTree = "<group>"; };
+		DAC4527D2760190600D05BB0 /* 디비_비우기.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "디비_비우기.swift"; sourceTree = "<group>"; };
 		DAE94524274654A9000C8D3D /* TEST.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TEST.swift; sourceTree = "<group>"; };
 		DAE945262746560E000C8D3D /* SocketIOManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketIOManager.swift; sourceTree = "<group>"; };
 		DAE9452C274671F4000C8D3D /* info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = info.plist; sourceTree = SOURCE_ROOT; };
-		DAF616D7275E3FE50011C508 /* JoinButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinButton.swift; sourceTree = "<group>"; };
+		DAF616D7275E3FE50011C508 /* getRoomDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = getRoomDetail.swift; sourceTree = "<group>"; };
 		DAF616D9275E7F300011C508 /* realmbackup.swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = realmbackup.swift.swift; sourceTree = "<group>"; };
 		DAFF71BE275D589400A45D29 /* CreateRoomData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateRoomData.swift; sourceTree = "<group>"; };
 		DAFF71C0275D589D00A45D29 /* RoomData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomData.swift; sourceTree = "<group>"; };
@@ -136,14 +146,14 @@
 		DA4D2D1C27422FE300678FA8 /* DormitoryDelivery */ = {
 			isa = PBXGroup;
 			children = (
+				DAC45271275FEA9500D05BB0 /* REST_Function */,
 				DAC45264275F521500D05BB0 /* Databases */,
 				DAFF71B7275D577B00A45D29 /* Module */,
 				DAE9452C274671F4000C8D3D /* info.plist */,
 				DA4D2D2B2742306300678FA8 /* AppDelegate.swift */,
 				DA4D2D1D27422FE300678FA8 /* DormitoryDeliveryApp.swift */,
 				DA4D2D1F27422FE300678FA8 /* ContentView.swift */,
-				DAC252D9275B551B00EA2BFD /* Loading.swift */,
-				DAC252D1275B4E0100EA2BFD /* LoginView.swift */,
+				DAC4527A27600E4900D05BB0 /* LoginSignupLoading */,
 				DA4D2D352742378400678FA8 /* TabViews.swift */,
 				DABCFE602743AEC900B89781 /* Delivery */,
 				DABCFE612743AED000B89781 /* CreateRoom */,
@@ -205,12 +215,34 @@
 			path = Databases;
 			sourceTree = "<group>";
 		};
+		DAC45271275FEA9500D05BB0 /* REST_Function */ = {
+			isa = PBXGroup;
+			children = (
+				DAF616D7275E3FE50011C508 /* getRoomDetail.swift */,
+				DAC45272275FEAAF00D05BB0 /* roomJoin.swift */,
+				DAC45274275FEBA400D05BB0 /* createRoom.swift */,
+				DAC45276275FFA9500D05BB0 /* onChat.swift */,
+				DAC4527B2760133100D05BB0 /* onArrive.swift */,
+				DAC45278275FFB5D00D05BB0 /* emitSubscribe.swift */,
+			);
+			path = REST_Function;
+			sourceTree = "<group>";
+		};
+		DAC4527A27600E4900D05BB0 /* LoginSignupLoading */ = {
+			isa = PBXGroup;
+			children = (
+				DAC252D1275B4E0100EA2BFD /* LoginView.swift */,
+				DAB5E98B274364BC00EF5B6A /* Signup.swift */,
+				DAC252D9275B551B00EA2BFD /* Loading.swift */,
+			);
+			path = LoginSignupLoading;
+			sourceTree = "<group>";
+		};
 		DAFF71B4275D571C00A45D29 /* Chatting */ = {
 			isa = PBXGroup;
 			children = (
 				DAFF71C6275D593300A45D29 /* ChatView.swift */,
 				DAB5E991274374E100EF5B6A /* ChattingView.swift */,
-				DAC45269275F5DF900D05BB0 /* ChatModule.swift.swift */,
 			);
 			path = Chatting;
 			sourceTree = "<group>";
@@ -226,12 +258,12 @@
 		DAFF71B6275D576500A45D29 /* TEST */ = {
 			isa = PBXGroup;
 			children = (
-				DAB5E98B274364BC00EF5B6A /* Signup.swift */,
 				DAE94524274654A9000C8D3D /* TEST.swift */,
 				DAFF71C8275D5A1700A45D29 /* 각종 모아두기.swift */,
 				DA9702BB275C9E1F00BB8B53 /* ddddddddd.swift */,
 				DA9702B9275C8CC700BB8B53 /* hashtag.swift */,
 				DAF616D9275E7F300011C508 /* realmbackup.swift.swift */,
+				DAC4527D2760190600D05BB0 /* 디비_비우기.swift */,
 			);
 			path = TEST;
 			sourceTree = "<group>";
@@ -242,7 +274,6 @@
 				DAE945262746560E000C8D3D /* SocketIOManager.swift */,
 				DAC252D7275B4EC800EA2BFD /* NaverLogin.swift */,
 				DAFF71D6275DD50200A45D29 /* DateCheck.swift */,
-				DAF616D7275E3FE50011C508 /* JoinButton.swift */,
 			);
 			path = Module;
 			sourceTree = "<group>";
@@ -369,30 +400,35 @@
 				DAFF71C7275D593300A45D29 /* ChatView.swift in Sources */,
 				DA4D2D2C2742306300678FA8 /* AppDelegate.swift in Sources */,
 				DAF616DA275E7F300011C508 /* realmbackup.swift.swift in Sources */,
+				DAC4527C2760133100D05BB0 /* onArrive.swift in Sources */,
 				DAC252D8275B4EC800EA2BFD /* NaverLogin.swift in Sources */,
 				DAC252D2275B4E0100EA2BFD /* LoginView.swift in Sources */,
+				DAC45275275FEBA400D05BB0 /* createRoom.swift in Sources */,
 				DA4D2D2027422FE300678FA8 /* ContentView.swift in Sources */,
 				DA4D2D1E27422FE300678FA8 /* DormitoryDeliveryApp.swift in Sources */,
 				DA9702BA275C8CC700BB8B53 /* hashtag.swift in Sources */,
 				DAB5E9942743906400EF5B6A /* RoomCard.swift in Sources */,
 				DAFF71C9275D5A1700A45D29 /* 각종 모아두기.swift in Sources */,
 				DAFF71D1275D5FF900A45D29 /* SectionCategoryData.swift in Sources */,
+				DAC4527E2760190600D05BB0 /* 디비_비우기.swift in Sources */,
 				DAE945272746560E000C8D3D /* SocketIOManager.swift in Sources */,
 				DAFF71D3275D60D600A45D29 /* RoomDetail.swift in Sources */,
 				DAFF71C3275D58A300A45D29 /* UserData.swift in Sources */,
 				DAB5E992274374E100EF5B6A /* ChattingView.swift in Sources */,
 				DA9702BC275C9E1F00BB8B53 /* ddddddddd.swift in Sources */,
 				DABCFE632743B0F500B89781 /* CreateRoomView.swift in Sources */,
+				DAC45277275FFA9500D05BB0 /* onChat.swift in Sources */,
 				DAFF71D5275DBEE900A45D29 /* ServerUrl.swift in Sources */,
 				DAC252DA275B551B00EA2BFD /* Loading.swift in Sources */,
+				DAC45273275FEAAF00D05BB0 /* roomJoin.swift in Sources */,
 				DAE94525274654A9000C8D3D /* TEST.swift in Sources */,
 				DA4D2D362742378400678FA8 /* TabViews.swift in Sources */,
 				DAFF71D7275DD50200A45D29 /* DateCheck.swift in Sources */,
 				DAFF71C1275D589D00A45D29 /* RoomData.swift in Sources */,
+				DAC45279275FFB5D00D05BB0 /* emitSubscribe.swift in Sources */,
 				DAB5E99027436B9B00EF5B6A /* DeliveryView.swift in Sources */,
-				DAF616D8275E3FE50011C508 /* JoinButton.swift in Sources */,
+				DAF616D8275E3FE50011C508 /* getRoomDetail.swift in Sources */,
 				DAC45266275F522B00D05BB0 /* ChatDB.swift in Sources */,
-				DAC4526A275F5DF900D05BB0 /* ChatModule.swift.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

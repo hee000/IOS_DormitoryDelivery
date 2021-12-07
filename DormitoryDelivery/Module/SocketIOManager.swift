@@ -3,115 +3,117 @@ import SocketIO
 import SwiftUI
 import Combine
 import Alamofire
+import RealmSwift
 
 class SocketIOManager:NSObject {
   static let shared = SocketIOManager()
   override init() {
-        super.init()
-        socket = self.manager.defaultSocket
-//    socket = self.manager.socket(forNamespace: "/match")
-      socket2 = self.manager.socket(forNamespace: "/match")
-      socket3 = self.manager.socket(forNamespace: "/room")
-//    manager.connectSocket(socket, withPayload: ["auth": UserDefaults.standard.string(forKey: "sessionId")!])
-    
+      super.init()
+      socket = self.manager.defaultSocket
+      matchSocket = self.manager.socket(forNamespace: "/match")
+      roomSocket = self.manager.socket(forNamespace: "/room")
     }
+
+  lazy var manager = SocketManager(socketURL: URL(string: serverurl)!, config: [.log(false), .compress])
+  var socket : SocketIOClient!
+  var matchSocket : SocketIOClient!
+  var roomSocket : SocketIOClient!
   
-//    .forceNew(true)
-  lazy var manager = SocketManager(socketURL: URL(string: serverurl)!, config: [.log(false), .compress,   .connectParams([
-//    "EIO" : 3,
-//    "auth": UserDefaults.standard.string(forKey: "sessionId")!,
-//    "Authorization": "{auth : "+UserDefaults.standard.string(forKey: "sessionId")!+"}",
-    "d": "D",
-  ]) ])
   
-    var socket : SocketIOClient!
-    var socket2 : SocketIOClient!
-    var socket3 : SocketIOClient!
   
-    func establishConnection(){
+  func establishConnection(token: String) {
       print("연결시작")
-      let tokenvalue = UserDefaults.standard.string(forKey: "AccessToken")!
-      
-      let usertoken: [String: Any] = [
-          "token": tokenvalue,
-      ] as Dictionary
-      
-      socket.connect(withPayload: ["auth": usertoken])
-      print("연결성공")
+      socket.connect(withPayload: ["token": token])
+      matchSocket.connect(withPayload: ["token": token])
+      roomSocket.connect(withPayload: ["token": token])
     }
 
     func closeConnection(){
       print("연결 해제")
         socket.disconnect()
+        matchSocket.disconnect()
     }
     
-    func createEmit(){
-      let deliveryTipsInterval: [String: Any] = [
-          "price": 5000,
-          "tip": 500,
-      ] as Dictionary
-
-      let createForm: [String: Any] = [
-          "userId": "qwer",
-          "shopName": "버거킹",
-          "deliveryPriceAtLeast": 3000,
-          "deliveryTipsInterval": [deliveryTipsInterval],
-          "category": "korean",
-          "section": "Narae",
-      ] as Dictionary
-      print("방 만듬")
-      
-      socket.emitWithAck("create", createForm).timingOut(after: 2, callback: { (data) in
-//              print(data)
-      })
-
-    }
-  
-    func subscribeEmit(){
-      let subscribeForm: [String: Any] = [
-          "userId": "qwer",
-          "category": "korean",
-      ] as Dictionary
-      
-      
-      print("구독시작")
-      socket.emitWithAck("subscribe", subscribeForm).timingOut(after: 2, callback: { (data) in
-//        print(data[0])
+  func match_emitSubscribe(rooms:RoomData, section: [String], category: [String]){
+    
+    rooms.data = nil
+    do{
+      let subscribeform = homeViewOption(category: category, section: section)
+      print("구독시작22")
+      SocketIOManager.shared.matchSocket.emitWithAck("subscribe", subscribeform).timingOut(after: 2, callback: { (data) in
         do {
-          let data2 = try JSONSerialization.data(withJSONObject: data[0], options: .prettyPrinted)
-//          print(String(data: data2, encoding: .utf8)!)
-          let session = try JSONDecoder().decode(roomsdata.self, from: data2)
-//          print(session.data)
-//          print(session.data[0])
-//          print(session.data[1])
-//          print(session.data[1].shopName)
-//          print(Int("14")!)
+          if data[0] as? String != "NO ACK" {
+            let data2 = try JSONSerialization.data(withJSONObject: data[0], options: .prettyPrinted)
+            let session = try JSONDecoder().decode(roomsdata.self, from: data2)
+            rooms.data = session
+          }
         }
         catch {
           print(error)
         }
       })
-//      socket.emit("subscribe", subscribeForm) {
-//        print("구독성공")
-//      }
-      
+    } catch {
+      print(error)
     }
+    
+  }
   
-//  func newArriveOn(){
-//    print("On 시작")
-//    
-//      socket.on("new-arrive") { (dataArray, ack) in
-//        do {
-//          var data = try JSONSerialization.data(withJSONObject: dataArray[0], options: .prettyPrinted)
-////          let session = try JSONDecoder().decode(Ontest.self, from: data)
-//          print(session)
-//          print(session.tip)
-//        }
-//        catch {
-//          print(error)
-//        }
-//      }
-//  }
+  func match_onArrive(rooms:RoomData) {
+    print("On 시작")
+    SocketIOManager.shared.matchSocket.on("new-arrive") { (dataArray, ack) in
+        do {
+          let data = try JSONSerialization.data(withJSONObject: dataArray[0], options: .prettyPrinted)
+          let session = try JSONDecoder().decode(roomdata.self, from: data)
+          rooms.data!.data.append(session)
+        }
+        catch {
+          print(error)
+        }
+      }
+  }
+  
+  func room_onChat(){
+    print("쳇온")
+    SocketIOManager.shared.roomSocket.off("chat")
+    SocketIOManager.shared.roomSocket.on("chat") { (dataArray, ack) in
+
+      
+      do {
+        var jsonResult = dataArray[0] as? Dictionary<String, AnyObject>
+        if let messages = jsonResult?["messages"] as? NSArray {
+          let message = try! JSONSerialization.data(withJSONObject: messages.firstObject!, options: .prettyPrinted)
+  //          print(messages)
+  //          print(String(data: messages, encoding: .utf8)!)
+          let json = try JSONDecoder().decode(ChatMessageDetail.self, from: message)
+          
+          let realm = try! Realm()
+          let chatroom = realm.object(ofType: ChatDB.self, forPrimaryKey: "0")    /// 수정 필요
+          try! realm.write {
+            chatroom?.messages.append(json)
+          }
+
+          
+        }
+        
+        let data = try! JSONSerialization.data(withJSONObject: dataArray[0], options: .prettyPrinted)
+        print("파싱결과")
+  //        print(String(data: data, encoding: .utf8)!)
+  //        let json = try JSONDecoder().decode(ChatDB.self, from: data)
+  //        addChatting(json)
+        
+        print("암것도아님")
+      } catch {
+        print(error)
+      }
+      }
+  }
   
   
+}
+
+
+
+func chatemit (text: String) {
+  SocketIOManager.shared.roomSocket.emitWithAck("chat", text).timingOut(after: 2, callback: { (data) in
+  })
 }

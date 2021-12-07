@@ -22,62 +22,6 @@ struct CreateRoomView: View {
   @State var section = 0
   
 
-  func subscribeEmit(){
-    
-//    var createForm: [String: Any] = [
-//        "shopName": self.shopName,
-//        "deliveryPriceAtLeast": Int(self.deliveryPriceAtLeast),
-//        "shopLink": self.shopLink,
-//        "category": self.category,
-//        "section": self.deliveryZone[self.section],
-//    ] as Dictionary
-    
-    var createform = createroomdata(shopName: self.shopName,
-                                    shopLink: self.shopLink,
-                                    category: self.category,
-                                    section: self.deliveryZone[self.section],
-                                    deliveryPriceAtLeast: Int(self.deliveryPriceAtLeast) ?? 0 )
-    
-  
-            let url = createroomposturl
-            let headers : [String: String] = [
-              "Authorization": UserDefaults.standard.string(forKey: "AccessToken")!
-            ] as Dictionary
-            var request = URLRequest(url: URL(string: url)!)
-            request.httpMethod = "POST"
-            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            request.timeoutInterval = 10
-
-     
-            do {
-              print("인코딩 시작")
-                try request.httpBody = JSONEncoder().encode(createform)
-              if let token = naverLogin.loginInstance?.accessToken {
-                try request.allHTTPHeaderFields = (["Authorization": token])
-              }
-//                try request.allHTTPHeaderFields = (["token": naverLogin.loginInstance?.accessToken ?? ""])
-              print("인코딩 성공")
-            } catch {
-                print("http Body Error")
-            }
-      
-            AF.request(request).responseJSON { (response) in
-                switch response.result {
-                case .success(let value):
-                    print("POST 성공")
-                  print(value)
-                  print("=======")
-      
-                case .failure(let error):
-                    print("🚫 Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
-                }
-            }
-      
-    
-    }
-
-  
-  
     var body: some View {
       
       VStack{
@@ -104,20 +48,30 @@ struct CreateRoomView: View {
           Section(header: Text("배달지역")){
               Picker("배달존",selection: $section){
 //                ForEach(self.deliveryZone, id: \.self) { index in
-                  ForEach( 0  ..< deliveryZone.count ){
-                    Text("\(self.deliveryZone[$0])관")
+                  ForEach( 0  ..< sectionNameEng.count ){
+                    
+                    if let sectionh = sectionNameEng[$0] {
+                      if let sectionNamekor = sectionNameToKor[sectionh] {
+                        Text("\(sectionNamekor)")
+                      }
+                    }
+                    
                   }
               }.pickerStyle(SegmentedPickerStyle())
           }
         
-          
+
           Section(header: Text("가격22")){
             TextField("deliveryPriceAtLeast", text: $deliveryPriceAtLeast)
               .keyboardType(.phonePad)
           }
           
           Button(action: {
-            subscribeEmit()
+            if let mytoken = naverLogin.loginInstance?.accessToken {
+              if let price = Int(self.deliveryPriceAtLeast) {
+                createRoom(shopName: self.shopName, shopLink: self.shopLink, category: self.category, section: sectionNameEng[self.section], deliveryPriceAtLeast: price, token: mytoken)
+              }
+            }
           }) {
               Text("만들기")
           }

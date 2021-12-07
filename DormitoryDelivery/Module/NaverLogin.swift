@@ -62,6 +62,13 @@ class NaverLogin: UIViewController, NaverThirdPartyLoginConnectionDelegate, Obse
       print("error = \(error.localizedDescription)")
   }
   
+  func accessTokenvalue() -> String? {
+    if let accessToken = loginInstance?.accessToken {
+      return accessToken
+    }
+    return "None"
+  }
+  
   func validcheck(){
     self.isValidAccessToken = loginInstance?.isValidAccessTokenExpireTimeNow() ?? false
     print(loginInstance?.isValidAccessTokenExpireTimeNow())

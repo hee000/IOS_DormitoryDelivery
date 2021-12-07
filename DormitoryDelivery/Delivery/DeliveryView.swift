@@ -13,12 +13,10 @@ import RealmSwift
 struct DeliveryView: View {
   @EnvironmentObject var rooms: RoomData
   @EnvironmentObject var chatlist: ChatData
-  
+  @EnvironmentObject var naverLogin: NaverLogin
   @State var isRoomLinkActive = false
   @State var selectedTab = Tabs.FirstTab
-//  var socket: SocketIOClient! = SocketIOManager.shared.socket
-//  var socket2: SocketIOClient! = SocketIOManager.shared.socket2
-  @EnvironmentObject var naverLogin: NaverLogin
+  
   
   
   let category = ["한식", "중식", "일식", "양식", "돼지고기", "치킨", "피자", "떡", "페스트푸드"]
@@ -27,7 +25,6 @@ struct DeliveryView: View {
   @State var mysection = "전체"
   
     var body: some View {
-//      NavigationView{
         VStack{
           VStack(alignment: .leading){
             HStack() {
@@ -49,13 +46,6 @@ struct DeliveryView: View {
                 
               
               
-//              Text("전체")
-//                .frame(height: 50)
-//                .padding(.leading)
-//              Label("Toggle Favorite", systemImage: "star.fill")
-//                  .labelStyle(.iconOnly)
-//                  .foregroundColor(Color.yellow)
-              
               Spacer()
               
               Label("돋보기", systemImage: "magnifyingglass")
@@ -68,23 +58,12 @@ struct DeliveryView: View {
                   .foregroundColor(Color.gray)
                   .padding(.trailing)
             }.frame(height: 60)
-//            HStack{
-//              Spacer()
-              
-//              NavigationLink(destination: CreateRoom(), isActive: $isRoomLinkActive) {
-//                  Button(action: {
-//                      self.isRoomLinkActive = true
-//                  }) {
-//                      Text("방만들기")
-//                  }
-//              }
-//              .padding(.trailing)
-//            }
+
           }
           
           Divider()
           Spacer()
-//            .frame(height: 20)
+
           HStack{
             
             VStack(alignment: .center, spacing: 2) {
@@ -197,38 +176,27 @@ struct DeliveryView: View {
           }
         
           
-//        .navigationBarTitle("") //this must be empty
-//        .navigationBarHidden(true)
-      
-//        }
+
         
       }
       .navigationBarTitle("") //this must be empty
       .navigationBarHidden(true)
+      
       .onAppear {
-        let tokenvalue = UserDefaults.standard.string(forKey: "AccessToken")!
-        
-        let usertoken: [String: Any] = [
-            "token": tokenvalue,
-        ] as Dictionary
-//        print(usertoken)
-//        naverLogin.getInfo()
-        SocketIOManager.shared.socket.connect(withPayload: ["auth": usertoken])
-
-        SocketIOManager.shared.socket2.connect(withPayload: ["token": naverLogin.loginInstance?.accessToken])
-
-        SocketIOManager.shared.socket3.connect(withPayload: ["token": naverLogin.loginInstance?.accessToken])
-
-        
+        if let mytoken = naverLogin.loginInstance?.accessToken {
+          SocketIOManager.shared.establishConnection(token: mytoken)
+        }
+                
 
         DispatchQueue.global(qos: .default).async {
            while true {
               DispatchQueue.main.async {
                 if SocketIOManager.shared.socket.status == SocketIOStatus.connected {
                   print(SocketIOStatus.connected)
-                subscribeEmit()
-                newArriveOn()
-                chaton()
+                  SocketIOManager.shared.match_emitSubscribe(rooms: rooms, section: ["Nare", "Bibong"], category: ["korean"])
+                  SocketIOManager.shared.match_onArrive(rooms: rooms)
+                  SocketIOManager.shared.room_onChat()
+                  
                 }
               }
              if SocketIOManager.shared.socket.status == SocketIOStatus.connected {
@@ -239,104 +207,9 @@ struct DeliveryView: View {
         }
         
       }
+     
+      //뷰끝
     }
-  
-func subscribeEmit(){
-//  if !(socket.status == SocketIOStatus.connected){
-//    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
-//      subscribeEmit()
-//    }
-//  }
-  
-  let subscribeForm: [String: Any] = [
-      "userId": "qwer",
-      "category": "korean",
-  ] as Dictionary
-  
-  
-  print("구독시작")
-  SocketIOManager.shared.socket2.emitWithAck("subscribe", subscribeForm).timingOut(after: 2, callback: { (data) in
-    do {
-      if data[0] as? String != "NO ACK" {
-        let data2 = try JSONSerialization.data(withJSONObject: data[0], options: .prettyPrinted)
-  //        self.rooms.data = MyJsonDecoder(data2)
-        let session = try JSONDecoder().decode(roomsdata.self, from: data2)
-        self.rooms.data = session
-//        print("-------------")
-//        print(self.rooms.data?.data ?? "읍다넹")
-//        print("-------------")
-      }
-    }
-    catch {
-      print(error)
-    }
-  })
-  
-}
-
-func newArriveOn(){
-//  if !(socket.status == SocketIOStatus.connected){
-//    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
-//      newArriveOn()
-//    }
-//  }
-  print("On 시작")
-  
-  SocketIOManager.shared.socket2.on("new-arrive") { (dataArray, ack) in
-      do {
-        let data = try JSONSerialization.data(withJSONObject: dataArray[0], options: .prettyPrinted)
-        let session = try JSONDecoder().decode(roomdata.self, from: data)
-        self.rooms.data!.data.append(session)
-      }
-      catch {
-        print(error)
-      }
-    }
-}
-
-  
-  func chaton(){
-
-    SocketIOManager.shared.socket3.off("chat")
-    print("채팅 온")
-    SocketIOManager.shared.socket3.on("chat") { (dataArray, ack) in
-//                print("-------------")
-//      print(dataArray[0])
-//                print("-------------")
-//      print(ack)
-//      print("-------------"
-        
-      
-      do {
-        var jsonResult = dataArray[0] as? Dictionary<String, AnyObject>
-        if let messages = jsonResult?["messages"] as? NSArray {
-          let message = try! JSONSerialization.data(withJSONObject: messages.firstObject!, options: .prettyPrinted)
-//          print(messages)
-//          print(String(data: messages, encoding: .utf8)!)
-          let json = try JSONDecoder().decode(ChatMessageDetail.self, from: message)
-          
-          let realm = try! Realm()
-          let chatroom = realm.object(ofType: ChatDB.self, forPrimaryKey: "0")
-          try! realm.write {
-            chatroom?.messages.append(json)
-          }
-
-          
-        }
-        
-        let data = try! JSONSerialization.data(withJSONObject: dataArray[0], options: .prettyPrinted)
-        print("파싱결과")
-//        print(String(data: data, encoding: .utf8)!)
-//        let json = try JSONDecoder().decode(ChatDB.self, from: data)
-//        addChatting(json)
-        
-        print("암것도아님")
-      } catch {
-        print(error)
-      }
-      }
-  }
-
 }
 
 

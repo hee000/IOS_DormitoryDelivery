@@ -9,6 +9,7 @@ import Foundation
 import Combine
 
 
+
 struct roomdata: Codable {
   var id: String;
   var shopName: String;         // 제목
