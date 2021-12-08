@@ -33,8 +33,9 @@ struct MessageCard: View {
 
         //시스템 메시지
         if self.type != "chat"{
-          
-//          액션에 따라 분기 self.action
+          if self.action == "users-new" {
+            Text("누가 입장했습니다 ㅎㅎ")
+          }
           
         } // 상대방 메시지
         else if self.userid != self.myid{

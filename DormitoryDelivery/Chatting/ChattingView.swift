@@ -231,7 +231,7 @@ struct ChattingView: View {
 
           Button(action: {
 
-            chatemit(text: mymessage)
+            SocketIOManager.shared.room_emitChat(rid: self.Id_room, text: self.mymessage)
 
 
           }) { // 3
