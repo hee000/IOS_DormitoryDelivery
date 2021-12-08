@@ -16,7 +16,7 @@ import Combine
 
 
 
-class ChatDB: Object, Decodable {
+class ChatDB: Object, ObjectKeyIdentifiable, Decodable{
 
   @objc dynamic var rid: String?
   @objc dynamic var title: String?
@@ -42,12 +42,13 @@ class ChatDB: Object, Decodable {
 }
 
 
-class ChatMessageDetail: Object, Decodable {
+class ChatMessageDetail: Object, Decodable,ObjectKeyIdentifiable {
     @objc dynamic var id: String?
     @objc dynamic var type: String?
     @objc dynamic var body: ChatMessageDetailBody?
     @objc dynamic var idx: String?
     @objc dynamic var at: String?
+  
 
     private enum CodingKeys: String, CodingKey {
         case id = "id"
@@ -69,7 +70,7 @@ class ChatMessageDetail: Object, Decodable {
 //  }
 }
 
-class ChatMessageDetailBody: Object, Decodable {
+class ChatMessageDetailBody: Object, Decodable, ObjectKeyIdentifiable {
     @objc dynamic var action: String?
     @objc dynamic var data: ChatMessageDetailBodyData?
     @objc dynamic var userid: String?
@@ -85,7 +86,7 @@ class ChatMessageDetailBody: Object, Decodable {
     }
 }
 
-class ChatMessageDetailBodyData: Object, Decodable {
+class ChatMessageDetailBodyData: Object, Decodable, ObjectKeyIdentifiable {
   @objc dynamic var name: String?
   @objc dynamic var userId: String?
   @objc dynamic var TEST: String?

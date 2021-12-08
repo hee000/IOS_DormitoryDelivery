@@ -6,18 +6,23 @@
 //
 
 import SwiftUI
+import RealmSwift
 
 struct ChatCard: View {
-  var roomid: String = ""
-  @State var title:String = "제목"
-  @State var lastmessage:String = "마지막 톡 내용ddddddddddddddddsdddddd"
-  @State var lastmessagetime:String = "17:24"
-  @State var notconfirm:Int = 2
-  @State var usersnum:Int = 4
+  var roomid: String
+  @State var RoomDB : ChatDB?
+  @EnvironmentObject var chatdata: ChatData
+//  @State var title:String
+//  @State var lastmessage:String
+//  @State var lastmessagetime:String
+//  @State var notconfirm:Int = 2
+//  @State var usersnum:Int = 4
+  
+  
   
     var body: some View {
       HStack{
-        NavigationLink(destination: ChattingView(Id_room: self.roomid)) {
+        NavigationLink(destination: ChattingView(RoomDB: roomidtodbconnect(rid: self.roomid), Id_room: self.roomid)) {
           Image(systemName: "person.circle.fill")
             .resizable()
             .scaledToFit()
@@ -27,21 +32,26 @@ struct ChatCard: View {
             
 
           VStack(alignment: .leading, spacing: 5){
-            Text(self.title)
+            Text(self.RoomDB!.title!)
               .font(.title3)
               .foregroundColor(Color.black)
-            Text(self.lastmessage)
-              .font(.body)
-              .foregroundColor(Color.black)
+            if let lastmessage = self.RoomDB?.messages.last?.body?.message {
+              Text(lastmessage)
+                .font(.body)
+                .foregroundColor(Color.black)
+            }
           }
         
           Spacer()
         
           VStack(alignment: .trailing, spacing: 10) {
-            Text(self.lastmessagetime)
-              .font(.caption)
-              .foregroundColor(Color.black)
-            Text(String(self.notconfirm))
+            if let lastat = self.RoomDB!.messages.last?.at {
+                
+              Text(datetokor(chatdate: lastat))
+                .font(.caption)
+                .foregroundColor(Color.black)
+            }
+            Text(String(4))
               .foregroundColor(Color.white)
               .padding(EdgeInsets(top: 2, leading: 10, bottom: 2, trailing: 10))
               .background(Color.red)
@@ -50,15 +60,24 @@ struct ChatCard: View {
           }.padding(.trailing)
         }
       }
-      .frame(width: UIScreen.main.bounds.size.width, height: 60, alignment: .leading)
+      .frame( height: 60, alignment: .leading)
       .padding()
       .onAppear {
       }
     }
+  
+  func datetokor(chatdate: String) -> String {
+    let date = DateFormatter()
+    date.locale = Locale(identifier: "ko_kr")
+    date.timeZone = TimeZone(abbreviation: "KST")
+    date.dateFormat = "dd일 HH:mm"
+    let chatdate = date.string(from: Date(timeIntervalSince1970: TimeInterval(Int(chatdate)!)/1000))
+    return chatdate
+  }
 }
 
-struct ChatCard_Previews: PreviewProvider {
-    static var previews: some View {
-        ChatCard()
-    }
-}
+//struct ChatCard_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ChatCard()
+//    }
+//}

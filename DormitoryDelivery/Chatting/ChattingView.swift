@@ -8,22 +8,30 @@
 import SwiftUI
 import Foundation
 import Combine
+import RealmSwift
 
+let realm = try! Realm()
+
+func roomidtodbconnect (rid: String) -> ChatDB? {
+  return realm.object(ofType: ChatDB.self, forPrimaryKey: rid)
+}
 
 struct ChattingView: View {
+//  @ObservedResults
+//  @ObservedRealmObject
+//
   @EnvironmentObject var chatdata: ChatData
-
-  var myuserid : String = "test"
+  let RoomDB : ChatDB?
   var Id_room: String
   @State private var mymessage = "input"
 
 
 
   func scrollToLastMessage(proxy: ScrollViewProxy) {
-    if let lastMessage = chatdata.chatlist[0].messages.last { // 4
-      withAnimation(.easeOut(duration: 0.4)) {
+    if let lastMessage = RoomDB?.messages.last { // 4
+//      withAnimation(.easeOut(duration: 0.4)) {
         proxy.scrollTo(UUID(uuidString: lastMessage.id!), anchor: .bottom) // 5
-      }
+//      }
     }
   }
 
@@ -34,64 +42,34 @@ struct ChattingView: View {
         ScrollView {
           ScrollViewReader { proxy in // 1
             LazyVStack(spacing: 0) {
-              if !chatdata.chatlist.isEmpty{
-              ForEach(chatdata.chatlist[0].messages.indices, id: \.self) { index in
-                   let ridIdx = chatdata.chatlist[0].rid
-                   let mid = chatdata.chatlist[0].messages[index].id
-                   let type = chatdata.chatlist[0].messages[index].type
-                   let action = chatdata.chatlist[0].messages[index].body?.action
-                   let data = chatdata.chatlist[0].messages[index].body?.data
-                   let userid = chatdata.chatlist[0].messages[index].body?.userid
-                   let username = chatdata.chatlist[0].messages[index].body?.username
-                   let message = chatdata.chatlist[0].messages[index].body?.message
-                   let idx = chatdata.chatlist[0].messages[index].idx
-                   let at = chatdata.chatlist[0].messages[index].at
+              if var roomdb = RoomDB {
+                ForEach(roomdb.messages.indices, id: \.self) { index in
+                   let ridIdx = roomdb.rid
+                   let mid = roomdb.messages[index].id
+                   let type = roomdb.messages[index].type
+                   let action = roomdb.messages[index].body?.action
+                   let data = roomdb.messages[index].body?.data
+                   let userid = roomdb.messages[index].body?.userid
+                   let username = roomdb.messages[index].body?.username
+                   let message = roomdb.messages[index].body?.message
+                   let idx = roomdb.messages[index].idx
+                   let at = roomdb.messages[index].at
                 
-          
-        
-                
-                  MessageCard(ridIdx: ridIdx, mid: mid, type: type, action: action, data: data, userid: userid, username: username, message: message, idx: idx, at: at)
-                
-//                HStack {
-//                      //내 채팅
-//                  if (chatdata.chatlist[0].messages[index].type! != "chat") || (chatdata.chatlist[0].messages[index].body!.userid! == myuserid) {
-//                    Spacer()
-//                  }
-//
-//                  VStack(alignment: .leading, spacing: 6) {
-//                    HStack {
-//                      Text(chatdata.chatlist[0].messages[index].body!.username!)
-//                        .fontWeight(.bold)
-//                        .font(.system(size: 12))
-//                    }
-//
-//                    Text(chatdata.chatlist[0].messages[index].body!.message!)
-//                  }
-//                  .id(chatdata.chatlist[0].messages[index].id!)
-//                  .foregroundColor(chatdata.chatlist[0].messages[index].body!.userid! == myuserid ? .white : .black)
-//                  .padding(10)
-//                  .background(chatdata.chatlist[0].messages[index].body!.userid! == myuserid ? Color.blue : Color(white: 0.95))
-//                  .cornerRadius(5)
-//
-//
-//                  // 남의 채팅
-//                if (chatdata.chatlist[0].messages[index].type! == "chat") && (chatdata.chatlist[0].messages[index].body!.userid! != myuserid) {
-//                  Spacer()
-//                }
-//                }
-//                .padding()
+                  MessageCard(ridIdx: ridIdx, mid: mid, type: type, action: action, data: data, userid: userid, username: username, message: message, idx: idx, at: at, index: index, RoomDB: RoomDB)
+              
 
 
                 }
               }
             }
-//            .onChange(of: chatdata.chatlist[0].messages.count) { _ in // 3
-//              scrollToLastMessage(proxy: proxy)
-//            }
+             .onChange(of: RoomDB?.messages.count ?? 0) { _ in // 3
+              scrollToLastMessage(proxy: proxy)
+            }
             
           }
-        }
-
+        }.frame(width: UIScreen.main.bounds.size.width)
+        
+        Spacer()
         // Message field.
         HStack {
           TextField("Message", text: $mymessage) // 2
@@ -119,8 +97,8 @@ struct ChattingView: View {
     }
 }
 
-struct Join_Previews: PreviewProvider {
-    static var previews: some View {
-        ChattingView(Id_room: "14")
-    }
-}
+//struct Join_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ChattingView(Id_room: "14")
+//    }
+//}

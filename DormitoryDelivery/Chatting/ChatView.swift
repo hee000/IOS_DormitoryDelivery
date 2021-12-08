@@ -21,10 +21,11 @@ struct ChatView: View {
         ScrollView{
           VStack(spacing: 0){
               ForEach(chatdata.chatlist.indices, id: \.self) { index in
-                ChatCard(roomid: chatdata.chatlist[index].rid ?? "", title: "테스트", lastmessage: chatdata.chatlist[index].messages.last?.body?.message ?? "", lastmessagetime: chatdata.chatlist[index].messages.last?.at ?? "", notconfirm: 33, usersnum: 4)
+                ChatCard(roomid: chatdata.chatlist[index].rid!, RoomDB: roomidtodbconnect(rid: chatdata.chatlist[index].rid!))
               }
           }
         }
+        Spacer()
       }
       .navigationBarTitle("") //this must be empty
       .navigationBarHidden(true)

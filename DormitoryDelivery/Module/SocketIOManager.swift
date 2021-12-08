@@ -77,8 +77,8 @@ class SocketIOManager:NSObject {
     print("쳇온")
     SocketIOManager.shared.roomSocket.off("chat")
     SocketIOManager.shared.roomSocket.on("chat") { (dataArray, ack) in
-      print(dataArray)
-      print(ack)
+//      print(dataArray)
+//      print(ack)
       do {
         var jsonResult = dataArray[0] as? Dictionary<String, AnyObject>
         if let messages = jsonResult?["messages"] as? NSArray {
@@ -88,7 +88,8 @@ class SocketIOManager:NSObject {
           let json = try JSONDecoder().decode(ChatMessageDetail.self, from: message)
           
           let realm = try! Realm()
-          let chatroom = realm.object(ofType: ChatDB.self, forPrimaryKey: "0")    /// 수정 필요
+//           print(type(of: jsonResult!["rid"]!))
+          let chatroom = realm.object(ofType: ChatDB.self, forPrimaryKey: jsonResult!["rid"]!)    /// 수정 필요
           try! realm.write {
             chatroom?.messages.append(json)
           }

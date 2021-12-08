@@ -11,6 +11,8 @@ import Alamofire
 
 struct CreateRoomView: View {
   @EnvironmentObject var naverLogin: NaverLogin
+  @EnvironmentObject var chatdata: ChatData
+
   
   
   var socket: SocketIOClient! = SocketIOManager.shared.socket
@@ -74,20 +76,31 @@ struct CreateRoomView: View {
               Button(action: {
                 if let mytoken = naverLogin.loginInstance?.accessToken {
                   if let price = Int(self.deliveryPriceAtLeast) {
-                    self.rid = postCreateRoom(shopName: self.shopName, shopLink: self.shopLink, category: self.category, section: sectionNameEng[self.section], deliveryPriceAtLeast: price, token: mytoken)
+                    postCreateRoom2(shopName: self.shopName, shopLink: self.shopLink, category: self.category, section: sectionNameEng[self.section], deliveryPriceAtLeast: price, token: mytoken)
                   }
                 }
-                self.isActive = true
-    
+//                print("네비 바꾸기전")
+//                print(self.rid)
+//                self.isActive = true
+//                print(self.rid)
+//                print("네비 바꾼 이후")
               }) {
                   Text("만들기")
               }
-            NavigationLink(destination: ChattingView(Id_room: self.rid), isActive: $isActive) {EmptyView().hidden()}.hidden()
+            NavigationLink(destination: ChattingView(RoomDB: roomidtodbconnect(rid: self.rid), Id_room: self.rid), isActive: $isActive) {EmptyView().hidden()}.hidden()
           }
         }
 
         Spacer()
       }
+      .onChange(of: rid, perform: { newValue in
+        print("=====================================")
+        print(self.rid)
+        self.isActive = true
+        isActive = true
+        print(newValue)
+        print("=====================================")
+      })
 //      .onTapGesture {
 //            self.endTextEditing()
 //      }
@@ -97,6 +110,48 @@ struct CreateRoomView: View {
       .navigationTitle("")
       .navigationBarHidden(true)
     }
+  
+  
+  func postCreateRoom2(shopName: String, shopLink: String, category: String, section: String, deliveryPriceAtLeast: Int, token: String){
+    print("방만들기 시도")
+    let createkey = createroomdata(shopName: shopName, shopLink: shopLink, category: category, section: section, deliveryPriceAtLeast: deliveryPriceAtLeast)
+    let url = createroomposturl
+    var request = URLRequest(url: URL(string: url)!)
+    request.httpMethod = "POST"
+    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+    request.timeoutInterval = 10
+    request.allHTTPHeaderFields = (["Authorization": token])
+    
+    do {
+        try request.httpBody = JSONEncoder().encode(createkey)
+    } catch {
+        print("http Body Error")
+    }
+    
+    AF.request(request).responseJSON { (response) in
+      switch response.result {
+      case .success(let value):
+  //      print("방 생성 성공")
+  //      print(value)
+  //      print("=======")
+        if let id = value as? [String: Any] {
+          if let idvalue = id["id"] {
+            let chatroomopen = ChatDB()
+            if let rid = idvalue as? String {
+              chatroomopen.rid = rid
+              chatroomopen.title = shopName
+              addChatting(chatroomopen)
+              self.rid = rid
+            }
+          }
+        }
+
+      case .failure(let error):
+          print("🚫 Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
+      }
+    }
+  }
+
 }
 
 //extension CreateRoom {
