@@ -27,14 +27,14 @@
 		DAC252D8275B4EC800EA2BFD /* NaverLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC252D7275B4EC800EA2BFD /* NaverLogin.swift */; };
 		DAC252DA275B551B00EA2BFD /* Loading.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC252D9275B551B00EA2BFD /* Loading.swift */; };
 		DAC45266275F522B00D05BB0 /* ChatDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC45265275F522B00D05BB0 /* ChatDB.swift */; };
-		DAC45273275FEAAF00D05BB0 /* roomJoin.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC45272275FEAAF00D05BB0 /* roomJoin.swift */; };
-		DAC45275275FEBA400D05BB0 /* createRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC45274275FEBA400D05BB0 /* createRoom.swift */; };
-		DAC45277275FFA9500D05BB0 /* onChat.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC45276275FFA9500D05BB0 /* onChat.swift */; };
-		DAC45279275FFB5D00D05BB0 /* emitSubscribe.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC45278275FFB5D00D05BB0 /* emitSubscribe.swift */; };
-		DAC4527C2760133100D05BB0 /* onArrive.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC4527B2760133100D05BB0 /* onArrive.swift */; };
+		DAC45273275FEAAF00D05BB0 /* getRoomJoin.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC45272275FEAAF00D05BB0 /* getRoomJoin.swift */; };
+		DAC45275275FEBA400D05BB0 /* postCreateRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC45274275FEBA400D05BB0 /* postCreateRoom.swift */; };
 		DAC4527E2760190600D05BB0 /* 디비_비우기.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC4527D2760190600D05BB0 /* 디비_비우기.swift */; };
+		DAC4528027601EF200D05BB0 /* ChatCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC4527F27601EF200D05BB0 /* ChatCard.swift */; };
+		DAC4528427603A5400D05BB0 /* HashTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC4528327603A5400D05BB0 /* HashTag.swift */; };
 		DAE94525274654A9000C8D3D /* TEST.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE94524274654A9000C8D3D /* TEST.swift */; };
 		DAE945272746560E000C8D3D /* SocketIOManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE945262746560E000C8D3D /* SocketIOManager.swift */; };
+		DAEFF97D27607A03007E54D7 /* MessageCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAEFF97C27607A03007E54D7 /* MessageCard.swift */; };
 		DAF616D8275E3FE50011C508 /* getRoomDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAF616D7275E3FE50011C508 /* getRoomDetail.swift */; };
 		DAF616DA275E7F300011C508 /* realmbackup.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAF616D9275E7F300011C508 /* realmbackup.swift.swift */; };
 		DAFF71BF275D589400A45D29 /* CreateRoomData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFF71BE275D589400A45D29 /* CreateRoomData.swift */; };
@@ -72,15 +72,15 @@
 		DAC252D7275B4EC800EA2BFD /* NaverLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverLogin.swift; sourceTree = "<group>"; };
 		DAC252D9275B551B00EA2BFD /* Loading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loading.swift; sourceTree = "<group>"; };
 		DAC45265275F522B00D05BB0 /* ChatDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatDB.swift; sourceTree = "<group>"; };
-		DAC45272275FEAAF00D05BB0 /* roomJoin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = roomJoin.swift; sourceTree = "<group>"; };
-		DAC45274275FEBA400D05BB0 /* createRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = createRoom.swift; sourceTree = "<group>"; };
-		DAC45276275FFA9500D05BB0 /* onChat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = onChat.swift; sourceTree = "<group>"; };
-		DAC45278275FFB5D00D05BB0 /* emitSubscribe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = emitSubscribe.swift; sourceTree = "<group>"; };
-		DAC4527B2760133100D05BB0 /* onArrive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = onArrive.swift; sourceTree = "<group>"; };
+		DAC45272275FEAAF00D05BB0 /* getRoomJoin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = getRoomJoin.swift; sourceTree = "<group>"; };
+		DAC45274275FEBA400D05BB0 /* postCreateRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = postCreateRoom.swift; sourceTree = "<group>"; };
 		DAC4527D2760190600D05BB0 /* 디비_비우기.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "디비_비우기.swift"; sourceTree = "<group>"; };
+		DAC4527F27601EF200D05BB0 /* ChatCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCard.swift; sourceTree = "<group>"; };
+		DAC4528327603A5400D05BB0 /* HashTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HashTag.swift; sourceTree = "<group>"; };
 		DAE94524274654A9000C8D3D /* TEST.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TEST.swift; sourceTree = "<group>"; };
 		DAE945262746560E000C8D3D /* SocketIOManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketIOManager.swift; sourceTree = "<group>"; };
 		DAE9452C274671F4000C8D3D /* info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = info.plist; sourceTree = SOURCE_ROOT; };
+		DAEFF97C27607A03007E54D7 /* MessageCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCard.swift; sourceTree = "<group>"; };
 		DAF616D7275E3FE50011C508 /* getRoomDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = getRoomDetail.swift; sourceTree = "<group>"; };
 		DAF616D9275E7F300011C508 /* realmbackup.swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = realmbackup.swift.swift; sourceTree = "<group>"; };
 		DAFF71BE275D589400A45D29 /* CreateRoomData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateRoomData.swift; sourceTree = "<group>"; };
@@ -193,6 +193,7 @@
 			isa = PBXGroup;
 			children = (
 				DAB5E98F27436B9B00EF5B6A /* DeliveryView.swift */,
+				DAC4528327603A5400D05BB0 /* HashTag.swift */,
 				DAB5E9932743906400EF5B6A /* RoomCard.swift */,
 				DAFF71D2275D60D600A45D29 /* RoomDetail.swift */,
 			);
@@ -219,11 +220,8 @@
 			isa = PBXGroup;
 			children = (
 				DAF616D7275E3FE50011C508 /* getRoomDetail.swift */,
-				DAC45272275FEAAF00D05BB0 /* roomJoin.swift */,
-				DAC45274275FEBA400D05BB0 /* createRoom.swift */,
-				DAC45276275FFA9500D05BB0 /* onChat.swift */,
-				DAC4527B2760133100D05BB0 /* onArrive.swift */,
-				DAC45278275FFB5D00D05BB0 /* emitSubscribe.swift */,
+				DAC45272275FEAAF00D05BB0 /* getRoomJoin.swift */,
+				DAC45274275FEBA400D05BB0 /* postCreateRoom.swift */,
 			);
 			path = REST_Function;
 			sourceTree = "<group>";
@@ -242,7 +240,9 @@
 			isa = PBXGroup;
 			children = (
 				DAFF71C6275D593300A45D29 /* ChatView.swift */,
+				DAC4527F27601EF200D05BB0 /* ChatCard.swift */,
 				DAB5E991274374E100EF5B6A /* ChattingView.swift */,
+				DAEFF97C27607A03007E54D7 /* MessageCard.swift */,
 			);
 			path = Chatting;
 			sourceTree = "<group>";
@@ -296,6 +296,8 @@
 			dependencies = (
 			);
 			name = DormitoryDelivery;
+			packageProductDependencies = (
+			);
 			productName = DormitoryDelivery;
 			productReference = DA4D2D1A27422FE300678FA8 /* DormitoryDelivery.app */;
 			productType = "com.apple.product-type.application";
@@ -324,6 +326,8 @@
 				Base,
 			);
 			mainGroup = DA4D2D1127422FE300678FA8;
+			packageReferences = (
+			);
 			productRefGroup = DA4D2D1B27422FE300678FA8 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -400,10 +404,11 @@
 				DAFF71C7275D593300A45D29 /* ChatView.swift in Sources */,
 				DA4D2D2C2742306300678FA8 /* AppDelegate.swift in Sources */,
 				DAF616DA275E7F300011C508 /* realmbackup.swift.swift in Sources */,
-				DAC4527C2760133100D05BB0 /* onArrive.swift in Sources */,
+				DAEFF97D27607A03007E54D7 /* MessageCard.swift in Sources */,
 				DAC252D8275B4EC800EA2BFD /* NaverLogin.swift in Sources */,
+				DAC4528027601EF200D05BB0 /* ChatCard.swift in Sources */,
 				DAC252D2275B4E0100EA2BFD /* LoginView.swift in Sources */,
-				DAC45275275FEBA400D05BB0 /* createRoom.swift in Sources */,
+				DAC45275275FEBA400D05BB0 /* postCreateRoom.swift in Sources */,
 				DA4D2D2027422FE300678FA8 /* ContentView.swift in Sources */,
 				DA4D2D1E27422FE300678FA8 /* DormitoryDeliveryApp.swift in Sources */,
 				DA9702BA275C8CC700BB8B53 /* hashtag.swift in Sources */,
@@ -416,16 +421,15 @@
 				DAFF71C3275D58A300A45D29 /* UserData.swift in Sources */,
 				DAB5E992274374E100EF5B6A /* ChattingView.swift in Sources */,
 				DA9702BC275C9E1F00BB8B53 /* ddddddddd.swift in Sources */,
+				DAC4528427603A5400D05BB0 /* HashTag.swift in Sources */,
 				DABCFE632743B0F500B89781 /* CreateRoomView.swift in Sources */,
-				DAC45277275FFA9500D05BB0 /* onChat.swift in Sources */,
 				DAFF71D5275DBEE900A45D29 /* ServerUrl.swift in Sources */,
 				DAC252DA275B551B00EA2BFD /* Loading.swift in Sources */,
-				DAC45273275FEAAF00D05BB0 /* roomJoin.swift in Sources */,
+				DAC45273275FEAAF00D05BB0 /* getRoomJoin.swift in Sources */,
 				DAE94525274654A9000C8D3D /* TEST.swift in Sources */,
 				DA4D2D362742378400678FA8 /* TabViews.swift in Sources */,
 				DAFF71D7275DD50200A45D29 /* DateCheck.swift in Sources */,
 				DAFF71C1275D589D00A45D29 /* RoomData.swift in Sources */,
-				DAC45279275FFB5D00D05BB0 /* emitSubscribe.swift in Sources */,
 				DAB5E99027436B9B00EF5B6A /* DeliveryView.swift in Sources */,
 				DAF616D8275E3FE50011C508 /* getRoomDetail.swift in Sources */,
 				DAC45266275F522B00D05BB0 /* ChatDB.swift in Sources */,
@@ -564,7 +568,7 @@
 				DEVELOPMENT_TEAM = P6Z9B6CV2H;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = /Users/cho/Documents/Swift/DormitoryDelivery/info.plist;
+				INFOPLIST_FILE = /Users/cho/Documents/DormitoryDelivery/info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -597,7 +601,7 @@
 				DEVELOPMENT_TEAM = P6Z9B6CV2H;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = /Users/cho/Documents/Swift/DormitoryDelivery/info.plist;
+				INFOPLIST_FILE = /Users/cho/Documents/DormitoryDelivery/info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

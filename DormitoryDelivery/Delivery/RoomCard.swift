@@ -48,7 +48,7 @@ struct RoomCard: View {
               
               HStack(spacing: 2){
                 Image(systemName: "person.circle.fill")
-                  .foregroundColor(Color(.init(srgbRed: 180/255, green: 200/255, blue: 255/255, alpha: 1)))
+                  .foregroundColor(Color(.sRGB, red: 180/255, green: 200/255, blue: 255/255, opacity: 1))
 //                  .font(.system(size: 12))
                 Text(self.purchaserName)
                   .font(.system(size: 12))

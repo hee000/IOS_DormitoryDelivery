@@ -32,7 +32,7 @@ struct TabViews: View {
           }
         }.tag(1)
         
-        MyPage().tabItem {
+        ChatView().tabItem {
           if self.tabSelect == 2 {
             Label("채팅", image: "a_채팅")
           } else {

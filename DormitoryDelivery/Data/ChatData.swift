@@ -10,26 +10,6 @@ import Combine
 import Alamofire
 import RealmSwift
 
-class model: ObservableObject {
-  @Published var messages: [modelm] {
-    didSet {
-//        UserDefaults.standard.set(sessionId, forKey: "sessionId")
-    }
-}
-
-  init() {
-    self.messages = []
-  }
-}
-
-struct modelm: Decodable, Identifiable {
-  let id: UUID
-  let message: String
-  let user: String
-  let userID: Bool
-}
-
-
 
 struct ChatRoom: Codable, Identifiable {
   let id: UUID      // vid를 의미

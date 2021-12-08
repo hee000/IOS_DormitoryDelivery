@@ -8,8 +8,26 @@
 import SwiftUI
 
 struct ChatView: View {
+  @EnvironmentObject var chatdata: ChatData
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+      VStack{
+        Text("채팅")
+          .font(.system(size: 21))
+          .padding([.leading, .top])
+          .foregroundColor(Color.black)
+          .frame(width: UIScreen.main.bounds.size.width, height: 50, alignment: .leading)
+        Divider()
+        ScrollView{
+          VStack(spacing: 0){
+              ForEach(chatdata.chatlist.indices, id: \.self) { index in
+                ChatCard(roomid: chatdata.chatlist[index].rid ?? "", title: "테스트", lastmessage: chatdata.chatlist[index].messages.last?.body?.message ?? "", lastmessagetime: chatdata.chatlist[index].messages.last?.at ?? "", notconfirm: 33, usersnum: 4)
+              }
+          }
+        }
+      }
+      .navigationBarTitle("") //this must be empty
+      .navigationBarHidden(true)
     }
 }
 

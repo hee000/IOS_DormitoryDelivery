@@ -37,7 +37,8 @@ class NaverLogin: UIViewController, NaverThirdPartyLoginConnectionDelegate, Obse
     
   func oauth20ConnectionDidFinishRequestACTokenWithAuthCode() {
       print("Success login")
-//      getInfo()
+      getInfo()
+    
       self.AToken = loginInstance?.accessToken ?? ""
       self.isValidAccessToken = loginInstance?.isValidAccessTokenExpireTimeNow() ?? false
       self.isLoggedIn = true
@@ -143,7 +144,8 @@ class NaverLogin: UIViewController, NaverThirdPartyLoginConnectionDelegate, Obse
       guard let object = result["response"] as? [String: Any] else { return }
 //      guard let name = object["name"] as? String else { return }
 //      guard let email = object["email"] as? String else { return }
-//      guard let id = object["id"] as? String else {return}
+      guard let id = object["id"] as? String else {return}
+      UserDefaults.standard.set(id, forKey: "MyID")
       print(response)
       print(object)
       

@@ -48,6 +48,9 @@ struct ContentView: View {
                     .onAppear {
                       datecheck.startAction()
                     }
+        
+        
+        
 //        if naverLogin.loginInstance!.isValidAccessTokenExpireTimeNow() {
 //          TabViews()
 //            .onAppear {

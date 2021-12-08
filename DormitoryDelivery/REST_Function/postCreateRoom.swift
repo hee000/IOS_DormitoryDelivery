@@ -8,7 +8,7 @@
 import Foundation
 import Alamofire
 
-func createRoom(shopName: String, shopLink: String, category: String, section: String, deliveryPriceAtLeast: Int, token: String) -> String{
+func postCreateRoom(shopName: String, shopLink: String, category: String, section: String, deliveryPriceAtLeast: Int, token: String){
   let createkey = createroomdata(shopName: shopName, shopLink: shopLink, category: category, section: section, deliveryPriceAtLeast: deliveryPriceAtLeast)
   let url = createroomposturl
   var request = URLRequest(url: URL(string: url)!)
@@ -27,23 +27,20 @@ func createRoom(shopName: String, shopLink: String, category: String, section: S
     switch response.result {
     case .success(let value):
       print("방 생성 성공")
-//      print(value)
+      print(value)
       print("=======")
-      do {
-        let data2 = try JSONSerialization.data(withJSONObject: value, options: .prettyPrinted)
-//        let session = try JSONDecoder().decode(roomdetaildata.self, from: data2)
-        
-//        let data = try JSONSerialization.data(withJSONObject: value, options: .prettyPrinted) as? [String: Any]
-        var dic = try JSONSerialization.jsonObject(with: data2, options: [])
-        print(dic)
-//        print(type(of: dic))
-      } catch {
-        print(error)
+      if let id = value as? [String: Any] {
+        if let idvalue = id["id"] {
+          let chatroomopen = ChatDB()
+          if let rid = idvalue as? String {
+            chatroomopen.rid = rid
+            addChatting(chatroomopen)
+          }
+        }
       }
 
     case .failure(let error):
         print("🚫 Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
     }
   }
-  return "asd"
 }

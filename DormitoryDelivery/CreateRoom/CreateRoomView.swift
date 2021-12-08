@@ -11,9 +11,11 @@ import Alamofire
 
 struct CreateRoomView: View {
   @EnvironmentObject var naverLogin: NaverLogin
-  var socket: SocketIOClient! = SocketIOManager.shared.socket
-  var deliveryZone = ["Narae", "Hoyoen", "Changzo", "Bibong"]
   
+  
+  var socket: SocketIOClient! = SocketIOManager.shared.socket
+
+  @State var isActive = false
   @State var userId: String = "sadasd"
   @State var shopName: String = "asdasd"
   @State var deliveryPriceAtLeast: String = "133"
@@ -66,14 +68,19 @@ struct CreateRoomView: View {
               .keyboardType(.phonePad)
           }
           
-          Button(action: {
-            if let mytoken = naverLogin.loginInstance?.accessToken {
-              if let price = Int(self.deliveryPriceAtLeast) {
-                createRoom(shopName: self.shopName, shopLink: self.shopLink, category: self.category, section: sectionNameEng[self.section], deliveryPriceAtLeast: price, token: mytoken)
+          ZStack{
+              Button(action: {
+                if let mytoken = naverLogin.loginInstance?.accessToken {
+                  if let price = Int(self.deliveryPriceAtLeast) {
+                    postCreateRoom(shopName: self.shopName, shopLink: self.shopLink, category: self.category, section: sectionNameEng[self.section], deliveryPriceAtLeast: price, token: mytoken)
+                  }
+                }
+                self.isActive = true
+    
+              }) {
+                  Text("만들기")
               }
-            }
-          }) {
-              Text("만들기")
+          NavigationLink(destination: ChattingView(Id_room: "34"), isActive: $isActive) {EmptyView().hidden()}.hidden()
           }
         }
 

@@ -31,7 +31,7 @@ struct RoomDetail: View {
           
           Button {
             if let mytoken = naverLogin.loginInstance?.accessToken {
-              roomJoin(matchid: self.matchid, token: mytoken)
+              getRoomJoin(matchid: self.matchid, token: mytoken)
             }
           } label: {
             Text("조인")

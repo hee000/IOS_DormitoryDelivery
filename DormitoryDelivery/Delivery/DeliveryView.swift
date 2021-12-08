@@ -18,6 +18,7 @@ struct DeliveryView: View {
   @State var selectedTab = Tabs.FirstTab
   
   
+  @State var flags = Array(repeating: false, count: categorys.count)
   
   let category = ["한식", "중식", "일식", "양식", "돼지고기", "치킨", "피자", "떡", "페스트푸드"]
   let sections = ["전체", "창조", "나래", "호연", "비봉"]
@@ -44,21 +45,7 @@ struct DeliveryView: View {
               .padding(.leading)
               .padding(.top)
                 
-              
-              
               Spacer()
-              
-              Label("돋보기", systemImage: "magnifyingglass")
-                  .labelStyle(.iconOnly)
-                  .foregroundColor(Color.gray)
-                  .font(.title)
-              Label("종", systemImage: "bell")
-                  .font(.title)
-                  .labelStyle(.iconOnly)
-                  .foregroundColor(Color.gray)
-                  .padding(.trailing)
-            }.frame(height: 60)
-
           }
           
           Divider()
@@ -105,34 +92,16 @@ struct DeliveryView: View {
 
             
             Spacer()
-//            NavigationLink(destination: CreateRoom(), isActive: $isRoomLinkActive) {
-//                Button(action: {
-//                    self.isRoomLinkActive = true
-//                }) {
-//                    Text("방만들기")
-//                }
-//            }
-//            .padding(.trailing)
           }
           .font(.title2)
-//          .padding(.leading)
-//
-//          Spacer()
-//            .frame(height: 15)
+
           
           if selectedTab == .FirstTab {
               VStack(alignment: .leading){
                 ScrollView(.horizontal){
-                  HStack{
+                  HStack{ // 해시태그
                     ForEach(category.indices, id: \.self) { index in
-                      Text(category[index])
-//                        .padding(8)
-                        .padding(EdgeInsets(top: 8, leading: 12, bottom: 8, trailing: 12))
-                        .overlay(RoundedRectangle(cornerRadius: 21).stroke(Color(.sRGB, red: 93/255, green: 95/255, blue: 235/255, opacity: 1), lineWidth: 1.5))
-                      
-    //                Text("해시 태그 위치")
-    //                  .bold()
-    //                  .padding(.leading)
+                      HashTag(flag: $flags, tag: index)
                     }
                   }
                   .frame(maxHeight: .infinity)
@@ -140,7 +109,7 @@ struct DeliveryView: View {
                 }.frame(height: 50)
 //                  .padding(.leading)
                 
-                if (rooms.data != nil) {
+                if (rooms.data != nil) { // 매치목록
                   ScrollView(){
                     VStack(spacing: 2) {
                       ForEach(rooms.data!.data.indices, id: \.self) { index in
@@ -150,38 +119,36 @@ struct DeliveryView: View {
                                  deliveryPayTotal: rooms.data!.data[index].total,
                                  deliveryId: rooms.data!.data[index].id,
                                  purchaserName: rooms.data!.data[index].purchaserName,
-                                 createdAt: rooms.data!.data[index].createdAt
-                    )
-                  }
+                                 createdAt: rooms.data!.data[index].createdAt )
+                      }
                     }
-                    
                   }
-                  
                 }
                 Spacer()
               }
-          
-          } else if selectedTab == .SecondTab {
-            VStack{
-              Spacer()
-              Text("공동구매")
-              Spacer()
-            }
           } else {
             VStack{
               Spacer()
-              Text("공동구매")
+              Text("공동구매를 준비중입니다 죄송합니다!")
               Spacer()
             }
           }
         
           
 
-        
+        }
       }
       .navigationBarTitle("") //this must be empty
       .navigationBarHidden(true)
-      
+      .onChange(of: flags) { newValue in
+        var categorydata = categoryMapping(flags: newValue)
+        var categorykor : [String] = []
+        for i in categorydata.indices{
+          categorykor.append(categoryNameToEng[categorydata[i]]!)
+        }
+        SocketIOManager.shared.match_emitSubscribe(rooms: rooms, section: ["Bibong"], category: categorykor)
+        
+      }
       .onAppear {
         if let mytoken = naverLogin.loginInstance?.accessToken {
           SocketIOManager.shared.establishConnection(token: mytoken)
@@ -193,7 +160,7 @@ struct DeliveryView: View {
               DispatchQueue.main.async {
                 if SocketIOManager.shared.socket.status == SocketIOStatus.connected {
                   print(SocketIOStatus.connected)
-                  SocketIOManager.shared.match_emitSubscribe(rooms: rooms, section: ["Nare", "Bibong"], category: ["korean"])
+                  SocketIOManager.shared.match_emitSubscribe(rooms: rooms, section: sections, category: categorys)
                   SocketIOManager.shared.match_onArrive(rooms: rooms)
                   SocketIOManager.shared.room_onChat()
                   
@@ -212,7 +179,15 @@ struct DeliveryView: View {
     }
 }
 
-
+func categoryMapping(flags: [Bool]) -> [String] {
+  var mapping: [String] = []
+  for index in flags.indices {
+    if flags[index] {
+      mapping.append(categorys[index])
+    }
+  }
+  return mapping
+}
 
 struct Delivery_Previews: PreviewProvider {
     static var previews: some View {
@@ -226,5 +201,4 @@ struct Delivery_Previews: PreviewProvider {
 enum Tabs {
     case FirstTab
     case SecondTab
-    case ThirdTab
 }

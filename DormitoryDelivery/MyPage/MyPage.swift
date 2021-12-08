@@ -19,10 +19,13 @@ struct MyPage: View {
     
       VStack{
         Text("마이페이지")
-          .frame(height: 50)
+          .font(.system(size: 21))
+          .padding([.leading, .top])
+          .foregroundColor(Color.black)
+          .frame(width: UIScreen.main.bounds.size.width, height: 50, alignment: .leading)
           .onAppear {
             print(chatdata.chatlist.count)
-            print(chatdata.chatlist)
+            print(chatdata.chatlist[0])
           }
         Divider()
         

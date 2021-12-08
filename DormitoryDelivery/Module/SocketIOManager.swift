@@ -60,6 +60,7 @@ class SocketIOManager:NSObject {
   
   func match_onArrive(rooms:RoomData) {
     print("On 시작")
+    SocketIOManager.shared.matchSocket.off("new-arrive")
     SocketIOManager.shared.matchSocket.on("new-arrive") { (dataArray, ack) in
         do {
           let data = try JSONSerialization.data(withJSONObject: dataArray[0], options: .prettyPrinted)
@@ -108,12 +109,10 @@ class SocketIOManager:NSObject {
       }
   }
   
+  func room_emitChat(rid: String, text: String) {
+    SocketIOManager.shared.roomSocket.emitWithAck("chat", text).timingOut(after: 2, callback: { (data) in
+    })
+  }
   
-}
-
-
-
-func chatemit (text: String) {
-  SocketIOManager.shared.roomSocket.emitWithAck("chat", text).timingOut(after: 2, callback: { (data) in
-  })
+  
 }
