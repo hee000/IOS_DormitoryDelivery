@@ -25,7 +25,7 @@ struct MyPage: View {
           .frame(width: UIScreen.main.bounds.size.width, height: 50, alignment: .leading)
           .onAppear {
             print(chatdata.chatlist.count)
-            print(chatdata.chatlist[0])
+            print(chatdata.chatlist)
           }
         Divider()
         

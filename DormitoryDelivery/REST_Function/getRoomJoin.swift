@@ -8,7 +8,7 @@
 import Foundation
 import Alamofire
 
-func getRoomJoin(matchid: String, token: String) {
+func getRoomJoin(matchid: String, token: String, title: String) {
   let url = roomjoin(matchId: matchid)
   let req = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: ["Authorization": token])
   req.response { response in

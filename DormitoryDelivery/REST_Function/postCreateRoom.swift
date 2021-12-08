@@ -8,7 +8,8 @@
 import Foundation
 import Alamofire
 
-func postCreateRoom(shopName: String, shopLink: String, category: String, section: String, deliveryPriceAtLeast: Int, token: String){
+func postCreateRoom(shopName: String, shopLink: String, category: String, section: String, deliveryPriceAtLeast: Int, token: String) -> String{
+  print("방만들기 시도")
   let createkey = createroomdata(shopName: shopName, shopLink: shopLink, category: category, section: section, deliveryPriceAtLeast: deliveryPriceAtLeast)
   let url = createroomposturl
   var request = URLRequest(url: URL(string: url)!)
@@ -22,7 +23,7 @@ func postCreateRoom(shopName: String, shopLink: String, category: String, sectio
   } catch {
       print("http Body Error")
   }
-
+  var returnrid = ""
   AF.request(request).responseJSON { (response) in
     switch response.result {
     case .success(let value):
@@ -34,7 +35,10 @@ func postCreateRoom(shopName: String, shopLink: String, category: String, sectio
           let chatroomopen = ChatDB()
           if let rid = idvalue as? String {
             chatroomopen.rid = rid
+            chatroomopen.title = shopName
             addChatting(chatroomopen)
+            returnrid = rid
+            
           }
         }
       }
@@ -43,4 +47,5 @@ func postCreateRoom(shopName: String, shopLink: String, category: String, sectio
         print("🚫 Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
     }
   }
+  return returnrid
 }

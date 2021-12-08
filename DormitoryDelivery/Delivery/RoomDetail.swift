@@ -13,6 +13,7 @@ import RealmSwift
 struct RoomDetail: View {
   @EnvironmentObject var naverLogin: NaverLogin
   @EnvironmentObject var detaildata: RoomDetailData
+  @State var isActive = false
   var matchid : String
   
   
@@ -24,26 +25,29 @@ struct RoomDetail: View {
           Text(detaildata.data!.category)
           Text(detaildata.data!.shopName)
           Text(detaildata.data!.shopLink)
+            .onAppear {
+              print(self.matchid)
+            }
           
           Text(String(detaildata.data!.atLeast))
           Text(String(detaildata.data!.participants))
           
           
-          Button {
-            if let mytoken = naverLogin.loginInstance?.accessToken {
-              getRoomJoin(matchid: self.matchid, token: mytoken)
+          ZStack{
+            Button {
+              if let mytoken = naverLogin.loginInstance?.accessToken {
+                getRoomJoin(matchid: self.matchid, token: mytoken, title:self.detaildata.data!.shopName)
+              }
+              self.isActive = true
+            } label: {
+              Text("조인")
             }
-          } label: {
-            Text("조인")
+            NavigationLink(destination: ChattingView(Id_room: self.detaildata.data!.id), isActive: $isActive) {EmptyView().hidden()}.hidden()
           }
-
       
-          Button(action: {
-          }) {
-            NavigationLink(destination: ChattingView(Id_room: "33")) {
-            Text("Button")
-            }
-          }
+          
+            
+            
         }
 
         

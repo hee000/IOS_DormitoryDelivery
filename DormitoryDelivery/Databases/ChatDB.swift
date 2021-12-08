@@ -19,6 +19,7 @@ import Combine
 class ChatDB: Object, Decodable {
 
   @objc dynamic var rid: String?
+  @objc dynamic var title: String?
   var messages = List<ChatMessageDetail>()
 
 
@@ -28,6 +29,7 @@ class ChatDB: Object, Decodable {
 
   private enum CodingKeys: String, CodingKey {
       case rid = "rid"
+      case title = "title"
       case messages = "messages"
   }
 

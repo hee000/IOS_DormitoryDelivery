@@ -31,7 +31,7 @@ class RoomData: ObservableObject {
 
 
 struct roomdetaildata: Codable {
-  var id: String
+  var id: String  // 룸 아이디
   var shopName: String
   var category: String
   var section: String

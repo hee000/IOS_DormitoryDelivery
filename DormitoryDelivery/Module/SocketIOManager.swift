@@ -77,8 +77,8 @@ class SocketIOManager:NSObject {
     print("쳇온")
     SocketIOManager.shared.roomSocket.off("chat")
     SocketIOManager.shared.roomSocket.on("chat") { (dataArray, ack) in
-
-      
+      print(dataArray)
+      print(ack)
       do {
         var jsonResult = dataArray[0] as? Dictionary<String, AnyObject>
         if let messages = jsonResult?["messages"] as? NSArray {
@@ -92,8 +92,6 @@ class SocketIOManager:NSObject {
           try! realm.write {
             chatroom?.messages.append(json)
           }
-
-          
         }
         
         let data = try! JSONSerialization.data(withJSONObject: dataArray[0], options: .prettyPrinted)
@@ -110,7 +108,10 @@ class SocketIOManager:NSObject {
   }
   
   func room_emitChat(rid: String, text: String) {
-    SocketIOManager.shared.roomSocket.emitWithAck("chat", text).timingOut(after: 2, callback: { (data) in
+    print("채팅전송")
+    let chatEmitData = chatEmitData(roomId: rid, message: text)
+    SocketIOManager.shared.roomSocket.emitWithAck("chat", chatEmitData).timingOut(after: 2, callback: { (data) in
+      print(data)
     })
   }
   

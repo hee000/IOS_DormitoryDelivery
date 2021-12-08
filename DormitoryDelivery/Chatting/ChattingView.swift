@@ -1,121 +1,3 @@
-////
-////  Join.swift
-////  DormitoryDelivery
-////
-////  Created by cch on 2021/11/16.
-////
-//
-//import SwiftUI
-//import Foundation
-//import Combine
-//
-//
-//
-//
-////struct ReceivingChatMessage: Decodable, Identifiable {
-////  let date: Date
-////  let id: UUID
-////  let message: String
-////}
-//
-//
-//
-//
-//
-//
-//struct ChattingView: View {
-//  @EnvironmentObject var chatdata: ChatData
-//
-//  var myuserid : String = "test"
-//  var Id_room: String
-//  @State private var mymessage = "input"
-//
-//
-//
-//
-//
-//
-//    var body: some View {
-//
-//      VStack {
-//        ScrollView {
-//          VStack{
-//            HStack{
-//              Text(chatdata.chatlist[0].messages[2].body!.username!)
-//              Text(chatdata.chatlist[0].messages[2].type!)
-//              Text(chatdata.chatlist[0].messages[0].body!.userid!)
-//              Text(chatdata.chatlist[0].messages[0].body!.message!)
-//              Text(chatdata.chatlist[0].messages[0].id!)
-//
-//
-//            }
-//          }
-//        }
-//
-//        // Message field.
-//        HStack {
-//          TextField("Message", text: $mymessage) // 2
-//            .padding(10)
-//            .background(Color.secondary.opacity(0.2))
-//            .cornerRadius(5)
-//
-//
-//          Button(action: {
-//
-//            chatemit(text: mymessage)
-//
-//
-//          }) { // 3
-//            Image(systemName: "arrowshape.turn.up.right")
-//              .font(.system(size: 20))
-//          }
-//          .padding(.trailing)
-//          .disabled(mymessage.isEmpty) // 4
-//        }
-//        .padding(.leading)
-//
-//      }
-//
-//    }
-//}
-//
-//struct Join_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ChattingView(Id_room: "14")
-//    }
-//}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //
 //  Join.swift
 //  DormitoryDelivery
@@ -128,26 +10,12 @@ import Foundation
 import Combine
 
 
-
-
-//struct ReceivingChatMessage: Decodable, Identifiable {
-//  let date: Date
-//  let id: UUID
-//  let message: String
-//}
-
-
-
-
-
-
 struct ChattingView: View {
   @EnvironmentObject var chatdata: ChatData
 
   var myuserid : String = "test"
   var Id_room: String
   @State private var mymessage = "input"
-
 
 
 
@@ -166,6 +34,7 @@ struct ChattingView: View {
         ScrollView {
           ScrollViewReader { proxy in // 1
             LazyVStack(spacing: 0) {
+              if !chatdata.chatlist.isEmpty{
               ForEach(chatdata.chatlist[0].messages.indices, id: \.self) { index in
                    let ridIdx = chatdata.chatlist[0].rid
                    let mid = chatdata.chatlist[0].messages[index].id
@@ -213,11 +82,13 @@ struct ChattingView: View {
 //                .padding()
 
 
+                }
               }
             }
-            .onChange(of: chatdata.chatlist[0].messages.count) { _ in // 3
-              scrollToLastMessage(proxy: proxy)
-            }
+//            .onChange(of: chatdata.chatlist[0].messages.count) { _ in // 3
+//              scrollToLastMessage(proxy: proxy)
+//            }
+            
           }
         }
 

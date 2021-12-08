@@ -11,6 +11,7 @@ import Foundation
 import RealmSwift
 
 struct DeliveryView: View {
+  
   @EnvironmentObject var rooms: RoomData
   @EnvironmentObject var chatlist: ChatData
   @EnvironmentObject var naverLogin: NaverLogin

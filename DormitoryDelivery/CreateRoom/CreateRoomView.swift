@@ -23,6 +23,8 @@ struct CreateRoomView: View {
   @State var category: String = "korean"
   @State var section = 0
   
+  @State var rid = ""
+  
 
     var body: some View {
       
@@ -72,7 +74,7 @@ struct CreateRoomView: View {
               Button(action: {
                 if let mytoken = naverLogin.loginInstance?.accessToken {
                   if let price = Int(self.deliveryPriceAtLeast) {
-                    postCreateRoom(shopName: self.shopName, shopLink: self.shopLink, category: self.category, section: sectionNameEng[self.section], deliveryPriceAtLeast: price, token: mytoken)
+                    self.rid = postCreateRoom(shopName: self.shopName, shopLink: self.shopLink, category: self.category, section: sectionNameEng[self.section], deliveryPriceAtLeast: price, token: mytoken)
                   }
                 }
                 self.isActive = true
@@ -80,7 +82,7 @@ struct CreateRoomView: View {
               }) {
                   Text("만들기")
               }
-          NavigationLink(destination: ChattingView(Id_room: "34"), isActive: $isActive) {EmptyView().hidden()}.hidden()
+            NavigationLink(destination: ChattingView(Id_room: self.rid), isActive: $isActive) {EmptyView().hidden()}.hidden()
           }
         }
 
