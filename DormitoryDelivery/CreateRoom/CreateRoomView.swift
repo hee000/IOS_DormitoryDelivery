@@ -19,9 +19,9 @@ struct CreateRoomView: View {
 
   @State var isActive = false
   @State var userId: String = "sadasd"
-  @State var shopName: String = "asdasd"
-  @State var deliveryPriceAtLeast: String = "133"
-  @State var shopLink: String = "123123"
+  @State var shopName: String = "노브랜드버거_안성석성점"
+  @State var deliveryPriceAtLeast: String = "12000"
+  @State var shopLink: String = "링크"
   @State var category: String = "korean"
   @State var section = 0
   
@@ -101,14 +101,21 @@ struct CreateRoomView: View {
         print(newValue)
         print("=====================================")
       })
-//      .onTapGesture {
-//            self.endTextEditing()
-//      }
-//      .navigationBarTitle(Text("방 만들기 폼")) //this must be empty
-////        .navigationBarHidden(true)
-      ///
-      .navigationTitle("")
-      .navigationBarHidden(true)
+      .navigationBarTitleDisplayMode(.inline)
+      .toolbar {
+          ToolbarItem(placement: .principal) {
+              HStack {
+                  Image(systemName: "sun.min.fill")
+                  Text("Title").font(.headline)
+                Spacer()
+                Text("방 개설")
+                Spacer()
+                Text("asd")
+              }
+            
+          }}
+//    .navigationBarHidden(true)
+
     }
   
   

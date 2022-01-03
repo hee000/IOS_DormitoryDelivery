@@ -28,29 +28,34 @@ struct DeliveryView: View {
   
     var body: some View {
         VStack{
-          VStack(alignment: .leading){
-            HStack() {
-
-              Menu(self.mysection) {
-                ForEach(0 ..< sections.count, id: \.self) { index in
-                  Button(action: {
-                    self.mysection = sections[index]
-                  }) {
-                    Text(sections[index])
-                  }
-
-                }
-              }
-              .font(.system(size: 21))
-              .foregroundColor(Color.black)
-              .padding(.leading)
-              .padding(.top)
-                
-              Spacer()
-          }
           
-          Divider()
-          Spacer()
+          VStack(alignment: .leading){
+
+//              Menu(self.mysection) {
+//                ForEach(0 ..< sections.count, id: \.self) { index in
+//                  Button(action: {
+//                    self.mysection = sections[index]
+//                  }) {
+//                    Text(sections[index])
+//                  }
+//
+//                }
+//              }
+//              .navigatitrfedsadonBarTitle("전체 메뉴")
+//              .font(.system(size: 21))
+//              .foregroundColor(Color.black)
+//              .padding(.leading)
+//              .padding(.top)
+                
+//              Image("스크린샷 2021-12-09 07.24.59")
+//                .resizable()
+//                .scaledToFit()
+              
+//              Spacer()
+          
+          
+//          Divider()
+//          Spacer()
 
           HStack{
             
@@ -114,6 +119,7 @@ struct DeliveryView: View {
                   ScrollView(){
                     VStack(spacing: 2) {
                       ForEach(rooms.data!.data.indices, id: \.self) { index in
+//                        NavigationLink(destination: RoomDetail(matchid: rooms.data!.data[index].id, purchaserName: rooms.data!.data[index].purchaserName, createdAt: rooms.data!.data[index].createdAt)) {
                     RoomCard(deliveryTitle: rooms.data!.data[index].shopName,
                              deliveryZone: rooms.data!.data[index].section,
                                  deliveryPayTip: rooms.data!.data[index].priceAtLeast,
@@ -121,7 +127,9 @@ struct DeliveryView: View {
                                  deliveryId: rooms.data!.data[index].id,
                                  purchaserName: rooms.data!.data[index].purchaserName,
                                  createdAt: rooms.data!.data[index].createdAt )
-                      }
+//              }
+                      
+                    }
                     }
                   }
                 }
@@ -139,8 +147,36 @@ struct DeliveryView: View {
 
         }
       }
-      .navigationBarTitle("") //this must be empty
-      .navigationBarHidden(true)
+      .navigationBarTitleDisplayMode(.inline)
+      .toolbar {
+          ToolbarItem(placement: .principal) {
+              HStack {
+                Menu(self.mysection) {
+                                ForEach(0 ..< sections.count, id: \.self) { index in
+                                  Button(action: {
+                                    self.mysection = sections[index]
+                                  }) {
+                                    Text(sections[index])
+                                  }
+                
+                                }
+                              }
+//                              .navigatitrfedsadonBarTitle("전체 메뉴")
+//                              .font(.system(size: 21))
+//                              .foregroundColor(Color.black)
+//                              .padding(.leading)
+//                              .padding(.top)
+                Spacer()
+                Button {
+                  print("gkgk")
+                } label: {
+                  Text("버튼")
+                }
+              }}}
+
+    
+      
+      
       .onChange(of: flags) { newValue in
         var categorydata = categoryMapping(flags: newValue)
         var categorykor : [String] = []
@@ -156,23 +192,24 @@ struct DeliveryView: View {
         }
                 
 
-        DispatchQueue.global(qos: .default).async {
-           while true {
-              DispatchQueue.main.async {
-                if SocketIOManager.shared.socket.status == SocketIOStatus.connected {
-                  print(SocketIOStatus.connected)
-                  SocketIOManager.shared.match_emitSubscribe(rooms: rooms, section: sections, category: categorys)
-                  SocketIOManager.shared.match_onArrive(rooms: rooms)
-                  SocketIOManager.shared.room_onChat()
-                  
-                }
-              }
-             if SocketIOManager.shared.socket.status == SocketIOStatus.connected {
-                break
-              }
-              sleep(1)
-           }
-        }
+//        DispatchQueue.global(qos: .default).async {
+//           while true {
+//              DispatchQueue.main.async {
+//                if SocketIOManager.shared.socket.status == SocketIOStatus.connected {
+//                  print(SocketIOStatus.connected)
+//                  SocketIOManager.shared.match_emitSubscribe(rooms: rooms, section: sections, category: categorys)
+//                  SocketIOManager.shared.match_onArrive(rooms: rooms)
+//                  SocketIOManager.shared.room_onChat()
+//
+//                }
+//              }
+//             if SocketIOManager.shared.socket.status == SocketIOStatus.connected {
+//               print("지연브레이크")
+//                break
+//              }
+//              sleep(1)
+//           }
+//        }
         
       }
      

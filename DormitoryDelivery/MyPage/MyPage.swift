@@ -55,8 +55,7 @@ struct MyPage: View {
         
         Spacer()
       }
-      .navigationTitle("")
-      .navigationBarHidden(true)
+      .navigationTitle("마이페이지")
     }
 }
 

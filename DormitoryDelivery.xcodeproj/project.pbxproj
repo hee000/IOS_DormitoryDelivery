@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		2B3D521B3533FEE0A8A4E829 /* Pods_DormitoryDelivery.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E8B9CEFF718CF6B412D748A6 /* Pods_DormitoryDelivery.framework */; };
+		DA12BE7227613BE800C08143 /* chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA12BE7127613BE800C08143 /* chat.swift */; };
+		DA12BE7427613C0500C08143 /* scrollview.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA12BE7327613C0500C08143 /* scrollview.swift */; };
+		DA12BE7627613C1A00C08143 /* bubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA12BE7527613C1A00C08143 /* bubble.swift */; };
+		DA12BE7A276156A300C08143 /* oder.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA12BE79276156A300C08143 /* oder.swift */; };
+		DA3D1CF2278322210096BA88 /* tabhidden.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA3D1CF1278322210096BA88 /* tabhidden.swift */; };
 		DA4D2D1E27422FE300678FA8 /* DormitoryDeliveryApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4D2D1D27422FE300678FA8 /* DormitoryDeliveryApp.swift */; };
 		DA4D2D2027422FE300678FA8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4D2D1F27422FE300678FA8 /* ContentView.swift */; };
 		DA4D2D2527422FE500678FA8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA4D2D2427422FE500678FA8 /* Preview Assets.xcassets */; };
@@ -51,6 +56,11 @@
 /* Begin PBXFileReference section */
 		736BA1325AD7A59AFCD0C77A /* Pods-DormitoryDelivery.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DormitoryDelivery.release.xcconfig"; path = "Target Support Files/Pods-DormitoryDelivery/Pods-DormitoryDelivery.release.xcconfig"; sourceTree = "<group>"; };
 		8266E739250669536F01CDAC /* Pods-DormitoryDelivery.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DormitoryDelivery.debug.xcconfig"; path = "Target Support Files/Pods-DormitoryDelivery/Pods-DormitoryDelivery.debug.xcconfig"; sourceTree = "<group>"; };
+		DA12BE7127613BE800C08143 /* chat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = chat.swift; sourceTree = "<group>"; };
+		DA12BE7327613C0500C08143 /* scrollview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = scrollview.swift; sourceTree = "<group>"; };
+		DA12BE7527613C1A00C08143 /* bubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = bubble.swift; sourceTree = "<group>"; };
+		DA12BE79276156A300C08143 /* oder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = oder.swift; sourceTree = "<group>"; };
+		DA3D1CF1278322210096BA88 /* tabhidden.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tabhidden.swift; sourceTree = "<group>"; };
 		DA4D2D1A27422FE300678FA8 /* DormitoryDelivery.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DormitoryDelivery.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA4D2D1D27422FE300678FA8 /* DormitoryDeliveryApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DormitoryDeliveryApp.swift; sourceTree = "<group>"; };
 		DA4D2D1F27422FE300678FA8 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -121,6 +131,17 @@
 				736BA1325AD7A59AFCD0C77A /* Pods-DormitoryDelivery.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		DA12BE7027613BDA00C08143 /* chatets */ = {
+			isa = PBXGroup;
+			children = (
+				DA12BE7127613BE800C08143 /* chat.swift */,
+				DA3D1CF1278322210096BA88 /* tabhidden.swift */,
+				DA12BE7327613C0500C08143 /* scrollview.swift */,
+				DA12BE7527613C1A00C08143 /* bubble.swift */,
+			);
+			path = chatets;
 			sourceTree = "<group>";
 		};
 		DA4D2D1127422FE300678FA8 = {
@@ -194,6 +215,7 @@
 				DAC4528327603A5400D05BB0 /* HashTag.swift */,
 				DAB5E9932743906400EF5B6A /* RoomCard.swift */,
 				DAFF71D2275D60D600A45D29 /* RoomDetail.swift */,
+				DA12BE79276156A300C08143 /* oder.swift */,
 			);
 			path = Delivery;
 			sourceTree = "<group>";
@@ -256,6 +278,7 @@
 		DAFF71B6275D576500A45D29 /* TEST */ = {
 			isa = PBXGroup;
 			children = (
+				DA12BE7027613BDA00C08143 /* chatets */,
 				DAE94524274654A9000C8D3D /* TEST.swift */,
 				DAFF71C8275D5A1700A45D29 /* 각종 모아두기.swift */,
 				DA9702B9275C8CC700BB8B53 /* hashtag.swift */,
@@ -407,6 +430,7 @@
 				DAC252D2275B4E0100EA2BFD /* LoginView.swift in Sources */,
 				DAC45275275FEBA400D05BB0 /* postCreateRoom.swift in Sources */,
 				DA4D2D2027422FE300678FA8 /* ContentView.swift in Sources */,
+				DA12BE7227613BE800C08143 /* chat.swift in Sources */,
 				DA4D2D1E27422FE300678FA8 /* DormitoryDeliveryApp.swift in Sources */,
 				DA9702BA275C8CC700BB8B53 /* hashtag.swift in Sources */,
 				DAB5E9942743906400EF5B6A /* RoomCard.swift in Sources */,
@@ -414,12 +438,15 @@
 				DAFF71D1275D5FF900A45D29 /* SectionCategoryData.swift in Sources */,
 				DAC4527E2760190600D05BB0 /* 디비_비우기.swift in Sources */,
 				DAE945272746560E000C8D3D /* SocketIOManager.swift in Sources */,
+				DA12BE7A276156A300C08143 /* oder.swift in Sources */,
 				DAFF71D3275D60D600A45D29 /* RoomDetail.swift in Sources */,
 				DAFF71C3275D58A300A45D29 /* UserData.swift in Sources */,
 				DAB5E992274374E100EF5B6A /* ChattingView.swift in Sources */,
 				DAC4528427603A5400D05BB0 /* HashTag.swift in Sources */,
+				DA12BE7627613C1A00C08143 /* bubble.swift in Sources */,
 				DABCFE632743B0F500B89781 /* CreateRoomView.swift in Sources */,
 				DAFF71D5275DBEE900A45D29 /* ServerUrl.swift in Sources */,
+				DA3D1CF2278322210096BA88 /* tabhidden.swift in Sources */,
 				DAC252DA275B551B00EA2BFD /* Loading.swift in Sources */,
 				DAC45273275FEAAF00D05BB0 /* getRoomJoin.swift in Sources */,
 				DAE94525274654A9000C8D3D /* TEST.swift in Sources */,
@@ -427,6 +454,7 @@
 				DAFF71D7275DD50200A45D29 /* DateCheck.swift in Sources */,
 				DAFF71C1275D589D00A45D29 /* RoomData.swift in Sources */,
 				DAB5E99027436B9B00EF5B6A /* DeliveryView.swift in Sources */,
+				DA12BE7427613C0500C08143 /* scrollview.swift in Sources */,
 				DAF616D8275E3FE50011C508 /* getRoomDetail.swift in Sources */,
 				DAC45266275F522B00D05BB0 /* ChatDB.swift in Sources */,
 			);

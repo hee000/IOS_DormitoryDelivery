@@ -1,4 +1,26 @@
 //
+//  SwiftUIView.swift
+//  DormitoryDelivery
+//
+//  Created by cch on 2021/12/09.
+//
+
+import SwiftUI
+
+struct SwiftUIView: View {
+    var body: some View {
+        Chat()
+    }
+}
+
+//struct SwiftUIView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        SwiftUIView()
+//    }
+//}
+
+
+//
 //  Join.swift
 //  DormitoryDelivery
 //
@@ -54,9 +76,9 @@ struct ChattingView: View {
                    let message = roomdb.messages[index].body?.message
                    let idx = roomdb.messages[index].idx
                    let at = roomdb.messages[index].at
-                
+
                   MessageCard(ridIdx: ridIdx, mid: mid, type: type, action: action, data: data, userid: userid, username: username, message: message, idx: idx, at: at, index: index, RoomDB: RoomDB)
-              
+
 
 
                 }
@@ -65,12 +87,17 @@ struct ChattingView: View {
              .onChange(of: RoomDB?.messages.count ?? 0) { _ in // 3
               scrollToLastMessage(proxy: proxy)
             }
-            
+
           }
         }.frame(width: UIScreen.main.bounds.size.width)
-        
+
         Spacer()
         // Message field.
+        HStack {
+          Text("주문서 작성")
+        }
+        .background(Color(.sRGB, red: 0/255, green: 0/255, blue: 0/255, opacity: 0.3))
+        
         HStack {
           TextField("Message", text: $mymessage) // 2
             .padding(10)
@@ -93,6 +120,19 @@ struct ChattingView: View {
         .padding(.leading)
 
       }
+      .navigationBarTitleDisplayMode(.inline)
+      .toolbar {
+          ToolbarItem(placement: .principal) {
+              HStack {
+                  Image(systemName: "sun.min.fill")
+                  Text("Title").font(.headline)
+                Spacer()
+                Button {
+                  print("gkgk")
+                } label: {
+                  Text("채팅방")
+                }
+              }}}
 
     }
 }

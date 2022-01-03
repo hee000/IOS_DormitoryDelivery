@@ -25,8 +25,10 @@ struct RoomCard: View {
   
   
     var body: some View {
+//      NavigationLink(destination: RoomDetail(matchid: self.deliveryId, createdAt: createdAt)) {
       HStack{
-        NavigationLink(destination: RoomDetail(matchid: self.deliveryId)) {
+//        NavigationLink(destination: RoomDetail(matchid: self.deliveryId, purchaserName: self.purchaserName, createdAt: self.createdAt)) {
+        NavigationLink(destination: ChatView()) {
         VStack(spacing: 2){
           HStack{ //타이틀, 업체명
             VStack(alignment: .leading, spacing: 3){
@@ -96,9 +98,12 @@ struct RoomCard: View {
         }
         
         
-    }
+//    }
       .padding()
+          
+        }//이게 네비게이션
   }
+//      }
 //      .frame(height: 119)
 //      .padding()
       .background(Color(.sRGB,red: 245/255, green: 245/255, blue: 251/255, opacity: 1))
@@ -107,7 +112,6 @@ struct RoomCard: View {
 //        RoundedRectangle(cornerRadius: 0)
 //          .stroke(Color(.sRGB,red: 245/255, green: 245/255, blue: 251/255, opacity: 1), lineWidth: 0)
 //      )
-
   }
   
 }

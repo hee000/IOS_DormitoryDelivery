@@ -22,7 +22,8 @@ struct ChatCard: View {
   
     var body: some View {
       HStack{
-        NavigationLink(destination: ChattingView(RoomDB: roomidtodbconnect(rid: self.roomid), Id_room: self.roomid)) {
+//        NavigationLink(destination: ChattingView(RoomDB: self.RoomDB, Id_room: self.roomid)) {
+        NavigationLink(destination: Chat(RoomChat: self.RoomDB)) {
           Image(systemName: "person.circle.fill")
             .resizable()
             .scaledToFit()
