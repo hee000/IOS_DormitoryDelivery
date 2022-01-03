@@ -16,7 +16,7 @@ struct HashTag: View {
         Button {
           self.flag[tag].toggle()
         } label: {
-          Text(categorys[tag])
+          Text(category[tag])
             .fontWeight(.black)
             .padding(EdgeInsets(top: 8, leading: 12, bottom: 8, trailing: 12))
             .overlay(RoundedRectangle(cornerRadius: 21).stroke(Color(.sRGB, red: 93/255, green: 95/255, blue: 235/255, opacity: 1), lineWidth: 1.5))
@@ -25,7 +25,7 @@ struct HashTag: View {
         Button {
           self.flag[tag].toggle()
         } label: {
-          Text(categorys[tag])
+          Text(category[tag])
             .foregroundColor(Color.gray)
             .padding(EdgeInsets(top: 8, leading: 12, bottom: 8, trailing: 12))
             .overlay(RoundedRectangle(cornerRadius: 21).stroke(Color.gray, lineWidth: 1.5))

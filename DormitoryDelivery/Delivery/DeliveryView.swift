@@ -19,43 +19,14 @@ struct DeliveryView: View {
   @State var selectedTab = Tabs.FirstTab
   
   
-  @State var flags = Array(repeating: false, count: categorys.count)
-  
-  let category = ["한식", "중식", "일식", "양식", "돼지고기", "치킨", "피자", "떡", "페스트푸드"]
-  let sections = ["전체", "창조", "나래", "호연", "비봉"]
-  
+  @State var flags = Array(repeating: false, count: category.count)
   @State var mysection = "전체"
   
+
     var body: some View {
         VStack{
           
           VStack(alignment: .leading){
-
-//              Menu(self.mysection) {
-//                ForEach(0 ..< sections.count, id: \.self) { index in
-//                  Button(action: {
-//                    self.mysection = sections[index]
-//                  }) {
-//                    Text(sections[index])
-//                  }
-//
-//                }
-//              }
-//              .navigatitrfedsadonBarTitle("전체 메뉴")
-//              .font(.system(size: 21))
-//              .foregroundColor(Color.black)
-//              .padding(.leading)
-//              .padding(.top)
-                
-//              Image("스크린샷 2021-12-09 07.24.59")
-//                .resizable()
-//                .scaledToFit()
-              
-//              Spacer()
-          
-          
-//          Divider()
-//          Spacer()
 
           HStack{
             
@@ -161,11 +132,6 @@ struct DeliveryView: View {
                 
                                 }
                               }
-//                              .navigatitrfedsadonBarTitle("전체 메뉴")
-//                              .font(.system(size: 21))
-//                              .foregroundColor(Color.black)
-//                              .padding(.leading)
-//                              .padding(.top)
                 Spacer()
                 Button {
                   print("gkgk")
@@ -221,7 +187,7 @@ func categoryMapping(flags: [Bool]) -> [String] {
   var mapping: [String] = []
   for index in flags.indices {
     if flags[index] {
-      mapping.append(categorys[index])
+      mapping.append(category[index])
     }
   }
   return mapping
