@@ -13,7 +13,7 @@ struct Chat: View {
     @EnvironmentObject var naverLogin: NaverLogin
     @State var chatme = ""
     @State var RoomChat : ChatDB?
-    
+  var roomid: String
     var body: some View {
 //      let _ = print(chatdata.chatlist)
 //      let _ = print(chatdata.chatlist.count)
@@ -64,41 +64,34 @@ struct Chat: View {
                       
                       
                     }
-                }.padding(.top)
+                } //scrollview
                 //MARK:- text editor
                 HStack {
                     ZStack {
-                        TextEditor(text: $model.text)
+                        TextEditor(text: $chatme)
                         RoundedRectangle(cornerRadius: 10)
                             .stroke()
                             .foregroundColor(.gray)
                     }.frame(height: 50)
                     
                     Button("send") {
-                        if model.text != "" {
-                            model.position = model.position == BubblePosition.right ? BubblePosition.left : BubblePosition.right
-                            model.arrayOfPositions.append(model.position)
-                            model.arrayOfMessages.append(model.text)
-                            model.text = ""
+                      if self.chatme != "" {
+                          SocketIOManager.shared.room_emitChat(rid: self.roomid, text: self.chatme)
+                          self.chatme = ""
                         }
                     }
                 }.padding()
-            }
-          
+            }//vstack
           
             .navigationBarTitleDisplayMode(.inline)
+            .navigationBarTitle("채팅방이름")
             .toolbar {
-                ToolbarItem(placement: .principal) {
-                    HStack {
-                      Text("채팅방")
-    
-                      Spacer()
-                      Button {
-                        print("gkgk")
-                      } label: {
-                        Text("버튼")
-                      }
-                    }}}
-        }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                  Button("햄버거"){
+                    print("햄버거작동")
+                  }
+                }
+            }
+        } //geo
         }
 }

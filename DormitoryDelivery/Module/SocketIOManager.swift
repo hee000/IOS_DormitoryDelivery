@@ -26,6 +26,11 @@ class SocketIOManager:NSObject {
       socket.connect(withPayload: ["token": token])
       matchSocket.connect(withPayload: ["token": token])
       roomSocket.connect(withPayload: ["token": token])
+    
+//    socket.on("connect") { data, ack in
+//            socket.emit("connectWithNewId", UsersViewController.nickname)
+//    }
+    
     }
 
     func closeConnection(){

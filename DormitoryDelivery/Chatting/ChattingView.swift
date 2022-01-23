@@ -7,11 +7,11 @@
 
 import SwiftUI
 
-struct SwiftUIView: View {
-    var body: some View {
-        Chat()
-    }
-}
+//struct SwiftUIView: View {
+//    var body: some View {
+//        Chat()
+//    }
+//}
 
 //struct SwiftUIView_Previews: PreviewProvider {
 //    static var previews: some View {

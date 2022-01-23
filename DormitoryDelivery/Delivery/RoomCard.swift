@@ -25,10 +25,8 @@ struct RoomCard: View {
   
   
     var body: some View {
-//      NavigationLink(destination: RoomDetail(matchid: self.deliveryId, createdAt: createdAt)) {
       HStack{
 //        NavigationLink(destination: RoomDetail(matchid: self.deliveryId, purchaserName: self.purchaserName, createdAt: self.createdAt)) {
-        NavigationLink(destination: ChatView()) {
         VStack(spacing: 2){
           HStack{ //타이틀, 업체명
             VStack(alignment: .leading, spacing: 3){
@@ -36,7 +34,6 @@ struct RoomCard: View {
                 .font(.system(size: 15))
                 .foregroundColor(Color.gray)
               Text(self.deliveryTitle)
-//                .font(.custom("AppleSDGothicNeoEB00-Regular",size: 18))
                 .font(.system(size: 18))
                 .foregroundColor(Color.black)
                 .fontWeight(.heavy)
@@ -51,15 +48,11 @@ struct RoomCard: View {
               HStack(spacing: 2){
                 Image(systemName: "person.circle.fill")
                   .foregroundColor(Color(.sRGB, red: 180/255, green: 200/255, blue: 255/255, opacity: 1))
-//                  .font(.system(size: 12))
+
                 Text(self.purchaserName)
                   .font(.system(size: 12))
                   .foregroundColor(Color.gray)
                 
-                
-//                var interval = self.now.timeIntervalSince(Date(timeIntervalSince1970: TimeInterval(self.createdAt)/1000))
-                
-//                String(Int((datecheck.nowDate.timeIntervalSince(Date(timeIntervalSince1970: TimeInterval(self.createdAt)/1000))) / 60))
                 Text(String(Int((datecheck.nowDate.timeIntervalSince(Date(timeIntervalSince1970: TimeInterval(self.createdAt)/1000))) / 60)))
                   .font(.system(size: 10))
                   .foregroundColor(Color.gray)
@@ -93,25 +86,10 @@ struct RoomCard: View {
                               .resizable()
                               .frame(width: 123, height: 28))
             }
-
-
-        }
-        
-        
-//    }
+        } //v
       .padding()
-          
-        }//이게 네비게이션
-  }
-//      }
-//      .frame(height: 119)
-//      .padding()
+  } //h
       .background(Color(.sRGB,red: 245/255, green: 245/255, blue: 251/255, opacity: 1))
-//      .cornerRadius(10)
-//      .overlay(
-//        RoundedRectangle(cornerRadius: 0)
-//          .stroke(Color(.sRGB,red: 245/255, green: 245/255, blue: 251/255, opacity: 1), lineWidth: 0)
-//      )
   }
   
 }

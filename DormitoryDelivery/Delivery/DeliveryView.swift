@@ -90,7 +90,7 @@ struct DeliveryView: View {
                   ScrollView(){
                     VStack(spacing: 2) {
                       ForEach(rooms.data!.data.indices, id: \.self) { index in
-//                        NavigationLink(destination: RoomDetail(matchid: rooms.data!.data[index].id, purchaserName: rooms.data!.data[index].purchaserName, createdAt: rooms.data!.data[index].createdAt)) {
+                        NavigationLink(destination: RoomDetailView(matchid: rooms.data!.data[index].id, purchaserName: rooms.data!.data[index].purchaserName, createdAt: rooms.data!.data[index].createdAt)) {
                     RoomCard(deliveryTitle: rooms.data!.data[index].shopName,
                              deliveryZone: rooms.data!.data[index].section,
                                  deliveryPayTip: rooms.data!.data[index].priceAtLeast,
@@ -98,7 +98,7 @@ struct DeliveryView: View {
                                  deliveryId: rooms.data!.data[index].id,
                                  purchaserName: rooms.data!.data[index].purchaserName,
                                  createdAt: rooms.data!.data[index].createdAt )
-//              }
+              }
                       
                     }
                     }
@@ -155,31 +155,14 @@ struct DeliveryView: View {
       .onAppear {
         if let mytoken = naverLogin.loginInstance?.accessToken {
           SocketIOManager.shared.establishConnection(token: mytoken)
+          SocketIOManager.shared.socket.on("connect") { data, ack in
+            SocketIOManager.shared.match_emitSubscribe(rooms: rooms, section: sections, category: category)
+            SocketIOManager.shared.match_onArrive(rooms: rooms)
+            SocketIOManager.shared.room_onChat()
+          }
         }
-                
-
-//        DispatchQueue.global(qos: .default).async {
-//           while true {
-//              DispatchQueue.main.async {
-//                if SocketIOManager.shared.socket.status == SocketIOStatus.connected {
-//                  print(SocketIOStatus.connected)
-//                  SocketIOManager.shared.match_emitSubscribe(rooms: rooms, section: sections, category: categorys)
-//                  SocketIOManager.shared.match_onArrive(rooms: rooms)
-//                  SocketIOManager.shared.room_onChat()
-//
-//                }
-//              }
-//             if SocketIOManager.shared.socket.status == SocketIOStatus.connected {
-//               print("지연브레이크")
-//                break
-//              }
-//              sleep(1)
-//           }
-//        }
         
       }
-     
-      //뷰끝
     }
 }
 

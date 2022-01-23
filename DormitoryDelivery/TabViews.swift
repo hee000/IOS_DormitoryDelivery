@@ -82,77 +82,103 @@ import SwiftUI
 struct TabViews: View {
 
   @State var tabSelect = 0
+  @State var createRoomSelect = false
+  @State var tabSelectTmp = 0
 
   var body: some View {
     NavigationView {
-      TabView(selection: $tabSelect) {
-        DeliveryView()
-          .tabItem {
-          if self.tabSelect == 0 {
-//            Label("홈", image: "대지 8 사본")
-            Label("", image: "23424")
-          } else {
-//            Label("홈", image: "대지 8 사본 5")
-            Label("", image: "대지 8 사본 5")
+      ZStack{
+        TabView(selection: $tabSelect) {
+          DeliveryView()
+            .tabItem {
+            if self.tabSelect == 0 {
+              Label("", image: "23424")
+            } else {
+              Label("", image: "대지 8 사본 5")
+            }
           }
+          .tag(0)
+
+          Text("").tabItem {
+            if self.tabSelect == 1 {
+              Label("개설", image: "대지 8 사본 3")
+            } else {
+              Label("", image: "대지 8 사본 7")
+            }
+          }.tag(1)
+
+          ChatView().tabItem {
+            if self.tabSelect == 2 {
+              Label("채팅", image: "대지 8")
+            } else {
+              Label("", image: "대지 8 사본 4")
+            }
+          }.tag(2)
+
+          MyPage().tabItem {
+            if self.tabSelect == 3 {
+              Label("마이", image: "대지 8 사본 2")
+            } else {
+              Label("", image: "대지 8 사본 6")
+            }
+          }.tag(3)
+        } //tabview
+        if self.createRoomSelect {
+          CreateRoomView(createRoomSelect: $createRoomSelect, tabSelect: $tabSelect)
+            .transition(.move(edge: .bottom))
         }
-        .tag(0)
-
-        CreateRoomView().tabItem {
-          if self.tabSelect == 1 {
-            Label("개설", image: "대지 8 사본 3")
-          } else {
-//            Label("개설", image: "대지 8 사본 7")
-            Label("", image: "대지 8 사본 7")
-          }
-        }.tag(1)
-
-        ChatView().tabItem {
-          if self.tabSelect == 2 {
-            Label("채팅", image: "대지 8")
-          } else {
-//            Label("채팅", image: "대지 8 사본 4")
-            Label("", image: "대지 8 사본 4")
-          }
-        }.tag(2)
-
-        MyPage().tabItem {
-          if self.tabSelect == 3 {
-            Label("마이", image: "대지 8 사본 2")
-          } else {
-//            Label("마이", image: "대지 8 사본 6")
-            Label("", image: "대지 8 사본 6")
-          }
-        }.tag(3)
-      }
+      } // zstack
       
-      
-      
-//      .navigationBarTitleDisplayMode(.inline)
+      .onChange(of: self.tabSelect, perform: { newValue in
+        if newValue == 1 {
+          withAnimation {
+            self.createRoomSelect.toggle()
+          }
+        } else {
+          self.tabSelectTmp = newValue
+        }
+      })
+      .navigationBarTitleDisplayMode(.inline)
       .toolbar {
-        ToolbarItem(placement: .principal) {
-          HStack {
-              if self.tabSelect == 0 {
-                Text("전체")
-                  .bold()
-                  .font(.title)
-                Spacer()
-              } else if self.tabSelect == 1 {
-                Text("방 개설")
-                  .bold()
-              } else if self.tabSelect == 2 {
-                Text("채팅")
-                  .bold()
-              } else {
-              Text("마이 페이지")
-                  .bold()
-              }
+        ToolbarItem(placement: .navigationBarLeading) {
+          if self.tabSelect == 0 {
+            Text("전체")
+              .bold()
+              .font(.title)
           }
         }
-      }
+        
+        ToolbarItem(placement: .principal) {
+          if self.tabSelect == 1 {
+            Text("방 만들기")
+              .bold()
+          } else if self.tabSelect == 2 {
+            Text("채팅")
+              .bold()
+          } else if self.tabSelect == 3 {
+          Text("마이 페이지")
+              .bold()
+          }
+        }
+        
+        
+        ToolbarItem(placement: .navigationBarTrailing) {
+          if self.tabSelect == 1{
+            Button(action: {
+              withAnimation {
+                self.createRoomSelect.toggle()
+              }
+              self.tabSelect = self.tabSelectTmp
+            }) {
+              Text("X")
+            }
+          }
+        }
+        
+      } //toolbar
       
-  }
-      .accentColor(Color(.sRGB, red: 112/255, green: 52/255, blue: 255/255, opacity: 1))
+    } //navigationview
+    .accentColor(Color(.sRGB, red: 112/255, green: 52/255, blue: 255/255, opacity: 1))
 
   }
 }

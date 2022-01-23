@@ -8,9 +8,9 @@
 import Foundation
 import Alamofire
 
-func postCreateRoom(shopName: String, shopLink: String, category: String, section: String, deliveryPriceAtLeast: Int, token: String){
+func postCreateRoom(createRoomData: CreateRoom, section: String, deliveryPriceAtLeast: Int, token: String){
   print("방만들기 시도")
-  let createkey = createroomdata(shopName: shopName, shopLink: shopLink, category: category, section: section, deliveryPriceAtLeast: deliveryPriceAtLeast)
+  let createkey = createroomdata(shopName: createRoomData.shopName, shopLink: createRoomData.shopLink, category: createRoomData.category, section: section, deliveryPriceAtLeast: deliveryPriceAtLeast)
   let url = createroomposturl
   var request = URLRequest(url: URL(string: url)!)
   request.httpMethod = "POST"
@@ -35,8 +35,9 @@ func postCreateRoom(shopName: String, shopLink: String, category: String, sectio
           let chatroomopen = ChatDB()
           if let rid = idvalue as? String {
             chatroomopen.rid = rid
-            chatroomopen.title = shopName
+            chatroomopen.title = createRoomData.shopName
             addChatting(chatroomopen)
+            createRoomData.rid = rid
           }
         }
       }

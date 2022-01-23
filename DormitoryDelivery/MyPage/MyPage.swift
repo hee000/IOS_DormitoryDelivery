@@ -33,7 +33,7 @@ struct MyPage: View {
             let users = realm.objects(ChatDB.self) // 기본키 사용
             let user = realm.object(ofType: ChatDB.self, forPrimaryKey: "1")
 //            print(user?.messages.indices)
-            print(users)
+            print(users[0].messages.count)
 
 //            print(parents.)
 //            print(self.item)

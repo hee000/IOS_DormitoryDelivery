@@ -6,53 +6,34 @@
 //
 
 import SwiftUI
-import SocketIO
-import Alamofire
 
 struct CreateRoomView: View {
   @EnvironmentObject var naverLogin: NaverLogin
-  @EnvironmentObject var chatdata: ChatData
-
+  @Binding var createRoomSelect: Bool
+  @Binding var tabSelect: Int
+  @ObservedObject var createRoomData: CreateRoom = CreateRoom()
   
-  
-  var socket: SocketIOClient! = SocketIOManager.shared.socket
-
-  @State var isActive = false
-  @State var userId: String = "sadasd"
-  @State var shopName: String = "노브랜드버거_안성석성점"
-  @State var deliveryPriceAtLeast: String = "12000"
-  @State var shopLink: String = "링크"
-  @State var category: String = "korean"
-  @State var section = 0
-  
-  @State var rid = ""
-  
-
     var body: some View {
       
       VStack{
-//        Text("방 만들기 폼").frame(height: 50)
-//        Divider()
-        Spacer()
-        
         Form{
           Section(header: Text("가게이름")){
-            TextField("가게이름", text: $shopName)
+            TextField("가게이름", text: $createRoomData.shopName)
               .keyboardType(.default)
           }
           
           Section(header: Text("shopLink")){
-            TextField("shopLink", text: $shopLink)
+            TextField("shopLink", text: $createRoomData.shopLink)
               .keyboardType(.default)
           }
         
           Section(header: Text("카테고리")){
-            TextField("카테고리", text: $category)
+            TextField("카테고리", text: $createRoomData.category)
               .keyboardType(.default)
           }
 
           Section(header: Text("배달지역")){
-              Picker("배달존",selection: $section){
+            Picker("배달존",selection: $createRoomData.section){
 //                ForEach(self.deliveryZone, id: \.self) { index in
                   ForEach( 0  ..< sectionNameEng.count ){
                     
@@ -66,110 +47,30 @@ struct CreateRoomView: View {
               }.pickerStyle(SegmentedPickerStyle())
           }
         
-
           Section(header: Text("가격22")){
-            TextField("deliveryPriceAtLeast", text: $deliveryPriceAtLeast)
+            TextField("deliveryPriceAtLeast", text: $createRoomData.deliveryPriceAtLeast)
               .keyboardType(.phonePad)
           }
+          
           
           ZStack{
               Button(action: {
                 if let mytoken = naverLogin.loginInstance?.accessToken {
-                  if let price = Int(self.deliveryPriceAtLeast) {
-                    postCreateRoom2(shopName: self.shopName, shopLink: self.shopLink, category: self.category, section: sectionNameEng[self.section], deliveryPriceAtLeast: price, token: mytoken)
+                  if let price = Int(createRoomData.deliveryPriceAtLeast) {
+                    postCreateRoom(createRoomData: createRoomData, section: sectionNameEng[createRoomData.section], deliveryPriceAtLeast: price, token: mytoken)
                   }
                 }
-//                print("네비 바꾸기전")
-//                print(self.rid)
-//                self.isActive = true
-//                print(self.rid)
-//                print("네비 바꾼 이후")
               }) {
                   Text("만들기")
               }
-            NavigationLink(destination: ChattingView(RoomDB: roomidtodbconnect(rid: self.rid), Id_room: self.rid), isActive: $isActive) {EmptyView().hidden()}.hidden()
+            NavigationLink(destination: ChattingView(RoomDB: roomidtodbconnect(rid: createRoomData.rid), Id_room: createRoomData.rid), isActive: $createRoomData.isActive) {EmptyView().hidden()}.hidden()
           }
-        }
-
-        Spacer()
-      }
-      .onChange(of: rid, perform: { newValue in
-        print("=====================================")
-        print(self.rid)
-        self.isActive = true
-        isActive = true
-        print(newValue)
-        print("=====================================")
+        } //form
+      } //vstack
+      .onChange(of: createRoomData.rid, perform: { newValue in
+        createRoomData.isActive = true
+        self.createRoomSelect = false
+        self.tabSelect = 2
       })
-      .navigationBarTitleDisplayMode(.inline)
-      .toolbar {
-          ToolbarItem(placement: .principal) {
-              HStack {
-                  Image(systemName: "sun.min.fill")
-                  Text("Title").font(.headline)
-                Spacer()
-                Text("방 개설")
-                Spacer()
-                Text("asd")
-              }
-            
-          }}
-//    .navigationBarHidden(true)
-
-    }
-  
-  
-  func postCreateRoom2(shopName: String, shopLink: String, category: String, section: String, deliveryPriceAtLeast: Int, token: String){
-    print("방만들기 시도")
-    let createkey = createroomdata(shopName: shopName, shopLink: shopLink, category: category, section: section, deliveryPriceAtLeast: deliveryPriceAtLeast)
-    let url = createroomposturl
-    var request = URLRequest(url: URL(string: url)!)
-    request.httpMethod = "POST"
-    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-    request.timeoutInterval = 10
-    request.allHTTPHeaderFields = (["Authorization": token])
-    
-    do {
-        try request.httpBody = JSONEncoder().encode(createkey)
-    } catch {
-        print("http Body Error")
-    }
-    
-    AF.request(request).responseJSON { (response) in
-      switch response.result {
-      case .success(let value):
-  //      print("방 생성 성공")
-  //      print(value)
-  //      print("=======")
-        if let id = value as? [String: Any] {
-          if let idvalue = id["id"] {
-            let chatroomopen = ChatDB()
-            if let rid = idvalue as? String {
-              chatroomopen.rid = rid
-              chatroomopen.title = shopName
-              addChatting(chatroomopen)
-              self.rid = rid
-            }
-          }
-        }
-
-      case .failure(let error):
-          print("🚫 Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
-      }
-    }
-  }
-
-}
-
-//extension CreateRoom {
-//  func endTextEditing() {
-//    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder),
-//                                    to: nil, from: nil, for: nil)
-//  }
-//}
-
-struct CreateRoom_Previews: PreviewProvider {
-    static var previews: some View {
-        CreateRoomView()
-    }
+    } //body
 }
