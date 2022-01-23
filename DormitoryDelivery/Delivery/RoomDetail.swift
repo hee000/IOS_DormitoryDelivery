@@ -7,3 +7,10 @@
 
 import Foundation
 
+class RoomDetail: ObservableObject {
+
+  @Published var isActive = false
+  @Published var matchid: String = ""
+  @Published var purchaserName: String = ""
+  @Published var createdAt: Int = 0
+}

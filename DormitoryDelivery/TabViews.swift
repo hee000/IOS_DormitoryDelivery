@@ -78,15 +78,17 @@
 //
 
 import SwiftUI
+import RealmSwift
 
 struct TabViews: View {
+  @EnvironmentObject var chatdata: ChatData
 
   @State var tabSelect = 0
   @State var createRoomSelect = false
   @State var tabSelectTmp = 0
 
   var body: some View {
-    NavigationView {
+//    NavigationView {
       ZStack{
         TabView(selection: $tabSelect) {
           DeliveryView()
@@ -173,11 +175,21 @@ struct TabViews: View {
               Text("X")
             }
           }
+          else if self.tabSelect == 2 {
+            Button("삭제"){
+              let realm = try! Realm()
+              try! realm.write({
+                let a = realm.objects(ChatDB.self)
+                realm.delete(a[0])
+              })
+
+            }
+          }
         }
         
       } //toolbar
       
-    } //navigationview
+//    } //navigationview
     .accentColor(Color(.sRGB, red: 112/255, green: 52/255, blue: 255/255, opacity: 1))
 
   }

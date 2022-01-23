@@ -105,6 +105,8 @@ class ChatMessageDetailBodyData: Object, Decodable, ObjectKeyIdentifiable {
 
 final class ChatData: ObservableObject {
   @Published var chatlist: [ChatDB]
+  @Published var leaveroomrid: String = ""
+
   private var chatsToken: NotificationToken?
 
 
@@ -128,7 +130,6 @@ final class ChatData: ObservableObject {
     chatsToken?.invalidate()
   }
 }
-
 
 func addChatting(_ result : ChatDB) {
   DispatchQueue(label: "background").async {

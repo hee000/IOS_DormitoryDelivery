@@ -12,6 +12,12 @@ import RealmSwift
 import SocketIO
 
 
+//class NaviChat: ObservableObject {
+//  @Published var isActive = false
+//  @Published var naviRid: String = ""
+//  @Published var naviRoomDB: ChatDB? = nil
+//}
+
 struct ChatRoom: Codable, Identifiable {
   let id: UUID      // vid를 의미
   let message: String //

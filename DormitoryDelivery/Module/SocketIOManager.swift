@@ -85,6 +85,7 @@ class SocketIOManager:NSObject {
 //      print(dataArray)
 //      print(ack)
       do {
+        print("뭐가 오긴함")
         var jsonResult = dataArray[0] as? Dictionary<String, AnyObject>
         if let messages = jsonResult?["messages"] as? NSArray {
           let message = try! JSONSerialization.data(withJSONObject: messages.firstObject!, options: .prettyPrinted)

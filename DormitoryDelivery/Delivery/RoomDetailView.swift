@@ -12,16 +12,10 @@ import RealmSwift
 
 struct RoomDetailView: View {
   @EnvironmentObject var naverLogin: NaverLogin
-  @EnvironmentObject var detaildata: RoomDetailData
   @EnvironmentObject var datecheck: DateCheck
-  
-  @State var isActived = false
-  var matchid : String
-  var purchaserName : String
-  @State var createdAt: Int
-  
-  @State var injoin = false
-  
+  @ObservedObject var detaildata: RoomDetailData = RoomDetailData()
+  @State var roomdata: roomdata
+
   
     var body: some View {
       VStack{
@@ -33,10 +27,10 @@ struct RoomDetailView: View {
               .frame(width: 30, height: 30)
               .foregroundColor(Color(.sRGB, red: 180/255, green: 200/255, blue: 255/255, opacity: 1))
               .padding(.leading)
-            Text(purchaserName)
+            Text(self.roomdata.purchaserName)
             Spacer()
             Text(detaildata.data!.section)
-            Text(String(Int((datecheck.nowDate.timeIntervalSince(Date(timeIntervalSince1970: TimeInterval(self.createdAt)/1000))) / 60)) + "분전")
+            Text(String(Int((datecheck.nowDate.timeIntervalSince(Date(timeIntervalSince1970: TimeInterval(self.roomdata.createdAt)/1000))) / 60)) + "분전")
               .padding(.trailing)
               .foregroundColor(Color.gray)
           }
@@ -99,7 +93,7 @@ struct RoomDetailView: View {
           ZStack{
             Button {
               if let mytoken = naverLogin.loginInstance?.accessToken {
-                getRoomJoin2(matchid: self.matchid, token: mytoken, title:detaildata.data!.shopName, rid: detaildata.data!.id)
+                getRoomJoin(matchid: self.roomdata.id, token: mytoken, title:detaildata.data!.shopName, rid: detaildata.data!.id, detaildata: detaildata)
               }
               
             } label: {
@@ -112,69 +106,29 @@ struct RoomDetailView: View {
                 .overlay(Text("참여하기")
                           .bold()
                           .foregroundColor(Color.white))
-//              Text("참여하기")
-//                .foregroundColor(Color.white)
-////                .padding(EdgeInsets(top: 0, leading: 100, bottom: 0, trailing: 100))
-//                .frame(width: 350, height: 50)
-//                .background(Color.blue)
             }
-            NavigationLink(destination: ChattingView(RoomDB: roomidtodbconnect(rid: detaildata.data!.id), Id_room: detaildata.data!.id), isActive: $isActived) {EmptyView().hidden()}.hidden()
-          }
+            
+            NavigationLink(destination: Chat(RoomChat: roomidtodbconnect(rid: detaildata.data!.id), roomid: detaildata.data!.id), isActive: $detaildata.isActive) {
+            }.hidden()
+            
+          } // zstack
           
             
         }
         Spacer()
       }
-      .navigationBarTitleDisplayMode(.inline)
-      .toolbar {
-          ToolbarItem(placement: .principal) {
-              HStack {
-                Spacer()
-                  Text("상세정보창").font(.headline)
-                  .padding(.trailing)
-                Spacer()
-                
-              }}}
+
 
 
       .onAppear {
         print("조인시작")
         if let mytoken = naverLogin.loginInstance?.accessToken {
-          getRoomDetail(matchid: self.matchid, token: mytoken, detaildata: detaildata)
+          getRoomDetail(matchid: self.roomdata.id, token: mytoken, detaildata: detaildata)
         }
       }
-      .onChange(of: injoin, perform: { newValue in
-        print("조인성겅")
-        self.isActived = true
-        isActived = true
-        print("조인성겅")
-      })
         
     }
-  
-  func getRoomJoin2(matchid: String, token: String, title: String, rid: String) {
-    print("조인시작")
-    let url = roomjoin(matchId: matchid)
-    let req = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: ["Authorization": token])
-    req.response { response in
-      print(response)
-      do {
-        if response.response?.statusCode == 200 {
-            let chatroomopen = ChatDB()
-            chatroomopen.rid = rid
-          chatroomopen.title = title
-  //          let realm = try! Realm()
-  //          try! realm.write({
-  //            realm.add(chatroomopen)
-  //          })
-            addChatting(chatroomopen)
-          self.injoin = true
-        }
-      } catch {
-        print(error)
-      }
-    }
-  }
+
   
 }
 

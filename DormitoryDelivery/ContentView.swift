@@ -26,43 +26,17 @@ struct ContentView: View {
           .edgesIgnoringSafeArea(.all)
 
       } else {
-//            if datecheck.startAction() { }
-
-//                if naverLogin.loginInstance!.isValidAccessTokenExpireTimeNow() {
-//                  Signup()
-//                } else {
-//                  Loading()
-//                    .onAppear {
-//                      naverLogin.loginInstance?.requestAccessTokenWithRefreshToken()
-//                  }
-//                }
-//      }
-
-
-//      if !naverLogin.isLoggedIn {
-//        LoginView()
-//          .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
-//          .edgesIgnoringSafeArea(.all)
-//
-//      } else {
-//                  TabViews()
-//                    .onAppear {
-//                      datecheck.startAction()
-//                    }
-//
-
-
-//        if naverLogin.loginInstance!.isValidAccessTokenExpireTimeNow() {
+//        NavigationView{
+//          NavigationLink(destination: naviTEXT()){
+//            Text("테스트")
+//          }
+//        }
+        NavigationView{
           TabViews()
+        }
             .onAppear {
               datecheck.startAction()
             }
-//        } else {
-//          Loading()
-//            .onAppear {
-//              naverLogin.loginInstance?.requestAccessTokenWithRefreshToken()
-//          }
-//        }
       }
 
 

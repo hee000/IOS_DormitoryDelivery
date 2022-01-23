@@ -42,4 +42,5 @@ struct roomdetaildata: Codable {
 
 class RoomDetailData: ObservableObject {
   @Published var data: roomdetaildata? = nil
+  @Published var isActive = false
 }

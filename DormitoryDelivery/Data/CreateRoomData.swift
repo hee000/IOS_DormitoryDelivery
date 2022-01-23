@@ -16,3 +16,11 @@ struct createroomdata: Codable {
   var section: String             // 배달 지역
   var deliveryPriceAtLeast: Int   // 최소 주문 금액
 }
+
+
+struct addmenu: Codable {
+  var name: String            // 이름
+  var quantity: Int            // 개수
+  var description: String            // 내용
+  var price: Int             // 가격
+}

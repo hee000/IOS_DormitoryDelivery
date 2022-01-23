@@ -17,10 +17,11 @@ enum BubblePosition {
 
 
 class ChatModel: ObservableObject {
-    var text = ""
-    @Published var arrayOfMessages : [String] = ["123123", "123123123"]
-    @Published var arrayOfPositions : [BubblePosition] = [BubblePosition.right, BubblePosition.left]
-    @Published var position = BubblePosition.right
+    @Published var text = ""
+    @Published var showMenu = false
+    @Published var leave = false
+    @Published var oderview = false
+    @Published var oderlistview = false
 }
 
 

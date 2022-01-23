@@ -8,7 +8,7 @@
 import Foundation
 import Alamofire
 
-func getRoomJoin(matchid: String, token: String, title: String, rid: String) {
+func getRoomJoin(matchid: String, token: String, title: String, rid: String, detaildata: RoomDetailData) {
   let url = roomjoin(matchId: matchid)
   let req = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: ["Authorization": token])
   req.response { response in
@@ -22,6 +22,7 @@ func getRoomJoin(matchid: String, token: String, title: String, rid: String) {
 //            realm.add(chatroomopen)
 //          })
           addChatting(chatroomopen)
+        detaildata.isActive.toggle()
       }
     } catch {
       print(error)

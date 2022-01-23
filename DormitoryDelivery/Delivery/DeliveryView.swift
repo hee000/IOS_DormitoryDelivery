@@ -90,7 +90,7 @@ struct DeliveryView: View {
                   ScrollView(){
                     VStack(spacing: 2) {
                       ForEach(rooms.data!.data.indices, id: \.self) { index in
-                        NavigationLink(destination: RoomDetailView(matchid: rooms.data!.data[index].id, purchaserName: rooms.data!.data[index].purchaserName, createdAt: rooms.data!.data[index].createdAt)) {
+                        NavigationLink(destination: RoomDetailView(roomdata: rooms.data!.data[index])) {
                     RoomCard(deliveryTitle: rooms.data!.data[index].shopName,
                              deliveryZone: rooms.data!.data[index].section,
                                  deliveryPayTip: rooms.data!.data[index].priceAtLeast,

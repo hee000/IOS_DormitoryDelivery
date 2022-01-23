@@ -33,7 +33,8 @@ struct MyPage: View {
             let users = realm.objects(ChatDB.self) // 기본키 사용
             let user = realm.object(ofType: ChatDB.self, forPrimaryKey: "1")
 //            print(user?.messages.indices)
-            print(users[0].messages.count)
+//            print(users)
+            print(chatdata.chatlist)
 
 //            print(parents.)
 //            print(self.item)
@@ -44,6 +45,14 @@ struct MyPage: View {
                               
           }
         Divider()
+        
+//        Button(action: {
+//          if let mytoken = naverLogin.loginInstance?.accessToken {
+//            getRoomLeave(rid: "5", token: mytoken)
+//          }
+//        }) {
+//            Label("채팅 나가기", image: "arrow.right.square")
+//        }
         
         Spacer()
         
