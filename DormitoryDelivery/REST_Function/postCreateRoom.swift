@@ -35,6 +35,7 @@ func postCreateRoom(createRoomData: CreateRoom, section: String, deliveryPriceAt
           let chatroomopen = ChatDB()
           if let rid = idvalue as? String {
             chatroomopen.rid = rid
+            chatroomopen.superid = UserDefaults.standard.string(forKey: "MyID")!
             chatroomopen.title = createRoomData.shopName
             addChatting(chatroomopen)
             createRoomData.rid = rid

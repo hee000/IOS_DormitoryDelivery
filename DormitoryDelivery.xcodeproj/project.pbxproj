@@ -12,6 +12,11 @@
 		DA12BE7427613C0500C08143 /* scrollview.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA12BE7327613C0500C08143 /* scrollview.swift */; };
 		DA12BE7627613C1A00C08143 /* bubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA12BE7527613C1A00C08143 /* bubble.swift */; };
 		DA12BE7A276156A300C08143 /* OderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA12BE79276156A300C08143 /* OderView.swift */; };
+		DA3C0177279ED5510090202E /* postOderFix.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA3C0176279ED5510090202E /* postOderFix.swift */; };
+		DA3C0179279EE5C90090202E /* OderCheckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA3C0178279EE5C90090202E /* OderCheckView.swift */; };
+		DA3C017B279EED000090202E /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA3C017A279EED000090202E /* ImagePicker.swift */; };
+		DA3C017D279F1BBE0090202E /* OderListCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA3C017C279F1BBE0090202E /* OderListCard.swift */; };
+		DA3C017F279F38380090202E /* KeyBoardState.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA3C017E279F38380090202E /* KeyBoardState.swift */; };
 		DA3D1CF2278322210096BA88 /* tabhidden.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA3D1CF1278322210096BA88 /* tabhidden.swift */; };
 		DA4D2D1E27422FE300678FA8 /* DormitoryDeliveryApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4D2D1D27422FE300678FA8 /* DormitoryDeliveryApp.swift */; };
 		DA4D2D2027422FE300678FA8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4D2D1F27422FE300678FA8 /* ContentView.swift */; };
@@ -70,6 +75,11 @@
 		DA12BE7327613C0500C08143 /* scrollview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = scrollview.swift; sourceTree = "<group>"; };
 		DA12BE7527613C1A00C08143 /* bubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = bubble.swift; sourceTree = "<group>"; };
 		DA12BE79276156A300C08143 /* OderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OderView.swift; sourceTree = "<group>"; };
+		DA3C0176279ED5510090202E /* postOderFix.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = postOderFix.swift; sourceTree = "<group>"; };
+		DA3C0178279EE5C90090202E /* OderCheckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OderCheckView.swift; sourceTree = "<group>"; };
+		DA3C017A279EED000090202E /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		DA3C017C279F1BBE0090202E /* OderListCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OderListCard.swift; sourceTree = "<group>"; };
+		DA3C017E279F38380090202E /* KeyBoardState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBoardState.swift; sourceTree = "<group>"; };
 		DA3D1CF1278322210096BA88 /* tabhidden.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tabhidden.swift; sourceTree = "<group>"; };
 		DA4D2D1A27422FE300678FA8 /* DormitoryDelivery.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DormitoryDelivery.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA4D2D1D27422FE300678FA8 /* DormitoryDeliveryApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DormitoryDeliveryApp.swift; sourceTree = "<group>"; };
@@ -157,8 +167,12 @@
 			isa = PBXGroup;
 			children = (
 				DA12BE7127613BE800C08143 /* chat.swift */,
+				DA3C0178279EE5C90090202E /* OderCheckView.swift */,
+				DA3C017A279EED000090202E /* ImagePicker.swift */,
+				DA3C017E279F38380090202E /* KeyBoardState.swift */,
 				DA518AD6279D798600291CA0 /* ChatSideMenu.swift */,
 				DA518AE0279DECB300291CA0 /* OderListView.swift */,
+				DA3C017C279F1BBE0090202E /* OderListCard.swift */,
 				DA3D1CF1278322210096BA88 /* tabhidden.swift */,
 				DA12BE7327613C0500C08143 /* scrollview.swift */,
 				DA12BE7527613C1A00C08143 /* bubble.swift */,
@@ -272,6 +286,7 @@
 				DA518ADA279D965400291CA0 /* getRoomLeave.swift */,
 				DA518AE2279DED4000291CA0 /* getMenuList.swift */,
 				DA518AE4279DF04500291CA0 /* getReady.swift */,
+				DA3C0176279ED5510090202E /* postOderFix.swift */,
 			);
 			path = REST_Function;
 			sourceTree = "<group>";
@@ -465,6 +480,7 @@
 				DAC252D2275B4E0100EA2BFD /* LoginView.swift in Sources */,
 				DAC45275275FEBA400D05BB0 /* postCreateRoom.swift in Sources */,
 				DA4D2D2027422FE300678FA8 /* ContentView.swift in Sources */,
+				DA3C017F279F38380090202E /* KeyBoardState.swift in Sources */,
 				DA12BE7227613BE800C08143 /* chat.swift in Sources */,
 				DA4D2D1E27422FE300678FA8 /* DormitoryDeliveryApp.swift in Sources */,
 				DA9702BA275C8CC700BB8B53 /* hashtag.swift in Sources */,
@@ -476,6 +492,7 @@
 				DA12BE7A276156A300C08143 /* OderView.swift in Sources */,
 				DAFF71D3275D60D600A45D29 /* RoomDetailView.swift in Sources */,
 				DAFF71C3275D58A300A45D29 /* UserData.swift in Sources */,
+				DA3C0177279ED5510090202E /* postOderFix.swift in Sources */,
 				DAB5E992274374E100EF5B6A /* ChattingView.swift in Sources */,
 				DA518AE5279DF04500291CA0 /* getReady.swift in Sources */,
 				DAC4528427603A5400D05BB0 /* HashTag.swift in Sources */,
@@ -483,6 +500,7 @@
 				DABCFE632743B0F500B89781 /* CreateRoomView.swift in Sources */,
 				DAFF71D5275DBEE900A45D29 /* ServerUrl.swift in Sources */,
 				DA3D1CF2278322210096BA88 /* tabhidden.swift in Sources */,
+				DA3C0179279EE5C90090202E /* OderCheckView.swift in Sources */,
 				DAC252DA275B551B00EA2BFD /* Loading.swift in Sources */,
 				DA518AD7279D798600291CA0 /* ChatSideMenu.swift in Sources */,
 				DA518AD32798F70F00291CA0 /* CreateRoom.swift in Sources */,
@@ -492,10 +510,12 @@
 				DAFF71D7275DD50200A45D29 /* DateCheck.swift in Sources */,
 				DAFF71C1275D589D00A45D29 /* RoomData.swift in Sources */,
 				DAB5E99027436B9B00EF5B6A /* DeliveryView.swift in Sources */,
+				DA3C017D279F1BBE0090202E /* OderListCard.swift in Sources */,
 				DA518AD9279D936B00291CA0 /* naviTEXT.swift in Sources */,
 				DA12BE7427613C0500C08143 /* scrollview.swift in Sources */,
 				DAF616D8275E3FE50011C508 /* getRoomDetail.swift in Sources */,
 				DA518AE1279DECB300291CA0 /* OderListView.swift in Sources */,
+				DA3C017B279EED000090202E /* ImagePicker.swift in Sources */,
 				DAC45266275F522B00D05BB0 /* ChatDB.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

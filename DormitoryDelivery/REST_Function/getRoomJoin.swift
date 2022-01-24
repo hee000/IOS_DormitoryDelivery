@@ -16,6 +16,7 @@ func getRoomJoin(matchid: String, token: String, title: String, rid: String, det
       if response.response?.statusCode == 200 {
           let chatroomopen = ChatDB()
           chatroomopen.rid = rid
+        chatroomopen.superid = detaildata.data?.shopLink
         chatroomopen.title = title
 //          let realm = try! Realm()
 //          try! realm.write({

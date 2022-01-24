@@ -19,7 +19,11 @@ import Combine
 class ChatDB: Object, ObjectKeyIdentifiable, Decodable{
 
   @objc dynamic var rid: String?
+  @objc dynamic var superid: String?
+  @objc dynamic var state: ChatState? = ChatState()
   @objc dynamic var title: String?
+  var menu = List<String>()
+  @objc dynamic var ready: Bool = false
   var messages = List<ChatMessageDetail>()
 
 
@@ -41,6 +45,10 @@ class ChatDB: Object, ObjectKeyIdentifiable, Decodable{
   }
 }
 
+class ChatState: Object{
+    @objc dynamic var allready: Bool = false
+    @objc dynamic var oderfix: Bool = false
+}
 
 class ChatMessageDetail: Object, Decodable,ObjectKeyIdentifiable {
     @objc dynamic var id: String?
@@ -105,7 +113,6 @@ class ChatMessageDetailBodyData: Object, Decodable, ObjectKeyIdentifiable {
 
 final class ChatData: ObservableObject {
   @Published var chatlist: [ChatDB]
-  @Published var leaveroomrid: String = ""
 
   private var chatsToken: NotificationToken?
 

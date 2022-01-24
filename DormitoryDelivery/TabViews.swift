@@ -140,20 +140,27 @@ struct TabViews: View {
           self.tabSelectTmp = newValue
         }
       })
+    
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
         ToolbarItem(placement: .navigationBarLeading) {
-          if self.tabSelect == 0 {
+          if self.createRoomSelect == true {
+            
+          } else if self.tabSelect == 0 {
             Text("전체")
-              .bold()
-              .font(.title)
+          } else if self.tabSelect == 2 {
+
+          } else if self.tabSelect == 3 {
+
           }
         }
         
         ToolbarItem(placement: .principal) {
-          if self.tabSelect == 1 {
+          if self.createRoomSelect == true {
             Text("방 만들기")
               .bold()
+          } else if self.tabSelect == 0 {
+            
           } else if self.tabSelect == 2 {
             Text("채팅")
               .bold()
@@ -165,25 +172,21 @@ struct TabViews: View {
         
         
         ToolbarItem(placement: .navigationBarTrailing) {
-          if self.tabSelect == 1{
+          if self.createRoomSelect == true {
             Button(action: {
               withAnimation {
                 self.createRoomSelect.toggle()
               }
               self.tabSelect = self.tabSelectTmp
             }) {
-              Text("X")
+              Image(systemName: "xmark")
             }
-          }
-          else if self.tabSelect == 2 {
-            Button("삭제"){
-              let realm = try! Realm()
-              try! realm.write({
-                let a = realm.objects(ChatDB.self)
-                realm.delete(a[0])
-              })
+          } else if self.tabSelect == 0 {
 
-            }
+          } else if self.tabSelect == 2 {
+
+          } else if self.tabSelect == 3 {
+            
           }
         }
         

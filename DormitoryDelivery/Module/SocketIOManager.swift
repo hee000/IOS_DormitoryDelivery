@@ -93,12 +93,17 @@ class SocketIOManager:NSObject {
   //          print(String(data: messages, encoding: .utf8)!)
           let json = try JSONDecoder().decode(ChatMessageDetail.self, from: message)
           
+              
           let realm = try! Realm()
 //           print(type(of: jsonResult!["rid"]!))
           let chatroom = realm.object(ofType: ChatDB.self, forPrimaryKey: jsonResult!["rid"]!)    /// 수정 필요
           try! realm.write {
             chatroom?.messages.append(json)
+            if json.body?.action == "order-fixed" {
+              chatroom?.state?.oderfix = true
+            }
           }
+          
         }
         
         let data = try! JSONSerialization.data(withJSONObject: dataArray[0], options: .prettyPrinted)

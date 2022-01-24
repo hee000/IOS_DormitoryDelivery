@@ -22,6 +22,7 @@ class ChatModel: ObservableObject {
     @Published var leave = false
     @Published var oderview = false
     @Published var oderlistview = false
+    @Published var odercheck = false
 }
 
 
@@ -42,23 +43,6 @@ struct ChatBubble<Content>: View where Content: View {
     }
     
     var body: some View {
-//        HStack(spacing: 0 ) {
-//            content()
-//                .padding(.all, 15)
-//                .foregroundColor(Color.white)
-//                .background(color)
-//                .clipShape(RoundedRectangle(cornerRadius: 18))
-//                .overlay(
-//                    Image(systemName: "arrowtriangle.left.fill")
-//                        .foregroundColor(color)
-//                        .rotationEffect(Angle(degrees: position == .left ? -50 : -130))
-//                        .offset(x: position == .left ? -5 : 5)
-//                    ,alignment: position == .left ? .bottomLeading : .bottomTrailing)
-//        }
-//        .padding(position == .left ? .leading : .trailing , 15)
-//        .padding(position == .right ? .leading : .trailing , 60)
-//        .frame(width: UIScreen.main.bounds.width, alignment: position == .left ? .leading : .trailing)
-
       if position == .left {
         HStack(spacing: 0 ) {
           Image(systemName: "person.circle.fill")
@@ -70,15 +54,9 @@ struct ChatBubble<Content>: View where Content: View {
           
             content()
                 .padding(.all, 15)
-                .foregroundColor(Color.white)
+                .foregroundColor(Color.black)
                 .background(color)
                 .clipShape(RoundedRectangle(cornerRadius: 18))
-//                .overlay(
-//                    Image(systemName: "arrowtriangle.left.fill")
-//                        .foregroundColor(color)
-//                        .rotationEffect(Angle(degrees:-50))
-//                        .offset(x: -5)
-//                    ,alignment: .bottomLeading)
         }
         .padding(.leading, 15)
         .padding(.trailing, 60)
@@ -94,15 +72,9 @@ struct ChatBubble<Content>: View where Content: View {
           
             content()
                 .padding(.all, 15)
-                .foregroundColor(Color.white)
+                .foregroundColor(Color.black)
                 .background(color)
                 .clipShape(RoundedRectangle(cornerRadius: 18))
-//                .overlay(
-//                    Image(systemName: "arrowtriangle.left.fill")
-//                        .foregroundColor(color)
-//                        .rotationEffect(Angle(degrees:-50))
-//                        .offset(x: -5)
-//                    ,alignment: .bottomLeading)
         }
         .padding(.leading, 15)
         .padding(.trailing, 60)
@@ -114,12 +86,6 @@ struct ChatBubble<Content>: View where Content: View {
                 .foregroundColor(Color.white)
                 .background(color)
                 .clipShape(RoundedRectangle(cornerRadius: 18))
-//                .overlay(
-//                    Image(systemName: "arrowtriangle.left.fill")
-//                        .foregroundColor(color)
-//                        .rotationEffect(Angle(degrees:-130))
-//                        .offset(x:5)
-//                    ,alignment: .bottomTrailing)
         }
         .padding(.trailing , 15)
         .padding(.leading , 60)
@@ -128,18 +94,10 @@ struct ChatBubble<Content>: View where Content: View {
         HStack(spacing: 0 ) {
             content()
                 .padding(.all, 15)
-                .foregroundColor(Color.white)
-                .background(.gray)
+                .foregroundColor(Color.black)
+                .background(color)
                 .clipShape(RoundedRectangle(cornerRadius: 18))
-//                .overlay(
-//                    Image(systemName: "arrowtriangle.left.fill")
-//                      .foregroundColor(.gray)
-//                        .rotationEffect(Angle(degrees:-130))
-//                        .offset(x:5)
-//                    ,alignment: .bottomTrailing)
         }
-//        .padding(.trailing , 15)
-//        .padding(.leading , 60)
         .frame(width: UIScreen.main.bounds.width, alignment: .center)
       }
 

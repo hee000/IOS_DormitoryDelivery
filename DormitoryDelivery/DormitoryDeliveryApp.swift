@@ -22,6 +22,7 @@ struct DormitoryDeliveryApp: App {
             .environmentObject(RoomData())
             .environmentObject(RoomDetailData())
             .environmentObject(ChatData())
+            .environmentObject(KeyboardManager())
             .onOpenURL(perform: { url in
               NaverThirdPartyLoginConnection
               .getSharedInstance()?

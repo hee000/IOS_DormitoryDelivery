@@ -7,6 +7,7 @@
 
 import Foundation
 import Alamofire
+import RealmSwift
 
 func postAddMenu(oderdata: Oder, rid: String, token: String){
   print("방만들기 시도")
@@ -24,13 +25,18 @@ func postAddMenu(oderdata: Oder, rid: String, token: String){
       print("http Body Error")
   }
   
-  AF.request(request).responseJSON { (response) in
+  AF.request(request).responseString { response in
     switch response.result {
     case .success(let value):
-      print("메뉴츄가성공")
-
+      print(value)
+      let realm = try! Realm()
+      let db = realm.object(ofType: ChatDB.self, forPrimaryKey: rid)
+      try! realm.write {
+        db?.menu.append(value)
+      }
     case .failure(let error):
-        print("🚫 Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
+      print(error)
     }
   }
+  
 }

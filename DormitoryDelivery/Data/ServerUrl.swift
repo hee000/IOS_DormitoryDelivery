@@ -47,6 +47,11 @@ func urlready(uid: String, rid: String) -> URL {
   return url
 }
 
+func urloderfix(rid: String) -> URL {
+  let url = URL(string: "http://192.168.35.165:3000/room/" + rid + "/order-fix")!
+  return url
+}
+
 
 //
 //let serverurl = "http://59.25.26.152:3000/"

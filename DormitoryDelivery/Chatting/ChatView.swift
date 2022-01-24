@@ -28,16 +28,6 @@ struct ChatView: View {
           Spacer()
         }
       }
-      .onChange(of: chatdata.leaveroomrid) { newValue in
-        if newValue != ""{
-          DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 4) {
-            try! realm.write({
-              realm.delete(roomidtodbconnect(rid: newValue)!)
-            })
-          }
-          chatdata.leaveroomrid = ""
-        }
-      }
       
     }
 }
