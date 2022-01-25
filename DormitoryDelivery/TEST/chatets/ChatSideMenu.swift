@@ -62,7 +62,7 @@ struct ChatSideMenu: View {
             }
           }
           .padding(.leading)
-          .frame(width: geo.size.width, height: 45, alignment: .leading)
+          .frame(width: geo.size.width, height: 46, alignment: .leading)
           .background(Color(.sRGB, red: 223/255, green: 223/255, blue: 229/255, opacity: 1))
 
         } // vstack

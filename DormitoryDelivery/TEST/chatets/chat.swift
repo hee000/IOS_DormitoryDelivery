@@ -7,10 +7,10 @@
 
 import SwiftUI
 import RealmSwift
+import Alamofire
 
 struct Chat: View {
   @Environment(\.presentationMode) var presentationMode
-  @Environment(\.managedObjectContext) var managedObjectContext
   
   @EnvironmentObject var keyboardManager: KeyboardManager
 
@@ -22,8 +22,7 @@ struct Chat: View {
   
 
   @FocusState private var rere: Bool
-  @State var textHeight: CGFloat = 17
-  @State var rows: CGFloat = 0
+  @State var textHeight: CGFloat?
 
   
   
@@ -82,6 +81,27 @@ struct Chat: View {
                                 }}
                             }
                           }
+                        } else if RoomDB.messages[index].body!.action! == "all-ready-canceled" {
+                          if RoomDB.superid == UserDefaults.standard.string(forKey: "MyID")! {
+                            ChatBubble(position: BubblePosition.center, color: Color(.sRGB, red: 223/255, green: 223/255, blue: 229/255, opacity: 1)) {
+                                VStack{
+                                Text("준비 해제")
+                                }
+                            }
+                          }
+                        } else if RoomDB.messages[index].body!.action! == "order-checked" {
+                          if RoomDB.superid != UserDefaults.standard.string(forKey: "MyID")! {
+                            ChatBubble(position: BubblePosition.center, color: Color(.sRGB, red: 223/255, green: 223/255, blue: 229/255, opacity: 1)) {
+                                VStack{
+                                Text("오더 체크끝")
+                                  Button("확인하기"){
+                                    
+                                    model.userodercheck.toggle()
+                                    
+                                  }
+                                }
+                            }
+                          }
                         } else {
                           ChatBubble(position: BubblePosition.center, color: Color(.sRGB, red: 223/255, green: 223/255, blue: 229/255, opacity: 1)) {
                             Text(RoomDB.messages[index].body!.action!)
@@ -101,11 +121,6 @@ struct Chat: View {
         // 주문서 작성 & 준비완료
         if RoomChat?.state?.oderfix == false {
           if RoomChat?.superid == UserDefaults.standard.string(forKey: "MyID")! || (RoomChat?.menu.count) == 0{
-            Button("준비완료") { // 임시용
-              if let mytoken = naverLogin.loginInstance?.accessToken {
-                  getReady(rid: self.roomid, token: mytoken)
-              }
-            }
             Button("주문서 작성") {
               self.model.oderview.toggle()
             }
@@ -118,9 +133,9 @@ struct Chat: View {
                 }
                 .frame(width: geo.size.width/2)
                 Divider()
-                Button("준비완료") {
+                Button(RoomChat!.ready ? "준비해제" : "준비완료") {
                   if let mytoken = naverLogin.loginInstance?.accessToken {
-                      getReady(rid: self.roomid, token: mytoken)
+                    getReady(rid: self.roomid, token: mytoken, model: RoomChat!)
                   }
                 }
                 .frame(width: geo.size.width/2)
@@ -130,35 +145,44 @@ struct Chat: View {
               .background(Color(.sRGB, red: 221/255, green: 221/255, blue: 221/255, opacity: 1))
           }
         }// 주문서 작성 & 준비완료 닫기
+        
+        
             HStack { // 채팅샌더
-              
-              
               HStack(spacing: 0) {
                 GeometryReader { geosender in
-                  ZStack{
+                  ZStack {
                     Text(self.model.text)
-                      .lineLimit(1)
-                      .padding(.leading, 10)
-                      .frame(width: geosender.size.width, height: 35, alignment: .leading)
-                      .background(.white)
-                      .cornerRadius(20)
+                      .lineLimit(self.keyboardManager.isVisible ? 0 : 1)
+                      .frame(width: geosender.size.width, alignment: .leading)
+                      .background(Color.white)
                       .opacity(self.keyboardManager.isVisible ? 0 : 1)
                       .onTapGesture {
                         self.rere.toggle()
                       }
-//                    TextEditor(text: $model.text)
-//                      .padding(.leading, 5)
-//                      .focused($rere)
-//                      .opacity(self.keyboardManager.isVisible ? 1 : 0)
-                    DynamicHeightTextField(text: $model.text, height: $textHeight, rows: $rows)
-                                          .padding(.leading, 5)
-                                          .focused($rere)
-                                          .opacity(self.keyboardManager.isVisible ? 1 : 0)
-                                          .frame(alignment: .bottom)
+                    
+                    Text("") // 에디터 줄 확인
+                      .frame(width: geosender.size.width, height: 70, alignment: .leading)
+                      .frame(maxHeight: .infinity)
+                      .background(
+                        Text(self.model.text)
+                          .opacity(0)
+                          .background(
+                            GeometryReader { geo in
+                              Color.clear.preference(key: SizeKey.self, value: geo.size.height)
+                            }.frame(minHeight: 18))
+                          .onPreferenceChange(SizeKey.self) { value in // --- 2
+                                self.textHeight = value
+                          }
+                      )
+
+                    TextEditor(text: $model.text)
+                      .focused($rere)
+                      .frame(width: geosender.size.width, height: 18.0 + (self.textHeight ?? 18.0))
+                      .opacity(self.keyboardManager.isVisible ? 1 : 0)
                   }
+                  .frame(height: self.keyboardManager.isVisible ? 18.0 + (self.textHeight ?? 18.0) : 36)
                 } //geo sender
 
-                  
                 Button {
                   if self.model.text != "" {
                     SocketIOManager.shared.room_emitChat(rid: self.roomid, text: self.model.text)
@@ -174,19 +198,24 @@ struct Chat: View {
                 .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 3))
               }
               .background(.white)
-              .frame(height: self.keyboardManager.isVisible ? max(45, self.rows * 45) - 10 : 35)
+              .frame(height: self.keyboardManager.isVisible ? 18.0 + (self.textHeight ?? 18.0) : 36)
               .cornerRadius(20)
 
             } // 채팅샌더 닫기
             .padding([.leading, .trailing])
-            .frame(width: geo.size.width ,height: self.keyboardManager.isVisible ? max(45, self.rows * 45) : 45)
+            .frame(width: geo.size.width ,height: self.keyboardManager.isVisible ? 18.0 + (self.textHeight ?? 18.0) + 10 : 46)
             .background(Color(.sRGB, red: 221/255, green: 221/255, blue: 221/255, opacity: 1))
             .overlay(Rectangle().frame(width: nil, height: 1, alignment: .top).foregroundColor(Color(.sRGB, red: 210/255, green: 210/255, blue: 210/255, opacity: 1)), alignment: .top)
         
         }//vstack
       .frame(width: geo.size.width, height: geo.size.height)
       .disabled(self.model.showMenu ? true : false)
-      .overlay(self.model.showMenu ? Rectangle().fill(Color.black.opacity(0.8)).frame(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height).ignoresSafeArea().onTapGesture(perform: {
+      .overlay(self.model.showMenu ? Rectangle()
+                .fill(Color.black.opacity(0.7))
+                .edgesIgnoringSafeArea(.bottom)
+                .frame(width: geo.size.width,
+                       height: geo.size.height)
+                .onTapGesture(perform: {
         withAnimation {
           self.model.showMenu.toggle()
         }
@@ -204,19 +233,22 @@ struct Chat: View {
         
         if self.model.showMenu {
           ChatSideMenu(model: self.model, rid: self.roomid)
-          .frame(width: geo.size.width * (9/10), height: geo.size.height-2)
+          .frame(width: geo.size.width * (9/10), height: geo.size.height)
+          .overlay(Rectangle().frame(width: nil, height: 1, alignment: .top).foregroundColor(Color(.sRGB, red: 221/255, green: 221/255, blue: 221/255, opacity: 1)), alignment: .top)
           .transition(.move(edge: .trailing))
-          .offset(x: geo.size.width/10, y:2)
+          .offset(x: geo.size.width/10)
+          
       }
+        
+//        NavigationLink(destination: OderView(roomid: self.roomid), isActive: $model.oderview) {
+//        }.hidden()
     
     } //Zstack
       .gesture(drag)
-      .onChange(of: keyboardManager.isVisible, perform: { V in
-        print(V)
-      })
+      
       .navigationBarTitleDisplayMode(.inline)
       .navigationBarBackButtonHidden(true)
-      .navigationBarTitle(RoomChat!.title!)
+      .navigationBarTitle(RoomChat != nil ? RoomChat!.title! : "채팅방")
       .toolbar {
           ToolbarItem(placement: .navigationBarLeading) {
             Button {
@@ -237,25 +269,38 @@ struct Chat: View {
       }
     } //geo
     .fullScreenCover(isPresented: $model.oderview) {
-      OderView(roomid: self.roomid)
+      if self.RoomChat != nil{
+        OderView(chatdata: self.RoomChat!, roomid: self.roomid)
+      }
     }
     .fullScreenCover(isPresented: $model.oderlistview) {
       OderListView(rid: self.roomid)
     }
     .fullScreenCover(isPresented: $model.odercheck) {
-      OderCheckView()
+      OderCheckView(roomid: self.roomid)
+    }
+    .fullScreenCover(isPresented: $model.userodercheck) {
+      UserOrderCheckView(roomid: self.roomid)
     }
     .accentColor(.black)
     .onChange(of: model.leave) { newValue in
       presentationMode.wrappedValue.dismiss()
     }
     .onDisappear {
+      let realm = try! Realm()
       if self.model.leave {
         self.RoomChat = nil
         try! realm.write({
           realm.delete(roomidtodbconnect(rid: self.roomid)!)
         })
+      } else{
+          try! realm.write({
+            if RoomChat != nil {
+              RoomChat!.confirmation = RoomChat!.index
+            }
+          })
       }
+      
     }
   }
 }

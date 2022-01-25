@@ -22,7 +22,7 @@ struct ChatView: View {
           ForEach(chatdata.chatlist.indices, id: \.self) { index in
             NavigationLink(destination: Chat(RoomChat: chatdata.chatlist[index]
                                              , roomid: chatdata.chatlist[index].rid!)) {
-              ChatCard(title: chatdata.chatlist[index].title, lastmessage: chatdata.chatlist[index].messages.last?.body?.message, lastat: chatdata.chatlist[index].messages.last?.at)
+              ChatCard(title: chatdata.chatlist[index].title, lastmessage: chatdata.chatlist[index].messages.last?.body?.message, lastat: chatdata.chatlist[index].messages.last?.at, users: chatdata.chatlist[index].member.count, index: chatdata.chatlist[index].index, confirmation: chatdata.chatlist[index].confirmation)
             }
           }
           Spacer()

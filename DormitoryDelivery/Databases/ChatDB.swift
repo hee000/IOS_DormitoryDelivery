@@ -22,10 +22,13 @@ class ChatDB: Object, ObjectKeyIdentifiable, Decodable{
   @objc dynamic var superid: String?
   @objc dynamic var state: ChatState? = ChatState()
   @objc dynamic var title: String?
+  var member = List<ChatUsersInfo>()
   var menu = List<String>()
   @objc dynamic var ready: Bool = false
   var messages = List<ChatMessageDetail>()
-
+  @objc dynamic var index: Int = 0
+  @objc dynamic var confirmation: Int = 0
+  @objc dynamic var sortforat: Int = 0
 
   override class func primaryKey() -> String? {
     return "rid"
@@ -48,6 +51,11 @@ class ChatDB: Object, ObjectKeyIdentifiable, Decodable{
 class ChatState: Object{
     @objc dynamic var allready: Bool = false
     @objc dynamic var oderfix: Bool = false
+}
+
+class ChatUsersInfo: Object{
+    @objc dynamic var name: String?
+    @objc dynamic var id: String?
 }
 
 class ChatMessageDetail: Object, Decodable,ObjectKeyIdentifiable {
@@ -129,7 +137,9 @@ final class ChatData: ObservableObject {
     let channels = realm.objects(ChatDB.self)
     chatsToken = channels.observe { _ in
       // When there is a change, replace the old channels array with a new one.
-      self.chatlist = Array(channels)
+      
+//      print(channels.sorted(byKeyPath: "sortforat"))
+      self.chatlist = Array(channels.sorted(byKeyPath: "sortforat", ascending: false))
     }
   }
 

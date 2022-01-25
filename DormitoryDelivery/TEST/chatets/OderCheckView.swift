@@ -7,43 +7,79 @@
 
 import SwiftUI
 import UIKit
+import Alamofire
+
+class OderCheck: ObservableObject {
+  @Published var isShowPhotoLibrary = false
+  @Published var image = UIImage()
+  @Published var tip = "600"
+  @Published var imageupload = false
+}
 
 struct OderCheckView: View {
-  @State private var isShowPhotoLibrary = false
-  @State private var image = UIImage()
-  @State var tip = "600"
-  
+  @EnvironmentObject var naverLogin: NaverLogin
+  @Environment(\.presentationMode) var presentationMode
+  @ObservedObject var oderCheckData: OderCheck = OderCheck()
+
+  var roomid: String
     var body: some View {
-      VStack{
-        Text("인증서")
-        Divider()
+      NavigationView {
+        VStack{
+          Text("인증서")
+          Divider()
 
-        Button("이미지상태확인"){
-          print(self.image.size == CGSize(width: 0, height: 0))
-        }
-        
-        Text("가격을 확인할 수 있는 캡처 사진을 올려주세요.")
-        Button(action: {
-            self.isShowPhotoLibrary = true
-        }) {
-            ZStack {
-                Text("캡처 사진 가져오기")
-
-                Image(uiImage: self.image)
-                  .resizable()
-                  .scaledToFill()
-                  .frame(width: 300, height: 300)
-                  .clipped()
+  //        Button("나가기"){
+  //          presentationMode.wrappedValue.dismiss()
+  //        }
+          
+          Button("이미지상태확인"){
+            if self.oderCheckData.image.size != CGSize(width: 0, height: 0){
+              if let mytoken = naverLogin.loginInstance?.accessToken {
+                postOrderCheck(rid: self.roomid, token: mytoken, model: oderCheckData)
+              }
             }
-            .frame(width: 300, height: 300)
-            .background(.gray)
+          }
+          
+          Text("가격을 확인할 수 있는 캡처 사진을 올려주세요.")
+          Button(action: {
+            self.oderCheckData.isShowPhotoLibrary = true
+          }) {
+              ZStack {
+                  Text("캡처 사진 가져오기")
+
+                  Image(uiImage: self.oderCheckData.image)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 300, height: 300)
+                    .clipped()
+              }
+              .frame(width: 300, height: 300)
+              .background(.gray)
+          }
+          
+          TextEditor(text: $oderCheckData.tip)
+          
+        } // vstack
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarTitle("주문 확인")
+        .toolbar {
+          ToolbarItem(placement: .navigationBarLeading) {
+            Button {
+              presentationMode.wrappedValue.dismiss()
+            } label: {
+              Image(systemName: "xmark")
+            }
+          }
         }
-        
-        TextEditor(text: $tip)
-        
-      }
-      .fullScreenCover(isPresented: $isShowPhotoLibrary) {
-        ImagePicker(selectedImage: self.$image, sourceType: .photoLibrary)
+      } //navi
+      .fullScreenCover(isPresented: $oderCheckData.isShowPhotoLibrary) {
+        ImagePicker(selectedImage: self.$oderCheckData.image, sourceType: .photoLibrary)
       }
     }
+}
+
+
+struct oderccc: Codable {
+  var rid: String            // 이름
+  var delivery_tip : Int            // 개수
 }

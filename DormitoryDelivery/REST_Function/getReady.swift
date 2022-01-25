@@ -7,18 +7,18 @@
 
 import Foundation
 import Alamofire
+import RealmSwift
 
-func getReady(rid: String, token: String) {
-  let url = urlready(uid: UserDefaults.standard.string(forKey: "MyID")!, rid: rid)
+func getReady(rid: String, token: String, model: ChatDB) {
+  let url = urlready(uid: UserDefaults.standard.string(forKey: "MyID")!, rid: rid, state: model.ready)
   let req = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: ["Authorization": token])
   req.responseString { response in
-//    let result = response.value as! [String: Any]
-//    print(result)
+
+    let realm = try! Realm()
+    try! realm.write({
+      model.ready.toggle()
+    })
     print(response)
-//    print(type(of: response.value!))
-//    print(response.description)
-//    print(response.result)
-//    print(response.data!)
-//    print(response.)
+
   }
 }

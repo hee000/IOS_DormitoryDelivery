@@ -12,15 +12,39 @@ struct ChatCard: View {
   var title: String?
   var lastmessage: String?
   var lastat: String?
+  var users: Int?
+  var index: Int?
+  var confirmation: Int?
   
     var body: some View {
       HStack{
-          Image(systemName: "person.circle.fill")
-            .resizable()
-            .scaledToFit()
-            .frame(width: 40, height: 40)
-            .foregroundColor(Color(.sRGB, red: 180/255, green: 200/255, blue: 255/255, opacity: 1))
-            .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 5))
+        HStack{
+            if users == 1 {
+              Image(systemName: "person.circle.fill")
+                .resizable()
+                .scaledToFit()
+                .foregroundColor(Color(.sRGB, red: 180/255, green: 200/255, blue: 255/255, opacity: 1))
+            } else if self.users == 2 {
+              Image(systemName: "person.circle.fill")
+                .resizable()
+                .scaledToFit()
+                .foregroundColor(Color(.sRGB, red: 180/255, green: 200/255, blue: 255/255, opacity: 1))
+              Image(systemName: "person.circle.fill")
+                .resizable()
+                .scaledToFit()
+                .foregroundColor(Color(.sRGB, red: 180/255, green: 200/255, blue: 255/255, opacity: 1))
+            } else {
+              Text("미구현")
+            }
+        }
+        .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 5))
+        .frame(width: 40, height: 40)
+//          Image(systemName: "person.circle.fill")
+//            .resizable()
+//            .scaledToFit()
+//            .frame(width: 40, height: 40)
+//            .foregroundColor(Color(.sRGB, red: 180/255, green: 200/255, blue: 255/255, opacity: 1))
+//            .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 5))
 
 
           VStack(alignment: .leading, spacing: 5){
@@ -46,11 +70,14 @@ struct ChatCard: View {
                 .font(.caption)
                 .foregroundColor(Color.black)
             }
-            Text(String(4))
-              .foregroundColor(Color.white)
-              .padding(EdgeInsets(top: 2, leading: 10, bottom: 2, trailing: 10))
-              .background(Color.red)
-              .cornerRadius(21)
+            
+            if (self.index ?? 0) - (self.confirmation ?? 0) != 0 {
+              Text(String(self.index! - self.confirmation!))
+                .foregroundColor(Color.white)
+                .padding(EdgeInsets(top: 2, leading: 10, bottom: 2, trailing: 10))
+                .background(Color.red)
+                .cornerRadius(21)
+            }
 
           }.padding(.trailing)
       }

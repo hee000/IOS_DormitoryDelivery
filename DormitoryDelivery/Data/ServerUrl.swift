@@ -42,8 +42,9 @@ func urlmenulist(rid: String) -> URL {
   return url
 }
 
-func urlready(uid: String, rid: String) -> URL {
-  let url = URL(string: "http://192.168.35.165:3000/user/" + uid + "/room/" + rid + "/ready")!
+func urlready(uid: String, rid: String, state: Bool) -> URL {
+  let value = state ? "false" : "true"
+  let url = URL(string: "http://192.168.35.165:3000/user/" + uid + "/room/" + rid + "/ready?state=" + value)!
   return url
 }
 
@@ -52,6 +53,35 @@ func urloderfix(rid: String) -> URL {
   return url
 }
 
+func urlorderimageupload(rid: String) -> URL {
+  let url = URL(string: "http://192.168.35.165:3000/room/" + rid + "/purchase-screenshot")!
+  return url
+}
+
+func urlordercheck(rid: String) -> URL {
+  let url = URL(string: "http://192.168.35.165:3000/room/" + rid + "/order-check")!
+  return url
+}
+
+func urlimgdownload(rid: String) -> URL {
+  let url = URL(string: "http://192.168.35.165:3000/room/" + rid + "/purchase-screenshot")!
+  return url
+}
+
+func urlreceipt(rid: String) -> URL {
+  let url = URL(string: "http://192.168.35.165:3000/room/" + rid + "/receipt")!
+  return url
+}
+
+func urlparticipants(rid: String) -> URL {
+  let url = URL(string: "http://192.168.35.165:3000/room/" + rid + "/participants")!
+  return url
+}
+
+func urlmenus(uid: String, rid: String, mid: String) -> URL {
+  let url = URL(string: "http://192.168.35.165:3000/user/" + uid + "/room/" + rid + "/menus/" + mid)!
+  return url
+}
 
 //
 //let serverurl = "http://59.25.26.152:3000/"

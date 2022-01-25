@@ -6,7 +6,7 @@
 //
 
 import Foundation
-
+import SwiftUI
 
 class CreateRoom: ObservableObject {
 
@@ -18,4 +18,6 @@ class CreateRoom: ObservableObject {
   @Published var category: String = "korean"
   @Published var section = 0
   @Published var rid = ""
+  @Published var height: CGFloat? = .zero
+  
 }

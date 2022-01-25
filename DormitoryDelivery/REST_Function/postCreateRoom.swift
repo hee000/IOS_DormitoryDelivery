@@ -37,6 +37,10 @@ func postCreateRoom(createRoomData: CreateRoom, section: String, deliveryPriceAt
             chatroomopen.rid = rid
             chatroomopen.superid = UserDefaults.standard.string(forKey: "MyID")!
             chatroomopen.title = createRoomData.shopName
+            let userinfo = ChatUsersInfo()
+            userinfo.id = UserDefaults.standard.string(forKey: "MyID")!
+            userinfo.name = UserDefaults.standard.string(forKey: "MyID")!
+            chatroomopen.member.append(userinfo)
             addChatting(chatroomopen)
             createRoomData.rid = rid
           }

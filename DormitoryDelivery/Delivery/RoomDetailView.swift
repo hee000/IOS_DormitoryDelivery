@@ -119,7 +119,6 @@ struct RoomDetailView: View {
       }
 
 
-
       .onAppear {
         print("조인시작")
         if let mytoken = naverLogin.loginInstance?.accessToken {

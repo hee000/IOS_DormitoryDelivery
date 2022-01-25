@@ -9,10 +9,10 @@ import Foundation
 
 
 class Oder: ObservableObject {
-  @Published var name = ""
-  @Published var quantity = ""
-  @Published var description = ""
-  @Published var price = ""
+  @Published var name = "asdasd"
+  @Published var quantity = "2"
+  @Published var description = "dddd"
+  @Published var price = "8000"
   @Published var isActive = false
 }
 

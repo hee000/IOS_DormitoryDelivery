@@ -101,6 +101,9 @@ class SocketIOManager:NSObject {
             chatroom?.messages.append(json)
             if json.body?.action == "order-fixed" {
               chatroom?.state?.oderfix = true
+            } else if json.type == "chat" {
+              chatroom?.index += 1
+              chatroom?.sortforat = Int(json.at!)!
             }
           }
           
