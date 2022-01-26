@@ -38,6 +38,7 @@
 		DA6829EB27A00C01008F53BB /* UserOrderCheckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6829EA27A00C01008F53BB /* UserOrderCheckView.swift */; };
 		DA6829ED27A0B170008F53BB /* getMenus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6829EC27A0B170008F53BB /* getMenus.swift */; };
 		DA6829EF27A0B724008F53BB /* OrderCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6829EE27A0B724008F53BB /* OrderCard.swift */; };
+		DA6829F127A0DE5C008F53BB /* postMenuEdit.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6829F027A0DE5C008F53BB /* postMenuEdit.swift */; };
 		DA8837AA275BC81C0034481F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA4D2D2127422FE500678FA8 /* Assets.xcassets */; };
 		DA9702BA275C8CC700BB8B53 /* hashtag.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9702B9275C8CC700BB8B53 /* hashtag.swift */; };
 		DAB5E98C274364BC00EF5B6A /* Signup.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB5E98B274364BC00EF5B6A /* Signup.swift */; };
@@ -107,6 +108,7 @@
 		DA6829EA27A00C01008F53BB /* UserOrderCheckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserOrderCheckView.swift; sourceTree = "<group>"; };
 		DA6829EC27A0B170008F53BB /* getMenus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = getMenus.swift; sourceTree = "<group>"; };
 		DA6829EE27A0B724008F53BB /* OrderCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderCard.swift; sourceTree = "<group>"; };
+		DA6829F027A0DE5C008F53BB /* postMenuEdit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = postMenuEdit.swift; sourceTree = "<group>"; };
 		DA9702B9275C8CC700BB8B53 /* hashtag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = hashtag.swift; sourceTree = "<group>"; };
 		DAB5E98B274364BC00EF5B6A /* Signup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Signup.swift; sourceTree = "<group>"; };
 		DAB5E98F27436B9B00EF5B6A /* DeliveryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryView.swift; sourceTree = "<group>"; };
@@ -293,6 +295,7 @@
 				DAC45272275FEAAF00D05BB0 /* getRoomJoin.swift */,
 				DAC45274275FEBA400D05BB0 /* postCreateRoom.swift */,
 				DA518ADC279DE60900291CA0 /* postAddMenu.swift */,
+				DA6829F027A0DE5C008F53BB /* postMenuEdit.swift */,
 				DA518ADA279D965400291CA0 /* getRoomLeave.swift */,
 				DA518AE2279DED4000291CA0 /* getMenuList.swift */,
 				DA6829EC27A0B170008F53BB /* getMenus.swift */,
@@ -480,6 +483,7 @@
 				DA6829ED27A0B170008F53BB /* getMenus.swift in Sources */,
 				DAFF71C5275D58C500A45D29 /* ChatData.swift in Sources */,
 				DAFF71C7275D593300A45D29 /* ChatView.swift in Sources */,
+				DA6829F127A0DE5C008F53BB /* postMenuEdit.swift in Sources */,
 				DA4D2D2C2742306300678FA8 /* AppDelegate.swift in Sources */,
 				DA518ADF279DE84300291CA0 /* Oder_.swift in Sources */,
 				DA6829E927A007B9008F53BB /* postOrderCheck.swift in Sources */,

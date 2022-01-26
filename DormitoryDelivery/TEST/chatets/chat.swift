@@ -152,10 +152,10 @@ struct Chat: View {
                 GeometryReader { geosender in
                   ZStack {
                     Text(self.model.text)
-                      .lineLimit(self.keyboardManager.isVisible ? 0 : 1)
+                      .lineLimit(1)
                       .frame(width: geosender.size.width, alignment: .leading)
                       .background(Color.white)
-                      .opacity(self.keyboardManager.isVisible ? 0 : 1)
+                      .opacity(self.rere ? 0 : 1)
                       .onTapGesture {
                         self.rere.toggle()
                       }
@@ -178,9 +178,9 @@ struct Chat: View {
                     TextEditor(text: $model.text)
                       .focused($rere)
                       .frame(width: geosender.size.width, height: 18.0 + (self.textHeight ?? 18.0))
-                      .opacity(self.keyboardManager.isVisible ? 1 : 0)
+                      .opacity(self.rere ? 1 : 0)
                   }
-                  .frame(height: self.keyboardManager.isVisible ? 18.0 + (self.textHeight ?? 18.0) : 36)
+                  .frame(height: self.rere ? 18.0 + (self.textHeight ?? 18.0) : 36)
                 } //geo sender
 
                 Button {
@@ -198,12 +198,12 @@ struct Chat: View {
                 .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 3))
               }
               .background(.white)
-              .frame(height: self.keyboardManager.isVisible ? 18.0 + (self.textHeight ?? 18.0) : 36)
+              .frame(height: self.rere ? 18.0 + (self.textHeight ?? 18.0) : 36)
               .cornerRadius(20)
 
             } // 채팅샌더 닫기
             .padding([.leading, .trailing])
-            .frame(width: geo.size.width ,height: self.keyboardManager.isVisible ? 18.0 + (self.textHeight ?? 18.0) + 10 : 46)
+            .frame(width: geo.size.width ,height: self.rere ? 18.0 + (self.textHeight ?? 18.0) + 10 : 46)
             .background(Color(.sRGB, red: 221/255, green: 221/255, blue: 221/255, opacity: 1))
             .overlay(Rectangle().frame(width: nil, height: 1, alignment: .top).foregroundColor(Color(.sRGB, red: 210/255, green: 210/255, blue: 210/255, opacity: 1)), alignment: .top)
         

@@ -17,7 +17,7 @@ enum BubblePosition {
 
 
 class ChatModel: ObservableObject {
-    @Published var text = "33333"
+    @Published var text = ""
     @Published var showMenu = false
     @Published var leave = false
     @Published var oderview = false

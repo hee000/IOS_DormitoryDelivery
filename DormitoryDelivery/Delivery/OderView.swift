@@ -9,13 +9,15 @@ import SwiftUI
 
 class tete244: ObservableObject {
   @Published var data: [tetemenussss] = []
+  @Published var new: Int = 0
 }
 
 struct tetemenussss: Codable{
+  var id: String?;
   var name: String;
   var quantity: Int;
   var description: String;
-  var price: Int;
+  var price: Int?;
 }
 
 
@@ -30,93 +32,106 @@ struct OderView: View {
   
   @State var chatdata: ChatDB
   var roomid: String
+  let formatter: NumberFormatter = {
+      let formatter = NumberFormatter()
+//      formatter.numberStyle = .decimal
+      return formatter
+  }()
   
     var body: some View {
       NavigationView {
-        VStack{
-          
-//          if odteee.data.count != 0 {
-            ForEach(odteee.data.indices, id: \.self) { index in
-//              OrderCard(model: $odteee.data[index])
-              VStack{
-                HStack{
-                  Text("메뉴")
-                  TextField("메뉴를 입력해주세요", text: $odteee.data[index].name)
-                    .border(.red)
-                    .multilineTextAlignment(.trailing)
-
-                }
-                Divider()
-                HStack{
-                  Text("가격")
-                }
-                Divider()
-                HStack{
-                  Text("수령")
-                }
-                Divider()
-                HStack{
-                  Text("상세설명")
-                  TextField("세부 정보를 입력해주세요", text: $odteee.data[index].description)
-                    .multilineTextAlignment(.trailing)
-
-                  
-                }
-              }
-            }
-//            .onChange(of: odteee.data) { newValue in
-//            print(newValue)
-//          }
-//          }
-          
-          
-          Form{
-            Section(header: Text("메뉴")){
-              TextField("메뉴이름", text: $oderdata.name)
-                .keyboardType(.default)
-            }
+        GeometryReader { geo in
+          ScrollView {
             
-            Section(header: Text("수량")){
-              TextField("수량", text: $oderdata.quantity)
-                .keyboardType(.numberPad)
-            }
-          
-            Section(header: Text("설명")){
-              TextField("설명", text: $oderdata.description)
-                .keyboardType(.default)
-            }
-            
-            Section(header: Text("가격")){
-              TextField("가격", text: $oderdata.price)
-                .keyboardType(.numberPad)
-            }
-            
-            Button {
-              if let mytoken = naverLogin.loginInstance?.accessToken {
-                if self.oderdata.name != "" && self.oderdata.quantity != "" && self.oderdata.description != "" && self.oderdata.price != "" {
-                  postAddMenu(oderdata: oderdata, rid: self.roomid, token: mytoken)
-                }
-              }
+            Button{
+              let nonemenue = tetemenussss(id: nil, name: "", quantity: 1, description: "", price: nil)
+              self.odteee.data.insert(nonemenue, at: 0)
             } label: {
-              Text("대충 플러스버튼")
+              Text("하나 더 추가")
             }
             
-          }
+            VStack(spacing: 20){
+                ForEach(odteee.data.indices, id: \.self) { index in
+                  VStack(spacing: 20){
+                    HStack{
+                      Text("메뉴")
+                      TextField("메뉴를 입력해주세요", text: $odteee.data[index].name)
+                        .multilineTextAlignment(.trailing)
+                    }
+                    Divider()
+                    HStack{
+                      Text("가격")
+                      ZStack{
+//                        Text("가격을 입력해주세요.")
+//                          .foregroundColor(self.odteee.data[index].price != 0 ? Color.clear : Color.gray)
+                        TextField("가격을 입력해주세요", value: $odteee.data[index].price, formatter: formatter)
+//                          .foregroundColor(self.odteee.data[index].price != 0 ? Color.black : Color.clear)
+                          .multilineTextAlignment(.trailing)
+                      }
+                    }
+                    Divider()
+                    HStack{
+                      Text("수량")
+                      Spacer()
+                      Button("-") {
+                        self.odteee.data[index].quantity -= 1
+                      }
+                      Text("\(self.odteee.data[index].quantity)개")
+                      Button("+"){
+                        self.odteee.data[index].quantity += 1
+                      }
+                    }
+                  
+                    Divider()
+                    HStack{
+                      Text("상세설명")
+                      TextField("세부 정보를 입력해주세요", text: $odteee.data[index].description)
+                        .multilineTextAlignment(.trailing)
+                    }
+                  }
+                  .padding()
+                  .border(.gray)
+                  } // for문
+              Button("전송"){
+                var valid = true
+                for i in odteee.data.indices {
+                  if odteee.data[i].name == "" || odteee.data[i].description == "" || odteee.data[i].price == nil || Int(odteee.data[i].price!) == nil {
+                    valid = false
+                    print("오류검출됨")
+                    break
+                  }
+                }
+                if valid {
+                  for i in odteee.data.indices {
+                    if odteee.data[i].id != nil {
+                      if let mytoken = naverLogin.loginInstance?.accessToken {
+                        postMenuEdit(oderdata: odteee.data[i], rid: self.roomid, token: mytoken)
+                      }
+                    } else {
+                      if let mytoken = naverLogin.loginInstance?.accessToken {
+                        postAddMenu(oderdata: odteee.data[i], rid: self.roomid, token: mytoken)
+                      }
+                    }
+                  }
+                }
+              }
 
-        } // vstack
+
+            } // vstack
+          } // scroll
+        }//geo
+        .padding()
+        
         .onAppear(perform: {
-          print(self.chatdata.menu.count)
           if self.chatdata.menu.count == 0 {
-            let nonemenue = tetemenussss(name: "", quantity: 0, description: "", price: 0)
+            let nonemenue = tetemenussss(id: nil, name: "", quantity: 1, description: "", price: nil)
             self.odteee.data.append(nonemenue)
-            print(self.odteee.data)
           } else {
             for i in chatdata.menu.indices {
               if let mytoken = naverLogin.loginInstance?.accessToken {
                 getMenus(uid: UserDefaults.standard.string(forKey: "MyID")!, rid: self.roomid, mid: self.chatdata.menu[i], token: mytoken, model: self.odteee)
               }
             }
-            print(self.odteee.data)
           }
         })
         .navigationBarTitleDisplayMode(.inline)
