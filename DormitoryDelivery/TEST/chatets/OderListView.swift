@@ -14,14 +14,15 @@ struct OderListView: View {
 //  @ObservedObject var orderlistmodel: OrderList = OrderList()
   @EnvironmentObject var orderlistmodel: OrderList
   var rid: String
+//  @Binding var isActivity: Bool
 
     var body: some View {
-      NavigationView {
+//      NavigationView {
         GeometryReader { geo in
           VStack(alignment: .center) {
             if orderlistmodel.data != nil{
               ForEach(orderlistmodel.data!.indices, id:\.self) { index in
-                OderListCard(model: orderlistmodel.data![index])
+                OderListCard(model: orderlistmodel.data![index], roomid: rid)
               }
               .frame(width: geo.size.width * (9/10))
               .border(.gray)
@@ -37,18 +38,19 @@ struct OderListView: View {
           }
         } //geo
         
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationBarTitle("주문 리스트")
-        .toolbar {
-          ToolbarItem(placement: .navigationBarLeading) {
-            Button {
-              presentationMode.wrappedValue.dismiss()
-            } label: {
-              Image(systemName: "xmark")
-            }
-          }
-        }
-      } //navi
+//        .navigationBarTitleDisplayMode(.inline)
+//        .navigationBarTitle("주문 리스트")
+//        .toolbar {
+//          ToolbarItem(placement: .navigationBarLeading) {
+//            Button {
+//              presentationMode.wrappedValue.dismiss()
+//            } label: {
+//              Image(systemName: "xmark")
+//            }
+//          }
+//        }
+//      } //navi
+//      .navigationBarHidden(true)
     }
   
 }

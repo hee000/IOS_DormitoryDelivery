@@ -16,8 +16,8 @@ import Combine
 
 
 
-class ChatDB: Object, ObjectKeyIdentifiable, Decodable{
-
+class ChatDB: Object, ObjectKeyIdentifiable, Decodable, Identifiable{
+  @objc dynamic var _id = UUID().uuidString
   @objc dynamic var rid: String?
   @objc dynamic var superid: String?
   @objc dynamic var state: ChatState? = ChatState()
@@ -48,17 +48,17 @@ class ChatDB: Object, ObjectKeyIdentifiable, Decodable{
   }
 }
 
-class ChatState: Object{
+class ChatState: Object, ObjectKeyIdentifiable, Identifiable{
     @objc dynamic var allready: Bool = false
     @objc dynamic var oderfix: Bool = false
 }
 
-class ChatUsersInfo: Object{
+class ChatUsersInfo: Object, ObjectKeyIdentifiable, Identifiable{
     @objc dynamic var name: String?
     @objc dynamic var id: String?
 }
 
-class ChatMessageDetail: Object, Decodable,ObjectKeyIdentifiable {
+class ChatMessageDetail: Object, Decodable,ObjectKeyIdentifiable, Identifiable{
     @objc dynamic var id: String?
     @objc dynamic var type: String?
     @objc dynamic var body: ChatMessageDetailBody?
@@ -86,7 +86,7 @@ class ChatMessageDetail: Object, Decodable,ObjectKeyIdentifiable {
 //  }
 }
 
-class ChatMessageDetailBody: Object, Decodable, ObjectKeyIdentifiable {
+class ChatMessageDetailBody: Object, Decodable, ObjectKeyIdentifiable, Identifiable{
     @objc dynamic var action: String?
     @objc dynamic var data: ChatMessageDetailBodyData?
     @objc dynamic var userid: String?
@@ -102,7 +102,7 @@ class ChatMessageDetailBody: Object, Decodable, ObjectKeyIdentifiable {
     }
 }
 
-class ChatMessageDetailBodyData: Object, Decodable, ObjectKeyIdentifiable {
+class ChatMessageDetailBodyData: Object, Decodable, ObjectKeyIdentifiable, Identifiable{
   @objc dynamic var name: String?
   @objc dynamic var userId: String?
   @objc dynamic var TEST: String?
@@ -119,7 +119,7 @@ class ChatMessageDetailBodyData: Object, Decodable, ObjectKeyIdentifiable {
 }
 
 
-final class ChatData: ObservableObject {
+final class ChatData: ObservableObject, Identifiable{
   @Published var chatlist: [ChatDB]
   @Published var chatlistsortindex: [Int]
 

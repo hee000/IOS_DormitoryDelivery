@@ -31,6 +31,8 @@ struct OderView: View {
   @State var postalertstate = false
   @State var exitalertstate = false
   @State var exit = false
+  @State var addanimation = false
+  var navi = false
 
   var roomid: String
   let formatter: NumberFormatter = {
@@ -46,8 +48,8 @@ struct OderView: View {
           VStack(alignment: .center ,spacing: 0){
             GeometryReader { geo in
               Button{
+                self.addanimation.toggle()
                 let nonemenue = orderdata(id: nil, name: "", quantity: 1, description: "", price: nil)
-//                self.odteee.data.insert(nonemenue, at: 0)
                   self.ordermodel.data.append(nonemenue)
               } label: {
                 Image(systemName: "plus")
@@ -128,11 +130,6 @@ struct OderView: View {
                 .clipped()
                 .shadow(color: Color.black.opacity(0.2), radius: 8)
                 .rotationEffect(Angle(degrees: 180)).scaleEffect(x: -1.0, y: 1.0, anchor: .center)
-                .transition(AnyTransition.opacity.animation(Animation.easeOut))
-//                .animation(odteee.data.count > 1 ? .easeIn : nil)
-
-                
-              
                 } // for문
             
             Spacer()
@@ -141,17 +138,18 @@ struct OderView: View {
           .padding([.leading, .trailing])
           
           .rotationEffect(Angle(degrees: 180)).scaleEffect(x: -1.0, y: 1.0, anchor: .center)
-          .animation(ordermodel.data.count > 1 ? .easeIn : nil)
+          .animation(Animation.easeInOut, value:addanimation)
           
         } // scroll
           
         Button {
           var valid = true
           for i in ordermodel.data.indices {
-            if ordermodel.data[i].name == "" || ordermodel.data[i].price == nil || Int(ordermodel.data[i].price!) == nil {
+            if ordermodel.data[i].name == "" || ordermodel.data[i].price == nil {
               valid = false
-              print("오류검출됨")
-              self.postalertstate.toggle()
+              withAnimation {
+                self.postalertstate.toggle()
+              }
               break
             }
           }
@@ -167,6 +165,7 @@ struct OderView: View {
                 }
               }
             }
+            presentationMode.wrappedValue.dismiss()
           }
         } label: {
           Text("작성 완료")
@@ -192,6 +191,7 @@ struct OderView: View {
         if self.chatdata.menu.count == 0 {
           let nonemenue = orderdata(id: nil, name: "", quantity: 1, description: "", price: nil)
           self.ordermodel.data.append(nonemenue)
+          self.ordermodel.forcompare = self.ordermodel.data
         } else {
           for i in chatdata.menu.indices {
             if let mytoken = naverLogin.loginInstance?.accessToken {
@@ -205,35 +205,37 @@ struct OderView: View {
       .toolbar {
         ToolbarItem(placement: .navigationBarLeading) {
           Button {
-            var vaild = true
+            var same = true
             if self.ordermodel.forcompare.count == self.ordermodel.data.count {
               for i in self.ordermodel.forcompare.indices{
                 if self.ordermodel.forcompare[i].id != self.ordermodel.data[i].id {
-                  vaild = false
+                  same = false
                   break
                 } else if self.ordermodel.forcompare[i].name != self.ordermodel.data[i].name {
-                  vaild = false
+                  same = false
                   break
                 } else if self.ordermodel.forcompare[i].description != self.ordermodel.data[i].description {
-                  vaild = false
+                  same = false
                   break
                 } else if self.ordermodel.forcompare[i].quantity != self.ordermodel.data[i].quantity {
-                  vaild = false
+                  same = false
                   break
                 }
               }
             } else {
-              vaild = false
+              same = false
             }
             
-            if vaild {
+            if same {
               presentationMode.wrappedValue.dismiss()
             } else {
               hideKeyboard()
-              self.exitalertstate.toggle()
+              withAnimation {
+                self.exitalertstate.toggle()
+              }
             }
           } label: {
-            Image(systemName: "xmark")
+            Image(systemName: self.navi ? "chevron.left" : "xmark")
           }
           .foregroundColor(.black)
           .disabled(self.postalertstate ? true : false)
@@ -241,6 +243,7 @@ struct OderView: View {
         }
       }
     } //navi
+      .navigationBarHidden(true)
         
   }
 }

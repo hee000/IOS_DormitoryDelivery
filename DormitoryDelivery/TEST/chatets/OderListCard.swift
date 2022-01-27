@@ -9,16 +9,20 @@ import SwiftUI
 
 struct OderListCard: View {
   var model: orderlistdata
+  var roomid: String
+  @State var order = false
   
     var body: some View {
       VStack(alignment: .leading) {
+        NavigationLink(destination: OderView(chatdata: roomidtodbconnect(rid: self.roomid)!, navi: true, roomid: self.roomid), isActive: $order) {
+        }
         HStack{
           Text("프사")
           Text(model.user.name)
           Spacer()
           if model.user.userId == UserDefaults.standard.string(forKey: "MyID")! {
             Button("주문 수정"){
-              print("주문수정~")
+              self.order.toggle()
             }
           }
         }

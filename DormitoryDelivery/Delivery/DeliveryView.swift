@@ -17,7 +17,7 @@ struct DeliveryView: View {
   @EnvironmentObject var naverLogin: NaverLogin
   @State var isRoomLinkActive = false
   
-  
+    
 
   @State var flags = Array(repeating: false, count: category.count)
   @Binding var mysection: String
@@ -53,7 +53,8 @@ struct DeliveryView: View {
           } else { // 매치목록
             ScrollView {
               VStack(alignment: .center, spacing:3) {
-                ForEach(rooms.data!.data.indices, id: \.self) { index in
+                ForEach(Array(zip(rooms.data!.data.indices, rooms.data!.data)), id: \.1) { index, item in
+//                ForEach(rooms.data!.data.indices, id: \.self) { index in
                   NavigationLink(destination: RoomDetailView(roomdata: rooms.data!.data[index])) {
               RoomCard(deliveryTitle: rooms.data!.data[index].shopName,
                        deliveryZone: rooms.data!.data[index].section,

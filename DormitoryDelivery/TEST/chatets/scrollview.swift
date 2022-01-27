@@ -6,32 +6,37 @@ struct CustomScrollView<Content>: View where Content: View {
     var scrollToEnd: Bool = false
     var content: () -> Content
 
-    @State private var contentHeight: CGFloat = .zero
-    @State private var contentOffset: CGFloat = .zero
-    @State private var scrollOffset: CGFloat = .zero
+  @State private var contentHeight: CGFloat = .zero
+  @State private var contentOffset: CGFloat = .zero
+  @State private var scrollOffset: CGFloat = .zero
+  
 
     var body: some View {
         GeometryReader { geometry in
-            if self.axes == .vertical {
-                self.vertical(geometry: geometry)
-            } else {
-                // implement same for horizontal orientation
-            }
+          self.vertical(geometry: geometry)
         }
         .clipped()
     }
 
     private func vertical(geometry: GeometryProxy) -> some View {
-        VStack {
+      VStack {
+        Spacer()
+          .frame(height:10)
             content()
+          Spacer()
+            .frame(height:10)
         }
         .modifier(ViewHeightKey())
+        .onChange(of: geometry.size.height, perform: { newValue in
+          self.updateHeight(with: contentHeight, outerHeight: newValue)
+        })
         .onPreferenceChange(ViewHeightKey.self) {
             self.updateHeight(with: $0, outerHeight: geometry.size.height)
         }
         .frame(height: geometry.size.height, alignment: (reversed ? .bottom : .top))
         .offset(y: contentOffset + scrollOffset)
-        .animation(.easeInOut)
+        .animation(Animation.easeInOut, value: contentHeight)
+        .animation(Animation.easeInOut, value: scrollOffset)
         .background(Color(.sRGB, red: 245/255, green: 245/255, blue: 251/255, opacity: 1))
         .gesture(DragGesture()
             .onChanged { self.onDragChanged($0) }

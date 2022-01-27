@@ -67,9 +67,9 @@ struct AlertTwoButton: View {
             HStack(spacing:0){
               Spacer()
               Button {
-                self.yesButton.toggle()
+                self.noButton.toggle()
               } label : {
-                Text("확인")
+                Text("취소")
               }
               .foregroundColor(.black)
               .padding()
@@ -77,9 +77,9 @@ struct AlertTwoButton: View {
               Divider()
               Spacer()
               Button {
-                self.noButton.toggle()
+                self.yesButton.toggle()
               } label : {
-                Text("취소")
+                Text("확인")
               }
               .foregroundColor(.black)
               .padding()

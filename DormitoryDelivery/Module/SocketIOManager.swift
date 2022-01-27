@@ -59,7 +59,6 @@ class SocketIOManager:NSObject {
             let data2 = try JSONSerialization.data(withJSONObject: data[0], options: .prettyPrinted)
             let session = try JSONDecoder().decode(roomsdata.self, from: data2)
             rooms.data = session
-            print(rooms.data)
           }
         }
         catch {

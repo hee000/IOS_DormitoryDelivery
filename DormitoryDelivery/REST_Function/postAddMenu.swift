@@ -32,6 +32,7 @@ func postAddMenu(oderdata: orderdata, rid: String, token: String){
       let realm = try! Realm()
       let db = realm.object(ofType: ChatDB.self, forPrimaryKey: rid)
       try! realm.write {
+//        db?.menu.insert(value, at: 0)
         db?.menu.append(value)
       }
     case .failure(let error):

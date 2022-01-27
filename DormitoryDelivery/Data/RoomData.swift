@@ -10,7 +10,7 @@ import Combine
 
 
 
-struct roomdata: Codable {
+struct roomdata: Codable, Hashable {
   var id: String;
   var shopName: String;         // 제목
   var section: String;          // 배달지역
@@ -20,12 +20,13 @@ struct roomdata: Codable {
   var createdAt: Int;           // 만들어진 시간
 }
 
-struct roomsdata: Codable {
+struct roomsdata: Codable, Hashable {
+  
   var data: Array<roomdata>
   var status: Int
 }
 
-class RoomData: ObservableObject {
+class RoomData: ObservableObject, Identifiable {
   @Published var data: roomsdata? = nil
 }
 

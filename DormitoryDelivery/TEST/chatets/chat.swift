@@ -15,7 +15,7 @@ struct Chat: View {
   @EnvironmentObject var keyboardManager: KeyboardManager
 
   @ObservedObject var model = ChatModel()
-  @EnvironmentObject var chatdata: ChatData
+//  @EnvironmentObject var chatdata: ChatData
   @EnvironmentObject var naverLogin: NaverLogin
   @State var RoomChat : ChatDB?
   var roomid: String
@@ -24,7 +24,9 @@ struct Chat: View {
   @FocusState private var rere: Bool
   @State var textHeight: CGFloat?
 
-  
+  @State var testbool = false
+  @State var testbool2 = false
+  @State var testbool3 = false
   
   var body: some View {
     let drag = DragGesture()
@@ -40,10 +42,14 @@ struct Chat: View {
       ZStack {
       VStack(spacing: 0) {
             //MARK:- ScrollView
-            CustomScrollView(scrollToEnd: true) {
-                LazyVStack {
+        CustomScrollView(scrollToEnd: true) {
+          LazyVStack(spacing: 3) {
                   if let RoomDB = RoomChat{
-                    ForEach(0..<RoomDB.messages.count, id:\.self) { index in
+//                    ForEach(Array(zip(RoomDB.messages.indices, RoomDB.messages)), id: \.1) { index, item in
+
+//                    ForEach(0..<RoomDB.messages.count, id:\.self) { index in
+                    ForEach(RoomDB.messages.indices, id: \.self) { index in
+
                       if RoomDB.messages[index].type == "chat" {
                         if let idvalue = UserDefaults.standard.string(forKey: "MyID") {
                           if RoomDB.messages[index].body!.userid == idvalue { // 내 매세지
@@ -122,14 +128,16 @@ struct Chat: View {
         if RoomChat?.state?.oderfix == false {
           if RoomChat?.superid == UserDefaults.standard.string(forKey: "MyID")! || (RoomChat?.menu.count) == 0{
             Button("주문서 작성") {
-              self.model.oderview.toggle()
+//              self.model.oderview.toggle()
+              self.testbool.toggle()
             }
             .frame(width: UIScreen.main.bounds.size.width, height: 45, alignment: .center)
             .background(Color(.sRGB, red: 221/255, green: 221/255, blue: 221/255, opacity: 1))
           } else {
               HStack(alignment: .center, spacing: 0){
                 Button("주문서 작성") {
-                  self.model.oderview.toggle()
+//                  self.model.oderview.toggle()
+                  self.testbool.toggle()
                 }
                 .frame(width: geo.size.width/2)
                 Divider()
@@ -237,11 +245,8 @@ struct Chat: View {
           .overlay(Rectangle().frame(width: nil, height: 1, alignment: .top).foregroundColor(Color(.sRGB, red: 221/255, green: 221/255, blue: 221/255, opacity: 1)), alignment: .top)
           .transition(.move(edge: .trailing))
           .offset(x: geo.size.width/10)
-          
-      }
-        
-//        NavigationLink(destination: OderView(roomid: self.roomid), isActive: $model.oderview) {
-//        }.hidden()
+      } //showmenu
+      
     
     } //Zstack
       .gesture(drag)
@@ -260,22 +265,24 @@ struct Chat: View {
           ToolbarItem(placement: .navigationBarTrailing) {
             Button {
               withAnimation {
-                self.model.showMenu.toggle()
+                self.testbool2.toggle()
               }
             } label: {
               Image(systemName: "line.horizontal.3")
             }
           }
       }
+      NavigationLink(destination: OderListView(rid: self.roomid), isActive: $testbool2) {
+      }
     } //geo
-    .fullScreenCover(isPresented: $model.oderview) {
+    .fullScreenCover(isPresented: $testbool) {
       if self.RoomChat != nil{
         OderView(chatdata: self.RoomChat!, roomid: self.roomid)
       }
     }
-    .fullScreenCover(isPresented: $model.oderlistview) {
-      OderListView(rid: self.roomid)
-    }
+//    .fullScreenCover(isPresented: $model.oderlistview) {
+//      OderListView(rid: self.roomid)
+//    }
     .fullScreenCover(isPresented: $model.odercheck) {
       OderCheckView(roomid: self.roomid)
     }
@@ -286,6 +293,9 @@ struct Chat: View {
     .onChange(of: model.leave) { newValue in
       presentationMode.wrappedValue.dismiss()
     }
+    .onChange(of: testbool, perform: { V in
+      print(V)
+    })
     .onAppear {
       try! realm.write({
         if RoomChat != nil {
@@ -301,6 +311,7 @@ struct Chat: View {
       })
     })
     .onDisappear {
+      print("SAdasd")
       let realm = try! Realm()
       if self.model.leave {
         self.RoomChat = nil
@@ -308,11 +319,11 @@ struct Chat: View {
           realm.delete(roomidtodbconnect(rid: self.roomid)!)
         })
       } else{
-          try! realm.write({
-            if RoomChat != nil {
-              RoomChat!.confirmation = RoomChat!.index
-            }
-          })
+//          try! realm.write({
+//            if RoomChat != nil {
+//              RoomChat!.confirmation = RoomChat!.index
+//            }
+//          })
       }
       
     }
