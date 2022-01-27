@@ -12,6 +12,7 @@ func getMenuList(rid: String, token: String, model: tete2) {
   let url = urlmenulist(rid: rid)
   let req = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: ["Authorization": token])
   req.responseJSON { response in
+    
     let result = response.value as! [Any]
 //    print(response.value)
     

@@ -26,7 +26,7 @@ struct DeliveryView: View {
     var body: some View {
       GeometryReader { geo in
         VStack(alignment: .leading, spacing: 0) {
-          ScrollView(.horizontal){
+          ScrollView(.horizontal, showsIndicators: false){
             HStack{ // 해시태그
               ForEach(category.indices, id: \.self) { index in
                 HashTag(flag: $flags, tag: index)

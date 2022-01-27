@@ -139,7 +139,8 @@ final class ChatData: ObservableObject {
       // When there is a change, replace the old channels array with a new one.
       
 //      print(channels.sorted(byKeyPath: "sortforat"))
-      self.chatlist = Array(channels.sorted(byKeyPath: "sortforat", ascending: false))
+//      self.chatlist = Array(channels.sorted(byKeyPath: "sortforat", ascending: false))
+      self.chatlist = Array(channels)
     }
   }
 

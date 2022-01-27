@@ -31,7 +31,7 @@ struct ChatView: View {
             Spacer()
           }.frame(width: geo.size.width)
         } else {
-          ScrollView{
+          ScrollView {
             VStack(spacing: 1) {
               ForEach(chatdata.chatlist.indices, id: \.self) { index in
                 NavigationLink(destination: Chat(RoomChat: chatdata.chatlist[index]

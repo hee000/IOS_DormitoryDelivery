@@ -29,7 +29,7 @@ struct CreateRoomView: View {
             Text("주문 받을 기숙사를 선택해주세요.")
               .bold()
             
-            ScrollView(.horizontal) {
+            ScrollView(.horizontal, showsIndicators: false) {
               HStack(spacing: 20){
                   ForEach( 0  ..< sectionNameEng.count ) { index in
                     Button{
