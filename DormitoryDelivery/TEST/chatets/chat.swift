@@ -286,6 +286,20 @@ struct Chat: View {
     .onChange(of: model.leave) { newValue in
       presentationMode.wrappedValue.dismiss()
     }
+    .onAppear {
+      try! realm.write({
+        if RoomChat != nil {
+          RoomChat!.confirmation = RoomChat!.index
+        }
+      })
+    }
+    .onChange(of: RoomChat?.index, perform: { V in
+      try! realm.write({
+        if RoomChat != nil {
+          RoomChat!.confirmation = RoomChat!.index
+        }
+      })
+    })
     .onDisappear {
       let realm = try! Realm()
       if self.model.leave {

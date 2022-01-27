@@ -121,6 +121,7 @@ class ChatMessageDetailBodyData: Object, Decodable, ObjectKeyIdentifiable {
 
 final class ChatData: ObservableObject {
   @Published var chatlist: [ChatDB]
+  @Published var chatlistsortindex: [Int]
 
   private var chatsToken: NotificationToken?
 
@@ -129,6 +130,13 @@ final class ChatData: ObservableObject {
   init() {
     let realm = try! Realm()
     chatlist = Array(realm.objects(ChatDB.self)) // Convert Realm results object to Array
+    var idxs: [Int] = []
+    for chatdb in realm.objects(ChatDB.self).sorted(byKeyPath: "sortforat", ascending: false) {
+      if Array(realm.objects(ChatDB.self)).firstIndex(of: chatdb) != nil {
+        idxs.append(Array(realm.objects(ChatDB.self)).firstIndex(of: chatdb)!)
+      }
+    }
+    chatlistsortindex = idxs
     activateChannelsToken()
   }
 
@@ -138,9 +146,17 @@ final class ChatData: ObservableObject {
     chatsToken = channels.observe { _ in
       // When there is a change, replace the old channels array with a new one.
       
+      self.chatlist = Array(channels)
 //      print(channels.sorted(byKeyPath: "sortforat"))
 //      self.chatlist = Array(channels.sorted(byKeyPath: "sortforat", ascending: false))
-      self.chatlist = Array(channels)
+//      print(channels.sorted(byKeyPath: "sortforat", ascending: false).first)
+      var idxs: [Int] = []
+      for chatdb in channels.sorted(byKeyPath: "sortforat", ascending: false) {
+        if Array(realm.objects(ChatDB.self)).firstIndex(of: chatdb) != nil {
+          idxs.append(Array(realm.objects(ChatDB.self)).firstIndex(of: chatdb)!)
+        }
+      }
+      self.chatlistsortindex = idxs
     }
   }
 
