@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct OderListCard: View {
-  var model: tetet2
+  var model: orderlistdata
   
     var body: some View {
       VStack(alignment: .leading) {

@@ -7,12 +7,12 @@
 
 import SwiftUI
 
-class tete244: ObservableObject {
-  @Published var data: [tetemenussss] = []
-  @Published var new: Int = 0
+class Order: ObservableObject {
+  @Published var data: [orderdata] = []
+  @Published var forcompare: [orderdata] = []
 }
 
-struct tetemenussss: Codable{
+struct orderdata: Codable{
   var id: String?;
   var name: String;
   var quantity: Int;
@@ -23,19 +23,15 @@ struct tetemenussss: Codable{
 
 struct OderView: View {
   @Environment(\.presentationMode) var presentationMode
-  @ObservedObject var oderdata: Oder = Oder()
   
-  @ObservedObject var odteee: tete244 = tete244()
-  
-  @State var odteee22 = tete244()
-  
+  @EnvironmentObject var ordermodel: Order
   @EnvironmentObject var naverLogin: NaverLogin
   
   @State var chatdata: ChatDB
   @State var postalertstate = false
   @State var exitalertstate = false
   @State var exit = false
-//  @State var exitalertstate = false
+
   var roomid: String
   let formatter: NumberFormatter = {
       let formatter = NumberFormatter()
@@ -50,9 +46,9 @@ struct OderView: View {
           VStack(alignment: .center ,spacing: 0){
             GeometryReader { geo in
               Button{
-                let nonemenue = tetemenussss(id: nil, name: "", quantity: 1, description: "", price: nil)
+                let nonemenue = orderdata(id: nil, name: "", quantity: 1, description: "", price: nil)
 //                self.odteee.data.insert(nonemenue, at: 0)
-                  self.odteee.data.append(nonemenue)
+                  self.ordermodel.data.append(nonemenue)
               } label: {
                 Image(systemName: "plus")
                   .font(.title)
@@ -72,19 +68,19 @@ struct OderView: View {
           
         ScrollView(showsIndicators: false) {
           VStack(spacing: 20){ // 뒤집힌 상태
-            ForEach(odteee.data.indices, id: \.self) { index in // 뒤집힌 상태
+            ForEach(ordermodel.data.indices, id: \.self) { index in // 뒤집힌 상태
                 VStack(spacing: 30){
                   HStack{
                     Text("*메뉴")
                       .bold()
-                    TextField("메뉴를 입력해주세요", text: $odteee.data[index].name)
+                    TextField("메뉴를 입력해주세요", text: $ordermodel.data[index].name)
                       .multilineTextAlignment(.trailing)
                   }
                   Divider()
                   HStack{
                     Text("*가격")
                       .bold()
-                    TextField("가격을 입력해주세요", value: $odteee.data[index].price, formatter: formatter)
+                    TextField("가격을 입력해주세요", value: $ordermodel.data[index].price, formatter: formatter)
                         .keyboardType(.phonePad)
                         .multilineTextAlignment(.trailing)
                   }
@@ -95,18 +91,18 @@ struct OderView: View {
                     Spacer()
                     HStack(spacing: 20) {
                       Button {
-                        if self.odteee.data[index].quantity > 1 {
-                          self.odteee.data[index].quantity -= 1
+                        if self.ordermodel.data[index].quantity > 1 {
+                          self.ordermodel.data[index].quantity -= 1
                         }
                       } label: {
                         Image(systemName: "minus")
-                          .foregroundColor(self.odteee.data[index].quantity > 1 ? Color.black : Color.gray.opacity(0.5))
+                          .foregroundColor(self.ordermodel.data[index].quantity > 1 ? Color.black : Color.gray.opacity(0.5))
                       }
-                      .disabled(self.odteee.data[index].quantity > 1 ? false : true)
-                      Text("\(self.odteee.data[index].quantity)개")
+                      .disabled(self.ordermodel.data[index].quantity > 1 ? false : true)
+                      Text("\(self.ordermodel.data[index].quantity)개")
                         .frame(width: 40)
                       Button {
-                        self.odteee.data[index].quantity += 1
+                        self.ordermodel.data[index].quantity += 1
                       } label: {
                         Image(systemName: "plus")
                           .foregroundColor(.black)
@@ -121,7 +117,7 @@ struct OderView: View {
                   HStack{
                     Text("상세설명")
                       .bold()
-                    TextField("세부 정보를 입력해주세요", text: $odteee.data[index].description)
+                    TextField("세부 정보를 입력해주세요", text: $ordermodel.data[index].description)
                       .multilineTextAlignment(.trailing)
                   }
                 }
@@ -145,14 +141,14 @@ struct OderView: View {
           .padding([.leading, .trailing])
           
           .rotationEffect(Angle(degrees: 180)).scaleEffect(x: -1.0, y: 1.0, anchor: .center)
-          .animation(odteee.data.count > 1 ? .easeIn : nil)
+          .animation(ordermodel.data.count > 1 ? .easeIn : nil)
           
         } // scroll
           
         Button {
           var valid = true
-          for i in odteee.data.indices {
-            if odteee.data[i].name == "" || odteee.data[i].price == nil || Int(odteee.data[i].price!) == nil {
+          for i in ordermodel.data.indices {
+            if ordermodel.data[i].name == "" || ordermodel.data[i].price == nil || Int(ordermodel.data[i].price!) == nil {
               valid = false
               print("오류검출됨")
               self.postalertstate.toggle()
@@ -160,14 +156,14 @@ struct OderView: View {
             }
           }
           if valid {
-            for i in odteee.data.indices {
-              if odteee.data[i].id != nil {
+            for i in ordermodel.data.indices {
+              if ordermodel.data[i].id != nil {
                 if let mytoken = naverLogin.loginInstance?.accessToken {
-                  postMenuEdit(oderdata: odteee.data[i], rid: self.roomid, token: mytoken)
+                  postMenuEdit(oderdata: ordermodel.data[i], rid: self.roomid, token: mytoken)
                 }
               } else {
                 if let mytoken = naverLogin.loginInstance?.accessToken {
-                  postAddMenu(oderdata: odteee.data[i], rid: self.roomid, token: mytoken)
+                  postAddMenu(oderdata: ordermodel.data[i], rid: self.roomid, token: mytoken)
                 }
               }
             }
@@ -191,17 +187,18 @@ struct OderView: View {
         })
         
       .onAppear(perform: {
+        self.ordermodel.data = []
+        self.ordermodel.forcompare = []
         if self.chatdata.menu.count == 0 {
-          let nonemenue = tetemenussss(id: nil, name: "", quantity: 1, description: "", price: nil)
-          self.odteee.data.append(nonemenue)
+          let nonemenue = orderdata(id: nil, name: "", quantity: 1, description: "", price: nil)
+          self.ordermodel.data.append(nonemenue)
         } else {
           for i in chatdata.menu.indices {
             if let mytoken = naverLogin.loginInstance?.accessToken {
-              getMenus(uid: UserDefaults.standard.string(forKey: "MyID")!, rid: self.roomid, mid: self.chatdata.menu[i], token: mytoken, model: self.odteee)
+              getMenus(uid: UserDefaults.standard.string(forKey: "MyID")!, rid: self.roomid, mid: self.chatdata.menu[i], token: mytoken, model: self.ordermodel)
             }
           }
         }
-        self.odteee22.data = self.odteee.data
       })
       .navigationBarTitleDisplayMode(.inline)
       .navigationBarTitle("주문서 작성")
@@ -209,18 +206,18 @@ struct OderView: View {
         ToolbarItem(placement: .navigationBarLeading) {
           Button {
             var vaild = true
-            if self.odteee22.data.count == self.odteee.data.count {
-              for i in self.odteee22.data.indices{
-                if self.odteee22.data[i].id != self.odteee.data[i].id {
+            if self.ordermodel.forcompare.count == self.ordermodel.data.count {
+              for i in self.ordermodel.forcompare.indices{
+                if self.ordermodel.forcompare[i].id != self.ordermodel.data[i].id {
                   vaild = false
                   break
-                } else if self.odteee22.data[i].name != self.odteee.data[i].name {
+                } else if self.ordermodel.forcompare[i].name != self.ordermodel.data[i].name {
                   vaild = false
                   break
-                } else if self.odteee22.data[i].description != self.odteee.data[i].description {
+                } else if self.ordermodel.forcompare[i].description != self.ordermodel.data[i].description {
                   vaild = false
                   break
-                } else if self.odteee22.data[i].quantity != self.odteee.data[i].quantity {
+                } else if self.ordermodel.forcompare[i].quantity != self.ordermodel.data[i].quantity {
                   vaild = false
                   break
                 }

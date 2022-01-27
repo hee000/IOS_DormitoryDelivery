@@ -96,7 +96,7 @@ class UserOrderCheck: ObservableObject {
 
 
 struct Receipt: Codable {
-  var menus: [tetemenus];
+  var menus: [orderlistmenudata];
   var tipForUser: Int?;         // 제목
   var totalPrice: Int?;          // 배달지역
   var accountNumber: String;               // 현재 총 금액

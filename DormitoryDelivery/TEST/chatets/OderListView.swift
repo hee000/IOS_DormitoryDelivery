@@ -11,16 +11,17 @@ import Network
 struct OderListView: View {
   @Environment(\.presentationMode) var presentationMode
   @EnvironmentObject var naverLogin: NaverLogin
-  @ObservedObject var tetemodel: tete2 = tete2()
+//  @ObservedObject var orderlistmodel: OrderList = OrderList()
+  @EnvironmentObject var orderlistmodel: OrderList
   var rid: String
 
     var body: some View {
       NavigationView {
         GeometryReader { geo in
           VStack(alignment: .center) {
-            if tetemodel.data != nil{
-              ForEach(tetemodel.data!.indices, id:\.self) { index in
-                OderListCard(model: tetemodel.data![index])
+            if orderlistmodel.data != nil{
+              ForEach(orderlistmodel.data!.indices, id:\.self) { index in
+                OderListCard(model: orderlistmodel.data![index])
               }
               .frame(width: geo.size.width * (9/10))
               .border(.gray)
@@ -29,8 +30,9 @@ struct OderListView: View {
           } //vstack
           .frame(width: geo.size.width)
           .onAppear {
+            orderlistmodel.data = nil
             if let mytoken = naverLogin.loginInstance?.accessToken {
-              getMenuList(rid: self.rid, token: mytoken, model: tetemodel)
+              getMenuList(rid: self.rid, token: mytoken, model: orderlistmodel)
             }
           }
         } //geo

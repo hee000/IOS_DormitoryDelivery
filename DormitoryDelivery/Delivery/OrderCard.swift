@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct OrderCard: View {
-  @Binding var model: tetemenussss
+  @Binding var model: orderdata
   
     var body: some View {
       VStack{

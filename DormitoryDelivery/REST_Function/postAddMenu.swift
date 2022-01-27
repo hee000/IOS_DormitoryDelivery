@@ -9,7 +9,7 @@ import Foundation
 import Alamofire
 import RealmSwift
 
-func postAddMenu(oderdata: tetemenussss, rid: String, token: String){
+func postAddMenu(oderdata: orderdata, rid: String, token: String){
   print("방만들기 시도")
   let addkey = addmenu(name: oderdata.name, quantity: oderdata.quantity, description: oderdata.description, price: oderdata.price!)
   let url = urladdmenu(uid: UserDefaults.standard.string(forKey: "MyID")!, rid: rid)
