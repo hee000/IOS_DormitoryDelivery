@@ -21,7 +21,7 @@ class SocketIOManager:NSObject {
   
   
   
-  func establishConnection(token: String) {
+  func establishConnection(token: String, roomdata: RoomData) {
       print("연결시작")
       socket.connect(withPayload: ["token": token])
       matchSocket.connect(withPayload: ["token": token])
@@ -29,6 +29,14 @@ class SocketIOManager:NSObject {
     
 //    socket.on("connect") { data, ack in
 //            socket.emit("connectWithNewId", UsersViewController.nickname)
+    
+    matchSocket.on("connect") { data, ack in
+      SocketIOManager.shared.match_emitSubscribe(rooms: roomdata, section: sectionNameEng, category: categoryNameEng)
+      SocketIOManager.shared.match_onArrive(rooms: roomdata)
+    }
+    roomSocket.on("connect") { data, ack in
+      SocketIOManager.shared.room_onChat()
+    }
 //    }
     
     }
@@ -41,7 +49,7 @@ class SocketIOManager:NSObject {
     
   func match_emitSubscribe(rooms:RoomData, section: [String], category: [String]){
     
-    rooms.data = nil
+//    rooms.data = nil
     do{
       let subscribeform = homeViewOption(category: category, section: section)
       print("구독시작22")
@@ -51,6 +59,7 @@ class SocketIOManager:NSObject {
             let data2 = try JSONSerialization.data(withJSONObject: data[0], options: .prettyPrinted)
             let session = try JSONDecoder().decode(roomsdata.self, from: data2)
             rooms.data = session
+            print(rooms.data)
           }
         }
         catch {

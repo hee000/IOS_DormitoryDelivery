@@ -14,7 +14,10 @@ struct HashTag: View {
     var body: some View {
       if flag[tag]{
         Button {
-          self.flag[tag].toggle()
+          withAnimation(Animation.default.speed(5)) {
+            self.flag[tag].toggle()
+          }
+//          self.flag[tag].toggle()
         } label: {
           Text(category[tag])
             .fontWeight(.black)
@@ -23,7 +26,10 @@ struct HashTag: View {
         }
       } else {
         Button {
-          self.flag[tag].toggle()
+          withAnimation(Animation.default.speed(5)) {
+            self.flag[tag].toggle()
+          }
+          
         } label: {
           Text(category[tag])
             .foregroundColor(Color.gray)

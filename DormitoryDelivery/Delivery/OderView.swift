@@ -90,8 +90,13 @@ struct OderView: View {
                     }
                   }
                   .padding()
-                  .border(.gray)
+                  .background(Color.white)
+                  .clipped()
+                  .shadow(color: Color.black.opacity(0.2), radius: 3)
+                  .padding(3)
+                  
                   } // for문
+              
               Button("전송"){
                 var valid = true
                 for i in odteee.data.indices {

@@ -61,10 +61,10 @@ struct MyPage: View {
         }) {
           Text("로그아웃")
         }
-        
-        Spacer()
+//        
+//        Spacer()
       }
-      .navigationTitle("마이페이지")
+//      .navigationTitle("마이페이지")
     }
 }
 

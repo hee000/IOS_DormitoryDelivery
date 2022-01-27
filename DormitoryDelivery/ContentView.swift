@@ -13,7 +13,9 @@ struct ContentView: View {
 
 
   init() {
-    UITabBar.appearance().backgroundColor = UIColor.gray.withAlphaComponent(0.1)
+//    UITabBar.appearance().backgroundColor = UIColor.gray.withAlphaComponent(0.1)
+    UITabBar.appearance().barTintColor = .white
+    UITabBar.appearance().backgroundColor = .white
   }
 
     var body: some View {
@@ -33,6 +35,7 @@ struct ContentView: View {
 //        }
         NavigationView{
           TabViews()
+          
         }
             .onAppear {
               datecheck.startAction()

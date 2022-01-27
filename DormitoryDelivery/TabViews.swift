@@ -86,10 +86,13 @@ struct TabViews: View {
   @State var tabSelect = 0
   @State var createRoomSelect = false
   @State var tabSelectTmp = 0
+  
+  @State var DeliveryViewSection = "전체"
 
   var body: some View {
-    TabView(selection: $tabSelect) {
-      DeliveryView()
+    TabView(selection: $tabSelect){
+      DeliveryView(mysection: $DeliveryViewSection)
+        .overlay(Rectangle().frame(width: nil, height: 1, alignment: .top).foregroundColor(Color(.sRGB, red: 210/255, green: 210/255, blue: 210/255, opacity: 1)), alignment: .bottom)
         .tabItem {
         if self.tabSelect == 0 {
           Label("", image: "23424")
@@ -107,7 +110,10 @@ struct TabViews: View {
         }
       }.tag(1)
 
-      ChatView().tabItem {
+      ChatView()
+        .overlay(Rectangle().frame(width: nil, height: 1, alignment: .top).foregroundColor(Color(.sRGB, red: 210/255, green: 210/255, blue: 210/255, opacity: 1)), alignment: .top)
+        .overlay(Rectangle().frame(width: nil, height: 1, alignment: .top).foregroundColor(Color(.sRGB, red: 210/255, green: 210/255, blue: 210/255, opacity: 1)), alignment: .bottom)
+        .tabItem {
         if self.tabSelect == 2 {
           Label("채팅", image: "대지 8")
         } else {
@@ -115,7 +121,10 @@ struct TabViews: View {
         }
       }.tag(2)
 
-      MyPage().tabItem {
+      MyPage()
+        .overlay(Rectangle().frame(width: nil, height: 1, alignment: .top).foregroundColor(Color(.sRGB, red: 210/255, green: 210/255, blue: 210/255, opacity: 1)), alignment: .top)
+        .overlay(Rectangle().frame(width: nil, height: 1, alignment: .top).foregroundColor(Color(.sRGB, red: 210/255, green: 210/255, blue: 210/255, opacity: 1)), alignment: .bottom)
+        .tabItem {
         if self.tabSelect == 3 {
           Label("마이", image: "대지 8 사본 2")
         } else {
@@ -123,6 +132,7 @@ struct TabViews: View {
         }
       }.tag(3)
     } //tabview
+    
     .fullScreenCover(isPresented: $createRoomSelect) {
       CreateRoomView(tabSelect: $tabSelect)
     }
@@ -141,40 +151,45 @@ struct TabViews: View {
     .navigationBarTitleDisplayMode(.inline)
     .toolbar {
       ToolbarItem(placement: .navigationBarLeading) {
-        if self.tabSelect == 0 {
-          Text("전체")
-        } else if self.tabSelect == 2 {
+        HStack {
+          if self.tabSelect == 0 {
+            Menu(self.DeliveryViewSection) {
+                            ForEach(0 ..< sections.count, id: \.self) { index in
+                              Button(action: {
+                                self.DeliveryViewSection = sections[index]
+                              }) {
+                                Text(sections[index])
+                              }
 
-        } else if self.tabSelect == 3 {
-
+                            }
+                          }
+          } else if self.tabSelect == 2 {
+          } else if self.tabSelect == 3 {
+          }
         }
       }
       
       ToolbarItem(placement: .principal) {
-        if self.tabSelect == 0 {
-          
-        } else if self.tabSelect == 2 {
-          Text("채팅")
-            .bold()
-        } else if self.tabSelect == 3 {
-        Text("마이 페이지")
-            .bold()
-        }
+          if self.tabSelect == 0 {
+          } else if self.tabSelect == 2 {
+            Text("채팅")
+              .bold()
+          } else if self.tabSelect == 3 {
+            Text("마이페이지")
+              .bold()
+          }
       }
       
       
       ToolbarItem(placement: .navigationBarTrailing) {
         if self.tabSelect == 0 {
-
         } else if self.tabSelect == 2 {
-
         } else if self.tabSelect == 3 {
-          
         }
       }
       
     } //toolbar
-  
+
     .accentColor(Color(.sRGB, red: 112/255, green: 52/255, blue: 255/255, opacity: 1))
 
   }
