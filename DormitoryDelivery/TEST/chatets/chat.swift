@@ -24,16 +24,20 @@ struct Chat: View {
   @FocusState private var rere: Bool
   @State var textHeight: CGFloat?
 
-  @State var testbool = false
-  @State var testbool2 = false
-  @State var testbool3 = false
+  @State var text = ""
+  @State var showMenu = false
+  @State var leave = false
+  @State var oderview = false
+  @State var oderlistview = false
+  @State var odercheck = false
+  @State var userodercheck = false
   
   var body: some View {
     let drag = DragGesture()
       .onEnded {
         if $0.translation.width > 100 {
           withAnimation {
-            self.model.showMenu = false
+            self.showMenu = false
           }
         }
       }
@@ -102,7 +106,7 @@ struct Chat: View {
                                 Text("오더 체크끝")
                                   Button("확인하기"){
                                     
-                                    model.userodercheck.toggle()
+                                    self.userodercheck.toggle()
                                     
                                   }
                                 }
@@ -128,16 +132,16 @@ struct Chat: View {
         if RoomChat?.state?.oderfix == false {
           if RoomChat?.superid == UserDefaults.standard.string(forKey: "MyID")! || (RoomChat?.menu.count) == 0{
             Button("주문서 작성") {
-//              self.model.oderview.toggle()
-              self.testbool.toggle()
+              self.oderview.toggle()
+//              self.testbool.toggle()
             }
             .frame(width: UIScreen.main.bounds.size.width, height: 45, alignment: .center)
             .background(Color(.sRGB, red: 221/255, green: 221/255, blue: 221/255, opacity: 1))
           } else {
               HStack(alignment: .center, spacing: 0){
                 Button("주문서 작성") {
-//                  self.model.oderview.toggle()
-                  self.testbool.toggle()
+                  self.oderview.toggle()
+//                  self.testbool.toggle()
                 }
                 .frame(width: geo.size.width/2)
                 Divider()
@@ -159,7 +163,7 @@ struct Chat: View {
               HStack(spacing: 0) {
                 GeometryReader { geosender in
                   ZStack {
-                    Text(self.model.text)
+                    Text(self.text)
                       .lineLimit(1)
                       .frame(width: geosender.size.width, alignment: .leading)
                       .background(Color.white)
@@ -172,7 +176,7 @@ struct Chat: View {
                       .frame(width: geosender.size.width, height: 70, alignment: .leading)
                       .frame(maxHeight: .infinity)
                       .background(
-                        Text(self.model.text)
+                        Text(self.text)
                           .opacity(0)
                           .background(
                             GeometryReader { geo in
@@ -183,7 +187,7 @@ struct Chat: View {
                           }
                       )
 
-                    TextEditor(text: $model.text)
+                    TextEditor(text: $text)
                       .focused($rere)
                       .frame(width: geosender.size.width, height: 18.0 + (self.textHeight ?? 18.0))
                       .opacity(self.rere ? 1 : 0)
@@ -192,9 +196,9 @@ struct Chat: View {
                 } //geo sender
 
                 Button {
-                  if self.model.text != "" {
-                    SocketIOManager.shared.room_emitChat(rid: self.roomid, text: self.model.text)
-                    self.model.text = ""
+                  if self.text != "" {
+                    SocketIOManager.shared.room_emitChat(rid: self.roomid, text: self.text)
+                    self.text = ""
                     }
                 } label: {
                   Image(systemName: "arrow.up.circle.fill")
@@ -217,21 +221,21 @@ struct Chat: View {
         
         }//vstack
       .frame(width: geo.size.width, height: geo.size.height)
-      .disabled(self.model.showMenu ? true : false)
-      .overlay(self.model.showMenu ? Rectangle()
+      .disabled(self.showMenu ? true : false)
+      .overlay(self.showMenu ? Rectangle()
                 .fill(Color.black.opacity(0.7))
                 .edgesIgnoringSafeArea(.bottom)
                 .frame(width: geo.size.width,
                        height: geo.size.height)
                 .onTapGesture(perform: {
         withAnimation {
-          self.model.showMenu.toggle()
+          self.showMenu.toggle()
         }
       }) : nil)
 
-        if RoomChat?.superid == UserDefaults.standard.string(forKey: "MyID")! && RoomChat?.state?.oderfix != false && self.model.showMenu == false {
+        if RoomChat?.superid == UserDefaults.standard.string(forKey: "MyID")! && RoomChat?.state?.oderfix != false && self.showMenu == false {
           Button("주문 사진과 배달 금액을 입력해주세요"){
-            self.model.odercheck.toggle()
+            self.odercheck.toggle()
           }
           .frame(width: (geo.size.width/5) * 4, height: 60)
           .background(Color(.sRGB, red: 165/255, green: 162/255, blue: 246/255, opacity: 0.9))
@@ -239,8 +243,8 @@ struct Chat: View {
           .offset(y: -geo.size.height/2 + 45)
         } // 방장 메뉴 화인 이벤트
         
-        if self.model.showMenu {
-          ChatSideMenu(model: self.model, rid: self.roomid)
+        if self.showMenu {
+          ChatSideMenu(model: self.model, showMenu: $showMenu, oderlistview: $oderlistview, rid: self.roomid)
           .frame(width: geo.size.width * (9/10), height: geo.size.height)
           .overlay(Rectangle().frame(width: nil, height: 1, alignment: .top).foregroundColor(Color(.sRGB, red: 221/255, green: 221/255, blue: 221/255, opacity: 1)), alignment: .top)
           .transition(.move(edge: .trailing))
@@ -265,37 +269,33 @@ struct Chat: View {
           ToolbarItem(placement: .navigationBarTrailing) {
             Button {
               withAnimation {
-                self.testbool2.toggle()
+                self.showMenu.toggle()
               }
             } label: {
               Image(systemName: "line.horizontal.3")
             }
           }
       }
-      NavigationLink(destination: OderListView(rid: self.roomid), isActive: $testbool2) {
-      }
     } //geo
-    .fullScreenCover(isPresented: $testbool) {
+    .fullScreenCover(isPresented: $oderview) {
       if self.RoomChat != nil{
         OderView(chatdata: self.RoomChat!, roomid: self.roomid)
       }
     }
-//    .fullScreenCover(isPresented: $model.oderlistview) {
-//      OderListView(rid: self.roomid)
-//    }
-    .fullScreenCover(isPresented: $model.odercheck) {
+    .fullScreenCover(isPresented: $oderlistview) {
+      OderListView(rid: self.roomid)
+    }
+    .fullScreenCover(isPresented: $odercheck) {
       OderCheckView(roomid: self.roomid)
     }
-    .fullScreenCover(isPresented: $model.userodercheck) {
+    .fullScreenCover(isPresented: $userodercheck) {
       UserOrderCheckView(roomid: self.roomid)
     }
     .accentColor(.black)
     .onChange(of: model.leave) { newValue in
       presentationMode.wrappedValue.dismiss()
     }
-    .onChange(of: testbool, perform: { V in
-      print(V)
-    })
+
     .onAppear {
       try! realm.write({
         if RoomChat != nil {
@@ -319,11 +319,11 @@ struct Chat: View {
           realm.delete(roomidtodbconnect(rid: self.roomid)!)
         })
       } else{
-//          try! realm.write({
-//            if RoomChat != nil {
-//              RoomChat!.confirmation = RoomChat!.index
-//            }
-//          })
+          try! realm.write({
+            if RoomChat != nil {
+              RoomChat!.confirmation = RoomChat!.index
+            }
+          })
       }
       
     }

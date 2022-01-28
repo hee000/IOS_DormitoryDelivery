@@ -17,7 +17,7 @@ struct OderListView: View {
 //  @Binding var isActivity: Bool
 
     var body: some View {
-//      NavigationView {
+      NavigationView {
         GeometryReader { geo in
           VStack(alignment: .center) {
             if orderlistmodel.data != nil{
@@ -38,18 +38,18 @@ struct OderListView: View {
           }
         } //geo
         
-//        .navigationBarTitleDisplayMode(.inline)
-//        .navigationBarTitle("주문 리스트")
-//        .toolbar {
-//          ToolbarItem(placement: .navigationBarLeading) {
-//            Button {
-//              presentationMode.wrappedValue.dismiss()
-//            } label: {
-//              Image(systemName: "xmark")
-//            }
-//          }
-//        }
-//      } //navi
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarTitle("주문 리스트")
+        .toolbar {
+          ToolbarItem(placement: .navigationBarLeading) {
+            Button {
+              presentationMode.wrappedValue.dismiss()
+            } label: {
+              Image(systemName: "xmark")
+            }
+          }
+        }
+      } //navi
 //      .navigationBarHidden(true)
     }
   

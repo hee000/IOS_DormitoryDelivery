@@ -11,6 +11,9 @@ struct ChatSideMenu: View {
   @EnvironmentObject var naverLogin: NaverLogin
   @EnvironmentObject var chatdata: ChatData
   @ObservedObject var model: ChatModel
+  
+  @Binding var showMenu: Bool
+  @Binding var oderlistview: Bool
   var rid: String
   
     var body: some View {
@@ -23,11 +26,11 @@ struct ChatSideMenu: View {
               .padding(.bottom)
             
             Button("주문서 확인"){
-              self.model.showMenu.toggle()
+              self.showMenu.toggle()
 //              if let mytoken = naverLogin.loginInstance?.accessToken {
 //                getMenuList(rid: rid, token: mytoken)
 //              }
-              self.model.oderlistview.toggle()
+              self.oderlistview.toggle()
             }
 
             Button("투표하기"){
