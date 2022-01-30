@@ -12,7 +12,7 @@ import Alamofire
 class OderCheck: ObservableObject {
   @Published var isShowPhotoLibrary = false
   @Published var image = UIImage()
-  @Published var tip = "600"
+  @Published var tip = ""
   @Published var imageupload = false
 }
 
@@ -24,57 +24,91 @@ struct OderCheckView: View {
   var roomid: String
     var body: some View {
       NavigationView {
-        VStack{
-          Text("인증서")
-          Divider()
+        VStack(alignment: .leading) {
 
-  //        Button("나가기"){
-  //          presentationMode.wrappedValue.dismiss()
-  //        }
+          Text("가격을 확인할 수 있는 캡처 사진을 올려주세요.")
+            .bold()
+            .padding([.top, .bottom], 10)
           
-          Button("이미지상태확인"){
+          Button(action: {
+            self.oderCheckData.isShowPhotoLibrary = true
+          }) {
+              ZStack {
+                VStack{
+                  Text("캡처 사진 가져오기")
+                  Image(systemName: "plus.square")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 25, height: 25)
+                }
+                .foregroundColor(.black)
+                Image(uiImage: self.oderCheckData.image)
+                  .resizable()
+                  .scaledToFill()
+                  .frame(width: 300, height: 300)
+                  .clipped()
+              }
+              .frame(width: 300, height: 300)
+              .background(Color(.sRGB, red: 223/255, green: 223/255, blue: 229/255, opacity: 1))
+              .cornerRadius(5)
+              .clipped()
+              .shadow(color: Color.black.opacity(0.5), radius: 5)
+          }
+          .frame(maxWidth: .infinity)
+          .padding(.bottom)
+          .padding(.bottom)
+          
+          Text("배탈팁을 적어주세요.")
+            .bold()
+          TextField("가격", text: $oderCheckData.tip)
+            .keyboardType(.phonePad)
+            .font(.subheadline)
+          Divider()
+          
+          Spacer()
+          
+          Button{
             if self.oderCheckData.image.size != CGSize(width: 0, height: 0){
               if let mytoken = naverLogin.loginInstance?.accessToken {
                 postOrderCheck(rid: self.roomid, token: mytoken, model: oderCheckData)
               }
             }
+          } label: {
+            Text("보내기")
+              .font(.title3)
+              .foregroundColor(.white)
+              .bold()
+              .frame(height: 50)
+              .frame(maxWidth: .infinity)
           }
-          
-          Text("가격을 확인할 수 있는 캡처 사진을 올려주세요.")
-          Button(action: {
-            self.oderCheckData.isShowPhotoLibrary = true
-          }) {
-              ZStack {
-                  Text("캡처 사진 가져오기")
+          .background(Color(.sRGB, red: 113/255, green: 46/255, blue: 255/255, opacity: 1))
+          .cornerRadius(5)
+          .padding([.leading, .trailing])
 
-                  Image(uiImage: self.oderCheckData.image)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 300, height: 300)
-                    .clipped()
-              }
-              .frame(width: 300, height: 300)
-              .background(.gray)
-          }
-          
-          TextEditor(text: $oderCheckData.tip)
-          
         } // vstack
+        .onTapGesture {
+            hideKeyboard()
+        }
+        .padding([.leading, .trailing])
         .navigationBarTitleDisplayMode(.inline)
-        .navigationBarTitle("주문 확인")
+        .navigationBarTitle("인증서")
         .toolbar {
-          ToolbarItem(placement: .navigationBarLeading) {
+          ToolbarItem(placement: .navigationBarTrailing) {
             Button {
               presentationMode.wrappedValue.dismiss()
             } label: {
               Image(systemName: "xmark")
+                .foregroundColor(.black)
             }
           }
         }
       } //navi
-      .fullScreenCover(isPresented: $oderCheckData.isShowPhotoLibrary) {
+      .sheet(isPresented: $oderCheckData.isShowPhotoLibrary) {
         ImagePicker(selectedImage: self.$oderCheckData.image, sourceType: .photoLibrary)
       }
+//      .fullScreenCover(isPresented: $oderCheckData.isShowPhotoLibrary) {
+//        ImagePicker(selectedImage: self.$oderCheckData.image, sourceType: .photoLibrary)
+//      }
     }
 }
 

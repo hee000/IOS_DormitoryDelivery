@@ -188,7 +188,7 @@ struct CreateRoomView: View {
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarTitle("방 개설하기")
         .toolbar {
-          ToolbarItem(placement: .navigationBarLeading) {
+          ToolbarItem(placement: .navigationBarTrailing) {
             Button {
               presentationMode.wrappedValue.dismiss()
             } label: {

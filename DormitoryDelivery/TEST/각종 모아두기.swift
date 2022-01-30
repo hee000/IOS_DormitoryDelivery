@@ -18,6 +18,42 @@
 
 
 
+//if self.isAnimating && RoomChat?.superUser!.userId! == UserDefaults.standard.string(forKey: "MyID")! && RoomChat?.state?.allReady == true && self.showMenu == false {
+//  Button {
+//    if let mytoken = naverLogin.loginInstance?.accessToken {
+//    postOderFix(rid: self.roomid, token: mytoken)
+//    }
+//  } label: {
+//    VStack{
+//      Text("모두가 준비했습니다.")
+//      Text("주문을 진행하시겠습니까?")
+//    }
+//    .frame(width: geo.size.width * 9/10, height: 60)
+//    .background(Color(.sRGB, red: 165/255, green: 166/255, blue: 246/255, opacity: 0.9))
+//    .cornerRadius(5)
+//  }
+////          .offset(y: -geo.size.height/2 + 45)
+//  .transition(AnyTransition.opacity.animation(.easeInOut(duration: 3).repeatForever()))
+//} // 방장 메뉴 오더 픽스 이벤트
+//
+//
+//if self.isAnimating && RoomChat?.superUser!.userId! == UserDefaults.standard.string(forKey: "MyID")! && RoomChat?.state?.orderFix != false && RoomChat?.state?.orderChecked != true && self.showMenu == false {
+//  Button {
+//    self.odercheck.toggle()
+//  } label: {
+//    Text("주문 사진과 배달 금액을 입력해주세요.")
+//      .frame(width: geo.size.width * 9/10, height: 60)
+//      .background(Color(.sRGB, red: 165/255, green: 166/255, blue: 246/255, opacity: 0.9))
+//      .cornerRadius(5)
+//  }
+////          .offset(y: -geo.size.height/2 + 45)
+//  .transition(AnyTransition.opacity.animation(.easeInOut(duration: 1).repeatForever()))
+//} // 방장 메뉴 확인 이벤트
+
+
+
+
+
 
 
 

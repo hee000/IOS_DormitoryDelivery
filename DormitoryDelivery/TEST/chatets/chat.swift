@@ -48,8 +48,9 @@ struct Chat: View {
   @State private var offset = CGFloat.zero
   @State private var stacksize = CGFloat.zero
   @State private var scrollsize = CGFloat.zero
-  
-  
+    
+  @State var isAnimating = false
+
   var body: some View {
     let drag = DragGesture()
       .onEnded {
@@ -89,12 +90,14 @@ struct Chat: View {
 //                                Text(RoomDB.messages[index].body!.message!)
 //                              }
                               if RoomDB.messages[index].body!.userid == RoomDB.superUser!.userId {
-                                HStack(alignment: .top, spacing: 0) {
-                                  Image(systemName: "person.circle.fill")
+                                HStack(alignment: .top, spacing: 0) { // 방장인경우
+                                  Image("ImageDefaultProfile")
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: 32, height: 32)
-                                    .foregroundColor(Color(.sRGB, red: 180/255, green: 200/255, blue: 255/255, opacity: 1))
+                                    .background(Color(.sRGB, red: 180/255, green: 200/255, blue: 255/255, opacity: 1))
+                                    .cornerRadius(28)
+                                    .shadow(color: Color.black.opacity(0.5), radius: 1)
                                     .padding(.trailing, 5)
                                   VStack(alignment: .leading, spacing: 0) {
                                     HStack(spacing: 0){
@@ -124,11 +127,13 @@ struct Chat: View {
                                 .frame(width: UIScreen.main.bounds.width, alignment:.leading)
                               } else {
                                 HStack(alignment: .top, spacing: 0) {
-                                  Image(systemName: "person.circle.fill")
+                                  Image("ImageDefaultProfile")
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: 32, height: 32)
-                                    .foregroundColor(Color(.sRGB, red: 180/255, green: 200/255, blue: 255/255, opacity: 1))
+                                    .background(Color(.sRGB, red: 180/255, green: 200/255, blue: 255/255, opacity: 1))
+                                    .cornerRadius(28)
+                                    .shadow(color: Color.black.opacity(0.5), radius: 1)
                                     .padding(.trailing, 5)
                                   VStack(alignment: .leading, spacing: 0) {
                                     Text(RoomDB.messages[index].body!.username!)
@@ -402,31 +407,56 @@ struct Chat: View {
           self.showMenu.toggle()
         }
       }) : nil)
-      .transition(AnyTransition.move(edge: .bottom))
+//      .transition(AnyTransition.move(edge: .bottom))
 
         
-        if RoomChat?.superUser!.userId! == UserDefaults.standard.string(forKey: "MyID")! && RoomChat?.state?.allReady == true && self.showMenu == false {
-          Button("모두가 준비되었습니다. 메뉴를 고정하고 주문 과정을 진행하시겠습니까?"){
+        if self.isAnimating && RoomChat?.superUser!.userId! == UserDefaults.standard.string(forKey: "MyID")! && RoomChat?.state?.allReady == true && self.showMenu == false {
+          Button {
             if let mytoken = naverLogin.loginInstance?.accessToken {
             postOderFix(rid: self.roomid, token: mytoken)
             }
+          } label: {
+            VStack{
+              Text("모두가 준비했습니다.")
+              Text("주문을 진행하시겠습니까?")
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color(.sRGB, red: 165/255, green: 166/255, blue: 246/255, opacity: 0.9))
+            .cornerRadius(5)
           }
-          .frame(width: (geo.size.width/5) * 4, height: 60)
-          .background(Color(.sRGB, red: 165/255, green: 162/255, blue: 246/255, opacity: 0.9))
-          .cornerRadius(30)
+          .frame(width: geo.size.width * 9/10, height: 60)
           .offset(y: -geo.size.height/2 + 45)
+          .transition(AnyTransition.opacity.animation(.easeInOut(duration: 1).repeatForever()))
         } // 방장 메뉴 오더 픽스 이벤트
         
         
-        if RoomChat?.superUser!.userId! == UserDefaults.standard.string(forKey: "MyID")! && RoomChat?.state?.orderFix != false && RoomChat?.state?.orderChecked != true && self.showMenu == false {
-          Button("주문 사진과 배달 금액을 입력해주세요"){
+        if self.isAnimating && RoomChat?.superUser!.userId! == UserDefaults.standard.string(forKey: "MyID")! && RoomChat?.state?.orderFix == true && RoomChat?.state?.orderChecked == false && self.showMenu == false {
+          Button{
             self.odercheck.toggle()
+          } label: {
+            Text("주문 사진과 배달 금액을 입력해주세요")
+              .frame(maxWidth: .infinity, maxHeight: .infinity)
+              .background(Color(.sRGB, red: 165/255, green: 166/255, blue: 246/255, opacity: 0.9))
+              .cornerRadius(5)
           }
-          .frame(width: (geo.size.width/5) * 4, height: 60)
-          .background(Color(.sRGB, red: 165/255, green: 162/255, blue: 246/255, opacity: 0.9))
-          .cornerRadius(30)
+          .frame(width: geo.size.width * 9/10, height: 60)
           .offset(y: -geo.size.height/2 + 45)
+          .transition(AnyTransition.opacity.animation(.easeInOut(duration: 1).repeatForever()))
         } // 방장 메뉴 확인 이벤트
+        
+        if self.isAnimating && RoomChat?.superUser!.userId! == UserDefaults.standard.string(forKey: "MyID")! && RoomChat?.state?.orderFix == true && RoomChat?.state?.orderChecked == false && self.showMenu == false {
+          Button{
+            self.odercheck.toggle()
+          } label: {
+            Text("주문 사진과 배달 금액을 입력해주세요")
+              .frame(maxWidth: .infinity, maxHeight: .infinity)
+              .background(Color(.sRGB, red: 165/255, green: 166/255, blue: 246/255, opacity: 0.9))
+              .cornerRadius(5)
+          }
+          .frame(width: geo.size.width * 9/10, height: 60)
+          .offset(y: -geo.size.height/2 + 45)
+          .transition(AnyTransition.opacity.animation(.easeInOut(duration: 1).repeatForever()))
+        } // 방장 주문 확인 이벤트
         
         if self.showMenu {
           ChatSideMenu(RoomChat: $RoomChat, leave: $leave, showMenu: $showMenu, oderlistview: $oderlistview, rid: self.roomid)
@@ -436,11 +466,15 @@ struct Chat: View {
           .offset(x: geo.size.width/10)
       } //showmenu
       
-        NavigationLink(destination: OderListView(rid: self.roomid), isActive: $oderlistview) {}
+        NavigationLink(destination: OderListView(RoomChat: RoomChat, rid: self.roomid), isActive: $oderlistview) {}
         
     } //Zstack
       .gesture(drag)
-
+      .onAppear{
+        DispatchQueue.global().asyncAfter(deadline: .now() + .seconds(1)) {
+          self.isAnimating = true
+        }
+      }
       .navigationBarTitleDisplayMode(.inline)
       .navigationBarBackButtonHidden(true)
       .navigationBarTitle(RoomChat != nil ? RoomChat!.title! : "채팅방")

@@ -51,7 +51,7 @@ struct LoginView: View {
           
         } //v
         Button {
-          naverLogin.loginInstance?.requestThirdPartyLogin()
+          naverLogin.login()
         } label: {
          Image("naverloginbutton")
             .resizable()

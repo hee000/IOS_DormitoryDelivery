@@ -24,16 +24,18 @@ struct MyPage: View {
       let user = userPrivacy.first!
       GeometryReader { geo in
           ScrollView{
-            HStack { // 프로필부분
-              Image(systemName: "person.circle.fill")
+            HStack (spacing: 20){ // 프로필부분
+              Image("ImageDefaultProfile")
                 .resizable()
                 .scaledToFit()
                 .frame(width: 75, height: 75)
-                .foregroundColor(Color(.sRGB, red: 180/255, green: 200/255, blue: 255/255, opacity: 1))
+                .background(Color(.sRGB, red: 180/255, green: 200/255, blue: 255/255, opacity: 1))
+                .cornerRadius(100)
+                .shadow(color: Color.black.opacity(0.5), radius: 1)
               Button(action: {
               }) {
                 HStack{
-                  VStack (alignment: .leading, spacing: 10) {
+                  VStack (alignment: .leading, spacing: 5) {
                     Text(user.name!)
                       .bold()
                       .font(.title3)

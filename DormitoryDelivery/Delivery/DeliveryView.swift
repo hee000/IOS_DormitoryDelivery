@@ -17,8 +17,9 @@ struct DeliveryView: View {
   @State var isRoomLinkActive = false
   
     
-
+  @State var flagAll = true
   @State var flags = Array(repeating: false, count: category.count)
+  
   @Binding var mysection: Int
   
 
@@ -27,6 +28,19 @@ struct DeliveryView: View {
         VStack(alignment: .leading, spacing: 0) {
           ScrollView(.horizontal, showsIndicators: false){
             HStack{ // 해시태그
+              Button {
+                if !self.flagAll {
+                  withAnimation(Animation.default.speed(5)) {
+                    self.flagAll.toggle()
+                  }
+                }
+              } label: {
+                Text("전체")
+                  .fontWeight(.black)
+                  .foregroundColor(self.flagAll ? Color(.sRGB, red: 112/255, green: 52/255, blue: 255/255, opacity: 1) : Color.gray)
+                  .padding(EdgeInsets(top: 8, leading: 12, bottom: 8, trailing: 12))
+                  .overlay(RoundedRectangle(cornerRadius: 21).stroke(self.flagAll ? Color(.sRGB, red: 93/255, green: 95/255, blue: 235/255, opacity: 1) : Color.gray, lineWidth: 1.5))
+              }
               ForEach(category.indices, id: \.self) { index in
                 HashTag(flag: $flags, tag: index)
               }
@@ -34,7 +48,7 @@ struct DeliveryView: View {
             .frame(maxHeight: .infinity)
             .padding(.leading)
           }.frame(height: 50)
-            .padding([.top, .bottom])
+            .padding(.bottom)
           
           if rooms.data == nil || rooms.data!.data.count == 0 {
             VStack{
@@ -74,8 +88,16 @@ struct DeliveryView: View {
 
         } // V
       }//geo
+      .onChange(of: flagAll, perform: { V in
+        if V {
+          self.flags = flags.map { $0 && false }
+        }
+      })
       .onChange(of: flags) { newValue in
         if newValue.reduce(false, {$0 || $1}) {
+          if self.flagAll {
+            self.flagAll.toggle()
+          }
           let categorydata = categoryMapping(flags: newValue)
           var categorykor : [String] = []
           for i in categorydata.indices{
@@ -83,10 +105,13 @@ struct DeliveryView: View {
           }
           SocketIOManager.shared.match_emitSubscribe(rooms: rooms, section: ["Bibong"], category: categorykor)
         } else {
+          if !self.flagAll {
+            self.flagAll.toggle()
+          }
           SocketIOManager.shared.match_emitSubscribe(rooms: rooms, section: ["Bibong"], category: categoryNameEng)
         }
+        print(flags)
       }
-      
 //      .onAppear {
 //        if let mytoken = naverLogin.loginInstance?.accessToken {
 //          SocketIOManager.shared.establishConnection(token: mytoken)
@@ -105,6 +130,11 @@ struct DeliveryView: View {
 //          }
 //        }
 //      }
+      .onDisappear{
+        if let token  = naverLogin.loginInstance?.accessToken {
+          SocketIOManager.shared.establishConnection(token: token, roomdata: rooms )
+        }
+      }
       
     }
 }

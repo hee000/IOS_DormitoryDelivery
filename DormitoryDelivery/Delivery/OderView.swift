@@ -184,6 +184,7 @@ struct OderView: View {
                   .rotationEffect(Angle(degrees: 180)).scaleEffect(x: -1.0, y: 1.0, anchor: .center)
                   .transition(.slide)
 
+
                   } // for문
               
               Spacer()
@@ -264,7 +265,7 @@ struct OderView: View {
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarTitle("주문서 작성")
         .toolbar {
-          ToolbarItem(placement: .navigationBarLeading) {
+          ToolbarItem(placement: .navigationBarTrailing) {
             Button {
               var same = true
               if self.ordermodel.forcompare.count == self.ordermodel.data.count {

@@ -12,6 +12,7 @@ struct OderListView: View {
   @Environment(\.presentationMode) var presentationMode
   @EnvironmentObject var naverLogin: NaverLogin
   @StateObject var orderlistmodel: OrderList = OrderList()
+  @State var RoomChat: ChatDB?
 //  @EnvironmentObject var orderlistmodel: OrderList
   var rid: String
 //  @Binding var isActivity: Bool
@@ -22,7 +23,7 @@ struct OderListView: View {
           VStack(alignment: .center) {
             if orderlistmodel.data != nil{
               ForEach(orderlistmodel.data!.indices, id:\.self) { index in
-                OderListCard(model: orderlistmodel.data![index], roomid: rid)
+                OderListCard(model: orderlistmodel.data![index], roomid: rid, RoomChat: RoomChat)
               }
               .frame(width: geo.size.width * (9/10))
               .background(.white)

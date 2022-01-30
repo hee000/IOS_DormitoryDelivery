@@ -30,6 +30,9 @@ struct DormitoryDeliveryApp: App {
               .getSharedInstance()?
               .receiveAccessToken(url)
             })
+            .onAppear {
+              NetworkMonitor.shared.startMonitoring()
+            }
         }
     }
 }

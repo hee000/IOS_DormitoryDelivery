@@ -66,11 +66,13 @@ struct ChatSideMenu: View {
               VStack{
                 HStack{
                   ZStack{
-                    Image(systemName: "person.circle.fill")
+                    Image("ImageDefaultProfile")
                       .resizable()
                       .scaledToFit()
                       .frame(width: 32, height: 32)
-                      .foregroundColor(Color(.sRGB, red: 180/255, green: 200/255, blue: 255/255, opacity: 1))
+                      .background(Color(.sRGB, red: 180/255, green: 200/255, blue: 255/255, opacity: 1))
+                      .cornerRadius(28)
+                      .shadow(color: Color.black.opacity(0.5), radius: 1)
                     Image("ImageSuperMark")
                       .resizable()
                       .scaledToFit()
@@ -84,11 +86,13 @@ struct ChatSideMenu: View {
                 ForEach(RoomChat!.member.indices, id: \.self) { index in
                   if RoomChat!.member[index].userId != RoomChat!.superUser!.userId {
                     HStack{
-                      Image(systemName: "person.circle.fill")
+                      Image("ImageDefaultProfile")
                         .resizable()
                         .scaledToFit()
                         .frame(width: 32, height: 32)
-                        .foregroundColor(Color(.sRGB, red: 180/255, green: 200/255, blue: 255/255, opacity: 1))
+                        .background(Color(.sRGB, red: 180/255, green: 200/255, blue: 255/255, opacity: 1))
+                        .cornerRadius(28)
+                        .shadow(color: Color.black.opacity(0.5), radius: 1)
                       Text(RoomChat!.member[index].name!)
                       Spacer()
                       if RoomChat!.superUser!.userId == privacy._id {

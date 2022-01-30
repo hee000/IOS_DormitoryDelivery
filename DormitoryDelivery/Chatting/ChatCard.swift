@@ -20,44 +20,103 @@ struct ChatCard: View {
       HStack{
         HStack{
             if users == 1 {
-              Image(systemName: "person.circle.fill")
+              Image("ImageDefaultProfile")
                 .resizable()
                 .scaledToFit()
-                .foregroundColor(Color(.sRGB, red: 180/255, green: 200/255, blue: 255/255, opacity: 1))
+                .frame(width: 44, height: 44)
+                .background(Color(.sRGB, red: 180/255, green: 200/255, blue: 255/255, opacity: 1))
+                .cornerRadius(28)
+                .shadow(color: Color.black.opacity(0.5), radius: 1)
             } else if self.users == 2 {
-              Image(systemName: "person.circle.fill")
-                .resizable()
-                .scaledToFit()
-                .foregroundColor(Color(.sRGB, red: 180/255, green: 200/255, blue: 255/255, opacity: 1))
-              Image(systemName: "person.circle.fill")
-                .resizable()
-                .scaledToFit()
-                .foregroundColor(Color(.sRGB, red: 180/255, green: 200/255, blue: 255/255, opacity: 1))
+              ZStack(alignment: .topLeading) {
+                Image("ImageDefaultProfile")
+                  .resizable()
+                  .scaledToFit()
+                  .frame(width: 44, height: 44)
+                  .background(Color(.sRGB, red: 180/255, green: 200/255, blue: 255/255, opacity: 1))
+                  .cornerRadius(28)
+                  .offset(x: 3, y: 3)
+                  .shadow(color: Color.black.opacity(0.5), radius: 1)
+                Image("ImageDefaultProfile")
+                  .resizable()
+                  .scaledToFit()
+                  .frame(width: 44, height: 44)
+                  .background(Color(.sRGB, red: 180/255, green: 200/255, blue: 255/255, opacity: 1))
+                  .cornerRadius(28)
+                  .offset(x: -3, y: -3)
+                  .shadow(color: Color.black.opacity(0.5), radius: 1)
+                  .shadow(color: Color.black.opacity(0.5), radius: 3, x:3, y:3)
+              }
+              .frame(maxWidth: .infinity, maxHeight: .infinity)
+            } else if self.users == 3 {
+              VStack(alignment: .leading) {
+                HStack{
+                  Image("ImageDefaultProfile")
+                    .resizable()
+                    .scaledToFit()
+                    .background(Color(.sRGB, red: 180/255, green: 200/255, blue: 255/255, opacity: 1))
+                    .cornerRadius(28)
+                  Image("ImageDefaultProfile")
+                    .resizable()
+                    .scaledToFit()
+                    .background(Color(.sRGB, red: 180/255, green: 200/255, blue: 255/255, opacity: 1))
+                    .cornerRadius(28)
+                }
+                Image("ImageDefaultProfile")
+                  .resizable()
+                  .scaledToFit()
+                  .background(Color(.sRGB, red: 180/255, green: 200/255, blue: 255/255, opacity: 1))
+                  .cornerRadius(28)
+              }
             } else {
-              Text("미구현")
+              VStack(alignment: .leading) {
+                HStack{
+                  Image("ImageDefaultProfile")
+                    .resizable()
+                    .scaledToFit()
+                    .background(Color(.sRGB, red: 180/255, green: 200/255, blue: 255/255, opacity: 1))
+                    .cornerRadius(28)
+                  Image("ImageDefaultProfile")
+                    .resizable()
+                    .scaledToFit()
+                    .background(Color(.sRGB, red: 180/255, green: 200/255, blue: 255/255, opacity: 1))
+                    .cornerRadius(28)
+                }
+                HStack{
+                  Image("ImageDefaultProfile")
+                    .resizable()
+                    .scaledToFit()
+                    .background(Color(.sRGB, red: 180/255, green: 200/255, blue: 255/255, opacity: 1))
+                    .cornerRadius(28)
+                  Image("ImageDefaultProfile")
+                    .resizable()
+                    .scaledToFit()
+                    .background(Color(.sRGB, red: 180/255, green: 200/255, blue: 255/255, opacity: 1))
+                    .cornerRadius(28)
+                  
+                }
+              }
             }
         }
-        .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 5))
-        .frame(width: 40, height: 40)
-//          Image(systemName: "person.circle.fill")
-//            .resizable()
-//            .scaledToFit()
-//            .frame(width: 40, height: 40)
-//            .foregroundColor(Color(.sRGB, red: 180/255, green: 200/255, blue: 255/255, opacity: 1))
-//            .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 5))
+        .frame(width: 50, height: 50)
+        .padding(.trailing, 5)
 
 
           VStack(alignment: .leading, spacing: 5){
             if let title = self.title {
               Text(title)
                 .font(.title3)
+                .bold()
                 .foregroundColor(Color.black)
             }
             
             if let lastmessage = self.lastmessage {
               Text(lastmessage)
-                  .font(.body)
-                  .foregroundColor(Color.black)
+                  .font(.subheadline)
+                  .foregroundColor(Color.gray)
+            } else {
+              Text("")
+                .font(.subheadline)
             }
           }
 
@@ -77,12 +136,16 @@ struct ChatCard: View {
                 .padding(EdgeInsets(top: 2, leading: 10, bottom: 2, trailing: 10))
                 .background(Color.red)
                 .cornerRadius(21)
+            } else {
+              Text("")
+                .padding(EdgeInsets(top: 2, leading: 10, bottom: 2, trailing: 10))
             }
 
           }.padding(.trailing)
       }
       .frame( height: 60, alignment: .leading)
-      .padding()
+      .padding([.leading, .trailing])
+      .padding([.top, .bottom], 10)
     }//h
 
   func datetokor(chatdate: String) -> String {
