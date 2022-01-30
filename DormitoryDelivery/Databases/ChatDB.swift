@@ -14,7 +14,11 @@ import Combine
 //  @Published var chatlist = ""
 //}
 
+let realm = try! Realm()
 
+func roomidtodbconnect (rid: String) -> ChatDB? {
+  return realm.object(ofType: ChatDB.self, forPrimaryKey: rid)
+}
 
 class ChatDB: Object, ObjectKeyIdentifiable, Decodable{
   @objc dynamic var id = UUID().uuidString

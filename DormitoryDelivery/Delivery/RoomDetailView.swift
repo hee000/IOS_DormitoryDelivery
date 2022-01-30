@@ -118,7 +118,7 @@ struct RoomDetailView: View {
                           .foregroundColor(Color.white))
             }
             
-            NavigationLink(destination: Chat(RoomChat: roomidtodbconnect(rid: detaildata.data!.id), roomid: detaildata.data!.id), isActive: $detaildata.isActive) {
+            NavigationLink(destination: ChattingView(RoomChat: roomidtodbconnect(rid: detaildata.data!.id), roomid: detaildata.data!.id), isActive: $detaildata.isActive) {
             }.hidden()
             
           } // zstack
