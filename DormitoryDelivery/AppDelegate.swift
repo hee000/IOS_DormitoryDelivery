@@ -32,9 +32,6 @@ class AppDelegate: NSObject, UIApplicationDelegate {
       instance?.appName = kServiceAppName // app name
       
       
-//        NaverThirdPartyLoginConnection.getSharedInstance()?.isNaverAppOauthEnable = true
-//        NaverThirdPartyLoginConnection.getSharedInstance()?.isInAppOauthEnable = true
-      
         return true
     }
   
@@ -61,4 +58,5 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     }
 
 }
+
 

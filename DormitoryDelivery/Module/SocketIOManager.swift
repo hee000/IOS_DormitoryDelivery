@@ -29,7 +29,6 @@ class SocketIOManager:NSObject {
     
 //    socket.on("connect") { data, ack in
 //            socket.emit("connectWithNewId", UsersViewController.nickname)
-    
     matchSocket.on("connect") { data, ack in
       SocketIOManager.shared.match_emitSubscribe(rooms: roomdata, section: sectionNameEng, category: categoryNameEng)
       SocketIOManager.shared.match_onArrive(rooms: roomdata)
@@ -37,8 +36,6 @@ class SocketIOManager:NSObject {
     roomSocket.on("connect") { data, ack in
       SocketIOManager.shared.room_onChat()
     }
-//    }
-    
     }
 
     func closeConnection(){
@@ -93,7 +90,7 @@ class SocketIOManager:NSObject {
 //      print(dataArray)
 //      print(ack)
       do {
-        print("뭐가 오긴함")
+//        print("뭐가 오긴함")
         var jsonResult = dataArray[0] as? Dictionary<String, AnyObject>
         if let messages = jsonResult?["messages"] as? NSArray {
           let message = try! JSONSerialization.data(withJSONObject: messages.firstObject!, options: .prettyPrinted)
@@ -108,7 +105,22 @@ class SocketIOManager:NSObject {
           try! realm.write {
             chatroom?.messages.append(json)
             if json.body?.action == "order-fixed" {
-              chatroom?.state?.oderfix = true
+              chatroom?.state?.allReady = false
+              chatroom?.state?.orderFix = true
+            } else if json.body?.action == "users-new" {
+              let userinfo = ChatUsersInfo()
+              userinfo.userId = json.body?.data?.userId
+              userinfo.name = json.body?.data?.name
+              chatroom?.member.append(userinfo)
+            } else if json.body?.action == "users-leave" {
+              let leaveuser = chatroom?.member.filter("userId == '\(json.body!.data!.userId!)'")
+              realm.delete(leaveuser!)
+            } else if json.body?.action == "all-ready" {
+              chatroom?.state?.allReady = true
+            } else if json.body?.action == "all-ready-canceled" {
+              chatroom?.state?.allReady = false
+            } else if json.body?.action == "order-checked" {
+              chatroom?.state?.orderChecked = true
             } else if json.type == "chat" {
               chatroom?.index += 1
               chatroom?.sortforat = Int(json.at!)!
@@ -117,13 +129,13 @@ class SocketIOManager:NSObject {
           
         }
         
-        let data = try! JSONSerialization.data(withJSONObject: dataArray[0], options: .prettyPrinted)
-        print("파싱결과")
+//        let data = try! JSONSerialization.data(withJSONObject: dataArray[0], options: .prettyPrinted)
+//        print("파싱결과")
   //        print(String(data: data, encoding: .utf8)!)
   //        let json = try JSONDecoder().decode(ChatDB.self, from: data)
   //        addChatting(json)
         
-        print("암것도아님")
+//        print("암것도아님")
       } catch {
         print(error)
       }

@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
   @EnvironmentObject var naverLogin: NaverLogin
   @EnvironmentObject var datecheck: DateCheck
+  @EnvironmentObject var roomdata: RoomData
 
 
   init() {
@@ -28,21 +29,34 @@ struct ContentView: View {
           .edgesIgnoringSafeArea(.all)
 
       } else {
-//        NavigationView{
-//          NavigationLink(destination: naviTEXT()){
-//            Text("테스트")
-//          }
-//        }
-        NavigationView{
-          TabViews()
-          
-        }
-            .onAppear {
-              datecheck.startAction()
+        ZStack {
+          NavigationView{
+            TabViews()
+          }
+          .onAppear {
+//            naverLogin.loginInstance?.requestThirdPartyLogin()
+            datecheck.startAction()
+            if let token  = naverLogin.loginInstance?.accessToken {
+              SocketIOManager.shared.establishConnection(token: token, roomdata: roomdata)
             }
+          }
+//          if !((naverLogin.loginInstance?.isValidAccessTokenExpireTimeNow()) != nil) {
+////          if true {
+//            Rectangle()
+//              .fill(Color.black.opacity(0.4))
+//              .ignoresSafeArea(.all)
+//              .edgesIgnoringSafeArea(.all)
+//              .onAppear {
+//                naverLogin.loginInstance?.requestAccessTokenWithRefreshToken()
+//              }
+//          }
+        }//z
+        .onChange(of: naverLogin.refreshed) { rtoken in
+          if let token = rtoken {
+            SocketIOManager.shared.establishConnection(token: token, roomdata: roomdata)
+          }
+        }
       }
-
-
     }
 }
 
@@ -51,38 +65,3 @@ struct ContentView_Previews: PreviewProvider {
         ContentView()
     }
 }
-
-
-
-//
-//  ContentView.swift
-//  DormitoryDelivery
-//
-//  Created by cch on 2021/11/15.
-//
-//
-//import SwiftUI
-//
-//struct ContentView: View {
-//  @EnvironmentObject var naverLogin: NaverLogin
-//  @EnvironmentObject var datecheck: DateCheck
-//
-//
-//  init() {
-//    UITabBar.appearance().backgroundColor = UIColor.gray.withAlphaComponent(0.1)
-//  }
-//
-//    var body: some View {
-//
-//
-//    Chat()
-//
-//
-//    }
-//}
-//
-//struct ContentView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ContentView()
-//    }
-//}

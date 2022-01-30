@@ -16,10 +16,10 @@ import Combine
 
 
 
-class ChatDB: Object, ObjectKeyIdentifiable, Decodable, Identifiable{
-  @objc dynamic var _id = UUID().uuidString
+class ChatDB: Object, ObjectKeyIdentifiable, Decodable{
+  @objc dynamic var id = UUID().uuidString
   @objc dynamic var rid: String?
-  @objc dynamic var superid: String?
+  @objc dynamic var superUser: ChatUsersInfo?
   @objc dynamic var state: ChatState? = ChatState()
   @objc dynamic var title: String?
   var member = List<ChatUsersInfo>()
@@ -48,17 +48,50 @@ class ChatDB: Object, ObjectKeyIdentifiable, Decodable, Identifiable{
   }
 }
 
-class ChatState: Object, ObjectKeyIdentifiable, Identifiable{
-    @objc dynamic var allready: Bool = false
-    @objc dynamic var oderfix: Bool = false
+class ChatState: Object, ObjectKeyIdentifiable{
+    @objc dynamic var allReady: Bool = false
+    @objc dynamic var orderFix: Bool = false
+    @objc dynamic var orderChecked: Bool = false
+    @objc dynamic var orderDone: Bool = false
 }
 
-class ChatUsersInfo: Object, ObjectKeyIdentifiable, Identifiable{
+class UserPrivacy: Object, ObjectKeyIdentifiable{
+  @objc dynamic var _id: String?
+  @objc dynamic var name: String?
+  @objc dynamic var belong: String?
+  @objc dynamic var account: String?
+  @objc dynamic var alram: Bool = false
+}
+
+func adduser(_ result : UserPrivacy) {
+  DispatchQueue(label: "background").async {
+    autoreleasepool {
+      let realm = try! Realm()
+      try? realm.write {
+          realm.add(result)
+      }
+    }
+  }
+}
+
+func logoutuserdelete() {
+  DispatchQueue(label: "background").async {
+    autoreleasepool {
+      let realm = try! Realm()
+      let result = realm.objects(UserPrivacy.self)
+      try? realm.write {
+          realm.delete(result)
+      }
+    }
+  }
+}
+
+class ChatUsersInfo: Object, ObjectKeyIdentifiable{
     @objc dynamic var name: String?
-    @objc dynamic var id: String?
+    @objc dynamic var userId: String?
 }
 
-class ChatMessageDetail: Object, Decodable,ObjectKeyIdentifiable, Identifiable{
+class ChatMessageDetail: Object, Decodable,ObjectKeyIdentifiable{
     @objc dynamic var id: String?
     @objc dynamic var type: String?
     @objc dynamic var body: ChatMessageDetailBody?
@@ -86,7 +119,7 @@ class ChatMessageDetail: Object, Decodable,ObjectKeyIdentifiable, Identifiable{
 //  }
 }
 
-class ChatMessageDetailBody: Object, Decodable, ObjectKeyIdentifiable, Identifiable{
+class ChatMessageDetailBody: Object, Decodable, ObjectKeyIdentifiable{
     @objc dynamic var action: String?
     @objc dynamic var data: ChatMessageDetailBodyData?
     @objc dynamic var userid: String?
@@ -102,7 +135,7 @@ class ChatMessageDetailBody: Object, Decodable, ObjectKeyIdentifiable, Identifia
     }
 }
 
-class ChatMessageDetailBodyData: Object, Decodable, ObjectKeyIdentifiable, Identifiable{
+class ChatMessageDetailBodyData: Object, Decodable, ObjectKeyIdentifiable{
   @objc dynamic var name: String?
   @objc dynamic var userId: String?
   @objc dynamic var TEST: String?
@@ -119,7 +152,7 @@ class ChatMessageDetailBodyData: Object, Decodable, ObjectKeyIdentifiable, Ident
 }
 
 
-final class ChatData: ObservableObject, Identifiable{
+final class ChatData: ObservableObject{
   @Published var chatlist: [ChatDB]
   @Published var chatlistsortindex: [Int]
 

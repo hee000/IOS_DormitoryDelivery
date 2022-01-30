@@ -23,18 +23,24 @@ func getRoomJoin(matchid: String, token: String, title: String, rid: String, det
             let session = try JSONDecoder().decode([participantsinfo].self, from: data2)
 
             let chatroomopen = ChatDB()
+            let superUser = ChatUsersInfo()
+            
+            superUser.userId = detaildata.data?.purchaser.userId
+            superUser.name = detaildata.data?.purchaser.name
+            
             chatroomopen.rid = rid
-            chatroomopen.superid = detaildata.data?.shopLink
+            chatroomopen.superUser = superUser
             chatroomopen.title = title
+            
             for i in session.indices {
               let userinfo = ChatUsersInfo()
-              userinfo.id = session[i].id
+              userinfo.userId = session[i].id
               userinfo.name = session[i].name
               chatroomopen.member.append(userinfo)
             }
             
               addChatting(chatroomopen)
-            detaildata.isActive.toggle()
+              detaildata.isActive.toggle()
 
 
             }

@@ -13,11 +13,12 @@ func getMenuList(rid: String, token: String, model: OrderList) {
   let req = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: ["Authorization": token])
   req.responseJSON { response in
     
-    let result = response.value as! [Any]
-//    print(response.value)
+
     
     
     do {
+      let result = response.value as! [Any]
+//      print(response.value)
         let data2 = try JSONSerialization.data(withJSONObject: result, options: .prettyPrinted)
       let session = try JSONDecoder().decode([orderlistdata].self, from: data2)
 //        detaildata.data = session

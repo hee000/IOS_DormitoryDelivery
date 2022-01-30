@@ -87,7 +87,7 @@ struct TabViews: View {
   @State var createRoomSelect = false
   @State var tabSelectTmp = 0
   
-  @State var DeliveryViewSection = "전체"
+  @State var DeliveryViewSection = 0
 
   var body: some View {
     TabView(selection: $tabSelect){
@@ -151,18 +151,28 @@ struct TabViews: View {
     .navigationBarTitleDisplayMode(.inline)
     .toolbar {
       ToolbarItem(placement: .navigationBarLeading) {
-        HStack {
+        HStack(spacing: 0) {
           if self.tabSelect == 0 {
-            Menu(self.DeliveryViewSection) {
-                            ForEach(0 ..< sections.count, id: \.self) { index in
-                              Button(action: {
-                                self.DeliveryViewSection = sections[index]
-                              }) {
-                                Text(sections[index])
-                              }
-
-                            }
-                          }
+            Menu{
+              ForEach(0 ..< sections.count, id: \.self) { index in
+                Button(action: {
+                  self.DeliveryViewSection = index
+                }) {
+                  Text(sections[index])
+                }
+              }
+            } label: {
+              Text(sections[self.DeliveryViewSection])
+                .font(.title2)
+                .bold()
+                .foregroundColor(.black)
+            }
+            Image(systemName: "arrowtriangle.down.fill")
+              .resizable()
+              .scaledToFit()
+              .frame(width: 13, height: 10)
+              .foregroundColor(.gray)
+              .padding(.leading, 2)
           } else if self.tabSelect == 2 {
           } else if self.tabSelect == 3 {
           }

@@ -13,14 +13,13 @@ import RealmSwift
 struct DeliveryView: View {
   
   @EnvironmentObject var rooms: RoomData
-  @EnvironmentObject var chatlist: ChatData
   @EnvironmentObject var naverLogin: NaverLogin
   @State var isRoomLinkActive = false
   
     
 
   @State var flags = Array(repeating: false, count: category.count)
-  @Binding var mysection: String
+  @Binding var mysection: Int
   
 
     var body: some View {
@@ -69,7 +68,6 @@ struct DeliveryView: View {
             } //scroll
             .transition(AnyTransition.opacity.animation(Animation.easeInOut.speed(5)))
 
-
           } // if
 
     
@@ -89,16 +87,24 @@ struct DeliveryView: View {
         }
       }
       
-      .onAppear {
-        if let mytoken = naverLogin.loginInstance?.accessToken {
-          SocketIOManager.shared.establishConnection(token: mytoken, roomdata: rooms)
+//      .onAppear {
+//        if let mytoken = naverLogin.loginInstance?.accessToken {
+//          SocketIOManager.shared.establishConnection(token: mytoken)
 //          SocketIOManager.shared.matchSocket.on("connect") { data, ack in
 //            SocketIOManager.shared.match_emitSubscribe(rooms: rooms, section: sectionNameEng, category: categoryNameEng)
 //            SocketIOManager.shared.match_onArrive(rooms: rooms)
 //            SocketIOManager.shared.room_onChat()
 //          }
-        }
-      }
+//
+//          matchSocket.on("connect") { data, ack in
+//            SocketIOManager.shared.match_emitSubscribe(rooms: roomdata, section: sectionNameEng, category: categoryNameEng)
+//            SocketIOManager.shared.match_onArrive(rooms: roomdata)
+//          }
+//          roomSocket.on("connect") { data, ack in
+//            SocketIOManager.shared.room_onChat()
+//          }
+//        }
+//      }
       
     }
 }

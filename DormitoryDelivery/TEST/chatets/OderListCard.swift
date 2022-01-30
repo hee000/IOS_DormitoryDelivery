@@ -14,8 +14,6 @@ struct OderListCard: View {
   
     var body: some View {
       VStack(alignment: .leading) {
-        NavigationLink(destination: OderView(chatdata: roomidtodbconnect(rid: self.roomid)!, navi: true, roomid: self.roomid), isActive: $order) {
-        }
         HStack{
           Text("프사")
           Text(model.user.name)
@@ -26,27 +24,41 @@ struct OderListCard: View {
             }
           }
         }
-        Divider()
+        .padding(.top)
         
         ForEach(model.menus.indices, id:\.self) { index in
+          Divider()
+            .padding([.top, .bottom])
+          
           HStack{
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 10) {
               Text("\(model.menus[index].price)원")
                 .bold()
+                .font(.title3)
               Text(model.menus[index].name)
+                .bold()
               Text(model.menus[index].description)
+                .foregroundColor(.gray)
             }
             Spacer()
             Text("수량 \(model.menus[index].quantity) 개")
           }
         }
         Divider()
+          .padding([.top, .bottom])
         HStack{
           Text("총 주문금액")
           Spacer()
           Text("\(model.menus.map{$0.price * $0.quantity}.reduce(0, +))원")
+            .font(.title3)
+            .bold()
+            .foregroundColor(Color(.sRGB, red: 91/255, green: 66/255, blue: 212/255, opacity: 1))
         }
+        .padding(.bottom)
       }
       .padding()
+      .fullScreenCover(isPresented: $order) {
+        OderView(chatdata: roomidtodbconnect(rid: self.roomid)!, roomid: self.roomid)
+      }
     }
 }

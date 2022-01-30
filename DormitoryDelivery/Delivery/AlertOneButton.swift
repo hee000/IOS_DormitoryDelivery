@@ -29,6 +29,7 @@ struct AlertOneButton: View {
               self.isActivity.toggle()
             } label : {
               Text("확인")
+                .frame(maxWidth: .infinity)
             }
             .foregroundColor(.black)
             .padding()
@@ -65,25 +66,23 @@ struct AlertTwoButton: View {
               .padding(.top)
             Divider()
             HStack(spacing:0){
-              Spacer()
               Button {
                 self.noButton.toggle()
               } label : {
                 Text("취소")
+                  .frame(maxWidth: .infinity)
               }
               .foregroundColor(.black)
               .padding()
-              Spacer()
               Divider()
-              Spacer()
               Button {
                 self.yesButton.toggle()
               } label : {
                 Text("확인")
+                  .frame(maxWidth: .infinity)
               }
               .foregroundColor(.black)
               .padding()
-              Spacer()
             }
             .frame(width:UIScreen.main.bounds.width * 2/3)
             .fixedSize()

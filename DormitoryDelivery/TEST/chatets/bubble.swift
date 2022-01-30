@@ -12,7 +12,10 @@ enum BubblePosition {
     case left
     case left2
     case right
+    case right2
     case center
+    case systemuUserInOut
+    case order
 }
 
 
@@ -25,13 +28,6 @@ class ChatModel: ObservableObject {
     @Published var odercheck = false
     @Published var userodercheck = false
 }
-
-
-//struct CardTest : View {
-//  var body: some View {
-//    
-//  }
-//}
 
 struct ChatBubble<Content>: View where Content: View {
     let position: BubblePosition
@@ -49,7 +45,7 @@ struct ChatBubble<Content>: View where Content: View {
           Image(systemName: "person.circle.fill")
             .resizable()
             .scaledToFit()
-            .frame(width: 30, height: 30)
+            .frame(width: 32, height: 32)
             .foregroundColor(Color(.sRGB, red: 180/255, green: 200/255, blue: 255/255, opacity: 1))
             .padding(EdgeInsets(top: 5, leading: 5, bottom: 0, trailing: 5))
           
@@ -67,20 +63,51 @@ struct ChatBubble<Content>: View where Content: View {
           Image(systemName: "person.circle.fill")
             .resizable()
             .scaledToFit()
-            .frame(width: 30, height: 30)
+            .frame(width: 32, height: 32)
             .foregroundColor(Color(.sRGB, red: 180/255, green: 200/255, blue: 255/255, opacity: 0))
-            .padding(EdgeInsets(top: 5, leading: 5, bottom: 0, trailing: 5))
-          
+            .padding(.trailing, 5)
             content()
-                .padding(.all, 15)
-                .foregroundColor(Color.black)
-                .background(color)
-                .clipShape(RoundedRectangle(cornerRadius: 18))
+            .padding(10)
+            .foregroundColor(Color.black)
+            .background(color)
+            .clipShape(RoundedRectangle(cornerRadius: 10))
         }
-        .padding(.leading, 15)
+        .padding(.leading, 10)
         .padding(.trailing, 60)
         .frame(width: UIScreen.main.bounds.width, alignment:.leading)
       } else if position == .right {
+        HStack(spacing: 0 ) {
+            content()
+                .padding(10)
+                .foregroundColor(Color.white)
+                .background(color)
+                .clipShape(RoundedRectangle(cornerRadius: 10))
+        }
+        .padding(.trailing , 15)
+        .padding(.leading , 60)
+        .frame(width: UIScreen.main.bounds.width, alignment: .trailing)
+      } else if position == .right2 {
+        HStack(spacing: 0 ) {
+            content()
+                .padding(10)
+                .foregroundColor(Color.white)
+                .background(color)
+                .clipShape(RoundedRectangle(cornerRadius: 10))
+        }
+        .padding(.trailing , 15)
+        .padding(.leading , 60)
+        .frame(width: UIScreen.main.bounds.width, alignment: .trailing)
+      } else if position == .systemuUserInOut {
+        HStack(spacing: 0 ) {
+            content()
+            .padding([.top, .bottom], 8)
+            .padding([.leading, .trailing], 30)
+                .foregroundColor(Color.black)
+                .background(color)
+                .clipShape(RoundedRectangle(cornerRadius: 5))
+        }
+        .frame(width: UIScreen.main.bounds.width, alignment: .center)
+      } else if position == .order {
         HStack(spacing: 0 ) {
             content()
                 .padding(.all, 15)

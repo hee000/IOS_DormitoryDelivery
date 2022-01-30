@@ -13,12 +13,22 @@ import RealmSwift
 struct RoomDetailView: View {
   @EnvironmentObject var naverLogin: NaverLogin
   @EnvironmentObject var datecheck: DateCheck
-  @ObservedObject var detaildata: RoomDetailData = RoomDetailData()
+  @StateObject var detaildata: RoomDetailData = RoomDetailData()
   @State var roomdata: roomdata
+  @State var detaildata2 = RoomDetailData()
 
   
     var body: some View {
       VStack{
+        if detaildata.data == nil {
+          Text("아니 이게 무슨일이야~~")
+        }
+        if detaildata.isActive {
+          Text("초기화여부확인")
+        }
+        if detaildata2.data != nil {
+          Text(detaildata2.data?.category ?? "없다는디")
+        }
         if detaildata.data != nil {
           HStack{ //프사 이름
             Image(systemName: "person.circle.fill")
@@ -118,11 +128,12 @@ struct RoomDetailView: View {
         Spacer()
       }
 
-
+//      .onChange(of: detaildata, perform: <#T##(Equatable) -> Void##(Equatable) -> Void##(_ newValue: Equatable) -> Void#>)
       .onAppear {
         print("조인시작")
         if let mytoken = naverLogin.loginInstance?.accessToken {
-          getRoomDetail(matchid: self.roomdata.id, token: mytoken, detaildata: detaildata)
+//          getRoomDetail(matchid: self.roomdata.id, token: mytoken, detaildata: detaildata, detaildata2: detaildata2)
+          self.detaildata.getRoomDetail(matchid: self.roomdata.id, token: mytoken)
         }
       }
         

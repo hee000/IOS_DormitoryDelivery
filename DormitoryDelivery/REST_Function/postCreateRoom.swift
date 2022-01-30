@@ -10,7 +10,7 @@ import Alamofire
 
 func postCreateRoom(createRoomData: CreateRoom, section: String, deliveryPriceAtLeast: Int, token: String){
   print("방만들기 시도")
-  let createkey = createroomdata(shopName: createRoomData.shopName, shopLink: createRoomData.shopLink, category: createRoomData.category, section: section, deliveryPriceAtLeast: deliveryPriceAtLeast)
+  let createkey = createroomdata(shopName: createRoomData.shopName, shopLink: createRoomData.shopLink, category: categoryNameToEng[category[createRoomData.category!]]!, section: section, deliveryPriceAtLeast: deliveryPriceAtLeast)
   let url = createroomposturl
   var request = URLRequest(url: URL(string: url)!)
   request.httpMethod = "POST"
@@ -34,15 +34,17 @@ func postCreateRoom(createRoomData: CreateRoom, section: String, deliveryPriceAt
         if let idvalue = id["id"] {
           let chatroomopen = ChatDB()
           if let rid = idvalue as? String {
+            let userprivacy = realm.objects(UserPrivacy.self).first!
             chatroomopen.rid = rid
-            chatroomopen.superid = UserDefaults.standard.string(forKey: "MyID")!
             chatroomopen.title = createRoomData.shopName
             let userinfo = ChatUsersInfo()
-            userinfo.id = UserDefaults.standard.string(forKey: "MyID")!
-            userinfo.name = UserDefaults.standard.string(forKey: "MyID")!
+            userinfo.userId = userprivacy._id
+            userinfo.name = userprivacy.name
+            chatroomopen.superUser = userinfo
             chatroomopen.member.append(userinfo)
             addChatting(chatroomopen)
             createRoomData.rid = rid
+            print("방만들기끝")
           }
         }
       }

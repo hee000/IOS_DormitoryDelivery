@@ -10,21 +10,21 @@ import Alamofire
 import RealmSwift
 
 func getRoomLeave(rid: String, token: String, model: ChatModel) {
-  let url = urlroomleave(rid: rid)
-  let req = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: ["Authorization": token])
-  req.response { response in
-    do {
-      if response.response?.statusCode == 200 {
-        model.leave.toggle()
-//        let realm = try! Realm()
-//        try! realm.write({
-//          realm.delete(roomidtodbconnect(rid: rid)!)
-//        })
-      }
-    } catch {
-      print(error)
-    }
-  }
+//  let url = urlroomleave(rid: rid)
+//  let req = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: ["Authorization": token])
+//  req.response { response in
+//    do {
+//      if response.response?.statusCode == 200 {
+//        model.leave.toggle()
+////        let realm = try! Realm()
+////        try! realm.write({
+////          realm.delete(roomidtodbconnect(rid: rid)!)
+////        })
+//      }
+//    } catch {
+//      print(error)
+//    }
+//  }
 }
 
 //func getRoomLeave(rid: String, token: String) {

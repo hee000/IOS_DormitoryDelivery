@@ -17,33 +17,130 @@ struct UserOrderCheckView: View {
 
     var body: some View {
       NavigationView{
-        VStack{
-          Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-          Button("Dismiss") {
-              presentationMode.wrappedValue.dismiss()
-          }
-          Image(uiImage: model.image)
-            .resizable()
-            .scaledToFit()
-            .frame(width: 300, height: 300)
-          
-          if model.data != nil {
-            Text(model.data!.accountBank)
-          }
+        ScrollView {
+          VStack(alignment: .leading, spacing: 0){
+            Text("배달팁과 총 결제금액을 확인해주세요.")
+              .bold()
+              .font(.title3)
+              .padding([.top, .bottom])
+              .padding(.bottom)
 
+            Group {
+              Image(uiImage: model.image)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 300, height: 300)
+            }
+            .padding()
+            .frame(width: UIScreen.main.bounds.size.width * (9/10))
+            .background(.white)
+            .cornerRadius(5)
+            .clipped()
+            .shadow(color: Color.black.opacity(0.2), radius: 8)
+            
+            Text("주문 내역")
+              .bold()
+              .font(.title3)
+              .padding([.top, .bottom])
+              .padding(.top)
+            
+            VStack(alignment: .leading) {
+              if model.data != nil {
+                ForEach(model.data!.menus.indices, id:\.self) { index in
+                  HStack{
+                    VStack(alignment: .leading, spacing: 10) {
+                      Text("\(model.data!.menus[index].price)원")
+                        .bold()
+                        .font(.title3)
+                      Text(model.data!.menus[index].name)
+                        .bold()
+                      if model.data!.menus[index].description != "" {
+                        Text(model.data!.menus[index].description)
+                          .foregroundColor(.gray)
+                      }
+                    }
+                    Spacer()
+                    Text("수량 \(model.data!.menus[index].quantity) 개")
+                  }
+                  Divider()
+                    .padding([.top, .bottom], 10)
+                }
+                HStack{
+                  Text("+ 배달팁")
+                  Spacer()
+                  Text("\(model.data!.tipForUser ?? 0)원")
+                }
+                .foregroundColor(Color(.sRGB, red: 132/255, green: 166/255, blue: 255/255, opacity: 1))
+                .padding(.bottom, 5)
+
+                HStack{
+                  Text("총 주문금액")
+                  Spacer()
+                  Text("\(model.data!.totalPrice ?? 0)원")
+                    .font(.title3)
+                    .bold()
+                    .foregroundColor(Color(.sRGB, red: 91/255, green: 66/255, blue: 212/255, opacity: 1))
+                }
+              }
+            }
+            .padding()
+            .frame(width: UIScreen.main.bounds.size.width * (9/10))
+            .background(.white)
+            .cornerRadius(5)
+            .clipped()
+            .shadow(color: Color.black.opacity(0.2), radius: 8)
+            
+
+            Text("계좌 확인하기")
+              .bold()
+              .font(.title3)
+              .padding([.top, .bottom])
+              .padding(.top)
+            HStack{
+              Image(systemName: "person.circle.fill")
+                .foregroundColor(Color(.sRGB, red: 180/255, green: 200/255, blue: 255/255, opacity: 1))
+              VStack(alignment: .leading) {
+                Text(model.data?.accountNumber ?? "")
+                HStack{
+                  Text(model.data?.accountBank ?? "")
+                  Text(model.data?.accountUserName ?? "")
+                }
+              }
+              Spacer()
+              Button{
+                
+              } label:{
+                Text("복사하기")
+                  .frame(width:60, height: 40)
+                  .foregroundColor(.white)
+                  .background(Color(.sRGB, red: 165/255, green: 162/255, blue: 246/255, opacity: 1))
+                  .cornerRadius(5)
+              }
+            }//h 계좌
+            .padding()
+            .frame(width: UIScreen.main.bounds.size.width * (9/10))
+            .background(.white)
+            .cornerRadius(5)
+            .clipped()
+            .shadow(color: Color.black.opacity(0.2), radius: 8)
+            
         } // Vstack
+          .padding([.leading, .trailing])
+          .padding([.leading, .trailing])
+      } //scroll
         .navigationBarTitleDisplayMode(.inline)
-        .navigationBarTitle("영수증")
+        .navigationBarTitle("주문내역 확인")
         .toolbar {
-          ToolbarItem(placement: .navigationBarLeading) {
+          ToolbarItem(placement: .navigationBarTrailing) {
             Button {
               presentationMode.wrappedValue.dismiss()
             } label: {
               Image(systemName: "xmark")
+                .foregroundColor(.black)
             }
           }
         }
-      }
+      } // navi
       .onAppear {
         let destination: DownloadRequest.Destination = { _, _ in
                let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory,
@@ -97,10 +194,10 @@ class UserOrderCheck: ObservableObject {
 
 struct Receipt: Codable {
   var menus: [orderlistmenudata];
-  var tipForUser: Int?;         // 제목
-  var totalPrice: Int?;          // 배달지역
-  var accountNumber: String;               // 현재 총 금액
-  var accountBank: String;        // 최소 주문 금액
-  var accountUserName: String;    // 방장 이름
+  var tipForUser: Int?;
+  var totalPrice: Int?;
+  var accountNumber: String;
+  var accountBank: String;
+  var accountUserName: String;
 }
 
