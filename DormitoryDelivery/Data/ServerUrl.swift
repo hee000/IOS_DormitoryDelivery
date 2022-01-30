@@ -53,6 +53,11 @@ func urloderfix(rid: String) -> URL {
   return url
 }
 
+func urloderdone(rid: String) -> URL {
+  let url = URL(string: "http://192.168.35.165:3000/room/" + rid + "/order-done")!
+  return url
+}
+
 func urlorderimageupload(rid: String) -> URL {
   let url = URL(string: "http://192.168.35.165:3000/room/" + rid + "/purchase-screenshot")!
   return url

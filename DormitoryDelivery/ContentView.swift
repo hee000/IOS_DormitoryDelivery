@@ -21,41 +21,28 @@ struct ContentView: View {
 
     var body: some View {
 
-
-
       if !naverLogin.isLoggedIn {
         LoginView()
           .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
           .edgesIgnoringSafeArea(.all)
 
       } else {
-        ZStack {
-          NavigationView{
+        NavigationView{
             TabViews()
+                .onAppear{
+              print(SocketIOManager.shared.socket.status)
+            }
+              
           }
+          .onChange(of: SocketIOManager.shared.socket.status, perform: { newValue in
+            print(newValue)
+          })
           .onAppear {
-//            naverLogin.loginInstance?.requestThirdPartyLogin()
             datecheck.startAction()
             if let token  = naverLogin.loginInstance?.accessToken {
               SocketIOManager.shared.establishConnection(token: token, roomdata: roomdata)
             }
           }
-//          if !((naverLogin.loginInstance?.isValidAccessTokenExpireTimeNow()) != nil) {
-////          if true {
-//            Rectangle()
-//              .fill(Color.black.opacity(0.4))
-//              .ignoresSafeArea(.all)
-//              .edgesIgnoringSafeArea(.all)
-//              .onAppear {
-//                naverLogin.loginInstance?.requestAccessTokenWithRefreshToken()
-//              }
-//          }
-        }//z
-        .onChange(of: naverLogin.refreshed) { rtoken in
-          if let token = rtoken {
-            SocketIOManager.shared.establishConnection(token: token, roomdata: roomdata)
-          }
-        }
       }
     }
 }

@@ -115,6 +115,7 @@ struct ChatSideMenu: View {
           .padding(.trailing)
           
           Button(action: {
+            // order-done == ture || order-fix == false
             if let mytoken = naverLogin.loginInstance?.accessToken {
 //              getRoomLeave(rid: self.rid, token: mytoken, model: model)
               let url = urlroomleave(rid: self.rid)

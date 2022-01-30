@@ -73,6 +73,7 @@ class SocketIOManager:NSObject {
     SocketIOManager.shared.matchSocket.off("new-arrive")
     SocketIOManager.shared.matchSocket.on("new-arrive") { (dataArray, ack) in
         do {
+          print(dataArray)
           let data = try JSONSerialization.data(withJSONObject: dataArray[0], options: .prettyPrinted)
           let session = try JSONDecoder().decode(roomdata.self, from: data)
           rooms.data!.data.append(session)
@@ -81,6 +82,33 @@ class SocketIOManager:NSObject {
           print(error)
         }
       }
+    
+    SocketIOManager.shared.matchSocket.off("update")
+    SocketIOManager.shared.matchSocket.on("update") { (dataArray, ack) in
+        do {
+          print(dataArray)
+//          let data = try JSONSerialization.data(withJSONObject: dataArray[0], options: .prettyPrinted)
+//          let session = try JSONDecoder().decode(roomdata.self, from: data)
+//          rooms.data!.data.append(session)
+        }
+        catch {
+          print(error)
+        }
+      }
+    
+    SocketIOManager.shared.matchSocket.off("closed")
+    SocketIOManager.shared.matchSocket.on("closed") { (dataArray, ack) in
+        do {
+          print(dataArray)
+//          let data = try JSONSerialization.data(withJSONObject: dataArray[0], options: .prettyPrinted)
+//          let session = try JSONDecoder().decode(roomdata.self, from: data)
+//          rooms.data!.data.append(session)
+        }
+        catch {
+          print(error)
+        }
+      }
+    
   }
   
   func room_onChat(){
@@ -121,6 +149,8 @@ class SocketIOManager:NSObject {
               chatroom?.state?.allReady = false
             } else if json.body?.action == "order-checked" {
               chatroom?.state?.orderChecked = true
+            } else if json.body?.action == "order-finished" {
+              chatroom?.state?.orderDone = true
             } else if json.type == "chat" {
               chatroom?.index += 1
               chatroom?.sortforat = Int(json.at!)!

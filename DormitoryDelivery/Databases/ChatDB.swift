@@ -20,6 +20,10 @@ func roomidtodbconnect (rid: String) -> ChatDB? {
   return realm.object(ofType: ChatDB.self, forPrimaryKey: rid)
 }
 
+func getUserPrivacy () -> UserPrivacy {
+  return realm.objects(UserPrivacy.self)[0]
+}
+
 class ChatDB: Object, ObjectKeyIdentifiable, Decodable{
   @objc dynamic var id = UUID().uuidString
   @objc dynamic var rid: String?

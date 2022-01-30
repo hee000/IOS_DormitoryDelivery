@@ -130,11 +130,6 @@ struct DeliveryView: View {
 //          }
 //        }
 //      }
-      .onDisappear{
-        if let token  = naverLogin.loginInstance?.accessToken {
-          SocketIOManager.shared.establishConnection(token: token, roomdata: rooms )
-        }
-      }
       
     }
 }

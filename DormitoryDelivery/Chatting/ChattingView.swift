@@ -25,13 +25,11 @@ struct ChattingView: View {
   @Environment(\.presentationMode) var presentationMode
   
   @EnvironmentObject var keyboardManager: KeyboardManager
-
-//  @StateObject var model = ChatModel()
-  @EnvironmentObject var dddatdata: ChatData
   @EnvironmentObject var naverLogin: NaverLogin
-  @State var RoomChat : ChatDB?
-  var roomid: String
+  @EnvironmentObject var imsi_data: ChatData
   
+  @State var RoomChat: ChatDB?
+  var rid: String
 
   @FocusState private var rere: Bool
   @State var textHeight: CGFloat?
@@ -52,6 +50,7 @@ struct ChattingView: View {
   @State var isAnimating = false
 
   var body: some View {
+    let user = getUserPrivacy()
     let drag = DragGesture()
       .onEnded {
         if $0.translation.width > 100 {
@@ -86,9 +85,6 @@ struct ChattingView: View {
                             }
                           } else { // 상대방 처음
                             if RoomDB.messages[index - 1].type == "system" || RoomDB.messages[index].body!.userid != RoomDB.messages[index - 1].body!.userid{
-//                              ChatBubble(position: BubblePosition.left, color: .white) {
-//                                Text(RoomDB.messages[index].body!.message!)
-//                              }
                               if RoomDB.messages[index].body!.userid == RoomDB.superUser!.userId {
                                 HStack(alignment: .top, spacing: 0) { // 방장인경우
                                   Image("ImageDefaultProfile")
@@ -201,7 +197,7 @@ struct ChattingView: View {
                             VStack(spacing: 0){
                                   HStack{
                                     VStack(alignment: .leading){
-                                      Text("(이름)님의")
+                                      Text("\(user.name!)님의")
                                         .bold()
                                       Text("보낼 금액을 확인해보세요.")
                                         .bold()
@@ -235,11 +231,17 @@ struct ChattingView: View {
                           } else {
                             Text("모두에게 정산 금액이 전해졌습니다")
                           }
-                        } else {
-                          ChatBubble(position: BubblePosition.center, color: Color(.sRGB, red: 223/255, green: 223/255, blue: 229/255, opacity: 1)) {
-                            Text(RoomDB.messages[index].body!.action!)
+                        } else if RoomDB.messages[index].body!.action! == "order-finished" {
+                          ChatBubble(position: BubblePosition.systemuUserInOut, color: Color(.sRGB, red: 223/255, green: 223/255, blue: 229/255, opacity: 1)) {
+                            Text("방장이 주문을 완료했습니다.")
+                              .font(.footnote)
                           }
                         }
+//                        else { //나머지 시스템 액션
+//                          ChatBubble(position: BubblePosition.center, color: Color(.sRGB, red: 223/255, green: 223/255, blue: 229/255, opacity: 1)) {
+//                            Text(RoomDB.messages[index].body!.action!)
+//                          }
+//                        }
                     }
                     
                   } //for
@@ -249,25 +251,25 @@ struct ChattingView: View {
                 } //lazyV
           .rotationEffect(Angle(degrees: 180))
           .scaleEffect(x: -1.0, y: 1.0, anchor: .center)
-                      .background(GeometryReader {
-                          Color.clear.preference(key: ViewOffsetKey.self,
-                              value: -$0.frame(in: .named("scroll")).origin.y)
-                      })
-                      .onPreferenceChange(ViewOffsetKey.self) {
-//                        print("offset >> \($0)")
-                        self.offset = $0
-                      }
-          
-                      .background(GeometryReader { geozz in
+//                      .background(GeometryReader {
+//                          Color.clear.preference(key: ViewOffsetKey.self,
+//                              value: -$0.frame(in: .named("scroll")).origin.y)
+//                      })
+//                      .onPreferenceChange(ViewOffsetKey.self) {
+////                        print("offset >> \($0)")
+//                        self.offset = $0
+//                      }
+//
+//                      .background(GeometryReader { geozz in
 //                        Color.clear.preference(key: SizeKey.self, value: geozz.size.height)
-                        Color.clear
-                          .onAppear{
-                            self.stacksize = geozz.size.height
-                          }
-                          .onChange(of: geozz.size.height) { V in
-                          self.stacksize = V
-                        }
-                      })
+//                        Color.clear
+//                          .onAppear{
+//                            self.stacksize = geozz.size.height
+//                          }
+//                          .onChange(of: geozz.size.height) { V in
+//                          self.stacksize = V
+//                        }
+//                      })
 //                      .onPreferenceChange(SizeKey.self) { value in // --- 2
 //                            print("VStack >> \(value)")
 //                          print("VStack - offset >> \((value ?? 0) - self.offset)")
@@ -280,8 +282,7 @@ struct ChattingView: View {
         .rotationEffect(Angle(degrees: 180))
         .scaleEffect(x: -1.0, y: 1.0, anchor: .center)
 
-          .coordinateSpace(name: "scroll")
-//          ------------
+//          .coordinateSpace(name: "scroll")
 //          .onAppear{
 //            proxy.scrollTo(bottomID)
 //            self.scrollsize = scrollgeo.size.height
@@ -294,7 +295,6 @@ struct ChattingView: View {
 //          .onChange(of: scrollgeo.size.height) { V in
 //            self.scrollsize = V
 //          }
-//          ------------
         }//reader
         }//geo
           .clipped()
@@ -322,7 +322,7 @@ struct ChattingView: View {
                 Divider()
                 Button(RoomChat!.ready ? "준비해제" : "준비완료") {
                   if let mytoken = naverLogin.loginInstance?.accessToken {
-                    getReady(rid: self.roomid, token: mytoken, model: RoomChat!)
+                    getReady(rid: self.rid, token: mytoken, model: RoomChat!)
                   }
                 }
                 .frame(width: geo.size.width/2)
@@ -372,7 +372,7 @@ struct ChattingView: View {
 
                 Button {
                   if self.text != "" {
-                    SocketIOManager.shared.room_emitChat(rid: self.roomid, text: self.text)
+                    SocketIOManager.shared.room_emitChat(rid: self.rid, text: self.text)
                     self.text = ""
                     }
                 } label: {
@@ -407,13 +407,12 @@ struct ChattingView: View {
           self.showMenu.toggle()
         }
       }) : nil)
-//      .transition(AnyTransition.move(edge: .bottom))
 
         
         if self.isAnimating && RoomChat?.superUser!.userId! == UserDefaults.standard.string(forKey: "MyID")! && RoomChat?.state?.allReady == true && self.showMenu == false {
           Button {
             if let mytoken = naverLogin.loginInstance?.accessToken {
-            postOderFix(rid: self.roomid, token: mytoken)
+            postOderFix(rid: self.rid, token: mytoken)
             }
           } label: {
             VStack{
@@ -444,11 +443,13 @@ struct ChattingView: View {
           .transition(AnyTransition.opacity.animation(.easeInOut(duration: 1).repeatForever()))
         } // 방장 메뉴 확인 이벤트
         
-        if self.isAnimating && RoomChat?.superUser!.userId! == UserDefaults.standard.string(forKey: "MyID")! && RoomChat?.state?.orderFix == true && RoomChat?.state?.orderChecked == false && self.showMenu == false {
+        if self.isAnimating && RoomChat?.superUser!.userId! == UserDefaults.standard.string(forKey: "MyID")! && RoomChat?.state?.orderChecked == true && RoomChat?.state?.orderDone == false && self.showMenu == false {
           Button{
-            self.odercheck.toggle()
+            if let mytoken = naverLogin.loginInstance?.accessToken {
+              postOrderDone(rid: self.rid, token: mytoken)
+            }
           } label: {
-            Text("주문 사진과 배달 금액을 입력해주세요")
+            Text("주문이 완료되면 눌러주세요.")
               .frame(maxWidth: .infinity, maxHeight: .infinity)
               .background(Color(.sRGB, red: 165/255, green: 166/255, blue: 246/255, opacity: 0.9))
               .cornerRadius(5)
@@ -459,14 +460,14 @@ struct ChattingView: View {
         } // 방장 주문 확인 이벤트
         
         if self.showMenu {
-          ChatSideMenu(RoomChat: $RoomChat, leave: $leave, showMenu: $showMenu, oderlistview: $oderlistview, rid: self.roomid)
+          ChatSideMenu(RoomChat: $RoomChat, leave: $leave, showMenu: $showMenu, oderlistview: $oderlistview, rid: self.rid)
           .frame(width: geo.size.width * (9/10), height: geo.size.height)
           .overlay(Rectangle().frame(width: nil, height: 1, alignment: .top).foregroundColor(Color(.sRGB, red: 221/255, green: 221/255, blue: 221/255, opacity: 1)), alignment: .top)
           .transition(.move(edge: .trailing))
           .offset(x: geo.size.width/10)
       } //showmenu
       
-        NavigationLink(destination: OderListView(RoomChat: RoomChat, rid: self.roomid), isActive: $oderlistview) {}
+        NavigationLink(destination: OderListView(RoomChat: RoomChat, rid: self.rid), isActive: $oderlistview) {}
         
     } //Zstack
       .gesture(drag)
@@ -501,23 +502,17 @@ struct ChattingView: View {
           }
       }
     } //geo
-//    .adaptsToKeyboard()
-//    .ignoresSafeArea(.keyboard)
-//    .edgesIgnoringSafeArea(.bottom)
-//    .ignoresSafeArea(keyboardManager.isVisible ? .bottom : nil)
+    
     .fullScreenCover(isPresented: $oderview) {
       if self.RoomChat != nil{
-        OderView(chatdata: self.RoomChat!, roomid: self.roomid)
+        OderView(chatdata: self.RoomChat!, roomid: self.rid)
       }
     }
-//    .fullScreenCover(isPresented: $oderlistview) {
-//      OderListView(rid: self.roomid)
-//    }
     .fullScreenCover(isPresented: $odercheck) {
-      OderCheckView(roomid: self.roomid)
+      OderCheckView(roomid: self.rid)
     }
     .fullScreenCover(isPresented: $userodercheck) {
-      UserOrderCheckView(roomid: self.roomid)
+      UserOrderCheckView(roomid: self.rid)
     }
     .accentColor(.black)
     .onChange(of: leave) { newValue in
@@ -543,7 +538,7 @@ struct ChattingView: View {
       if self.leave {
         self.RoomChat = nil
         try! realm.write({
-          realm.delete(roomidtodbconnect(rid: self.roomid)!)
+          realm.delete(roomidtodbconnect(rid: self.rid)!)
         })
       } else{
           try! realm.write({
