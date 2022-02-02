@@ -21,6 +21,7 @@ struct DeliveryView: View {
   @State var flags = Array(repeating: false, count: category.count)
   
   @Binding var mysection: Int
+  @Binding var tabSelect: Int
   
 
     var body: some View {
@@ -68,7 +69,7 @@ struct DeliveryView: View {
               VStack(alignment: .center, spacing:3) {
                 ForEach(Array(zip(rooms.data!.data.indices, rooms.data!.data)), id: \.1) { index, item in
 //                ForEach(rooms.data!.data.indices, id: \.self) { index in
-                  NavigationLink(destination: RoomDetailView(roomdata: rooms.data!.data[index])) {
+                  NavigationLink(destination: RoomDetailView(roomdata: rooms.data!.data[index], tabSelect: $tabSelect)) {
               RoomCard(deliveryTitle: rooms.data!.data[index].shopName,
                        deliveryZone: rooms.data!.data[index].section,
                            deliveryPayTip: rooms.data!.data[index].priceAtLeast,
@@ -110,7 +111,6 @@ struct DeliveryView: View {
           }
           SocketIOManager.shared.match_emitSubscribe(rooms: rooms, section: ["Bibong"], category: categoryNameEng)
         }
-        print(flags)
       }
 //      .onAppear {
 //        if let mytoken = naverLogin.loginInstance?.accessToken {

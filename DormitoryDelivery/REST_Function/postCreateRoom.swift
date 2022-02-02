@@ -8,7 +8,7 @@
 import Foundation
 import Alamofire
 
-func postCreateRoom(createRoomData: CreateRoom, section: String, deliveryPriceAtLeast: Int, token: String){
+func postCreateRoom(createRoomData: CreateRoom, section: String, deliveryPriceAtLeast: Int, token: String, navi: ChatNavi){
   print("방만들기 시도")
   let createkey = createroomdata(shopName: createRoomData.shopName, shopLink: createRoomData.shopLink, category: categoryNameToEng[category[createRoomData.category!]]!, section: section, deliveryPriceAtLeast: deliveryPriceAtLeast)
   let url = createroomposturl
@@ -35,6 +35,10 @@ func postCreateRoom(createRoomData: CreateRoom, section: String, deliveryPriceAt
           let chatroomopen = ChatDB()
           if let rid = idvalue as? String {
             let userprivacy = realm.objects(UserPrivacy.self).first!
+            navi.State = true
+            navi.rid = rid
+            navi.Active = true
+  
             chatroomopen.rid = rid
             chatroomopen.title = createRoomData.shopName
             let userinfo = ChatUsersInfo()
@@ -43,7 +47,10 @@ func postCreateRoom(createRoomData: CreateRoom, section: String, deliveryPriceAt
             chatroomopen.superUser = userinfo
             chatroomopen.member.append(userinfo)
             addChatting(chatroomopen)
+
             createRoomData.rid = rid
+            
+
             print("방만들기끝")
           }
         }

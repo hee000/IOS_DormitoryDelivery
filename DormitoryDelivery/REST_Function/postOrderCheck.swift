@@ -8,7 +8,7 @@
 import Foundation
 import Alamofire
 
-func postOrderCheck(rid: String, token: String, model: OderCheck) {
+func postOrderCheck(rid: String, token: String, model: OrderCheck) {
   let imgdata = model.image.jpegData(compressionQuality: 0.2)!
     
   let imgurl = urlorderimageupload(rid: rid)
@@ -19,7 +19,7 @@ func postOrderCheck(rid: String, token: String, model: OderCheck) {
     }, to: imgurl, headers: ["Authorization": token])
     .responseJSON { response in
 
-      let createkey = oderccc(rid: rid, delivery_tip: Int(model.tip)!)
+      let createkey = OrdercheckTip(rid: rid, delivery_tip: Int(model.tip)!)
       var request = URLRequest(url: checkurl)
       request.httpMethod = "POST"
       request.setValue("application/json", forHTTPHeaderField: "Content-Type")

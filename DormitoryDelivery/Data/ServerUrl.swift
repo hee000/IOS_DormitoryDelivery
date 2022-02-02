@@ -7,13 +7,12 @@
 
 import Foundation
 
+// 59.25.26.152:3000
+// 59.25.26.152:3000
+
 
 let serverurl = "http://192.168.35.165:3000/"
-//let serverurl = "http://192.168.10.104:3000/"
-
 let createroomposturl = "http://192.168.35.165:3000/room"
-//let createroomposturl = "http://192.168.10.104:3000/room"
-
 let emailsendurl = "http://192.168.35.165:3000/auth/email/send"
 let authcodesendurl = "http://192.168.35.165:3000/auth/email/verify"
 
@@ -88,24 +87,28 @@ func urlmenus(uid: String, rid: String, mid: String) -> URL {
   return url
 }
 
-//
-//let serverurl = "http://59.25.26.152:3000/"
-////let serverurl = "http://192.168.10.104:3000/"
-//
-//let createroomposturl = "http://59.25.26.152:3000/room"
-////let createroomposturl = "http://192.168.10.104:3000/room"
-//
-//let emailsendurl = "http://59.25.26.152:3000/auth/email/send"
-//let authcodesendurl = "http://59.25.26.152:3000/auth/email/verify"
-//
-//
-//func roomdetail(matchId: String) -> URL {
-//  let url = URL(string: "http://59.25.26.152:3000/match/" + matchId + "/info")!
-//  return url
-//}
-//
-//
-//func roomjoin(matchId: String) -> URL {
-//  let url = URL(string: "http://59.25.26.152:3000/match/" + matchId + "/join")!
-//  return url
-//}
+func urlrooms(uid: String) -> URL {
+  let url = URL(string: "http://192.168.35.165:3000/user/" + uid + "/rooms")!
+  return url
+}
+
+func urlchatlog(rid: String, idx: String) -> URL {
+  let url = URL(string: "http://192.168.35.165:3000/room/" + rid + "/chat/" + idx)!
+  return url
+}
+
+func urlkick(rid: String, uid: String) -> URL {
+  let url = URL(string: "http://192.168.35.165:3000/room/" + rid + "/kick?uid=" + uid)!
+  return url
+}
+
+func urlvotekick(rid: String, uid: String) -> URL {
+  let url = URL(string: "http://192.168.35.165:3000/room/" + rid + "/vote-kick?targetId=" + uid)!
+  return url
+}
+
+func urlvotereset(rid: String) -> URL {
+  let url = URL(string: "http://192.168.35.165:3000/room/" + rid + "/vote-reset")!
+  return url
+}
+

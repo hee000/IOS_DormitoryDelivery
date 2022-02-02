@@ -19,5 +19,13 @@ class CreateRoom: ObservableObject {
   @Published var section = 0
   @Published var rid = ""
   @Published var height: CGFloat? = .zero
+  @Published var postalertstate = false
   
+  func validcheck() -> Bool {
+    var valid = true
+    if shopName == "" || deliveryPriceAtLeast == "" || category == nil {
+      valid = false
+    }
+    return valid
+  }
 }

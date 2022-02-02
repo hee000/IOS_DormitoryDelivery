@@ -37,6 +37,7 @@ class ChatDB: Object, ObjectKeyIdentifiable, Decodable{
   @objc dynamic var index: Int = 0
   @objc dynamic var confirmation: Int = 0
   @objc dynamic var sortforat: Int = 0
+  @objc dynamic var Kicked: Bool = false
 
   override class func primaryKey() -> String? {
     return "rid"
@@ -94,7 +95,7 @@ func logoutuserdelete() {
   }
 }
 
-class ChatUsersInfo: Object, ObjectKeyIdentifiable{
+class ChatUsersInfo: Object, ObjectKeyIdentifiable, Decodable{
     @objc dynamic var name: String?
     @objc dynamic var userId: String?
 }
@@ -146,16 +147,18 @@ class ChatMessageDetailBody: Object, Decodable, ObjectKeyIdentifiable{
 class ChatMessageDetailBodyData: Object, Decodable, ObjectKeyIdentifiable{
   @objc dynamic var name: String?
   @objc dynamic var userId: String?
-  @objc dynamic var TEST: String?
-  @objc dynamic var TEST2: String?
-  @objc dynamic var TEST3: String?
+  @objc dynamic var target: ChatUsersInfo?
+  @objc dynamic var targetUser: ChatUsersInfo?
+  @objc dynamic var voteId: String?
+  let result = RealmOptional<Bool>()
 
   private enum CodingKeys: String, CodingKey {
       case name = "name"
       case userId = "userId"
-      case TEST = "TEST"
-      case TEST2 = "TEST2"
-      case TEST3 = "TEST3"
+      case target = "target"
+      case targetUser = "targetUser"
+      case voteId = "voteId"
+      case result = "result"
   }
 }
 
@@ -207,12 +210,12 @@ final class ChatData: ObservableObject{
 }
 
 func addChatting(_ result : ChatDB) {
-  DispatchQueue(label: "background").async {
-    autoreleasepool {
+//  DispatchQueue(label: "background").async {
+//    autoreleasepool {
       let realm = try! Realm()
       try? realm.write {
           realm.add(result)
       }
-    }
-  }
+//    }
+//  }
 }

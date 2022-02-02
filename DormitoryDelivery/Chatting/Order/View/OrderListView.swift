@@ -1,21 +1,12 @@
-//
-//  OderListView.swift
-//  DormitoryDelivery
-//
-//  Created by cch on 2022/01/24.
-//
-
 import SwiftUI
 import Network
 
-struct OderListView: View {
+struct OrderListView: View {
   @Environment(\.presentationMode) var presentationMode
   @EnvironmentObject var naverLogin: NaverLogin
   @StateObject var orderlistmodel: OrderList = OrderList()
   @State var RoomChat: ChatDB?
-//  @EnvironmentObject var orderlistmodel: OrderList
   var rid: String
-//  @Binding var isActivity: Bool
 
     var body: some View {
       GeometryReader { geo in
@@ -23,7 +14,7 @@ struct OderListView: View {
           VStack(alignment: .center) {
             if orderlistmodel.data != nil{
               ForEach(orderlistmodel.data!.indices, id:\.self) { index in
-                OderListCard(model: orderlistmodel.data![index], roomid: rid, RoomChat: RoomChat)
+                OrderListCard(model: orderlistmodel.data![index], roomid: rid, RoomChat: RoomChat)
               }
               .frame(width: geo.size.width * (9/10))
               .background(.white)

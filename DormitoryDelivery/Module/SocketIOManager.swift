@@ -73,7 +73,7 @@ class SocketIOManager:NSObject {
     SocketIOManager.shared.matchSocket.off("new-arrive")
     SocketIOManager.shared.matchSocket.on("new-arrive") { (dataArray, ack) in
         do {
-          print(dataArray)
+//          print(dataArray)
           let data = try JSONSerialization.data(withJSONObject: dataArray[0], options: .prettyPrinted)
           let session = try JSONDecoder().decode(roomdata.self, from: data)
           rooms.data!.data.append(session)
@@ -86,10 +86,13 @@ class SocketIOManager:NSObject {
     SocketIOManager.shared.matchSocket.off("update")
     SocketIOManager.shared.matchSocket.on("update") { (dataArray, ack) in
         do {
-          print(dataArray)
-//          let data = try JSONSerialization.data(withJSONObject: dataArray[0], options: .prettyPrinted)
-//          let session = try JSONDecoder().decode(roomdata.self, from: data)
-//          rooms.data!.data.append(session)
+          let data = try JSONSerialization.data(withJSONObject: dataArray[0], options: .prettyPrinted)
+          let session = try JSONDecoder().decode(roomdata.self, from: data)
+          for (idx, room) in rooms.data!.data.enumerated() {
+            if session.id == room.id {
+              rooms.data!.data[idx] = session
+            }
+          }
         }
         catch {
           print(error)
@@ -99,10 +102,13 @@ class SocketIOManager:NSObject {
     SocketIOManager.shared.matchSocket.off("closed")
     SocketIOManager.shared.matchSocket.on("closed") { (dataArray, ack) in
         do {
-          print(dataArray)
-//          let data = try JSONSerialization.data(withJSONObject: dataArray[0], options: .prettyPrinted)
-//          let session = try JSONDecoder().decode(roomdata.self, from: data)
-//          rooms.data!.data.append(session)
+          let data = try JSONSerialization.data(withJSONObject: dataArray[0], options: .prettyPrinted)
+          let session = try JSONDecoder().decode(roomdata.self, from: data)
+          for (idx, room) in rooms.data!.data.enumerated() {
+            if session.id == room.id {
+              rooms.data!.data.remove(at: idx)
+            }
+          }
         }
         catch {
           print(error)
@@ -120,14 +126,15 @@ class SocketIOManager:NSObject {
       do {
 //        print("뭐가 오긴함")
         var jsonResult = dataArray[0] as? Dictionary<String, AnyObject>
+
         if let messages = jsonResult?["messages"] as? NSArray {
           let message = try! JSONSerialization.data(withJSONObject: messages.firstObject!, options: .prettyPrinted)
   //          print(messages)
   //          print(String(data: messages, encoding: .utf8)!)
           let json = try JSONDecoder().decode(ChatMessageDetail.self, from: message)
           
-              
           let realm = try! Realm()
+          let user = realm.objects(UserPrivacy.self)[0]
 //           print(type(of: jsonResult!["rid"]!))
           let chatroom = realm.object(ofType: ChatDB.self, forPrimaryKey: jsonResult!["rid"]!)    /// 수정 필요
           try! realm.write {
@@ -141,8 +148,12 @@ class SocketIOManager:NSObject {
               userinfo.name = json.body?.data?.name
               chatroom?.member.append(userinfo)
             } else if json.body?.action == "users-leave" {
-              let leaveuser = chatroom?.member.filter("userId == '\(json.body!.data!.userId!)'")
-              realm.delete(leaveuser!)
+              if json.body!.data!.userId == user._id {
+                chatroom?.Kicked = true
+              } else{
+                let leaveuser = chatroom?.member.filter("userId == '\(json.body!.data!.userId!)'")
+                realm.delete(leaveuser!)
+              }
             } else if json.body?.action == "all-ready" {
               chatroom?.state?.allReady = true
             } else if json.body?.action == "all-ready-canceled" {

@@ -11,12 +11,16 @@
 		DA12BE7227613BE800C08143 /* ChattingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA12BE7127613BE800C08143 /* ChattingView.swift */; };
 		DA12BE7427613C0500C08143 /* scrollview.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA12BE7327613C0500C08143 /* scrollview.swift */; };
 		DA12BE7627613C1A00C08143 /* bubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA12BE7527613C1A00C08143 /* bubble.swift */; };
-		DA12BE7A276156A300C08143 /* OderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA12BE79276156A300C08143 /* OderView.swift */; };
+		DA12BE7A276156A300C08143 /* OrderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA12BE79276156A300C08143 /* OrderView.swift */; };
 		DA2ACF7427A6EA28005939F0 /* postOrderDone.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA2ACF7327A6EA28005939F0 /* postOrderDone.swift */; };
+		DA2ACF7627A729C8005939F0 /* getChatLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA2ACF7527A729C8005939F0 /* getChatLog.swift */; };
+		DA2ACF7827A730ED005939F0 /* getKick.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA2ACF7727A730ED005939F0 /* getKick.swift */; };
+		DA2ACF7A27A7387D005939F0 /* postVoteKick.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA2ACF7927A7387D005939F0 /* postVoteKick.swift */; };
+		DA2ACF7C27A73952005939F0 /* postVoteReset.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA2ACF7B27A73952005939F0 /* postVoteReset.swift */; };
 		DA3C0177279ED5510090202E /* postOderFix.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA3C0176279ED5510090202E /* postOderFix.swift */; };
-		DA3C0179279EE5C90090202E /* OderCheckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA3C0178279EE5C90090202E /* OderCheckView.swift */; };
+		DA3C0179279EE5C90090202E /* OrderCheckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA3C0178279EE5C90090202E /* OrderCheckView.swift */; };
 		DA3C017B279EED000090202E /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA3C017A279EED000090202E /* ImagePicker.swift */; };
-		DA3C017D279F1BBE0090202E /* OderListCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA3C017C279F1BBE0090202E /* OderListCard.swift */; };
+		DA3C017D279F1BBE0090202E /* OrderListCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA3C017C279F1BBE0090202E /* OrderListCard.swift */; };
 		DA3C017F279F38380090202E /* KeyBoardState.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA3C017E279F38380090202E /* KeyBoardState.swift */; };
 		DA3D1CF2278322210096BA88 /* tabhidden.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA3D1CF1278322210096BA88 /* tabhidden.swift */; };
 		DA4D2D1E27422FE300678FA8 /* DormitoryDeliveryApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4D2D1D27422FE300678FA8 /* DormitoryDeliveryApp.swift */; };
@@ -30,12 +34,12 @@
 		DA518AD7279D798600291CA0 /* ChatSideMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA518AD6279D798600291CA0 /* ChatSideMenu.swift */; };
 		DA518ADB279D965400291CA0 /* getRoomLeave.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA518ADA279D965400291CA0 /* getRoomLeave.swift */; };
 		DA518ADD279DE60900291CA0 /* postAddMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA518ADC279DE60900291CA0 /* postAddMenu.swift */; };
-		DA518ADF279DE84300291CA0 /* Oder_.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA518ADE279DE84300291CA0 /* Oder_.swift */; };
-		DA518AE1279DECB300291CA0 /* OderListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA518AE0279DECB300291CA0 /* OderListView.swift */; };
+		DA518ADF279DE84300291CA0 /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA518ADE279DE84300291CA0 /* Order.swift */; };
+		DA518AE1279DECB300291CA0 /* OrderListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA518AE0279DECB300291CA0 /* OrderListView.swift */; };
 		DA518AE3279DED4000291CA0 /* getMenuList.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA518AE2279DED4000291CA0 /* getMenuList.swift */; };
 		DA518AE5279DF04500291CA0 /* getReady.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA518AE4279DF04500291CA0 /* getReady.swift */; };
 		DA6829E927A007B9008F53BB /* postOrderCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6829E827A007B9008F53BB /* postOrderCheck.swift */; };
-		DA6829EB27A00C01008F53BB /* UserOrderCheckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6829EA27A00C01008F53BB /* UserOrderCheckView.swift */; };
+		DA6829EB27A00C01008F53BB /* ReceiptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6829EA27A00C01008F53BB /* ReceiptView.swift */; };
 		DA6829ED27A0B170008F53BB /* getMenus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6829EC27A0B170008F53BB /* getMenus.swift */; };
 		DA6829F127A0DE5C008F53BB /* postMenuEdit.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6829F027A0DE5C008F53BB /* postMenuEdit.swift */; };
 		DA8837AA275BC81C0034481F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA4D2D2127422FE500678FA8 /* Assets.xcassets */; };
@@ -45,6 +49,7 @@
 		DAB5E98C274364BC00EF5B6A /* Signup.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB5E98B274364BC00EF5B6A /* Signup.swift */; };
 		DAB5E99027436B9B00EF5B6A /* DeliveryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB5E98F27436B9B00EF5B6A /* DeliveryView.swift */; };
 		DAB5E9942743906400EF5B6A /* RoomCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB5E9932743906400EF5B6A /* RoomCard.swift */; };
+		DABCB9DB27AAFE5B002F27B6 /* getRooms.swift in Sources */ = {isa = PBXBuildFile; fileRef = DABCB9DA27AAFE5B002F27B6 /* getRooms.swift */; };
 		DABCFE5D2743ACCF00B89781 /* MyPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DABCFE5C2743ACCF00B89781 /* MyPage.swift */; };
 		DABCFE632743B0F500B89781 /* CreateRoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DABCFE622743B0F500B89781 /* CreateRoomView.swift */; };
 		DAC252D2275B4E0100EA2BFD /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC252D1275B4E0100EA2BFD /* LoginView.swift */; };
@@ -56,6 +61,13 @@
 		DAC4527E2760190600D05BB0 /* 디비_비우기.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC4527D2760190600D05BB0 /* 디비_비우기.swift */; };
 		DAC4528027601EF200D05BB0 /* ChatCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC4527F27601EF200D05BB0 /* ChatCard.swift */; };
 		DAC4528427603A5400D05BB0 /* HashTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC4528327603A5400D05BB0 /* HashTag.swift */; };
+		DAC4ABA127A7530B00D6C7C4 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC4ABA027A7530B00D6C7C4 /* Message.swift */; };
+		DAC4ABA527A8CAAD00D6C7C4 /* Receipt.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC4ABA427A8CAAD00D6C7C4 /* Receipt.swift */; };
+		DAC4ABA727A8CAE000D6C7C4 /* OrderList.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC4ABA627A8CAE000D6C7C4 /* OrderList.swift */; };
+		DAC4ABA927A8CB3600D6C7C4 /* OrderCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC4ABA827A8CB3600D6C7C4 /* OrderCheck.swift */; };
+		DAC4ABAD27A8CC4D00D6C7C4 /* Chatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC4ABAC27A8CC4D00D6C7C4 /* Chatting.swift */; };
+		DAC4ABB127A8D3A200D6C7C4 /* Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC4ABB027A8D3A200D6C7C4 /* Room.swift */; };
+		DAC4ABB527A9029C00D6C7C4 /* Navi.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC4ABB427A9029C00D6C7C4 /* Navi.swift */; };
 		DAD23A6E27A6B8680094991C /* NetworkConnectionCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAD23A6D27A6B8680094991C /* NetworkConnectionCheck.swift */; };
 		DAE94525274654A9000C8D3D /* TEST.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE94524274654A9000C8D3D /* TEST.swift */; };
 		DAE945272746560E000C8D3D /* SocketIOManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE945262746560E000C8D3D /* SocketIOManager.swift */; };
@@ -78,12 +90,16 @@
 		DA12BE7127613BE800C08143 /* ChattingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChattingView.swift; sourceTree = "<group>"; };
 		DA12BE7327613C0500C08143 /* scrollview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = scrollview.swift; sourceTree = "<group>"; };
 		DA12BE7527613C1A00C08143 /* bubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = bubble.swift; sourceTree = "<group>"; };
-		DA12BE79276156A300C08143 /* OderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OderView.swift; sourceTree = "<group>"; };
+		DA12BE79276156A300C08143 /* OrderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderView.swift; sourceTree = "<group>"; };
 		DA2ACF7327A6EA28005939F0 /* postOrderDone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = postOrderDone.swift; sourceTree = "<group>"; };
+		DA2ACF7527A729C8005939F0 /* getChatLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = getChatLog.swift; sourceTree = "<group>"; };
+		DA2ACF7727A730ED005939F0 /* getKick.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = getKick.swift; sourceTree = "<group>"; };
+		DA2ACF7927A7387D005939F0 /* postVoteKick.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = postVoteKick.swift; sourceTree = "<group>"; };
+		DA2ACF7B27A73952005939F0 /* postVoteReset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = postVoteReset.swift; sourceTree = "<group>"; };
 		DA3C0176279ED5510090202E /* postOderFix.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = postOderFix.swift; sourceTree = "<group>"; };
-		DA3C0178279EE5C90090202E /* OderCheckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OderCheckView.swift; sourceTree = "<group>"; };
+		DA3C0178279EE5C90090202E /* OrderCheckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderCheckView.swift; sourceTree = "<group>"; };
 		DA3C017A279EED000090202E /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
-		DA3C017C279F1BBE0090202E /* OderListCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OderListCard.swift; sourceTree = "<group>"; };
+		DA3C017C279F1BBE0090202E /* OrderListCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderListCard.swift; sourceTree = "<group>"; };
 		DA3C017E279F38380090202E /* KeyBoardState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBoardState.swift; sourceTree = "<group>"; };
 		DA3D1CF1278322210096BA88 /* tabhidden.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tabhidden.swift; sourceTree = "<group>"; };
 		DA4D2D1A27422FE300678FA8 /* DormitoryDelivery.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DormitoryDelivery.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -99,12 +115,12 @@
 		DA518AD6279D798600291CA0 /* ChatSideMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatSideMenu.swift; sourceTree = "<group>"; };
 		DA518ADA279D965400291CA0 /* getRoomLeave.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = getRoomLeave.swift; sourceTree = "<group>"; };
 		DA518ADC279DE60900291CA0 /* postAddMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = postAddMenu.swift; sourceTree = "<group>"; };
-		DA518ADE279DE84300291CA0 /* Oder_.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Oder_.swift; sourceTree = "<group>"; };
-		DA518AE0279DECB300291CA0 /* OderListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OderListView.swift; sourceTree = "<group>"; };
+		DA518ADE279DE84300291CA0 /* Order.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Order.swift; sourceTree = "<group>"; };
+		DA518AE0279DECB300291CA0 /* OrderListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderListView.swift; sourceTree = "<group>"; };
 		DA518AE2279DED4000291CA0 /* getMenuList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = getMenuList.swift; sourceTree = "<group>"; };
 		DA518AE4279DF04500291CA0 /* getReady.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = getReady.swift; sourceTree = "<group>"; };
 		DA6829E827A007B9008F53BB /* postOrderCheck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = postOrderCheck.swift; sourceTree = "<group>"; };
-		DA6829EA27A00C01008F53BB /* UserOrderCheckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserOrderCheckView.swift; sourceTree = "<group>"; };
+		DA6829EA27A00C01008F53BB /* ReceiptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptView.swift; sourceTree = "<group>"; };
 		DA6829EC27A0B170008F53BB /* getMenus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = getMenus.swift; sourceTree = "<group>"; };
 		DA6829F027A0DE5C008F53BB /* postMenuEdit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = postMenuEdit.swift; sourceTree = "<group>"; };
 		DA9702B9275C8CC700BB8B53 /* hashtag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = hashtag.swift; sourceTree = "<group>"; };
@@ -113,6 +129,7 @@
 		DAB5E98B274364BC00EF5B6A /* Signup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Signup.swift; sourceTree = "<group>"; };
 		DAB5E98F27436B9B00EF5B6A /* DeliveryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryView.swift; sourceTree = "<group>"; };
 		DAB5E9932743906400EF5B6A /* RoomCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomCard.swift; sourceTree = "<group>"; };
+		DABCB9DA27AAFE5B002F27B6 /* getRooms.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = getRooms.swift; sourceTree = "<group>"; };
 		DABCFE5C2743ACCF00B89781 /* MyPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPage.swift; sourceTree = "<group>"; };
 		DABCFE622743B0F500B89781 /* CreateRoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateRoomView.swift; sourceTree = "<group>"; };
 		DAC252D1275B4E0100EA2BFD /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -124,6 +141,13 @@
 		DAC4527D2760190600D05BB0 /* 디비_비우기.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "디비_비우기.swift"; sourceTree = "<group>"; };
 		DAC4527F27601EF200D05BB0 /* ChatCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCard.swift; sourceTree = "<group>"; };
 		DAC4528327603A5400D05BB0 /* HashTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HashTag.swift; sourceTree = "<group>"; };
+		DAC4ABA027A7530B00D6C7C4 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		DAC4ABA427A8CAAD00D6C7C4 /* Receipt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Receipt.swift; sourceTree = "<group>"; };
+		DAC4ABA627A8CAE000D6C7C4 /* OrderList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderList.swift; sourceTree = "<group>"; };
+		DAC4ABA827A8CB3600D6C7C4 /* OrderCheck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderCheck.swift; sourceTree = "<group>"; };
+		DAC4ABAC27A8CC4D00D6C7C4 /* Chatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chatting.swift; sourceTree = "<group>"; };
+		DAC4ABB027A8D3A200D6C7C4 /* Room.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Room.swift; sourceTree = "<group>"; };
+		DAC4ABB427A9029C00D6C7C4 /* Navi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navi.swift; sourceTree = "<group>"; };
 		DAD23A6D27A6B8680094991C /* NetworkConnectionCheck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConnectionCheck.swift; sourceTree = "<group>"; };
 		DAE94524274654A9000C8D3D /* TEST.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TEST.swift; sourceTree = "<group>"; };
 		DAE945262746560E000C8D3D /* SocketIOManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketIOManager.swift; sourceTree = "<group>"; };
@@ -203,10 +227,10 @@
 		DA4D2D1C27422FE300678FA8 /* DormitoryDelivery */ = {
 			isa = PBXGroup;
 			children = (
+				DAE9452C274671F4000C8D3D /* info.plist */,
 				DAC45271275FEA9500D05BB0 /* REST_Function */,
 				DAC45264275F521500D05BB0 /* Databases */,
 				DAFF71B7275D577B00A45D29 /* Module */,
-				DAE9452C274671F4000C8D3D /* info.plist */,
 				DA4D2D2B2742306300678FA8 /* AppDelegate.swift */,
 				DA4D2D1D27422FE300678FA8 /* DormitoryDeliveryApp.swift */,
 				DA4D2D1F27422FE300678FA8 /* ContentView.swift */,
@@ -250,11 +274,8 @@
 		DABCFE602743AEC900B89781 /* Delivery */ = {
 			isa = PBXGroup;
 			children = (
-				DAB5E98F27436B9B00EF5B6A /* DeliveryView.swift */,
-				DAC4528327603A5400D05BB0 /* HashTag.swift */,
-				DAB5E9932743906400EF5B6A /* RoomCard.swift */,
-				DAFF71D2275D60D600A45D29 /* RoomDetailView.swift */,
-				DA518AD4279916FD00291CA0 /* RoomDetail.swift */,
+				DAC4ABAE27A8D38400D6C7C4 /* Model */,
+				DAC4ABAF27A8D38D00D6C7C4 /* View */,
 			);
 			path = Delivery;
 			sourceTree = "<group>";
@@ -289,6 +310,11 @@
 				DA518AE2279DED4000291CA0 /* getMenuList.swift */,
 				DA6829EC27A0B170008F53BB /* getMenus.swift */,
 				DA518AE4279DF04500291CA0 /* getReady.swift */,
+				DA2ACF7727A730ED005939F0 /* getKick.swift */,
+				DA2ACF7927A7387D005939F0 /* postVoteKick.swift */,
+				DA2ACF7B27A73952005939F0 /* postVoteReset.swift */,
+				DA2ACF7527A729C8005939F0 /* getChatLog.swift */,
+				DABCB9DA27AAFE5B002F27B6 /* getRooms.swift */,
 				DA3C0176279ED5510090202E /* postOderFix.swift */,
 				DA6829E827A007B9008F53BB /* postOrderCheck.swift */,
 				DA2ACF7327A6EA28005939F0 /* postOrderDone.swift */,
@@ -306,16 +332,77 @@
 			path = LoginSignupLoading;
 			sourceTree = "<group>";
 		};
+		DAC4ABA227A8CA6A00D6C7C4 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				DA12BE79276156A300C08143 /* OrderView.swift */,
+				DA518AE0279DECB300291CA0 /* OrderListView.swift */,
+				DA3C017C279F1BBE0090202E /* OrderListCard.swift */,
+				DA3C0178279EE5C90090202E /* OrderCheckView.swift */,
+				DA6829EA27A00C01008F53BB /* ReceiptView.swift */,
+				DA3C017A279EED000090202E /* ImagePicker.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		DAC4ABA327A8CA7100D6C7C4 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				DA518ADE279DE84300291CA0 /* Order.swift */,
+				DAC4ABA427A8CAAD00D6C7C4 /* Receipt.swift */,
+				DAC4ABA627A8CAE000D6C7C4 /* OrderList.swift */,
+				DAC4ABA827A8CB3600D6C7C4 /* OrderCheck.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		DAC4ABAA27A8CB5900D6C7C4 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				DAC4ABAC27A8CC4D00D6C7C4 /* Chatting.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		DAC4ABAB27A8CB5F00D6C7C4 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				DAFF71C6275D593300A45D29 /* ChatView.swift */,
+				DA12BE7127613BE800C08143 /* ChattingView.swift */,
+				DAC4ABA027A7530B00D6C7C4 /* Message.swift */,
+				DAC4527F27601EF200D05BB0 /* ChatCard.swift */,
+				DA518AD6279D798600291CA0 /* ChatSideMenu.swift */,
+				DA12BE7527613C1A00C08143 /* bubble.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		DAC4ABAE27A8D38400D6C7C4 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				DAC4ABB027A8D3A200D6C7C4 /* Room.swift */,
+				DA518AD4279916FD00291CA0 /* RoomDetail.swift */,
+				DAC4ABB427A9029C00D6C7C4 /* Navi.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		DAC4ABAF27A8D38D00D6C7C4 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				DAB5E98F27436B9B00EF5B6A /* DeliveryView.swift */,
+				DAC4528327603A5400D05BB0 /* HashTag.swift */,
+				DAB5E9932743906400EF5B6A /* RoomCard.swift */,
+				DAFF71D2275D60D600A45D29 /* RoomDetailView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		DAD23A6F27A6E1730094991C /* Order */ = {
 			isa = PBXGroup;
 			children = (
-				DA518ADE279DE84300291CA0 /* Oder_.swift */,
-				DA12BE79276156A300C08143 /* OderView.swift */,
-				DA518AE0279DECB300291CA0 /* OderListView.swift */,
-				DA3C017C279F1BBE0090202E /* OderListCard.swift */,
-				DA3C0178279EE5C90090202E /* OderCheckView.swift */,
-				DA6829EA27A00C01008F53BB /* UserOrderCheckView.swift */,
-				DA3C017A279EED000090202E /* ImagePicker.swift */,
+				DAC4ABA327A8CA7100D6C7C4 /* Model */,
+				DAC4ABA227A8CA6A00D6C7C4 /* View */,
 			);
 			path = Order;
 			sourceTree = "<group>";
@@ -323,11 +410,8 @@
 		DAFF71B4275D571C00A45D29 /* Chatting */ = {
 			isa = PBXGroup;
 			children = (
-				DAFF71C6275D593300A45D29 /* ChatView.swift */,
-				DA12BE7127613BE800C08143 /* ChattingView.swift */,
-				DAC4527F27601EF200D05BB0 /* ChatCard.swift */,
-				DA518AD6279D798600291CA0 /* ChatSideMenu.swift */,
-				DA12BE7527613C1A00C08143 /* bubble.swift */,
+				DAC4ABAA27A8CB5900D6C7C4 /* Model */,
+				DAC4ABAB27A8CB5F00D6C7C4 /* View */,
 				DAD23A6F27A6E1730094991C /* Order */,
 			);
 			path = Chatting;
@@ -481,6 +565,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DAC4ABAD27A8CC4D00D6C7C4 /* Chatting.swift in Sources */,
 				DAFF71BF275D589400A45D29 /* CreateRoomData.swift in Sources */,
 				DAB5E98C274364BC00EF5B6A /* Signup.swift in Sources */,
 				DABCFE5D2743ACCF00B89781 /* MyPage.swift in Sources */,
@@ -488,19 +573,25 @@
 				DAFF71C5275D58C500A45D29 /* ChatData.swift in Sources */,
 				DAFF71C7275D593300A45D29 /* ChatView.swift in Sources */,
 				DA6829F127A0DE5C008F53BB /* postMenuEdit.swift in Sources */,
+				DAC4ABB527A9029C00D6C7C4 /* Navi.swift in Sources */,
+				DA2ACF7627A729C8005939F0 /* getChatLog.swift in Sources */,
 				DA4D2D2C2742306300678FA8 /* AppDelegate.swift in Sources */,
-				DA518ADF279DE84300291CA0 /* Oder_.swift in Sources */,
+				DA518ADF279DE84300291CA0 /* Order.swift in Sources */,
 				DA6829E927A007B9008F53BB /* postOrderCheck.swift in Sources */,
+				DAC4ABA727A8CAE000D6C7C4 /* OrderList.swift in Sources */,
 				DA518AE3279DED4000291CA0 /* getMenuList.swift in Sources */,
 				DAF616DA275E7F300011C508 /* realmbackup.swift.swift in Sources */,
 				DA518ADB279D965400291CA0 /* getRoomLeave.swift in Sources */,
-				DA6829EB27A00C01008F53BB /* UserOrderCheckView.swift in Sources */,
+				DA6829EB27A00C01008F53BB /* ReceiptView.swift in Sources */,
 				DAD23A6E27A6B8680094991C /* NetworkConnectionCheck.swift in Sources */,
 				DAC252D8275B4EC800EA2BFD /* NaverLogin.swift in Sources */,
 				DA518AD5279916FD00291CA0 /* RoomDetail.swift in Sources */,
+				DAC4ABA527A8CAAD00D6C7C4 /* Receipt.swift in Sources */,
 				DAC4528027601EF200D05BB0 /* ChatCard.swift in Sources */,
 				DA518ADD279DE60900291CA0 /* postAddMenu.swift in Sources */,
 				DAC252D2275B4E0100EA2BFD /* LoginView.swift in Sources */,
+				DA2ACF7C27A73952005939F0 /* postVoteReset.swift in Sources */,
+				DAC4ABA127A7530B00D6C7C4 /* Message.swift in Sources */,
 				DAC45275275FEBA400D05BB0 /* postCreateRoom.swift in Sources */,
 				DA4D2D2027422FE300678FA8 /* ContentView.swift in Sources */,
 				DA3C017F279F38380090202E /* KeyBoardState.swift in Sources */,
@@ -508,14 +599,19 @@
 				DAAB680827A4434C00B18B78 /* CategoryView.swift in Sources */,
 				DA4D2D1E27422FE300678FA8 /* DormitoryDeliveryApp.swift in Sources */,
 				DA9702BA275C8CC700BB8B53 /* hashtag.swift in Sources */,
+				DA2ACF7A27A7387D005939F0 /* postVoteKick.swift in Sources */,
+				DAC4ABA927A8CB3600D6C7C4 /* OrderCheck.swift in Sources */,
 				DAB5E9942743906400EF5B6A /* RoomCard.swift in Sources */,
 				DAFF71C9275D5A1700A45D29 /* 각종 모아두기.swift in Sources */,
 				DAFF71D1275D5FF900A45D29 /* SectionCategoryData.swift in Sources */,
 				DAC4527E2760190600D05BB0 /* 디비_비우기.swift in Sources */,
 				DAE945272746560E000C8D3D /* SocketIOManager.swift in Sources */,
-				DA12BE7A276156A300C08143 /* OderView.swift in Sources */,
+				DABCB9DB27AAFE5B002F27B6 /* getRooms.swift in Sources */,
+				DA12BE7A276156A300C08143 /* OrderView.swift in Sources */,
+				DA2ACF7827A730ED005939F0 /* getKick.swift in Sources */,
 				DAFF71D3275D60D600A45D29 /* RoomDetailView.swift in Sources */,
 				DAFF71C3275D58A300A45D29 /* UserData.swift in Sources */,
+				DAC4ABB127A8D3A200D6C7C4 /* Room.swift in Sources */,
 				DA3C0177279ED5510090202E /* postOderFix.swift in Sources */,
 				DA518AE5279DF04500291CA0 /* getReady.swift in Sources */,
 				DAAB680127A2DC7700B18B78 /* AlertOneButton.swift in Sources */,
@@ -525,7 +621,7 @@
 				DAFF71D5275DBEE900A45D29 /* ServerUrl.swift in Sources */,
 				DA2ACF7427A6EA28005939F0 /* postOrderDone.swift in Sources */,
 				DA3D1CF2278322210096BA88 /* tabhidden.swift in Sources */,
-				DA3C0179279EE5C90090202E /* OderCheckView.swift in Sources */,
+				DA3C0179279EE5C90090202E /* OrderCheckView.swift in Sources */,
 				DAC252DA275B551B00EA2BFD /* Loading.swift in Sources */,
 				DA518AD7279D798600291CA0 /* ChatSideMenu.swift in Sources */,
 				DA518AD32798F70F00291CA0 /* CreateRoom.swift in Sources */,
@@ -535,10 +631,10 @@
 				DAFF71D7275DD50200A45D29 /* DateCheck.swift in Sources */,
 				DAFF71C1275D589D00A45D29 /* RoomData.swift in Sources */,
 				DAB5E99027436B9B00EF5B6A /* DeliveryView.swift in Sources */,
-				DA3C017D279F1BBE0090202E /* OderListCard.swift in Sources */,
+				DA3C017D279F1BBE0090202E /* OrderListCard.swift in Sources */,
 				DA12BE7427613C0500C08143 /* scrollview.swift in Sources */,
 				DAF616D8275E3FE50011C508 /* getRoomDetail.swift in Sources */,
-				DA518AE1279DECB300291CA0 /* OderListView.swift in Sources */,
+				DA518AE1279DECB300291CA0 /* OrderListView.swift in Sources */,
 				DA3C017B279EED000090202E /* ImagePicker.swift in Sources */,
 				DAC45266275F522B00D05BB0 /* ChatDB.swift in Sources */,
 			);

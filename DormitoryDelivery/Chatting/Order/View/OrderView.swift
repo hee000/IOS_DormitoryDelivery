@@ -1,33 +1,13 @@
-//
-//  oder.swift
-//  DormitoryDelivery
-//
-//  Created by cch on 2021/12/09.
-//
-
 import SwiftUI
 
-class Order: ObservableObject {
-  @Published var data: [orderdata] = []
-  @Published var forcompare: [orderdata] = []
-}
 
-struct orderdata: Codable{
-  var id: String?;
-  var name: String;
-  var quantity: Int;
-  var description: String;
-  var price: Int?;
-}
-
-
-struct OderView: View {
+struct OrderView: View {
   @Environment(\.presentationMode) var presentationMode
+    
   @EnvironmentObject var keyboardManager: KeyboardManager
-
-  @EnvironmentObject var ordermodel: Order
   @EnvironmentObject var naverLogin: NaverLogin
   
+  @StateObject var ordermodel: Order = Order()
   @State var chatdata: ChatDB
   @State var postalertstate = false
   @State var exitalertstate = false
@@ -40,13 +20,9 @@ struct OderView: View {
   var roomid: String
   let formatter: NumberFormatter = {
       let formatter = NumberFormatter()
-//      formatter.numberStyle = .decimal
       return formatter
   }()
-  
-//    .frame(height: keyboardManager.isVisible ? dasd.size.height - keyboardManager.keyboardHeight : dasd.size.height)
-//    .offset(y: keyboardManager.isVisible ? -keyboardManager.keyboardHeight + geometry.safeAreaInsets.bottom + 60 : 0)
-//
+
     var body: some View {
       NavigationView {
         GeometryReader { geometry in
@@ -165,7 +141,6 @@ struct OderView: View {
                           }
                         TextEditor(text: $ordermodel.data[index].description)
                           .focused($focusDescription)
-
                           .frame(height: self.height)
                           .multilineTextAlignment(.trailing)
                           .padding([.top, .leading])

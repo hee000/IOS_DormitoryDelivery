@@ -8,9 +8,10 @@
 import SwiftUI
 import Alamofire
 
-struct UserOrderCheckView: View {
+
+struct ReceiptView: View {
   @Environment(\.presentationMode) var presentationMode
-  @ObservedObject var model: UserOrderCheck = UserOrderCheck()
+  @ObservedObject var model: Receipt = Receipt()
   @EnvironmentObject var naverLogin: NaverLogin
 
   var roomid: String
@@ -18,6 +19,7 @@ struct UserOrderCheckView: View {
     var body: some View {
       NavigationView{
         ScrollView {
+          if model.data != nil {
           VStack(alignment: .leading, spacing: 0){
             Text("배달팁과 총 결제금액을 확인해주세요.")
               .bold()
@@ -127,6 +129,7 @@ struct UserOrderCheckView: View {
         } // Vstack
           .padding([.leading, .trailing])
           .padding([.leading, .trailing])
+        } // if model.data
       } //scroll
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarTitle("주문내역 확인")
@@ -143,61 +146,39 @@ struct UserOrderCheckView: View {
       } // navi
       .onAppear {
         let destination: DownloadRequest.Destination = { _, _ in
-               let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory,
-               .userDomainMask, true)[0]
-               let documentsURL = URL(fileURLWithPath: documentsPath, isDirectory: true)
-               let fileURL = documentsURL.appendingPathComponent("image.jpg")
-
-               return (fileURL, [.removePreviousFile, .createIntermediateDirectories]) }
+          let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory,
+                                                                  .userDomainMask, true)[0]
+          let documentsURL = URL(fileURLWithPath: documentsPath, isDirectory: true)
+          let fileURL = documentsURL.appendingPathComponent("image.jpg")
+          return (fileURL, [.removePreviousFile, .createIntermediateDirectories]) }
         
         AF.download(urlimgdownload(rid: self.roomid),
                     headers: ["Authorization": naverLogin.loginInstance!.accessToken] ,to: destination)
-               .downloadProgress { progress in
-                      print("Download Progress: \(progress.fractionCompleted)")
-                   }
-               .response { response in
-                           debugPrint(response)
-                   if response.error == nil, let imagePath = response.fileURL?.path {
-                               let image = UIImage(contentsOfFile: imagePath)
-                     model.image = image ?? UIImage()
-                           }
-                       }
+          .downloadProgress { progress in
+//                      print("Download Progress: \(progress.fractionCompleted)")
+          }
+          .response { response in
+//                           debugPrint(response)
+            if response.error == nil, let imagePath = response.fileURL?.path {
+              let image = UIImage(contentsOfFile: imagePath)
+              model.image = image ?? UIImage()
+            }
+          }
         
         
         AF.request(urlreceipt(rid: self.roomid), method: .get, parameters: nil, encoding: JSONEncoding.default, headers: ["Authorization": naverLogin.loginInstance!.accessToken])
           .responseJSON { response in
             do {
               let data2 = try JSONSerialization.data(withJSONObject: response.value, options: .prettyPrinted)
-              let session = try JSONDecoder().decode(Receipt.self, from: data2)
-
-              print(session)
+              let session = try JSONDecoder().decode(receiptdata.self, from: data2)
+//              print(session)
               model.data = session
-                
               }
             catch {
               print(error)
             }
-
         }
-        
-      }
-        
-      
+      } // onappear
     }
-}
-
-class UserOrderCheck: ObservableObject {
-  @Published var image = UIImage()
-  @Published var data: Receipt? = nil
-}
-
-
-struct Receipt: Codable {
-  var menus: [orderlistmenudata];
-  var tipForUser: Int?;
-  var totalPrice: Int?;
-  var accountNumber: String;
-  var accountBank: String;
-  var accountUserName: String;
 }
 

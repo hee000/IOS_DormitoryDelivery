@@ -91,7 +91,7 @@ struct TabViews: View {
 
   var body: some View {
     TabView(selection: $tabSelect){
-      DeliveryView(mysection: $DeliveryViewSection)
+      DeliveryView(mysection: $DeliveryViewSection, tabSelect: $tabSelect)
         .overlay(Rectangle().frame(width: nil, height: 1, alignment: .top).foregroundColor(Color(.sRGB, red: 210/255, green: 210/255, blue: 210/255, opacity: 1)), alignment: .bottom)
         .tabItem {
         if self.tabSelect == 0 {

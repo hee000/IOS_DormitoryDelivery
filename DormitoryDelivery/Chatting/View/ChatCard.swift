@@ -1,10 +1,3 @@
-//
-//  ChatCard.swift
-//  DormitoryDelivery
-//
-//  Created by cch on 2021/12/08.
-//
-
 import SwiftUI
 
 struct ChatCard: View {

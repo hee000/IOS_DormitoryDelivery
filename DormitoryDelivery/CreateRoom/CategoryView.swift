@@ -19,7 +19,8 @@ struct CategoryView: View {
         } label: {
           Text(category[index])
         }
-      }
+        .padding()
+      }.listStyle(InsetListStyle())
       
       .navigationBarTitleDisplayMode(.inline)
       .navigationBarBackButtonHidden(true)

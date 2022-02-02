@@ -1,0 +1,42 @@
+//
+//  getChatLog.swift
+//  DormitoryDelivery
+//
+//  Created by cch on 2022/01/31.
+//
+
+import Foundation
+import Alamofire
+import RealmSwift
+
+func getChatLog(rid: String, idx: String, token: String) {
+  var index = Int(idx)! + 1
+  let url = urlchatlog(rid: rid, idx: String(index))
+  let req = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: ["Authorization": token])
+  req.responseJSON { response in
+    do {
+      let result = response.value as! [Any]
+      let message = try! JSONSerialization.data(withJSONObject: result, options: .prettyPrinted)
+      let json = try JSONDecoder().decode([ChatMessageDetail].self, from: message)
+        print(json)
+        
+      let realm = try! Realm()
+      try! realm.write {
+//        for chatdetail in json {
+//          if chatdetail.type == "system" {
+//            print("시스템이래")
+//          }
+//          let chatdb = roomidtodbconnect(rid: rid)
+//          chatdb?.messages.append(<#T##object: ChatMessageDetail##ChatMessageDetail#>)
+//        }
+        let chatdb = roomidtodbconnect(rid: rid)
+        chatdb?.messages.append(objectsIn: json)
+      }
+
+      
+    } catch {
+      print(error)
+    }
+
+  }
+}

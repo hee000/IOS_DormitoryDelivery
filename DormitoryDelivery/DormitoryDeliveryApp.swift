@@ -22,6 +22,7 @@ struct DormitoryDeliveryApp: App {
             .environmentObject(RoomData())
             .environmentObject(RoomDetailData())
             .environmentObject(ChatData())
+            .environmentObject(ChatNavi())
             .environmentObject(KeyboardManager())
             .environmentObject(Order())
             .environmentObject(OrderList())

@@ -8,7 +8,7 @@
 import Foundation
 import Alamofire
 
-func getRoomJoin(matchid: String, token: String, title: String, rid: String, detaildata: RoomDetailData) {
+func getRoomJoin(matchid: String, token: String, title: String, rid: String, detaildata: RoomDetailData, navi: ChatNavi) {
   let url = roomjoin(matchId: matchid)
   let req = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: ["Authorization": token])
   req.response { response in
@@ -22,6 +22,10 @@ func getRoomJoin(matchid: String, token: String, title: String, rid: String, det
               let data2 = try JSONSerialization.data(withJSONObject: result2, options: .prettyPrinted)
             let session = try JSONDecoder().decode([participantsinfo].self, from: data2)
 
+            navi.State = false
+            navi.rid = rid
+            navi.Active = true
+            
             let chatroomopen = ChatDB()
             let superUser = ChatUsersInfo()
             
@@ -39,10 +43,9 @@ func getRoomJoin(matchid: String, token: String, title: String, rid: String, det
               chatroomopen.member.append(userinfo)
             }
             
-              addChatting(chatroomopen)
-              detaildata.isActive.toggle()
+            addChatting(chatroomopen)
 
-
+            detaildata.isActive.toggle()
             }
           catch {
             print(error)

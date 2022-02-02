@@ -19,6 +19,7 @@ struct CreateRoomView: View {
   @ObservedObject var createRoomData: CreateRoom = CreateRoom()
   @EnvironmentObject var keyboardManager: KeyboardManager
   @Environment(\.presentationMode) var presentationMode
+  @EnvironmentObject var chatnavi: ChatNavi
   @Binding var tabSelect: Int
   
   @FocusState private var focusShopLink: Bool
@@ -29,7 +30,6 @@ struct CreateRoomView: View {
       NavigationView {
         GeometryReader { geo in
           ZStack{
-
           ScrollView{
         VStack {
           VStack(alignment: .leading, spacing: 0){
@@ -207,8 +207,14 @@ struct CreateRoomView: View {
               Spacer()
               Button {
                 if let mytoken = naverLogin.loginInstance?.accessToken {
-                  if let price = Int(createRoomData.deliveryPriceAtLeast) {
-                    postCreateRoom(createRoomData: createRoomData, section: sectionNameEng[createRoomData.section], deliveryPriceAtLeast: price, token: mytoken)
+                  if createRoomData.validcheck() {
+                    if let price = Int(createRoomData.deliveryPriceAtLeast) {
+                      postCreateRoom(createRoomData: createRoomData, section: sectionNameEng[createRoomData.section], deliveryPriceAtLeast: price, token: mytoken, navi: chatnavi)
+                    }
+                  } else {
+                    withAnimation {
+                      self.createRoomData.postalertstate.toggle()
+                    }
                   }
                 }
               } label: {
@@ -229,11 +235,10 @@ struct CreateRoomView: View {
         } //geo
         .clipped()
       } //navi
+      .overlay(self.createRoomData.postalertstate ? AlertOneButton(isActivity: $createRoomData.postalertstate, text: "항목을 올바르게 기입해주세요") : nil)
       .onChange(of: createRoomData.rid, perform: { newValue in
         presentationMode.wrappedValue.dismiss()
-        withAnimation {
-          self.tabSelect = 2
-        }
+        self.tabSelect = 2
       })
     } //body
 }

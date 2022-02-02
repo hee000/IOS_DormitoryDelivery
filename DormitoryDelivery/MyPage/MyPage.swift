@@ -21,7 +21,7 @@ struct MyPage: View {
   //  @ObservedResults(MyEvent.self,filter:NSPredicate(format: "title != 'L'"),sortDescriptor:SortDescriptor(keyPath: "start", ascending: false)) private var results
 
     var body: some View {
-      let user = userPrivacy.first!
+      let privacy = userPrivacy.first!
       GeometryReader { geo in
           ScrollView{
             HStack (spacing: 20){ // 프로필부분
@@ -36,10 +36,10 @@ struct MyPage: View {
               }) {
                 HStack{
                   VStack (alignment: .leading, spacing: 5) {
-                    Text(user.name!)
+                    Text(privacy.name!)
                       .bold()
                       .font(.title3)
-                    Text(user.belong!)
+                    Text(privacy.belong!)
                       .foregroundColor(.gray)
                   }
                   Spacer()
@@ -97,11 +97,12 @@ struct MyPage: View {
               
               Group{
                 Button(action: {
-//                  print(chatResult[0].messages[0].body!.data)
-                  print(chatResult[0].member.filter("userId == 'oVK3Y0_YL4WibfxLl4F96LBgb-Nl8VUKXI7ZCeHUyN0'"))
+                  if let mytoken = naverLogin.loginInstance?.accessToken {
+                    getRooms(uid: privacy._id!, token: mytoken)
+                  }
                 }) {
                   HStack{
-                    Text("도움말")
+                    Text("도움말 // 방목록")
                       .bold()
                     Spacer()
                     Image(systemName: "chevron.right")
@@ -111,9 +112,15 @@ struct MyPage: View {
                 Divider()
                 
                 Button(action: {
+                  if let mytoken = naverLogin.loginInstance?.accessToken {
+                    let chatdb = roomidtodbconnect(rid: "2")
+                    let idx = chatdb?.messages.last?.idx
+                    
+                    getChatLog(rid: "2", idx: idx!, token: mytoken)
+                  }
                 }) {
                   HStack{
-                    Text("이용약관")
+                    Text("이용약관  // 쳇로그")
                       .bold()
                     Spacer()
                     Image(systemName: "chevron.right")

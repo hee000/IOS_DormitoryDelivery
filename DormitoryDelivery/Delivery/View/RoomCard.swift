@@ -25,70 +25,74 @@ struct RoomCard: View {
   
   
     var body: some View {
-      HStack{
-//        NavigationLink(destination: RoomDetail(matchid: self.deliveryId, purchaserName: self.purchaserName, createdAt: self.createdAt)) {
         VStack(spacing: 2){
           HStack{ //타이틀, 업체명
             VStack(alignment: .leading, spacing: 3){
-              Text("\(self.deliveryZone)관")
+              Text("\(sectionNameToKor[self.deliveryZone]!)관")
                 .font(.system(size: 15))
                 .foregroundColor(Color.gray)
               Text(self.deliveryTitle)
                 .font(.system(size: 18))
                 .foregroundColor(Color.black)
                 .fontWeight(.heavy)
+                .padding(.top, 5)
             }
             Spacer()
             }
             
           
           HStack{
-            VStack(alignment: .leading){
               
-              HStack(spacing: 2){
-                Image(systemName: "person.circle.fill")
-                  .foregroundColor(Color(.sRGB, red: 180/255, green: 200/255, blue: 255/255, opacity: 1))
+            HStack{
+              Image("ImageDefaultProfile")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 17, height: 17)
+                .background(Color(.sRGB, red: 180/255, green: 200/255, blue: 255/255, opacity: 1))
+                .cornerRadius(100)
+                .shadow(color: Color.black.opacity(0.5), radius: 1)
 
-                Text(self.purchaserName)
-                  .font(.system(size: 12))
-                  .foregroundColor(Color.gray)
-                
-                Text(String(Int((datecheck.nowDate.timeIntervalSince(Date(timeIntervalSince1970: TimeInterval(self.createdAt)/1000))) / 60)))
-                  .font(.system(size: 10))
-                  .foregroundColor(Color.gray)
-                  .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 0))
-                Text("분전")
-                  .font(.system(size: 10))
-                  .foregroundColor(Color.gray)
-              }
-
-            }.padding(EdgeInsets(top: 10, leading: 0, bottom: 0, trailing: 0))
+              Text(self.purchaserName)
+                .font(.system(size: 12))
+                .foregroundColor(Color.gray)
+              
+              Text("\(String(Int((datecheck.nowDate.timeIntervalSince(Date(timeIntervalSince1970: TimeInterval(self.createdAt)/1000))) / 60))) 분전")
+                .font(.system(size: 10))
+                .foregroundColor(Color.gray)
+                .padding(.leading, 10)
+            }
+            .padding(.top, 5)
   
             
             Spacer()
             
             
             HStack{ // 금액
-              Text(String(self.deliveryPayTotal))
+              Spacer()
+              Text(self.deliveryPayTotal != 0 ? "\(String(self.deliveryPayTotal))원" : "-")
                 .font(.system(size: 12))
                 .fontWeight(.black)
+                .foregroundColor(self.deliveryPayTotal > self.deliveryPayTip ? .red : .white)
+              Spacer()
               Text("/")
                 .font(.system(size: 12))
                 .fontWeight(.black)
-              Text(String(self.deliveryPayTip))
+              Spacer()
+              Text("\(String(self.deliveryPayTip))원")
                 .font(.system(size: 12))
                 .fontWeight(.black)
-                              
+              Spacer()
               }
                 .foregroundColor(Color.white)
                 .frame(width: 123, height: 28)
                 .background(Image("Rectangle302")
                               .resizable()
+                              .scaledToFit()
                               .frame(width: 123, height: 28))
             }
         } //v
       .padding()
-  } //h
+//      .padding([.leading, .trailing])
       .background(Color(.sRGB,red: 245/255, green: 245/255, blue: 251/255, opacity: 1))
   }
   

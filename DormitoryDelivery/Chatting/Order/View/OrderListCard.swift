@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct OderListCard: View {
+struct OrderListCard: View {
   var model: orderlistdata
   var roomid: String
   @State var order = false
@@ -77,7 +77,7 @@ struct OderListCard: View {
       }
       .padding()
       .fullScreenCover(isPresented: $order) {
-        OderView(chatdata: roomidtodbconnect(rid: self.roomid)!, roomid: self.roomid)
+        OrderView(chatdata: roomidtodbconnect(rid: self.roomid)!, roomid: self.roomid)
       }
     }
 }

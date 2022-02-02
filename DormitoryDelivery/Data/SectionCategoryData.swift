@@ -27,4 +27,5 @@ let categoryNameEng = ["korean", "chinese" , "japanese", "western", "porkcutlet"
 
 
 let categoryNameToEng = ["한식":"korean", "중식":"chinese", "일식":"japanese", "양식":"western", "돼지고기":"porkcutlet", "치킨":"chicken", "피자":"pizza", "떡":"ddeock", "패스트푸드":"fastfood"] as Dictionary
+let categoryNameToKor = ["korean":"한식", "chinese":"중식", "japanese":"일식", "western":"양식", "porkcutlet":"돼지고기", "chicken":"치킨", "pizza":"피자", "ddeock":"떡", "fastfood":"패스트푸드"] as Dictionary
 let sectionNameToKor = ["Narae":"나래", "Hoyoen":"호연", "Changzo":"창조", "Bibong":"비봉"] as Dictionary

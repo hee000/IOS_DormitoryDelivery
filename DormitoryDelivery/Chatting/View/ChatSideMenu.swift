@@ -12,15 +12,13 @@ import RealmSwift
 struct ChatSideMenu: View {
   @EnvironmentObject var naverLogin: NaverLogin
   @EnvironmentObject var chatdata: ChatData
-  @ObservedResults(UserPrivacy.self) var userPrivacy
+  
+  @StateObject var model: Chatting
   @Binding var RoomChat: ChatDB?
-  @Binding var leave: Bool
-  @Binding var showMenu: Bool
-  @Binding var oderlistview: Bool
   var rid: String
   
     var body: some View {
-      let privacy = userPrivacy.first!
+      let privacy = getUserPrivacy()
       GeometryReader { geo in
         VStack(alignment: .leading) {
           VStack(alignment: .leading, spacing: 10) {
@@ -30,7 +28,7 @@ struct ChatSideMenu: View {
               .padding(.bottom)
             
             Button{
-              self.oderlistview.toggle()
+              self.model.oderlistview.toggle()
             } label: {
               HStack{
                 Text("주문서")
@@ -43,7 +41,9 @@ struct ChatSideMenu: View {
             Divider()
             
             Button{
-//              self.oderlistview.toggle()
+              if let mytoken = naverLogin.loginInstance?.accessToken {
+                postVoteReset(rid: self.rid, token: mytoken)
+              }
             } label: {
               HStack{
                 Text("투표하기")
@@ -79,8 +79,23 @@ struct ChatSideMenu: View {
                       .frame(width: 10, height: 10)
                       .offset(x: 10, y: 10)
                   }
-                  Text(RoomChat!.superUser!.name!)
+                  if RoomChat?.superUser != nil {
+                    Text(RoomChat!.superUser!.name!)
+                  }
                   Spacer()
+                  
+                  if RoomChat!.state?.orderFix == true && RoomChat!.state?.orderDone == false && RoomChat!.superUser!.userId != privacy._id { //강퇴투표
+                    Button{
+                      if let mytoken = naverLogin.loginInstance?.accessToken {
+                        postVoteKick(rid: self.rid, uid: RoomChat!.superUser!.userId!, token: mytoken)
+                      }
+                    } label: {
+                      Text("강퇴 투표")
+                        .font(.footnote)
+                        .padding(7)
+                        .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.gray.opacity(0.7), lineWidth: 1.5))
+                    }
+                  }
                 }
               
                 ForEach(RoomChat!.member.indices, id: \.self) { index in
@@ -95,11 +110,26 @@ struct ChatSideMenu: View {
                         .shadow(color: Color.black.opacity(0.5), radius: 1)
                       Text(RoomChat!.member[index].name!)
                       Spacer()
-                      if RoomChat!.superUser!.userId == privacy._id {
+                      if RoomChat!.state?.orderFix == false && RoomChat!.superUser!.userId == privacy._id { // 방장강퇴
                         Button{
-                          
+                          if let mytoken = naverLogin.loginInstance?.accessToken {
+                            getKick(rid: self.rid, uid: RoomChat!.member[index].userId!, token: mytoken)
+                          }
                         } label: {
                           Text("강퇴하기")
+                            .font(.footnote)
+                            .padding(7)
+                            .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.gray.opacity(0.7), lineWidth: 1.5))
+                        }
+                      }
+                      
+                      if RoomChat!.state?.orderFix == true && RoomChat!.state?.orderDone == false && RoomChat!.member[index].userId != privacy._id { //강퇴투표
+                        Button{
+                          if let mytoken = naverLogin.loginInstance?.accessToken {
+                            postVoteKick(rid: self.rid, uid: RoomChat!.member[index].userId!, token: mytoken)
+                          }
+                        } label: {
+                          Text("강퇴 투표")
                             .font(.footnote)
                             .padding(7)
                             .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.gray.opacity(0.7), lineWidth: 1.5))
@@ -123,7 +153,7 @@ struct ChatSideMenu: View {
               req.response { response in
                 do {
                   if response.response?.statusCode == 200 {
-                    leave.toggle()
+                    self.model.leave.toggle()
                   }
                 } catch {
                   print(error)
