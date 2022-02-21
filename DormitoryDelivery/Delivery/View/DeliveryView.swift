@@ -14,6 +14,7 @@ struct DeliveryView: View {
   
   @EnvironmentObject var rooms: RoomData
   @EnvironmentObject var naverLogin: NaverLogin
+//  @EnvironmentObject var noti: Noti
   @State var isRoomLinkActive = false
   
     
@@ -37,7 +38,7 @@ struct DeliveryView: View {
                 }
               } label: {
                 Text("전체")
-                  .fontWeight(.black)
+                  .font(.system(size: 12, weight: .bold))
                   .foregroundColor(self.flagAll ? Color(.sRGB, red: 112/255, green: 52/255, blue: 255/255, opacity: 1) : Color.gray)
                   .padding(EdgeInsets(top: 8, leading: 12, bottom: 8, trailing: 12))
                   .overlay(RoundedRectangle(cornerRadius: 21).stroke(self.flagAll ? Color(.sRGB, red: 93/255, green: 95/255, blue: 235/255, opacity: 1) : Color.gray, lineWidth: 1.5))
@@ -47,19 +48,22 @@ struct DeliveryView: View {
               }
             }
             .frame(maxHeight: .infinity)
-            .padding(.leading)
-          }.frame(height: 50)
-            .padding(.bottom)
+          }
+          .frame(height: 50)
+          .padding([.leading, .trailing], 5)
           
           if rooms.data == nil || rooms.data!.data.count == 0 {
             VStack{
               Spacer()
-              Text("활성화된 배달방이 없어요.")
-                .bold()
-                .font(.title)
+              Image("ImageNil")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 120, height: 120)
+              Text("등록된 배달방이 없습니다.")
+                .font(.system(size: 22, weight: .bold))
                 .padding()
-              Text("배달방을 개설 해보세요!")
-              Spacer()
+              Text("새로운 배달방을 만들어보세요!")
+                .font(.system(size: 15, weight: .regular))
               Spacer()
             }
             .frame(width: geo.size.width)
@@ -67,20 +71,23 @@ struct DeliveryView: View {
           } else { // 매치목록
             ScrollView {
               VStack(alignment: .center, spacing:3) {
-                ForEach(Array(zip(rooms.data!.data.indices, rooms.data!.data)), id: \.1) { index, item in
+//                ForEach(Array(zip(rooms.data!.data.indices, rooms.data!.data)), id: \.1) { index, item in
 //                ForEach(rooms.data!.data.indices, id: \.self) { index in
-                  NavigationLink(destination: RoomDetailView(roomdata: rooms.data!.data[index], tabSelect: $tabSelect)) {
-              RoomCard(deliveryTitle: rooms.data!.data[index].shopName,
-                       deliveryZone: rooms.data!.data[index].section,
-                           deliveryPayTip: rooms.data!.data[index].priceAtLeast,
-                           deliveryPayTotal: rooms.data!.data[index].total,
-                           deliveryId: rooms.data!.data[index].id,
-                           purchaserName: rooms.data!.data[index].purchaserName,
-                           createdAt: rooms.data!.data[index].createdAt )
+                ForEach(rooms.data!.data, id:\.id) { room in
+                  NavigationLink(destination: RoomDetailView(detaildata: RoomDetailData(room: room), tabSelect: $tabSelect)) {
+              RoomCard(deliveryTitle: room.shopName,
+                       deliveryZone: room.section,
+                           deliveryPayTip: room.priceAtLeast,
+                           deliveryPayTotal: room.total,
+                           deliveryId: room.id,
+                           purchaserName: room.purchaserName,
+                           createdAt: room.createdAt )
                     }
+                  .transition(AnyTransition.opacity.animation(Animation.easeInOut))
                 } //for
               } //v
             } //scroll
+            .clipped()
             .transition(AnyTransition.opacity.animation(Animation.easeInOut.speed(5)))
 
           } // if
@@ -89,6 +96,18 @@ struct DeliveryView: View {
 
         } // V
       }//geo
+      .clipped()
+      .onAppear{
+        getUniversityDormitory()
+      }
+      .onChange(of: mysection, perform: { newValue in
+        flagAll = true
+        if newValue == 0 {
+          SocketIOManager.shared.match_emitSubscribe(rooms: rooms, section: sectionNameEng, category: categoryNameEng)
+        } else {
+          SocketIOManager.shared.match_emitSubscribe(rooms: rooms, section: [sectionNameEng[mysection - 1]], category: categoryNameEng)
+        }
+      })
       .onChange(of: flagAll, perform: { V in
         if V {
           self.flags = flags.map { $0 && false }
@@ -104,12 +123,20 @@ struct DeliveryView: View {
           for i in categorydata.indices{
             categorykor.append(categoryNameToEng[categorydata[i]]!)
           }
-          SocketIOManager.shared.match_emitSubscribe(rooms: rooms, section: ["Bibong"], category: categorykor)
+          if mysection == 0 {
+            SocketIOManager.shared.match_emitSubscribe(rooms: rooms, section: sectionNameEng, category: categorykor)
+          } else {
+            SocketIOManager.shared.match_emitSubscribe(rooms: rooms, section: [sectionNameEng[mysection - 1]], category: categorykor)
+          }
         } else {
           if !self.flagAll {
             self.flagAll.toggle()
           }
-          SocketIOManager.shared.match_emitSubscribe(rooms: rooms, section: ["Bibong"], category: categoryNameEng)
+          if mysection == 0 {
+            SocketIOManager.shared.match_emitSubscribe(rooms: rooms, section: sectionNameEng, category: categoryNameEng)
+          } else {
+            SocketIOManager.shared.match_emitSubscribe(rooms: rooms, section: [sectionNameEng[mysection - 1]], category: categoryNameEng)
+          }
         }
       }
 //      .onAppear {

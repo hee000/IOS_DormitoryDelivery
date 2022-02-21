@@ -14,6 +14,7 @@ struct OrderCheckView: View {
   @EnvironmentObject var naverLogin: NaverLogin
   @Environment(\.presentationMode) var presentationMode
   @StateObject var orderCheckData: OrderCheck = OrderCheck()
+  @StateObject var userPrivacy = UserData()
 
   var roomid: String
     var body: some View {
@@ -57,6 +58,43 @@ struct OrderCheckView: View {
             TextField("가격", text: $orderCheckData.tip)
               .keyboardType(.phonePad)
               .font(.subheadline)
+              .padding(.bottom)
+              .padding(.bottom)
+            
+            Text("계좌를 확인해주세요.")
+              .bold()
+            VStack{
+              if !userPrivacy.chatlist.accounts.isEmpty {
+                if let acc = userPrivacy.chatlist.mainAccount {
+                  VStack(alignment: .leading) {
+                    Text(acc.bank!)
+                      .bold()
+                    
+                    Text(acc.account!)
+                      .bold()
+                    
+                    HStack{
+                      Text("예금주: ")
+                        .font(.footnote)
+                        .foregroundColor(Color.gray)
+                        .padding(.top, 1)
+                      Text(acc.name!)
+                        .font(.footnote)
+                        .foregroundColor(Color.gray)
+                        .padding(.top, 1)
+                    }
+                  }
+                  .padding()
+                  .frame(maxWidth: .infinity, alignment: .leading)
+                  .background(Color(.sRGB, red: 245/255, green: 245/255, blue: 251/255, opacity: 1))
+                  .cornerRadius(5)
+                  .clipped()
+                  .shadow(color: Color.black.opacity(0.15), radius: 8)
+                  .padding([.leading, .trailing])
+                }
+              }
+            }
+            
             Divider()
             
             Spacer()

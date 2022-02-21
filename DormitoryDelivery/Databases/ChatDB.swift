@@ -25,17 +25,18 @@ func getUserPrivacy () -> UserPrivacy {
 }
 
 class ChatDB: Object, ObjectKeyIdentifiable, Decodable{
-  @objc dynamic var id = UUID().uuidString
   @objc dynamic var rid: String?
   @objc dynamic var superUser: ChatUsersInfo?
   @objc dynamic var state: ChatState? = ChatState()
   @objc dynamic var title: String?
   var member = List<ChatUsersInfo>()
-  var menu = List<String>()
+  var menu = List<String>() // 수정 필요
   @objc dynamic var ready: Bool = false
   var messages = List<ChatMessageDetail>()
-  @objc dynamic var index: Int = 0
-  @objc dynamic var confirmation: Int = 0
+  @objc dynamic var allConfirmation: Int = 0 // 확인한 모든 인덱스
+  @objc dynamic var index: Int = 0 // 쳇 인덱스
+  @objc dynamic var confirmation: Int = 0 // 확인한 쳇 인덱스
+  @objc dynamic var systemConfirmation: Int = 0 // 확인한 시스템 인덱스
   @objc dynamic var sortforat: Int = 0
   @objc dynamic var Kicked: Bool = false
 
@@ -66,10 +67,18 @@ class ChatState: Object, ObjectKeyIdentifiable{
 
 class UserPrivacy: Object, ObjectKeyIdentifiable{
   @objc dynamic var _id: String?
+  @objc dynamic var emailAddress: String?
   @objc dynamic var name: String?
   @objc dynamic var belong: String?
-  @objc dynamic var account: String?
   @objc dynamic var alram: Bool = false
+  @objc dynamic var mainAccount: UserAccount? = nil
+  var accounts = List<UserAccount>()
+}
+
+class UserAccount: Object, ObjectKeyIdentifiable{
+  @objc dynamic var bank: String?
+  @objc dynamic var account: String?
+  @objc dynamic var name: String?
 }
 
 func adduser(_ result : UserPrivacy) {
@@ -104,9 +113,10 @@ class ChatMessageDetail: Object, Decodable,ObjectKeyIdentifiable{
     @objc dynamic var id: String?
     @objc dynamic var type: String?
     @objc dynamic var body: ChatMessageDetailBody?
-    @objc dynamic var idx: String?
+    var idx = RealmOptional<Int>()
     @objc dynamic var at: String?
-  
+    var ofChat = LinkingObjects(fromType: ChatDB.self, property: "messages")
+
 
     private enum CodingKeys: String, CodingKey {
         case id = "id"
@@ -116,10 +126,9 @@ class ChatMessageDetail: Object, Decodable,ObjectKeyIdentifiable{
         case at = "at"
     }
 
-//    override class func primaryKey() -> String? {
-//      return "idx"
-//    }
-
+    override class func primaryKey() -> String? {
+      return "id"
+    }
 //  public required convenience init(from decoder: Decoder) throws {
 //      self.init()
 //      let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -134,6 +143,7 @@ class ChatMessageDetailBody: Object, Decodable, ObjectKeyIdentifiable{
     @objc dynamic var userid: String?
     @objc dynamic var username: String?
     @objc dynamic var message: String?
+//    var ofDetail = LinkingObjects(fromType: ChatMessageDetail.self, property: "body")
 
     private enum CodingKeys: String, CodingKey {
         case action = "action"
@@ -218,4 +228,76 @@ func addChatting(_ result : ChatDB) {
       }
 //    }
 //  }
+}
+
+
+
+
+final class UserData: ObservableObject{
+  @Published var chatlist: UserPrivacy
+
+  private var chatsToken: NotificationToken?
+
+
+  // Grab channels from Realm, and then activate a Realm token to listen for changes.
+  init() {
+    let realm = try! Realm()
+    chatlist = Array(realm.objects(UserPrivacy.self))[0] // Convert Realm results
+    activateChannelsToken()
+  }
+
+  private func activateChannelsToken() {
+    let realm = try! Realm()
+    let channels = realm.objects(UserPrivacy.self)
+    chatsToken = channels.observe { _ in
+      self.chatlist = channels[0]
+    }
+  }
+
+  deinit {
+    chatsToken?.invalidate()
+  }
+}
+
+
+final class Noti: ObservableObject{
+  @Published var systemNoti: Bool
+
+  private var chatsToken: NotificationToken?
+
+
+  // Grab channels from Realm, and then activate a Realm token to listen for changes.
+  init() {
+    let realm = try! Realm()
+    var tmpBool = false
+    for i in realm.objects(ChatDB.self) {
+      if i.messages.filter("type == 'system' AND idx > \(i.systemConfirmation)").count != 0 {
+        tmpBool = true
+        break
+      }
+    }
+    systemNoti = tmpBool
+    
+    activateChannelsToken()
+  }
+
+  private func activateChannelsToken() {
+    let realm = try! Realm()
+    let channels = realm.objects(ChatDB.self)
+    chatsToken = channels.observe { _ in
+      // When there is a change, replace the old channels array with a new one.
+      var tmpBool = false
+      for i in channels {
+        if i.messages.filter("type == 'system' AND idx > \(i.systemConfirmation)").count != 0 {
+          tmpBool = true
+          break
+        }
+      }
+      self.systemNoti = tmpBool
+    }
+  }
+
+  deinit {
+    chatsToken?.invalidate()
+  }
 }

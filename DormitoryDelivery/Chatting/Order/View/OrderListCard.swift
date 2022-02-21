@@ -25,14 +25,14 @@ struct OrderListCard: View {
             .cornerRadius(28)
             .shadow(color: Color.black.opacity(0.5), radius: 1)
           Text(model.user.name)
-            .font(.title3)
-            .bold()
+            .font(.system(size: 18, weight: .bold))
           Spacer()
           if model.user.userId == UserDefaults.standard.string(forKey: "MyID")! && RoomChat != nil && RoomChat!.state?.orderFix == false {
             Button {
               self.order.toggle()
             } label: {
               Text("주문 수정")
+                .font(.system(size: 12, weight: .regular))
                 .padding(7)
                 .background(RoundedRectangle(cornerRadius: 5).stroke(Color.gray.opacity(0.7), lineWidth: 1.5))
             }
@@ -47,19 +47,18 @@ struct OrderListCard: View {
           HStack{
             VStack(alignment: .leading, spacing: 10) {
               Text("\(model.menus[index].price)원")
-                .bold()
-                .font(.title3)
+                .font(.system(size: 18, weight: .bold))
               HStack{
                 Text(model.menus[index].name)
-                  .bold()
+                  .font(.system(size: 14, weight: .bold))
                 Spacer()
                 Text("수량 \(model.menus[index].quantity) 개")
-                  .font(.subheadline)
+                  .font(.system(size: 14, weight: .regular))
               }
               if model.menus[index].description != ""{
                 Text(model.menus[index].description)
                   .foregroundColor(.gray)
-                  .font(.subheadline)
+                  .font(.system(size: 14, weight: .regular))
               }
             }
           }
@@ -68,10 +67,10 @@ struct OrderListCard: View {
           .padding([.top, .bottom], 8)
         HStack{
           Text("총 주문금액")
+            .font(.system(size: 14, weight: .regular))
           Spacer()
           Text("\(model.menus.map{$0.price * $0.quantity}.reduce(0, +))원")
-            .font(.title3)
-            .bold()
+            .font(.system(size: 18, weight: .bold))
             .foregroundColor(Color(.sRGB, red: 91/255, green: 66/255, blue: 212/255, opacity: 1))
         }
       }

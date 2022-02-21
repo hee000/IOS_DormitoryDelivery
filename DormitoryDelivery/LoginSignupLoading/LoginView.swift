@@ -15,18 +15,12 @@ struct LoginView: View {
 
       ZStack{
         VStack(alignment: .center) {
-          VStack(alignment: .trailing, spacing: 3) {
-            Image("ImageSplashLogo2")
-              .resizable()
-              .scaledToFit()
-              .frame(width: 57, height: 28)
-              .padding(.trailing, 7)
-            Image("ImageSplashLogo1")
-              .resizable()
-              .scaledToFit()
-              .frame(width: 110, height: 100)
-          }
-          .shadow(color: Color.black.opacity(0.5), radius: 5, x: 5, y: 5)
+
+          Image("ImageSplashLogo_V")
+            .resizable()
+            .scaledToFit()
+            .frame(width: 66, height: 264)
+
           
           VStack{
             Text("간편하게 로그인하고")

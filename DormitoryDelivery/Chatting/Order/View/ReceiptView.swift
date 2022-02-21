@@ -14,6 +14,7 @@ struct ReceiptView: View {
   @ObservedObject var model: Receipt = Receipt()
   @EnvironmentObject var naverLogin: NaverLogin
 
+  @State var imagetoggle = false
   var roomid: String
 
     var body: some View {
@@ -32,6 +33,9 @@ struct ReceiptView: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 300, height: 300)
+                .onTapGesture {
+                  imagetoggle.toggle()
+                }
             }
             .padding()
             .frame(width: UIScreen.main.bounds.size.width * (9/10))
@@ -144,7 +148,36 @@ struct ReceiptView: View {
           }
         }
       } // navi
+//      .overlay(self.imagetoggle ? Image(uiImage: model.image).resizable().background(Color.black) : nil)
+      .overlay(self.imagetoggle ?
+        NavigationView{
+          GeometryReader{ geo in
+            Image(uiImage: model.image)
+              .resizable()
+              .scaledToFit()
+              .frame(maxWidth: .infinity, maxHeight: .infinity)
+          } //geo
+          .navigationBarTitleDisplayMode(.inline)
+          .navigationBarTitle("영수증")
+          .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+              Button {
+                self.imagetoggle.toggle()
+              } label: {
+                Image(systemName: "xmark")
+                  .foregroundColor(Color.white)
+              }
+            }
+          }
+          .background(Color.black)
+       }
+        .transition(AnyTransition.opacity.animation(.easeInOut))
+        .onAppear(perform: {
+          UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.white]
+        })
+               : nil) //overlay
       .onAppear {
+        UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.black]
         let destination: DownloadRequest.Destination = { _, _ in
           let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory,
                                                                   .userDomainMask, true)[0]

@@ -60,30 +60,30 @@ struct OrderView: View {
                   VStack(spacing: 30){
                     HStack(spacing: 0){
                       Text("* ")
-                        .bold()
-                        .font(.title3)
+                        .font(.system(size: 16, weight: .bold))
                         .foregroundColor(Color(.sRGB, red: 112/255, green: 52/255, blue: 255/255, opacity: 1))
                       Text("메뉴")
-                        .bold()
+                        .font(.system(size: 16, weight: .bold))
                       TextField("메뉴를 입력해주세요", text: $ordermodel.data[index].name)
                         .multilineTextAlignment(.trailing)
+                        .font(.system(size: 16, weight: .regular))
                     }
                     Divider()
                     HStack(spacing: 0){
                       Text("* ")
-                        .bold()
-                        .font(.title3)
+                        .font(.system(size: 16, weight: .bold))
                         .foregroundColor(Color(.sRGB, red: 112/255, green: 52/255, blue: 255/255, opacity: 1))
                       Text("가격")
-                        .bold()
+                        .font(.system(size: 16, weight: .bold))
                       TextField("가격을 입력해주세요", value: $ordermodel.data[index].price, formatter: formatter)
                           .keyboardType(.phonePad)
                           .multilineTextAlignment(.trailing)
+                          .font(.system(size: 16, weight: .regular))
                     }
                     Divider()
                     HStack(spacing: 0){
                       Text("수량")
-                        .bold()
+                        .font(.system(size: 16, weight: .bold))
                       Spacer()
                       HStack(spacing: 10) {
                         Button {
@@ -102,6 +102,7 @@ struct OrderView: View {
                           .frame(width: 20)
 
                         Text("\(self.ordermodel.data[index].quantity)개")
+                          .font(.system(size: 16, weight: .regular))
                           .frame(width: 40)
                         Button {
                           self.ordermodel.data[index].quantity += 1
@@ -123,9 +124,10 @@ struct OrderView: View {
                     Divider()
                     HStack(spacing: 15){
                       Text("상세설명")
-                        .bold()
+                        .font(.system(size: 16, weight: .bold))
                       ZStack(alignment: .trailing){
                         Text(self.ordermodel.data[index].description != "" ? self.ordermodel.data[index].description : "세부 정보를 입력해주세요.")
+                          .font(.system(size: 16, weight: .regular))
                           .padding([.top, .leading])
                           .frame(maxWidth: .infinity, minHeight: 45, alignment: .topTrailing)
                           .onTapGesture {
@@ -144,7 +146,7 @@ struct OrderView: View {
                           .frame(height: self.height)
                           .multilineTextAlignment(.trailing)
                           .padding([.top, .leading])
-
+                          .font(.system(size: 16, weight: .regular))
                         
                       }
                     }.frame(maxHeight: 200)
@@ -157,7 +159,7 @@ struct OrderView: View {
                   .clipped()
                   .shadow(color: Color.black.opacity(0.2), radius: 8)
                   .rotationEffect(Angle(degrees: 180)).scaleEffect(x: -1.0, y: 1.0, anchor: .center)
-                  .transition(.slide)
+                  .transition(.move(edge: .bottom))
 
 
                   } // for문
@@ -190,13 +192,9 @@ struct OrderView: View {
               if valid {
                 for i in ordermodel.data.indices {
                   if ordermodel.data[i].id != nil {
-                    if let mytoken = naverLogin.loginInstance?.accessToken {
-                      postMenuEdit(oderdata: ordermodel.data[i], rid: self.roomid, token: mytoken)
-                    }
+                    postMenuEdit(oderdata: ordermodel.data[i], rid: self.roomid, token: naverLogin.sessionId)
                   } else {
-                    if let mytoken = naverLogin.loginInstance?.accessToken {
-                      postAddMenu(oderdata: ordermodel.data[i], rid: self.roomid, token: mytoken)
-                    }
+                    postAddMenu(oderdata: ordermodel.data[i], rid: self.roomid, token: naverLogin.sessionId)
                   }
                 }
                 presentationMode.wrappedValue.dismiss()
@@ -215,8 +213,8 @@ struct OrderView: View {
           } //버튼 V
           .ignoresSafeArea(.keyboard)
         } // Z
-        .overlay(self.postalertstate ? AlertOneButton(isActivity: $postalertstate, text: "필수 항목을 모두 기입해주세요") : nil)
-        .overlay(self.exitalertstate ? AlertTwoButton(yesButton: $exit, noButton: $exitalertstate, text1: "수정된 메뉴가 존재 합니다.", text2: "정말로 나가시겠습니까?") : nil)
+        .overlay(self.postalertstate ? AlertOneButton(isActivity: $postalertstate, text: "필수 항목을 모두 기입해주세요.") : nil)
+        .overlay(self.exitalertstate ? AlertTwoButton(yesButton: $exit, noButton: $exitalertstate, text1: "수정된 메뉴가 존재 합니다.", text2: "주문을 취소하고 나가시겠어요?") : nil)
 
         .onChange(of: exit, perform: { _ in
           presentationMode.wrappedValue.dismiss()
@@ -230,11 +228,12 @@ struct OrderView: View {
             self.ordermodel.data.append(nonemenue)
             self.ordermodel.forcompare = self.ordermodel.data
           } else {
-            for i in chatdata.menu.indices {
-              if let mytoken = naverLogin.loginInstance?.accessToken {
-                getMenus(uid: UserDefaults.standard.string(forKey: "MyID")!, rid: self.roomid, mid: self.chatdata.menu[i], token: mytoken, model: self.ordermodel)
-              }
-            }
+
+//            for i in chatdata.menu.indices {
+
+              getMenus(uid: UserDefaults.standard.string(forKey: "MyID")!, rid: self.roomid, mid: self.chatdata, token: naverLogin.sessionId, model: self.ordermodel)
+
+//            }
           }
         })
         .navigationBarTitleDisplayMode(.inline)

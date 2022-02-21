@@ -52,6 +52,8 @@ class SocketIOManager:NSObject {
       print("구독시작22")
       SocketIOManager.shared.matchSocket.emitWithAck("subscribe", subscribeform).timingOut(after: 2, callback: { (data) in
         do {
+//          print(data)
+//          data[0]
           if data[0] as? String != "NO ACK" {
             let data2 = try JSONSerialization.data(withJSONObject: data[0], options: .prettyPrinted)
             let session = try JSONDecoder().decode(roomsdata.self, from: data2)
@@ -90,7 +92,8 @@ class SocketIOManager:NSObject {
           let session = try JSONDecoder().decode(roomdata.self, from: data)
           for (idx, room) in rooms.data!.data.enumerated() {
             if session.id == room.id {
-              rooms.data!.data[idx] = session
+              rooms.data!.data[idx].total = session.total
+//              rooms.data!.data[idx] = session
             }
           }
         }
@@ -124,9 +127,10 @@ class SocketIOManager:NSObject {
 //      print(dataArray)
 //      print(ack)
       do {
-//        print("뭐가 오긴함")
+        print("뭐가 오긴함")
         var jsonResult = dataArray[0] as? Dictionary<String, AnyObject>
-
+        print(jsonResult)
+        
         if let messages = jsonResult?["messages"] as? NSArray {
           let message = try! JSONSerialization.data(withJSONObject: messages.firstObject!, options: .prettyPrinted)
   //          print(messages)
@@ -138,6 +142,9 @@ class SocketIOManager:NSObject {
 //           print(type(of: jsonResult!["rid"]!))
           let chatroom = realm.object(ofType: ChatDB.self, forPrimaryKey: jsonResult!["rid"]!)    /// 수정 필요
           try! realm.write {
+            realm.add(json, update: .modified)
+
+            
             chatroom?.messages.append(json)
             if json.body?.action == "order-fixed" {
               chatroom?.state?.allReady = false

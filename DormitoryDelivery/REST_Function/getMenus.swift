@@ -8,25 +8,44 @@
 import Foundation
 import Alamofire
 
-func getMenus(uid: String, rid: String, mid: String, token: String, model: Order) {
-  let url = urlmenus(uid: uid, rid: rid, mid: mid)
-  let req = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: ["Authorization": token])
-  req.responseJSON { response in
-//    let result = response.value as! [String: Any]
-    
-    
-    do {
-      let data2 = try JSONSerialization.data(withJSONObject: response.value, options: .prettyPrinted)
-      var session = try JSONDecoder().decode(orderdata.self, from: data2)
-//        detaildata.data = session
-//      print(session)
-      session.id = mid
-        model.data.append(session)
-        model.forcompare.append(session)
-//      print(model.data)
+func getMenus(uid: String, rid: String, mid: ChatDB, token: String, model: Order) {
+  
+  let dispatchGroup = DispatchGroup()
+  let queue = DispatchQueue(label: "queue")
+  var items: [orderdata] = []
+  
+  let semaphore = DispatchSemaphore(value: 1)
+
+  for menu in mid.menu {
+    queue.sync {
+      dispatchGroup.enter()
+      semaphore.wait()
+      let url = urlmenus(uid: uid, rid: rid, mid: menu)
+      let req = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: ["Authorization": token])
+
+      req.responseJSON(queue: .global()) { response in
+        do {
+          let data2 = try JSONSerialization.data(withJSONObject: response.value, options: .prettyPrinted)
+          var session = try JSONDecoder().decode(orderdata.self, from: data2)
+          items.append(session)
+          }
+        catch {
+          print(error)
+        }
+        semaphore.signal()
+        dispatchGroup.leave()
       }
-    catch {
-      print(error)
     }
   }
+
+  
+  dispatchGroup.notify(queue: queue) {
+    DispatchQueue.main.async {
+      model.data.append(contentsOf: items)
+      model.forcompare.append(contentsOf: items)
+    }
+  }
+
+  
+  
 }

@@ -34,8 +34,7 @@ struct CreateRoomView: View {
         VStack {
           VStack(alignment: .leading, spacing: 0){
             Text("주문 받을 기숙사를 선택해주세요.")
-              .bold()
-              .font(.title3)
+              .font(.system(size: 16, weight: .bold))
             
             ScrollView(.horizontal, showsIndicators: false) {
               HStack(spacing: 20){
@@ -52,6 +51,7 @@ struct CreateRoomView: View {
                         if let sectionh = sectionNameEng[index] {
                           if let sectionNamekor = sectionNameToKor[sectionh] {
                             Text("\(sectionNamekor)관")
+                              .font(.system(size: 14, weight: .regular))
                           }
                         }
                       }
@@ -64,21 +64,21 @@ struct CreateRoomView: View {
             }
             .frame(height: 50)
           }
-          .padding([.top, .bottom], 30)
+          .padding(.bottom, 30)
 
           VStack(alignment: .leading, spacing: 35) {
             Group{
               HStack{
                 HStack(spacing: 0){
                   Text("* ")
-                    .bold()
-                    .font(.title3)
+                    .font(.system(size: 16, weight: .bold))
                     .foregroundColor(Color(.sRGB, red: 112/255, green: 52/255, blue: 255/255, opacity: 1))
                   Text("방 이름")
-                    .bold()
-                    .font(.title3)
+                    .font(.system(size: 16, weight: .bold))
+                  
                 }
                 TextField("방 이름을 정해주세요", text: $createRoomData.shopName)
+                  .font(.system(size: 16, weight: .regular))
                   .keyboardType(.default)
                   .multilineTextAlignment(.trailing)
               }
@@ -89,17 +89,16 @@ struct CreateRoomView: View {
                 HStack{
                   HStack(spacing: 0){
                     Text("* ")
-                      .bold()
-                      .font(.title3)
+                      .font(.system(size: 16, weight: .bold))
                       .foregroundColor(Color(.sRGB, red: 112/255, green: 52/255, blue: 255/255, opacity: 1))
                     Text("카테고리")
-                      .bold()
-                      .font(.title3)
+                      .font(.system(size: 16, weight: .bold))
                   }
                   Spacer()
                   NavigationLink(destination: CategoryView(createRoomData: createRoomData)){
                     Text(self.createRoomData.category != nil ? category[self.createRoomData.category!] : "카테고리를 선택해주세요")
-                      .foregroundColor(self.createRoomData.category != nil ? Color.black : Color.gray)
+                      .font(.system(size: 16, weight: .regular))
+                      .foregroundColor(self.createRoomData.category != nil ? Color.black : Color.gray.opacity(0.5))
 
                     Image(systemName: "chevron.right")
                   }
@@ -111,14 +110,13 @@ struct CreateRoomView: View {
               HStack{
                 HStack(spacing: 0){
                   Text("* ")
-                    .bold()
-                    .font(.title3)
+                    .font(.system(size: 16, weight: .bold))
                     .foregroundColor(Color(.sRGB, red: 112/255, green: 52/255, blue: 255/255, opacity: 1))
                   Text("메뉴")
-                    .bold()
-                    .font(.title3)
+                    .font(.system(size: 16, weight: .bold))
                 }
                 TextField("메뉴를 작성해주세요.", text: $createRoomData.shopName)
+                  .font(.system(size: 16, weight: .regular))
                   .keyboardType(.default)
                   .multilineTextAlignment(.trailing)
               }
@@ -129,15 +127,14 @@ struct CreateRoomView: View {
               VStack(alignment: .leading) {
                 HStack(spacing: 0){
                   Text("* ")
-                    .bold()
-                    .font(.title3)
+                    .font(.system(size: 16, weight: .bold))
                     .foregroundColor(Color(.sRGB, red: 112/255, green: 52/255, blue: 255/255, opacity: 1))
                   Text("주문 매장 공유하기")
-                    .bold()
-                    .font(.title3)
+                    .font(.system(size: 16, weight: .bold))
                 }
                 ZStack(alignment: .leading){
                   Text(self.createRoomData.shopLink != "" ? self.createRoomData.shopLink : "주문할 매장 URL을 공유해주세요.")
+                    .font(.system(size: 16, weight: .regular))
                     .padding([.top, .leading])
                     .frame(maxWidth: .infinity, minHeight: 45, alignment: .topLeading)
                     .onTapGesture {
@@ -152,6 +149,7 @@ struct CreateRoomView: View {
                       self.createRoomData.height = value
                     }
                   TextEditor(text: $createRoomData.shopLink)
+                    .font(.system(size: 16, weight: .regular))
                     .focused($focusShopLink)
                     .frame(height: self.createRoomData.height)
                     .padding([.top, .leading])
@@ -161,23 +159,25 @@ struct CreateRoomView: View {
                 HStack{
                   HStack(spacing: 0){
                     Text("* ")
-                      .bold()
-                      .font(.title3)
+                      .font(.system(size: 16, weight: .bold))
                       .foregroundColor(Color(.sRGB, red: 112/255, green: 52/255, blue: 255/255, opacity: 1))
                     Text("최소 주문금액")
-                      .bold()
-                      .font(.title3)
+                      .font(.system(size: 16, weight: .bold))
                   }
                   TextField("금액", text: $createRoomData.deliveryPriceAtLeast)
+                    .font(.system(size: 16, weight: .regular))
                     .multilineTextAlignment(.trailing)
                     .keyboardType(.phonePad)
                   Text("원")
-                    .bold()
+                    .font(.system(size: 16, weight: .bold))
                 }
                 .padding(.top, 30)
               }
                 
               Divider()
+            
+            Spacer()
+              .frame(height: 60)
           } //v
           .textFieldStyle(PlainTextFieldStyle())
           
@@ -206,22 +206,19 @@ struct CreateRoomView: View {
             VStack{
               Spacer()
               Button {
-                if let mytoken = naverLogin.loginInstance?.accessToken {
-                  if createRoomData.validcheck() {
-                    if let price = Int(createRoomData.deliveryPriceAtLeast) {
-                      postCreateRoom(createRoomData: createRoomData, section: sectionNameEng[createRoomData.section], deliveryPriceAtLeast: price, token: mytoken, navi: chatnavi)
-                    }
-                  } else {
-                    withAnimation {
-                      self.createRoomData.postalertstate.toggle()
-                    }
+                if createRoomData.validcheck() {
+                  if let price = Int(createRoomData.deliveryPriceAtLeast) {
+                    postCreateRoom(createRoomData: createRoomData, section: sectionNameEng[createRoomData.section], deliveryPriceAtLeast: price, token: naverLogin.sessionId, navi: chatnavi)
+                  }
+                } else {
+                  withAnimation {
+                    self.createRoomData.postalertstate = true
                   }
                 }
               } label: {
                   Text("등록 완료")
                   .foregroundColor(.white)
-                  .bold()
-                  .font(.title3)
+                  .font(.system(size: 16, weight: .bold))
                   .frame(maxWidth: .infinity)
               }
               .frame(height: 60, alignment: .center)

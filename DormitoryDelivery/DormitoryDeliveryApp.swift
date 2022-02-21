@@ -20,11 +20,12 @@ struct DormitoryDeliveryApp: App {
             .environmentObject(NaverLogin())
             .environmentObject(DateCheck())
             .environmentObject(RoomData())
-            .environmentObject(RoomDetailData())
+//            .environmentObject(RoomDetailData())
             .environmentObject(ChatData())
             .environmentObject(ChatNavi())
             .environmentObject(KeyboardManager())
             .environmentObject(Order())
+            .environmentObject(Noti())
             .environmentObject(OrderList())
             .onOpenURL(perform: { url in
               NaverThirdPartyLoginConnection

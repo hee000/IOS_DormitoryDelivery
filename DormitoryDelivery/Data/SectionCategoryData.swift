@@ -19,7 +19,7 @@ struct homeViewOption: Codable, SocketData {
 }
 
 let category = ["한식", "중식", "일식", "양식", "돼지고기", "치킨", "피자", "떡", "패스트푸드"]
-let sections = ["전체", "창조", "나래", "호연", "비봉"]
+let sections = ["전체", "나래", "호연", "창조", "비봉"]
 
 let section = ["창조", "나래", "호연", "비봉"]
 let sectionNameEng = ["Narae", "Hoyoen", "Changzo", "Bibong"]

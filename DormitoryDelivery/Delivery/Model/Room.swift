@@ -18,8 +18,7 @@ struct roomdata: Codable, Hashable, Identifiable {
   var createdAt: Int;           // 만들어진 시간
 }
 
-struct roomsdata: Codable, Hashable, Identifiable {
-  let id = UUID()
+struct roomsdata: Codable {
 //  var data: Array<roomdata>
   var data: [roomdata]
   var status: Int

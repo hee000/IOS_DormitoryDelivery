@@ -11,14 +11,16 @@ import Foundation
 struct RoomCard: View {
   @EnvironmentObject var datecheck: DateCheck
 
-  @State var deliveryTitle: String
-  @State var deliveryZone: String
-  @State var deliveryPayTip: Int
-  @State var deliveryPayTotal: Int
-  @State var deliveryId : String
-  @State var action: Int?
-  @State var purchaserName: String
-  @State var createdAt: Int
+  var deliveryTitle: String
+  var deliveryZone: String
+  var deliveryPayTip: Int
+  var deliveryPayTotal: Int
+  var deliveryId : String
+  var action: Int?
+  var purchaserName: String
+  var createdAt: Int
+  
+  @State var timestamp: String = ""
   
 //  @State var now = Date()
 
@@ -56,7 +58,8 @@ struct RoomCard: View {
                 .font(.system(size: 12))
                 .foregroundColor(Color.gray)
               
-              Text("\(String(Int((datecheck.nowDate.timeIntervalSince(Date(timeIntervalSince1970: TimeInterval(self.createdAt)/1000))) / 60))) 분전")
+//              Text(String(Int((datecheck.nowDate.timeIntervalSince(Date(timeIntervalSince1970: TimeInterval(self.createdAt)/1000))) / 60) < 60 ? Int((datecheck.nowDate.timeIntervalSince(Date(timeIntervalSince1970: TimeInterval(self.createdAt)/1000))) / 60): Int((datecheck.nowDate.timeIntervalSince(Date(timeIntervalSince1970: TimeInterval(self.createdAt)/1000))) / 60) < 60*60*24 ? Int((datecheck.nowDate.timeIntervalSince(Date(timeIntervalSince1970: TimeInterval(self.createdAt)/1000))) / (60*60)): Int((datecheck.nowDate.timeIntervalSince(Date(timeIntervalSince1970: TimeInterval(self.createdAt)/1000))) / (60*60*24))))
+              Text(self.timestamp)
                 .font(.system(size: 10))
                 .foregroundColor(Color.gray)
                 .padding(.leading, 10)
@@ -94,6 +97,34 @@ struct RoomCard: View {
       .padding()
 //      .padding([.leading, .trailing])
       .background(Color(.sRGB,red: 245/255, green: 245/255, blue: 251/255, opacity: 1))
+      .onAppear(perform: {
+        let calendar = Calendar(identifier: .gregorian)  // 예전에는 식별자를 문자열로 했는데, 별도
+        let offsetComps = calendar.dateComponents([.day,.hour,.minute], from:Date(timeIntervalSince1970: TimeInterval(self.createdAt)/1000), to:datecheck.nowDate)
+        print(offsetComps)
+        if case let (d?, h?, m?) = (offsetComps.day, offsetComps.hour, offsetComps.minute) {
+          if d != 0 {
+            self.timestamp = "\(d)일 전"
+          } else if h != 0 {
+            self.timestamp = "\(h)시간 전"
+          } else {
+            self.timestamp = "\(m)분 전"
+          }
+        }
+      })
+      .onChange(of: datecheck.nowDate) { V in
+        let calendar = Calendar(identifier: .gregorian)  // 예전에는 식별자를 문자열로 했는데, 별도
+        let offsetComps = calendar.dateComponents([.day,.hour,.minute], from:Date(timeIntervalSince1970: TimeInterval(self.createdAt)/1000), to:V)
+        print(offsetComps)
+        if case let (d?, h?, m?) = (offsetComps.day, offsetComps.hour, offsetComps.minute) {
+          if d != 0 {
+            self.timestamp = "\(d)일 전"
+          } else if h != 0 {
+            self.timestamp = "\(h)시간 전"
+          } else {
+            self.timestamp = "\(m)분 전"
+          }
+        }
+      }
   }
   
 }

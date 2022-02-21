@@ -28,6 +28,17 @@ class ChatNavi: ObservableObject{
     activateChannelsToken()
   }
 
+  func forceActive(){
+    let realm = try! Realm()
+    let channels = realm.objects(ChatDB.self)
+    for (idx, chatdb) in channels.enumerated() {
+      if chatdb.rid == self.rid {
+        self.index = idx
+        self.NaviJoinActive = true
+      }
+    }
+  }
+  
   private func activateChannelsToken() {
     let realm = try! Realm()
     let channels = realm.objects(ChatDB.self)
@@ -38,10 +49,8 @@ class ChatNavi: ObservableObject{
             self.index = idx
             if !self.State {
               self.NaviJoinActive = true
-              print("조인찾음")
             } else {
               self.NaviCreateActive = true
-              print("생성찾음")
             }
           }
         }

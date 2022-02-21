@@ -15,10 +15,11 @@ func getChatLog(rid: String, idx: String, token: String) {
   let req = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: ["Authorization": token])
   req.responseJSON { response in
     do {
-      let result = response.value as! [Any]
-      let message = try! JSONSerialization.data(withJSONObject: result, options: .prettyPrinted)
-      let json = try JSONDecoder().decode([ChatMessageDetail].self, from: message)
-        print(json)
+//      let result = response.value as! [Any]
+//      let message = try! JSONSerialization.data(withJSONObject: result, options: .prettyPrinted)
+//      let json = try JSONDecoder().decode([ChatMessageDetail].self, from: message)
+      guard let data = response.data else { return }
+      guard let json = try? JSONDecoder().decode([ChatMessageDetail].self, from: data) else { return }
         
       let realm = try! Realm()
       try! realm.write {
@@ -30,7 +31,20 @@ func getChatLog(rid: String, idx: String, token: String) {
 //          chatdb?.messages.append(<#T##object: ChatMessageDetail##ChatMessageDetail#>)
 //        }
         let chatdb = roomidtodbconnect(rid: rid)
-        chatdb?.messages.append(objectsIn: json)
+        realm.add(json, update: .modified)
+        
+        for chat in json {
+          guard !(chatdb?.messages.contains(chat))! else {
+            print("이미 있음")
+            continue
+          }
+          print("저장함")
+          chatdb?.messages.append(chat)
+        }
+        
+        
+//        let chatdb = roomidtodbconnect(rid: rid)
+//        chatdb?.messages.append(objectsIn: json)
       }
 
       

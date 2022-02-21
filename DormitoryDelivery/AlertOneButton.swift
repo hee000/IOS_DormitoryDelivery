@@ -20,6 +20,7 @@ struct AlertOneButton: View {
           VStack(spacing: 0) {
             VStack{
               Text(self.text)
+                .font(.system(size: 16, weight: .regular))
             }
               .padding()
               .padding([.top, .bottom])
@@ -29,6 +30,7 @@ struct AlertOneButton: View {
               self.isActivity.toggle()
             } label : {
               Text("확인")
+                .font(.system(size: 16, weight: .regular))
                 .frame(maxWidth: .infinity)
             }
             .foregroundColor(.black)
@@ -50,6 +52,7 @@ struct AlertTwoButton: View {
   
   var text1: String
   var text2: String
+  
     var body: some View {
       ZStack{
         Color.black.opacity(0.5)
@@ -59,7 +62,9 @@ struct AlertTwoButton: View {
           VStack(spacing: 0) {
             VStack{
               Text(self.text1)
+                .font(.system(size: 16, weight: .regular))
               Text(self.text2)
+                .font(.system(size: 16, weight: .regular))
             }
               .padding()
               .padding([.top, .bottom])
@@ -70,6 +75,7 @@ struct AlertTwoButton: View {
                 self.noButton.toggle()
               } label : {
                 Text("취소")
+                  .font(.system(size: 16, weight: .regular))
                   .frame(maxWidth: .infinity)
               }
               .foregroundColor(.black)
@@ -79,6 +85,7 @@ struct AlertTwoButton: View {
                 self.yesButton.toggle()
               } label : {
                 Text("확인")
+                  .font(.system(size: 16, weight: .regular))
                   .frame(maxWidth: .infinity)
               }
               .foregroundColor(.black)

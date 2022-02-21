@@ -27,7 +27,6 @@ struct ChattingView: View {
 
   @FocusState private var rere: Bool
   @Namespace var bottomID
-  @State var isAnimating = false
   
   var body: some View {
     let drag = DragGesture()
@@ -57,14 +56,20 @@ struct ChattingView: View {
                           if RoomDB.messages[index].body!.userid == idvalue { // 내 매세지
                             ChatBubble(position: BubblePosition.right, color: Color(.sRGB, red: 87/255, green: 126/255, blue: 255/255, opacity: 1)) {
                               Text(RoomDB.messages[index].body!.message!)
+                                .font(.system(size: 14, weight: .regular))
                             }
                           } else { // 상대방 처음
-                            if true || RoomDB.messages[index - 1].type == "system" || RoomDB.messages[index].body!.userid != RoomDB.messages[index - 1].body!.userid{
-                              Message(model:model, RoomDB: RoomDB, type: .newLeft, index: index)
-                            } else { // 상대 처음 이후
-                              ChatBubble(position: BubblePosition.left2, color: .white) {
-                                Text(RoomDB.messages[index].body!.message!)
+                            if index != 0 {
+                              if RoomDB.messages[index - 1].type == "system" || RoomDB.messages[index].body!.userid != RoomDB.messages[index - 1].body!.userid{
+                                Message(model:model, RoomDB: RoomDB, type: .newLeft, index: index)
+                              } else { // 상대 처음 이후
+                                ChatBubble(position: BubblePosition.left2, color: .white) {
+                                  Text(RoomDB.messages[index].body!.message!)
+                                    .font(.system(size: 14, weight: .regular))
+                                }
                               }
+                            } else {//index 0인지?
+                                Message(model:model, RoomDB: RoomDB, type: .newLeft, index: index)
                             }
                           }
                         }
@@ -72,12 +77,12 @@ struct ChattingView: View {
                         if RoomDB.messages[index].body!.action! == "users-new" {
                           ChatBubble(position: BubblePosition.systemuUserInOut, color: Color(.sRGB, red: 223/255, green: 223/255, blue: 229/255, opacity: 1)) {
                             Text("\(RoomDB.messages[index].body!.data!.name!)님이 참여했습니다.")
-                              .font(.footnote)
+                              .font(.system(size: 12, weight: .regular))
                           }
                         } else if RoomDB.messages[index].body!.action! == "users-leave" {
                           ChatBubble(position: BubblePosition.systemuUserInOut, color: Color(.sRGB, red: 223/255, green: 223/255, blue: 229/255, opacity: 1)) {
                             Text("\(RoomDB.messages[index].body!.data!.name!)님이 퇴장했습니다.")
-                              .font(.footnote)
+                              .font(.system(size: 12, weight: .regular))
                           }
                         } else if RoomDB.messages[index].body!.action! == "order-fixed" {
                           Message(model:model, RoomDB: RoomDB, type: .orderFixed, index: index)
@@ -86,7 +91,7 @@ struct ChattingView: View {
                         } else if RoomDB.messages[index].body!.action! == "order-finished" {
                           ChatBubble(position: BubblePosition.systemuUserInOut, color: Color(.sRGB, red: 223/255, green: 223/255, blue: 229/255, opacity: 1)) {
                             Text("방장이 주문을 완료했습니다.")
-                              .font(.footnote)
+                              .font(.system(size: 12, weight: .regular))
                           }
                         } else if RoomDB.messages[index].body!.action! == "vote-kick-created" {
                           Message(model:model, RoomDB: RoomDB, type: .voteKickCreated, index: index)
@@ -125,27 +130,34 @@ struct ChattingView: View {
         // 주문서 작성 & 준비완료
           if RoomChat?.state?.orderFix == false {
             if RoomChat?.superUser!.userId! == UserDefaults.standard.string(forKey: "MyID")! || (RoomChat?.menu.count) == 0{
-              Button("주문서 작성") {
+              Button {
                 self.model.oderview.toggle()
-            }
+              } label: {
+                Text("주문서 작성")
+                  .font(.system(size: 14, weight: .regular))
+              }
             .frame(width: UIScreen.main.bounds.size.width, height: 45, alignment: .center)
             .background(Color(.sRGB, red: 221/255, green: 221/255, blue: 221/255, opacity: 1))
           } else {
             HStack(alignment: .center, spacing: 0){
-              Button("주문서 작성") {
+              Button {
                 self.model.oderview.toggle()
+              } label: {
+                Text("주문서 작성")
+                  .font(.system(size: 14, weight: .regular))
               }
               .frame(width: geo.size.width/2)
               Divider()
-              Button(RoomChat!.ready ? "준비해제" : "준비완료") {
-                if let mytoken = naverLogin.loginInstance?.accessToken {
-                  getReady(rid: self.rid, token: mytoken, model: RoomChat!)
-                }
+              Button {
+                getReady(rid: self.rid, token: naverLogin.sessionId, model: RoomChat!)
+              } label: {
+                Text(RoomChat!.ready ? "준비해제" : "준비완료")
+                  .font(.system(size: 14, weight: .regular))
               }
               .frame(width: geo.size.width/2)
-              }
-              .frame(width: geo.size.width, height: 45, alignment: .center)
-              .background(Color(.sRGB, red: 221/255, green: 221/255, blue: 221/255, opacity: 1))
+            }
+            .frame(width: geo.size.width, height: 45, alignment: .center)
+            .background(Color(.sRGB, red: 221/255, green: 221/255, blue: 221/255, opacity: 1))
           }
         }// 주문서 작성 & 준비완료 닫기
         
@@ -154,7 +166,8 @@ struct ChattingView: View {
             HStack(spacing: 0) {
               GeometryReader { geosender in
                 ZStack {
-                  Text(self.model.text)
+                  Text(RoomChat?.Kicked ?? false ? "강퇴로 인해 채팅이 불가합니다." : self.model.text)
+                    .font(.system(size: 14, weight: .regular))
                     .lineLimit(1)
                     .frame(width: geosender.size.width, alignment: .leading)
                     .background(Color.white)
@@ -168,6 +181,7 @@ struct ChattingView: View {
                     .frame(maxHeight: .infinity)
                     .background(
                       Text(self.model.text)
+                        .font(.system(size: 14, weight: .regular))
                         .opacity(0)
                         .background(
                           GeometryReader { geo in
@@ -179,6 +193,7 @@ struct ChattingView: View {
                     )
 
                   TextEditor(text: $model.text)
+                    .font(.system(size: 14, weight: .regular))
                     .focused($rere)
                     .frame(width: geosender.size.width, height: 18.0 + (self.model.textHeight ?? 18.0))
                     .opacity(self.rere ? 1 : 0)
@@ -219,58 +234,100 @@ struct ChattingView: View {
                   .frame(width: geo.size.width,height: geo.size.height)
                   .onTapGesture(perform: {
                     withAnimation {
-                      self.model.showMenu.toggle()
+                      self.model.showMenu = false
                     }}) : nil)
 
         
-        if self.isAnimating && RoomChat?.superUser!.userId! == UserDefaults.standard.string(forKey: "MyID")! && RoomChat?.state?.allReady == true && self.model.showMenu == false {
+        if RoomChat?.superUser!.userId! == UserDefaults.standard.string(forKey: "MyID")! && RoomChat?.state?.allReady == true && self.model.showMenu == false {
           Button {
-            if let mytoken = naverLogin.loginInstance?.accessToken {
-            postOderFix(rid: self.rid, token: mytoken)
-            }
+            postOderFix(rid: self.rid, token: naverLogin.sessionId)
           } label: {
-            VStack{
-              Text("모두가 준비했습니다.")
-              Text("주문을 진행하시겠습니까?")
+            HStack{
+              VStack(alignment: .leading) {
+                Text("모두가 준비를 완료했어요.")
+                  .font(.system(size: 16, weight: .bold))
+                Text("주문을 확정하시겠습니까?")
+                  .font(.system(size: 16, weight: .bold))
+              }
+              Spacer()
+              Image("ImageChatBell")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 33, height: 33)
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color(.sRGB, red: 165/255, green: 166/255, blue: 246/255, opacity: 0.9))
-            .cornerRadius(5)
+              .padding()
+              .foregroundColor(.white)
+              .frame(maxWidth: .infinity, maxHeight: .infinity)
+              .background(LinearGradient(gradient: Gradient(stops: [Gradient.Stop(color: Color(.sRGB, red: 114/255, green: 160/255, blue: 253/255, opacity: 1), location: 0.05),
+                                                                    Gradient.Stop(color: Color(.sRGB, red: 121/255, green: 123/255, blue: 250/255, opacity: 1), location: 0.54),
+                                                                    Gradient.Stop(color: Color(.sRGB, red: 112/255, green: 64/255, blue: 255/255, opacity: 1), location: 1)
+                                                                   ]), startPoint: UnitPoint(x: 0.25, y: 0.5), endPoint: UnitPoint(x: 0.75, y: 0.5))
+                            .transformEffect(CGAffineTransform(a: 1.1, b: 0, c: -1.34, d: 2.94, tx: 0.61, ty: -0.98))
+              )
+              .cornerRadius(35)
           }
           .frame(width: geo.size.width * 9/10, height: 60)
           .offset(y: -geo.size.height/2 + 45)
-          .transition(AnyTransition.opacity.animation(.easeInOut(duration: 1).repeatForever()))
+          .transition(AnyTransition.opacity.animation(.easeInOut(duration: 1)))
         } // 방장 메뉴 오더 픽스 이벤트
         
         
-        if self.isAnimating && RoomChat?.superUser!.userId! == UserDefaults.standard.string(forKey: "MyID")! && RoomChat?.state?.orderFix == true && RoomChat?.state?.orderChecked == false && self.model.showMenu == false {
+        if RoomChat?.superUser!.userId! == UserDefaults.standard.string(forKey: "MyID")! && RoomChat?.state?.orderFix == true && RoomChat?.state?.orderChecked == false && self.model.showMenu == false {
           Button{
             self.model.odercheck.toggle()
           } label: {
-            Text("주문 사진과 배달 금액을 입력해주세요")
+            HStack{
+              Text("주문 사진과 배달 금액을 입력해주세요.")
+                .font(.system(size: 16, weight: .bold))
+              Spacer()
+              Image("ImageChatBell")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 33, height: 33)
+            }
+              .padding()
+              .foregroundColor(.white)
               .frame(maxWidth: .infinity, maxHeight: .infinity)
-              .background(Color(.sRGB, red: 165/255, green: 166/255, blue: 246/255, opacity: 0.9))
-              .cornerRadius(5)
+              .background(LinearGradient(gradient: Gradient(stops: [Gradient.Stop(color: Color(.sRGB, red: 114/255, green: 160/255, blue: 253/255, opacity: 1), location: 0.05),
+                                                                    Gradient.Stop(color: Color(.sRGB, red: 121/255, green: 123/255, blue: 250/255, opacity: 1), location: 0.54),
+                                                                    Gradient.Stop(color: Color(.sRGB, red: 112/255, green: 64/255, blue: 255/255, opacity: 1), location: 1)
+                                                                   ]), startPoint: UnitPoint(x: 0.25, y: 0.5), endPoint: UnitPoint(x: 0.75, y: 0.5))
+                            .transformEffect(CGAffineTransform(a: 1.1, b: 0, c: -1.34, d: 2.94, tx: 0.61, ty: -0.98))
+              )
+              .cornerRadius(35)
           }
           .frame(width: geo.size.width * 9/10, height: 60)
           .offset(y: -geo.size.height/2 + 45)
-          .transition(AnyTransition.opacity.animation(.easeInOut(duration: 1).repeatForever()))
+          .transition(AnyTransition.opacity.animation(.easeInOut(duration: 1)))
         } // 방장 메뉴 확인 이벤트
         
-        if self.isAnimating && RoomChat?.superUser!.userId! == UserDefaults.standard.string(forKey: "MyID")! && RoomChat?.state?.orderChecked == true && RoomChat?.state?.orderDone == false && self.model.showMenu == false {
+        if RoomChat?.superUser!.userId! == UserDefaults.standard.string(forKey: "MyID")! && RoomChat?.state?.orderChecked == true && RoomChat?.state?.orderDone == false && self.model.showMenu == false {
           Button{
-            if let mytoken = naverLogin.loginInstance?.accessToken {
-              postOrderDone(rid: self.rid, token: mytoken)
-            }
+            postOrderDone(rid: self.rid, token: naverLogin.sessionId)
           } label: {
-            Text("주문이 완료되면 눌러주세요.")
+            HStack{
+              Text("주문이 완료되면 눌러주세요.")
+                .font(.system(size: 16, weight: .bold))
+              Spacer()
+              Image("ImageChatBell")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 33, height: 33)
+            }
+              .padding()
+              .foregroundColor(.white)
               .frame(maxWidth: .infinity, maxHeight: .infinity)
-              .background(Color(.sRGB, red: 165/255, green: 166/255, blue: 246/255, opacity: 0.9))
-              .cornerRadius(5)
+              .background(LinearGradient(gradient: Gradient(stops: [Gradient.Stop(color: Color(.sRGB, red: 114/255, green: 160/255, blue: 253/255, opacity: 1), location: 0.05),
+                                                                    Gradient.Stop(color: Color(.sRGB, red: 121/255, green: 123/255, blue: 250/255, opacity: 1), location: 0.54),
+                                                                    Gradient.Stop(color: Color(.sRGB, red: 112/255, green: 64/255, blue: 255/255, opacity: 1), location: 1)
+                                                                   ]), startPoint: UnitPoint(x: 0.25, y: 0.5), endPoint: UnitPoint(x: 0.75, y: 0.5))
+                            .transformEffect(CGAffineTransform(a: 1.1, b: 0, c: -1.34, d: 2.94, tx: 0.61, ty: -0.98))
+              )
+              .cornerRadius(35)
           }
           .frame(width: geo.size.width * 9/10, height: 60)
           .offset(y: -geo.size.height/2 + 45)
-          .transition(AnyTransition.opacity.animation(.easeInOut(duration: 1).repeatForever()))
+          .transition(AnyTransition.opacity.animation(.easeInOut(duration: 1)))
         } // 방장 주문 확인 이벤트
         
         if self.model.showMenu {
@@ -285,11 +342,7 @@ struct ChattingView: View {
         
     } //Zstack
       .gesture(drag)
-      .onAppear{
-        DispatchQueue.global().asyncAfter(deadline: .now() + .seconds(1)) {
-          self.isAnimating = true
-        }
-      }
+      .disabled(RoomChat?.Kicked ?? false ? true : false)
       .navigationBarTitleDisplayMode(.inline)
       .navigationBarBackButtonHidden(true)
       .navigationBarTitle(RoomChat != nil ? RoomChat!.title! : "채팅방")
@@ -337,16 +390,22 @@ struct ChattingView: View {
     .onAppear {
       try! realm.write({
         if RoomChat != nil {
-//          RoomChat!.confirmation = RoomChat!.index
-          RoomChat!.confirmation = Int(RoomChat!.messages.filter("type == 'chat'").last!.idx!)!
+          RoomChat!.confirmation = RoomChat!.index
+          if let lastindex = RoomChat!.messages.last{
+            RoomChat!.systemConfirmation = lastindex.idx.value!
+          }
+//          RoomChat!.confirmation = Int(RoomChat!.messages.filter("type == 'chat'").last!.idx!)!
         }
       })
     }
     .onChange(of: RoomChat?.index, perform: { V in
       try! realm.write({
         if RoomChat != nil {
-//          RoomChat!.confirmation = RoomChat!.index
-          RoomChat!.confirmation = Int(RoomChat!.messages.filter("type == 'chat'").last!.idx!)!
+          RoomChat!.confirmation = RoomChat!.index
+          if let lastindex = RoomChat!.messages.last{
+            RoomChat!.systemConfirmation = lastindex.idx.value!
+          }
+//          RoomChat!.confirmation = Int(RoomChat!.messages.filter("type == 'chat'").last!.idx!)!
         }
       })
     })
@@ -355,13 +414,31 @@ struct ChattingView: View {
       if self.model.leave {
         self.RoomChat = nil
         try! realm.write({
+          for i in roomidtodbconnect(rid: self.rid)!.messages {
+            guard let body = i.body else { continue }
+            if let data = body.data {
+              realm.delete(data)
+            }
+            realm.delete(body)
+          }
+          realm.delete(roomidtodbconnect(rid: self.rid)!.messages)
+          realm.delete(roomidtodbconnect(rid: self.rid)!.member)
+          if let superUser = roomidtodbconnect(rid: self.rid)!.superUser {
+            realm.delete(superUser)
+          }
+          if let state = roomidtodbconnect(rid: self.rid)!.state {
+            realm.delete(state)
+          }
           realm.delete(roomidtodbconnect(rid: self.rid)!)
         })
       } else{
           try! realm.write({
             if RoomChat != nil {
-//              RoomChat!.confirmation = RoomChat!.index
-              RoomChat!.confirmation = Int(RoomChat!.messages.filter("type == 'chat'").last!.idx!)!
+              RoomChat!.confirmation = RoomChat!.index
+              if let lastindex = RoomChat!.messages.last{
+                RoomChat!.systemConfirmation = lastindex.idx.value!
+              }
+//              RoomChat!.confirmation = Int(RoomChat!.messages.filter("type == 'chat'").last!.idx!)!
             }
           })
       }

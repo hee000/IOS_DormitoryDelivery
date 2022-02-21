@@ -19,11 +19,12 @@ struct ChatView: View {
           VStack(alignment: .center) {
             Spacer()
             Text("참여하신 배달방이 없어요.")
-              .bold()
-              .font(.title)
+              .font(.system(size: 28, weight: .bold))
               .padding()
             Text("홈화면에서 먹고싶은 메뉴의")
+              .font(.system(size: 15, weight: .regular))
             Text("배달방을 개설하거나 참여해보세요!")
+              .font(.system(size: 15, weight: .regular))
             Spacer()
             Spacer()
           }.frame(width: geo.size.width)
@@ -45,8 +46,8 @@ struct ChatView: View {
 //              ForEach(chatdata.chatlist.indices, id: \.self) { index in
                 NavigationLink(destination: ChattingView(RoomChat: chatdata.chatlist[index]
                                                  , rid: chatdata.chatlist[index].rid!)) {
-//                  ChatCard(title: chatdata.chatlist[index].title, lastmessage: chatdata.chatlist[index].messages.last?.body?.message, lastat: chatdata.chatlist[index].messages.last?.at, users: chatdata.chatlist[index].member.count, index: chatdata.chatlist[index].index, confirmation: chatdata.chatlist[index].confirmation)
-                  ChatCard(title: chatdata.chatlist[index].title, lastmessage: chatdata.chatlist[index].messages.last?.body?.message, lastat: chatdata.chatlist[index].messages.last?.at, users: chatdata.chatlist[index].member.count, index: Int(chatdata.chatlist[index].messages.filter("type == 'chat'").last!.idx!)!, confirmation: chatdata.chatlist[index].confirmation)
+                  ChatCard(title: chatdata.chatlist[index].title, lastmessage: chatdata.chatlist[index].messages.last?.body?.message, lastat: chatdata.chatlist[index].messages.last?.at, users: chatdata.chatlist[index].member.count, index: chatdata.chatlist[index].index, confirmation: chatdata.chatlist[index].confirmation)
+//                  ChatCard(title: chatdata.chatlist[index].title, lastmessage: chatdata.chatlist[index].messages.last?.body?.message, lastat: chatdata.chatlist[index].messages.last?.at, users: chatdata.chatlist[index].member.count, index: Int(chatdata.chatlist[index].messages.filter("type == 'chat'").last?.idx ?? "0")!, confirmation: chatdata.chatlist[index].confirmation)
                     .background(Color(.sRGB, red: 245/255, green: 245/255, blue: 251/255, opacity: 1))
                     .transition(.slide)
 //                    .animation(.easeIn)
@@ -67,7 +68,6 @@ struct ChatView: View {
       }
       .onAppear {
 //        print("온어피어")
-//        print(chatnavi.NaviActive)
         if chatnavi.NaviCreateActive || chatnavi.NaviJoinActive {
           self.navi = true
         }

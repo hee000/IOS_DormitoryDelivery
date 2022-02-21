@@ -48,11 +48,13 @@ struct Message: View {
                 .scaledToFit()
                 .frame(width: 9, height: 8)
               Text("방장 | \(RoomDB.messages[index].body!.username!)")
-                .font(.footnote)
+                .font(.system(size: 12, weight: .regular))
+//                .font(.footnote)
                 .padding(.leading, 3)
             }
             .padding([.top, .bottom], 3)
             Text(RoomDB.messages[index].body!.message!)
+              .font(.system(size: 14, weight: .regular))
               .padding(10)
               .foregroundColor(Color.black)
               .background(.white)
@@ -79,9 +81,11 @@ struct Message: View {
             .padding(.trailing, 5)
           VStack(alignment: .leading, spacing: 0) {
             Text(RoomDB.messages[index].body!.username!)
-              .font(.footnote)
+              .font(.system(size: 12, weight: .regular))
+//              .font(.footnote)
               .padding([.top, .bottom], 3)
             Text(RoomDB.messages[index].body!.message!)
+              .font(.system(size: 14, weight: .regular))
               .padding(10)
               .foregroundColor(Color.black)
               .background(.white)
@@ -101,9 +105,10 @@ struct Message: View {
       HStack{
         VStack(alignment: .leading){
           Text("방장이 메뉴를 확정했어요!")
-            .bold()
+            .font(.system(size: 16, weight: .bold))
           Text("이제 메뉴를 바꿀 수 없습니다.")
-            .bold()
+            .font(.system(size: 16, weight: .bold))
+          Spacer()
         }
         .padding()
         Spacer()
@@ -124,9 +129,9 @@ struct Message: View {
           HStack{
             VStack(alignment: .leading){
               Text("\(privacy.name!)님의")
-                .bold()
+                .font(.system(size: 16, weight: .bold))
               Text("보낼 금액을 확인해보세요.")
-                .bold()
+                .font(.system(size: 16, weight: .bold))
             }
             Spacer()
             Image("ImageOrderCheck")
@@ -140,6 +145,7 @@ struct Message: View {
             self.model.userodercheck.toggle()
           } label: {
             Text("주문내역 확인하기")
+              .font(.system(size: 14, weight: .regular))
               .frame(height: 40)
               .frame(maxWidth: .infinity)
           }

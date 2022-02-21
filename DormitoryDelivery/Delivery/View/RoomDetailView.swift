@@ -16,9 +16,12 @@ struct RoomDetailView: View {
   @EnvironmentObject var naverLogin: NaverLogin
   @EnvironmentObject var datecheck: DateCheck
 
-  @StateObject var detaildata: RoomDetailData = RoomDetailData()
-  @State var roomdata: roomdata
+//  @StateObject var detaildata: RoomDetailData = RoomDetailData()
+  @StateObject var detaildata: RoomDetailData
+//  @State var roomdata: roomdata
   @Binding var tabSelect: Int
+
+  @State var timestamp: String = ""
 
   
     var body: some View {
@@ -33,34 +36,36 @@ struct RoomDetailView: View {
                 .background(Color(.sRGB, red: 180/255, green: 200/255, blue: 255/255, opacity: 1))
                 .cornerRadius(100)
                 .shadow(color: Color.black.opacity(0.5), radius: 1)
-              Text(self.roomdata.purchaserName)
-                .bold()
+              Text(self.detaildata.roomdata.purchaserName)
+                .font(.system(size: 15, weight: .bold))
                 .padding(.leading)
               Spacer()
               Text(sectionNameToKor[detaildata.data!.section]!)
+                .font(.system(size: 15, weight: .regular))
                 .foregroundColor(Color.gray)
-              Text(String(Int((datecheck.nowDate.timeIntervalSince(Date(timeIntervalSince1970: TimeInterval(self.roomdata.createdAt)/1000))) / 60)) + "분전")
+              Text(String(Int((datecheck.nowDate.timeIntervalSince(Date(timeIntervalSince1970: TimeInterval(self.detaildata.roomdata.createdAt)/1000))) / 60)) + "분전")
+                .font(.system(size: 15, weight: .regular))
                 .foregroundColor(Color.gray)
             }
             .padding([.leading, .trailing])
           }
           .frame(height: 60)
           .background(Color(.sRGB, red: 249/255, green: 249/255, blue: 250/255, opacity: 1))
+          .cornerRadius(5)
           
           VStack(spacing: 0){
             Text(categoryNameToKor[detaildata.data!.category]!)
-              .bold()
+              .font(.system(size: 15, weight: .bold))
               .padding(.top, 30)
               .padding(.bottom, 7)
             Text(detaildata.data!.shopName)
-              .font(.title)
-              .bold()
+              .font(.system(size: 24, weight: .bold))
               .padding(.bottom, 15)
             Button {
               //링크 Text(detaildata.data!.shopLink)
             } label: {
               Text("주문 매장 링크확인 >")
-                .font(.caption2)
+                .font(.system(size: 10, weight: .regular))
                 .padding([.top, .bottom], 8)
                 .padding([.leading, .trailing])
                 .padding([.leading, .trailing])
@@ -81,25 +86,21 @@ struct RoomDetailView: View {
           VStack (spacing: 30) {
             HStack{
               Text("최소 주문금액")
-                .font(.title3)
+                .font(.system(size: 17, weight: .regular))
               Spacer()
               Text(String(detaildata.data!.atLeast))
-                .font(.title3)
-                .bold()
+                .font(.system(size: 19, weight: .bold))
               Text("원")
-                .font(.title3)
-                .bold()
+                .font(.system(size: 19, weight: .bold))
             }
             HStack{
               Text("현재 참여인원")
-                .font(.title3)
+                .font(.system(size: 17, weight: .regular))
               Spacer()
               Text(String(detaildata.data!.participants))
-                .font(.title3)
-                .bold()
+                .font(.system(size: 19, weight: .bold))
               Text("명")
-                .font(.title3)
-                .bold()
+                .font(.system(size: 19, weight: .bold))
             }
           }
         
@@ -108,14 +109,11 @@ struct RoomDetailView: View {
           Spacer()
           
           Button{
-            if let mytoken = naverLogin.loginInstance?.accessToken {
-              getRoomJoin(matchid: self.roomdata.id, token: mytoken, title:detaildata.data!.shopName, rid: detaildata.data!.id, detaildata: detaildata, navi: chatnavi)
-            }
+              getRoomJoin(matchid: self.detaildata.roomdata.id, token: naverLogin.sessionId, title:detaildata.data!.shopName, rid: detaildata.data!.id, detaildata: detaildata, navi: chatnavi)
           } label: {
             Text("참여하기")
-              .font(.title3)
+              .font(.system(size: 18, weight: .bold))
               .foregroundColor(.white)
-              .bold()
               .frame(height: 50)
               .frame(maxWidth: .infinity)
           }
@@ -135,13 +133,11 @@ struct RoomDetailView: View {
         }
       })
       .onAppear {
-        if let mytoken = naverLogin.loginInstance?.accessToken {
-          self.detaildata.getRoomDetail(matchid: self.roomdata.id, token: mytoken)
-        }
+        self.detaildata.getRoomDetail(matchid: self.detaildata.roomdata.id, token: naverLogin.sessionId)
       }
       .navigationBarTitleDisplayMode(.inline)
       .navigationBarBackButtonHidden(true)
-      .navigationBarTitle(detaildata.data != nil ? detaildata.data!.shopName : "상세보기")
+      .navigationBarTitle(detaildata.roomdata.shopName)
       .toolbar {
           ToolbarItem(placement: .navigationBarLeading) {
             HStack{
@@ -154,12 +150,32 @@ struct RoomDetailView: View {
             }
           }
       }
+      .onAppear(perform: {
+        let calendar = Calendar(identifier: .gregorian)  // 예전에는 식별자를 문자열로 했는데, 별도
+        let offsetComps = calendar.dateComponents([.day,.hour,.minute], from:Date(timeIntervalSince1970: TimeInterval(self.detaildata.roomdata.createdAt)/1000), to:datecheck.nowDate)
+        if case let (d?, h?, m?) = (offsetComps.day, offsetComps.hour, offsetComps.minute) {
+          if d != 0 {
+            self.timestamp = "\(d)일 전"
+          } else if h != 0 {
+            self.timestamp = "\(h)시간 전"
+          } else {
+            self.timestamp = "\(m)분 전"
+          }
+        }
+      })
+      .onChange(of: datecheck.nowDate) { V in
+        let calendar = Calendar(identifier: .gregorian)  // 예전에는 식별자를 문자열로 했는데, 별도
+        let offsetComps = calendar.dateComponents([.day,.hour,.minute], from:Date(timeIntervalSince1970: TimeInterval(self.detaildata.roomdata.createdAt)/1000), to:V)
+        if case let (d?, h?, m?) = (offsetComps.day, offsetComps.hour, offsetComps.minute) {
+          if d != 0 {
+            self.timestamp = "\(d)일 전"
+          } else if h != 0 {
+            self.timestamp = "\(h)시간 전"
+          } else {
+            self.timestamp = "\(m)분 전"
+          }
+        }
+      }
         
     }
 }
-
-//struct RoomDetail_Previews: PreviewProvider {
-//    static var previews: some View {
-//        RoomDetail()
-//    }
-//}

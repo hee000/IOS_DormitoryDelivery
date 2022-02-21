@@ -82,7 +82,8 @@ import RealmSwift
 
 struct TabViews: View {
   @EnvironmentObject var chatdata: ChatData
-
+  @EnvironmentObject var noti: Noti
+  
   @State var tabSelect = 0
   @State var createRoomSelect = false
   @State var tabSelectTmp = 0
@@ -92,7 +93,9 @@ struct TabViews: View {
   var body: some View {
     TabView(selection: $tabSelect){
       DeliveryView(mysection: $DeliveryViewSection, tabSelect: $tabSelect)
+        .overlay(Rectangle().frame(width: nil, height: 1, alignment: .top).foregroundColor(Color(.sRGB, red: 210/255, green: 210/255, blue: 210/255, opacity: 1)), alignment: .top)
         .overlay(Rectangle().frame(width: nil, height: 1, alignment: .top).foregroundColor(Color(.sRGB, red: 210/255, green: 210/255, blue: 210/255, opacity: 1)), alignment: .bottom)
+//        .overlay(Rectangle().frame(width: nil, height: 1, alignment: .top).foregroundColor(Color(.sRGB, red: 210/255, green: 210/255, blue: 210/255, opacity: 1)), alignment: .bottom)
         .tabItem {
         if self.tabSelect == 0 {
           Label("", image: "23424")
@@ -193,6 +196,14 @@ struct TabViews: View {
       
       ToolbarItem(placement: .navigationBarTrailing) {
         if self.tabSelect == 0 {
+          HStack{
+            NavigationLink(destination: NotificationView(tabSelect: $tabSelect)){
+              Image(noti.systemNoti ? "ImageBellOn" : "ImageBellOff")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 21, height: 22)
+            }
+          }
         } else if self.tabSelect == 2 {
         } else if self.tabSelect == 3 {
         }

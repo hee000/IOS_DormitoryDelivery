@@ -98,18 +98,17 @@ struct ChatCard: View {
           VStack(alignment: .leading, spacing: 5){
             if let title = self.title {
               Text(title)
-                .font(.title3)
-                .bold()
+                .font(.system(size: 18, weight: .bold))
                 .foregroundColor(Color.black)
             }
             
             if let lastmessage = self.lastmessage {
               Text(lastmessage)
-                  .font(.subheadline)
+                .font(.system(size: 12, weight: .regular))
                   .foregroundColor(Color.gray)
             } else {
               Text("")
-                .font(.subheadline)
+                .font(.system(size: 12, weight: .regular))
             }
           }
 
@@ -119,18 +118,20 @@ struct ChatCard: View {
             if let lastat = self.lastat {
 
               Text(datetokor(chatdate: lastat))
-                .font(.caption)
+                .font(.system(size: 10, weight: .regular))
                 .foregroundColor(Color.black)
             }
             
             if (self.index ?? 0) - (self.confirmation ?? 0) != 0 {
               Text(String(self.index! - self.confirmation!))
+                .font(.system(size: 10, weight: .regular))
                 .foregroundColor(Color.white)
                 .padding(EdgeInsets(top: 2, leading: 10, bottom: 2, trailing: 10))
-                .background(Color.red)
+                .background(Color(.sRGB, red: 112/255, green: 52/255, blue: 255/255, opacity: 1))
                 .cornerRadius(21)
             } else {
               Text("")
+                .font(.system(size: 10, weight: .regular))
                 .padding(EdgeInsets(top: 2, leading: 10, bottom: 2, trailing: 10))
             }
 

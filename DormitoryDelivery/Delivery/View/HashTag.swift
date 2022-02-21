@@ -20,7 +20,7 @@ struct HashTag: View {
 //          self.flag[tag].toggle()
         } label: {
           Text(category[tag])
-            .fontWeight(.black)
+            .font(.system(size: 12, weight: .bold))
             .padding(EdgeInsets(top: 8, leading: 12, bottom: 8, trailing: 12))
             .overlay(RoundedRectangle(cornerRadius: 21).stroke(Color(.sRGB, red: 93/255, green: 95/255, blue: 235/255, opacity: 1), lineWidth: 1.5))
         }
@@ -32,6 +32,7 @@ struct HashTag: View {
           
         } label: {
           Text(category[tag])
+            .font(.system(size: 12, weight: .regular))
             .foregroundColor(Color.gray)
             .padding(EdgeInsets(top: 8, leading: 12, bottom: 8, trailing: 12))
             .overlay(RoundedRectangle(cornerRadius: 21).stroke(Color.gray, lineWidth: 1.5))

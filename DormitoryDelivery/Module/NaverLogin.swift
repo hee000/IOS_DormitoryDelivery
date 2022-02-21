@@ -10,27 +10,74 @@ import UIKit
 import NaverThirdPartyLogin
 import Alamofire
 
-
+class LoginData: ObservableObject {
+  @Published var oauthLogin: Bool = UserDefaults.standard.object(forKey: "oauthLogin") as? Bool ?? false {
+      didSet {
+          UserDefaults.standard.set(oauthLogin, forKey: "oauthLogin")
+      }
+  }
+  
+  @Published var Login: Bool = UserDefaults.standard.object(forKey: "Login") as? Bool ?? false {
+      didSet {
+          UserDefaults.standard.set(Login, forKey: "Login")
+      }
+  }
+}
 
 class NaverLogin: UIViewController, NaverThirdPartyLoginConnectionDelegate, ObservableObject {
   let loginInstance = NaverThirdPartyLoginConnection.getSharedInstance()
   
-  @Published var isLoggedIn: Bool = UserDefaults.standard.object(forKey: "IsLoggedIn") as? Bool ?? false {
+  @Published var oauthLogin: Bool = UserDefaults.standard.bool(forKey: "oauthLogin") {
       didSet {
-          UserDefaults.standard.set(isLoggedIn, forKey: "IsLoggedIn")
+          UserDefaults.standard.set(oauthLogin, forKey: "oauthLogin")
       }
   }
-  @Published var refreshed: String? = ""
+  
+  @Published var Login: Bool = UserDefaults.standard.bool(forKey: "Login") {
+      didSet {
+          UserDefaults.standard.set(Login, forKey: "Login")
+      }
+  }
+  
+  @Published var sessionId: String = UserDefaults.standard.string(forKey: "sessionId") ?? "" {
+      didSet {
+          UserDefaults.standard.set(sessionId, forKey: "sessionId")
+      }
+  }
     
   func oauth20ConnectionDidFinishRequestACTokenWithAuthCode() {
       print("Success login")
       getInfo()
-      self.isLoggedIn = true
+    
+      let url2 = urlsession()
+      var request2 = URLRequest(url: url2)
+      let token2 = loginInstance!.accessToken!
+      request2.httpMethod = "POST"
+      request2.setValue("application/json", forHTTPHeaderField: "Content-Type")
+      request2.timeoutInterval = 10
+      let createkey2 = authsession(type: "naver", accessToken: token2)
+
+      do {
+          try request2.httpBody = JSONEncoder().encode(createkey2)
+      } catch {
+          print("http Body Error")
+      }
+      
+      AF.request(request2).responseJSON { response2 in
+        if response2.response?.statusCode == 201 {
+          guard let restdata = try? JSONDecoder().decode(sessionvalue.self, from: response2.data!) else { return }
+          self.sessionId = restdata.sessionId
+          self.Login = true
+          self.oauthLogin = true
+        } else {
+          self.oauthLogin = true
+        }
+      }
   }
   
   // referesh token
   func oauth20ConnectionDidFinishRequestACTokenWithRefreshToken() {
-    self.refreshed = loginInstance?.accessToken
+//    self.refreshed = loginInstance?.accessToken
     print("리프레시 성공")
     print(loginInstance?.accessToken)
   }
@@ -39,7 +86,8 @@ class NaverLogin: UIViewController, NaverThirdPartyLoginConnectionDelegate, Obse
   func oauth20ConnectionDidFinishDeleteToken() {
       print("log out")
     logoutuserdelete()
-    self.isLoggedIn = false
+    self.oauthLogin = false
+    self.Login = false
   }
   
   // 모든 error
