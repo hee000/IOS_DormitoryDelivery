@@ -16,74 +16,86 @@ struct ChatCard: View {
               Image("ImageDefaultProfile")
                 .resizable()
                 .scaledToFit()
-                .frame(width: 44, height: 44)
+                .frame(width: 40, height: 40)
                 .background(Color(.sRGB, red: 180/255, green: 200/255, blue: 255/255, opacity: 1))
                 .cornerRadius(28)
-                .shadow(color: Color.black.opacity(0.5), radius: 1)
             } else if self.users == 2 {
               ZStack(alignment: .topLeading) {
                 Image("ImageDefaultProfile")
                   .resizable()
                   .scaledToFit()
-                  .frame(width: 44, height: 44)
+                  .frame(width: 30, height: 30)
                   .background(Color(.sRGB, red: 180/255, green: 200/255, blue: 255/255, opacity: 1))
                   .cornerRadius(28)
-                  .offset(x: 3, y: 3)
-                  .shadow(color: Color.black.opacity(0.5), radius: 1)
+                  .overlay(RoundedRectangle(cornerRadius: 28).stroke(Color(.sRGB, red: 245/255, green: 245/255, blue: 251/255, opacity: 1), lineWidth: 1.5))
+                  .offset(x: 10, y: 5)
                 Image("ImageDefaultProfile")
                   .resizable()
                   .scaledToFit()
-                  .frame(width: 44, height: 44)
+                  .frame(width: 30, height: 30)
                   .background(Color(.sRGB, red: 180/255, green: 200/255, blue: 255/255, opacity: 1))
                   .cornerRadius(28)
-                  .offset(x: -3, y: -3)
-                  .shadow(color: Color.black.opacity(0.5), radius: 1)
-                  .shadow(color: Color.black.opacity(0.5), radius: 3, x:3, y:3)
+                  .overlay(RoundedRectangle(cornerRadius: 28).stroke(Color(.sRGB, red: 245/255, green: 245/255, blue: 251/255, opacity: 1), lineWidth: 1.5))
+                  .offset(x: -10, y: -5)
               }
               .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else if self.users == 3 {
-              VStack(alignment: .leading) {
-                HStack{
-                  Image("ImageDefaultProfile")
-                    .resizable()
-                    .scaledToFit()
-                    .background(Color(.sRGB, red: 180/255, green: 200/255, blue: 255/255, opacity: 1))
-                    .cornerRadius(28)
-                  Image("ImageDefaultProfile")
-                    .resizable()
-                    .scaledToFit()
-                    .background(Color(.sRGB, red: 180/255, green: 200/255, blue: 255/255, opacity: 1))
-                    .cornerRadius(28)
-                }
+              ZStack(alignment: .center) {
                 Image("ImageDefaultProfile")
                   .resizable()
                   .scaledToFit()
+                  .frame(width: 30, height: 30)
                   .background(Color(.sRGB, red: 180/255, green: 200/255, blue: 255/255, opacity: 1))
                   .cornerRadius(28)
+                  .overlay(RoundedRectangle(cornerRadius: 28).stroke(Color(.sRGB, red: 245/255, green: 245/255, blue: 251/255, opacity: 1), lineWidth: 1.5))
+                  .offset(x: -10, y: 10)
+
+                Image("ImageDefaultProfile")
+                  .resizable()
+                  .scaledToFit()
+                  .frame(width: 30, height: 30)
+                  .background(Color(.sRGB, red: 180/255, green: 200/255, blue: 255/255, opacity: 1))
+                  .cornerRadius(28)
+                  .overlay(RoundedRectangle(cornerRadius: 28).stroke(Color(.sRGB, red: 245/255, green: 245/255, blue: 251/255, opacity: 1), lineWidth: 1.5))
+                  .offset(x: 10, y: 10)
+
+                Image("ImageDefaultProfile")
+                  .resizable()
+                  .scaledToFit()
+                  .frame(width: 30, height: 30)
+                  .background(Color(.sRGB, red: 180/255, green: 200/255, blue: 255/255, opacity: 1))
+                  .cornerRadius(28)
+                  .overlay(RoundedRectangle(cornerRadius: 28).stroke(Color(.sRGB, red: 245/255, green: 245/255, blue: 251/255, opacity: 1), lineWidth: 1.5))
+                  .offset(x: 0, y: -10)
+
               }
             } else {
-              VStack(alignment: .leading) {
-                HStack{
+              VStack(alignment: .leading, spacing: 2) {
+                HStack (spacing: 2) {
                   Image("ImageDefaultProfile")
                     .resizable()
                     .scaledToFit()
+                    .frame(width: 22.81, height: 22.81)
                     .background(Color(.sRGB, red: 180/255, green: 200/255, blue: 255/255, opacity: 1))
                     .cornerRadius(28)
                   Image("ImageDefaultProfile")
                     .resizable()
                     .scaledToFit()
+                    .frame(width: 22.81, height: 22.81)
                     .background(Color(.sRGB, red: 180/255, green: 200/255, blue: 255/255, opacity: 1))
                     .cornerRadius(28)
                 }
-                HStack{
+                HStack (spacing: 2) {
                   Image("ImageDefaultProfile")
                     .resizable()
                     .scaledToFit()
+                    .frame(width: 22.81, height: 22.81)
                     .background(Color(.sRGB, red: 180/255, green: 200/255, blue: 255/255, opacity: 1))
                     .cornerRadius(28)
                   Image("ImageDefaultProfile")
                     .resizable()
                     .scaledToFit()
+                    .frame(width: 22.81, height: 22.81)
                     .background(Color(.sRGB, red: 180/255, green: 200/255, blue: 255/255, opacity: 1))
                     .cornerRadius(28)
                   

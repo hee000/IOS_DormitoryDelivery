@@ -108,9 +108,7 @@ struct OrderCheckView: View {
             
             Button{
               if self.orderCheckData.image.size != CGSize(width: 0, height: 0){
-                if let mytoken = naverLogin.loginInstance?.accessToken {
-                  postOrderCheck(rid: self.roomid, token: mytoken, model: orderCheckData)
-                }
+                postOrderCheck(rid: self.roomid, token: naverLogin.sessionId, model: orderCheckData, account: userPrivacy.chatlist.mainAccount!)
               }
             } label: {
               Text("보내기")

@@ -8,6 +8,27 @@
 import Foundation
 import Alamofire
 
+func getMenuListIndividual(uid: String, rid: String, token: String, model: Order) {
+  let url = urladdmenu(uid: uid, rid: rid)
+  let req = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: ["Authorization": token])
+  req.responseJSON { response in
+    guard let menulist = try? JSONDecoder().decode([orderdata].self, from: response.data!) else { return }
+
+    if menulist.count == 0 {
+      let nonemenue = orderdata(id: UUID().uuidString, name: "", quantity: 1, description: "", price: nil)
+      model.data.append(nonemenue)
+      model.forcompare = model.data
+    } else {
+//      model.data.append(contentsOf: menulist)
+      model.data = menulist
+      model.forcompare = model.data
+      for menu in menulist {
+        model.isMenu.append(menu.id)
+      }
+    }
+  }
+}
+
 func getMenus(uid: String, rid: String, mid: ChatDB, token: String, model: Order) {
   
   let dispatchGroup = DispatchGroup()

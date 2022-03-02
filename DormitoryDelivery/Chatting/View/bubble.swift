@@ -102,6 +102,7 @@ struct ChatBubble<Content>: View where Content: View {
             content()
             .padding([.top, .bottom], 8)
             .padding([.leading, .trailing], 30)
+            .frame(width: UIScreen.main.bounds.width * 7/10)
                 .foregroundColor(Color.black)
                 .background(color)
                 .clipShape(RoundedRectangle(cornerRadius: 5))

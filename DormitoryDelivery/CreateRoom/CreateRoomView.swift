@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import RealmSwift
 
 
 struct SizeKey: PreferenceKey {
@@ -16,6 +17,7 @@ struct SizeKey: PreferenceKey {
 
 struct CreateRoomView: View {
   @EnvironmentObject var naverLogin: NaverLogin
+  @ObservedResults(UserPrivacy.self) var userPrivacy
   @ObservedObject var createRoomData: CreateRoom = CreateRoom()
   @EnvironmentObject var keyboardManager: KeyboardManager
   @Environment(\.presentationMode) var presentationMode
@@ -232,7 +234,12 @@ struct CreateRoomView: View {
         } //geo
         .clipped()
       } //navi
-      .overlay(self.createRoomData.postalertstate ? AlertOneButton(isActivity: $createRoomData.postalertstate, text: "항목을 올바르게 기입해주세요") : nil)
+      .overlay(self.userPrivacy.first!.mainAccount == nil ? AlertOneButton(isActivity: $createRoomData.isAccount) { Text("마이 페이지에서").font(.system(size: 16, weight: .regular))
+        Text("계좌 등록을 먼저 진행해주세요").font(.system(size: 16, weight: .regular)) } : nil)
+      .overlay(self.createRoomData.postalertstate ? AlertOneButton(isActivity: $createRoomData.postalertstate) { Text("항목을 올바르게 기입해주세요").font(.system(size: 16, weight: .regular)) } : nil)
+      .onChange(of: createRoomData.isAccount, perform: { newValue in
+        presentationMode.wrappedValue.dismiss()
+      })
       .onChange(of: createRoomData.rid, perform: { newValue in
         presentationMode.wrappedValue.dismiss()
         self.tabSelect = 2

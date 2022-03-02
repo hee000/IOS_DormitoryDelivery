@@ -177,29 +177,55 @@ struct ReceiptView: View {
         })
                : nil) //overlay
       .onAppear {
+        AF.request(urlimgdownloadurl(rid: self.roomid), method: .get, parameters: nil, encoding: JSONEncoding.default, headers: ["Authorization": naverLogin.sessionId])
+          .responseJSON { response2 in
+//            var a = response2.
+            guard let urls = response2.value as? [String] else { return }
+//            urls[0]
+            
+            let destination: DownloadRequest.Destination = { _, _ in
+              let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory,
+                                                                      .userDomainMask, true)[0]
+              let documentsURL = URL(fileURLWithPath: documentsPath, isDirectory: true)
+              let fileURL = documentsURL.appendingPathComponent("image.jpg")
+              return (fileURL, [.removePreviousFile, .createIntermediateDirectories]) }
+
+            AF.download(URL(string: urls[0])!, to: destination)
+              .downloadProgress { progress in
+                  print("Download Progress: \(progress.fractionCompleted)")
+              }
+              .response { response in
+                   debugPrint(response)
+                if response.error == nil, let imagePath = response.fileURL?.path {
+                  let image = UIImage(contentsOfFile: imagePath)
+                  model.image = image ?? UIImage()
+                }
+              }
+          }
+        
         UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.black]
-        let destination: DownloadRequest.Destination = { _, _ in
-          let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory,
-                                                                  .userDomainMask, true)[0]
-          let documentsURL = URL(fileURLWithPath: documentsPath, isDirectory: true)
-          let fileURL = documentsURL.appendingPathComponent("image.jpg")
-          return (fileURL, [.removePreviousFile, .createIntermediateDirectories]) }
+//        let destination: DownloadRequest.Destination = { _, _ in
+//          let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory,
+//                                                                  .userDomainMask, true)[0]
+//          let documentsURL = URL(fileURLWithPath: documentsPath, isDirectory: true)
+//          let fileURL = documentsURL.appendingPathComponent("image.jpg")
+//          return (fileURL, [.removePreviousFile, .createIntermediateDirectories]) }
         
-        AF.download(urlimgdownload(rid: self.roomid),
-                    headers: ["Authorization": naverLogin.loginInstance!.accessToken] ,to: destination)
-          .downloadProgress { progress in
-//                      print("Download Progress: \(progress.fractionCompleted)")
-          }
-          .response { response in
-//                           debugPrint(response)
-            if response.error == nil, let imagePath = response.fileURL?.path {
-              let image = UIImage(contentsOfFile: imagePath)
-              model.image = image ?? UIImage()
-            }
-          }
+//        AF.download(urlimgdownload(rid: self.roomid),
+//                    headers: ["Authorization": naverLogin.sessionId] ,to: destination)
+//          .downloadProgress { progress in
+////                      print("Download Progress: \(progress.fractionCompleted)")
+//          }
+//          .response { response in
+////                           debugPrint(response)
+//            if response.error == nil, let imagePath = response.fileURL?.path {
+//              let image = UIImage(contentsOfFile: imagePath)
+//              model.image = image ?? UIImage()
+//            }
+//          }
         
         
-        AF.request(urlreceipt(rid: self.roomid), method: .get, parameters: nil, encoding: JSONEncoding.default, headers: ["Authorization": naverLogin.loginInstance!.accessToken])
+        AF.request(urlreceipt(rid: self.roomid), method: .get, parameters: nil, encoding: JSONEncoding.default, headers: ["Authorization": naverLogin.sessionId])
           .responseJSON { response in
             do {
               let data2 = try JSONSerialization.data(withJSONObject: response.value, options: .prettyPrinted)

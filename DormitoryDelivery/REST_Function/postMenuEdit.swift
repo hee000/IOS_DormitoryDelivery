@@ -12,7 +12,7 @@ import RealmSwift
 func postMenuEdit(oderdata: orderdata, rid: String, token: String){
 
   let addkey = addmenu(name: oderdata.name, quantity: oderdata.quantity, description: oderdata.description, price: oderdata.price!)
-  let url = urlmenus(uid: UserDefaults.standard.string(forKey: "MyID")!, rid: rid, mid: oderdata.id!)
+  let url = urlmenus(uid: UserDefaults.standard.string(forKey: "MyID")!, rid: rid, mid: oderdata.id)
   var request = URLRequest(url: url)
   request.httpMethod = "PUT"
   request.setValue("application/json", forHTTPHeaderField: "Content-Type")

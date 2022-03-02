@@ -16,35 +16,45 @@ struct NotificationView: View {
   @Binding var tabSelect: Int
   @State var isActive = false
 
+  @ViewBuilder
+  func notiButtton(rid: String, title: String, action: String, at: String) -> some View {
+    Button{
+      self.chatnavi.rid = rid
+      self.chatnavi.forceActive()
+
+      self.isActive = true
+      presentationMode.wrappedValue.dismiss()
+    } label:{
+      VStack(alignment: .leading, spacing: 0) {
+        Text(title)
+          .bold()
+          .padding(.bottom, 5)
+        Text(action)
+        Text("\(String(Int((datecheck.nowDate.timeIntervalSince(Date(timeIntervalSince1970: TimeInterval(at)!/1000))) / 60))) 분전")
+          .font(.footnote)
+          .padding(.top)
+          .foregroundColor(.gray)
+      }
+      .foregroundColor(Color.black)
+      .padding()
+      .frame(height: UIScreen.main.bounds.height / 8)
+      .frame(maxWidth: .infinity, alignment: .leading)
+      .background(Color(.sRGB, red: 228/255, green: 234/255, blue: 255/255, opacity: 1))
+    }
+  }
     var body: some View {
       GeometryReader { _ in
         if noti.systemNoti {
           ScrollView{
-            VStack{
+            VStack(spacing: 2){
               ForEach(chatdata.chatlist) { chat in
                 ForEach(chat.messages.filter("type == 'system' AND idx > \(chat.systemConfirmation)")) { system in
-                  Button{
-                    self.chatnavi.rid = chat.rid
-                    self.chatnavi.forceActive()
-                    
-                    self.isActive = true
-                    presentationMode.wrappedValue.dismiss()
-                  } label:{
-                    VStack(alignment: .leading) {
-                      Text(chat.title!)
-                        .bold()
-                      Text(system.body?.action ?? "없다네")
-                        .bold()
-                      Text("\(String(Int((datecheck.nowDate.timeIntervalSince(Date(timeIntervalSince1970: TimeInterval(system.at!)!/1000))) / 60))) 분전")
-                        .font(.footnote)
-                        .padding(.top, 5)
-                        .foregroundColor(.gray)
-                    }
-                    .foregroundColor(Color.black)
-                    .padding()
-                    .frame(height: UIScreen.main.bounds.height / 7)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .background(Color(.sRGB, red: 228/255, green: 234/255, blue: 255/255, opacity: 1))
+                  if system.body?.action == "order-fixed" {
+                    notiButtton(rid: chat.rid!, title: chat.title!, action: "메뉴가 확정 되었습니다.", at: system.at!)
+                  } else if system.body?.action == "order-checked" {
+                    notiButtton(rid: chat.rid!, title: chat.title!, action: "배달이 시작되었습니다. 채팅 창을 확인해주세요.", at: system.at!)
+                  } else if system.body?.action == "order-finished" {
+                    notiButtton(rid: chat.rid!, title: chat.title!, action: "1/n 정산이 완료되었어요. 배달금액을 체크해주세요.", at: system.at!)
                   }
                 }// 둘 for
               } // 첫 for

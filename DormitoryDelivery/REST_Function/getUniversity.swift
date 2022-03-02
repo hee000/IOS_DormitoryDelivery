@@ -17,17 +17,17 @@ func getUniversityDormitory() {
   let url = urluniversitydormitory(id: "0")
   let req = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default)
   req.responseJSON { response in
-    guard let restdata = try? JSONDecoder().decode([dormitorys].self, from: response.data!) else { return }
+    guard let restdata = try? JSONDecoder().decode([dormitory].self, from: response.data!) else { return }
     
     print(restdata)
   }
 }
 
-struct dormitorys: Codable {
+struct dormitory: Codable {
   var id: Int
   var name: String
 }
 
 class domis: ObservableObject {
-  @Published var data: [dormitorys] = []
+  @Published var data: [dormitory] = []
 }

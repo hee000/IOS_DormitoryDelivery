@@ -150,10 +150,12 @@ class SocketIOManager:NSObject {
               chatroom?.state?.allReady = false
               chatroom?.state?.orderFix = true
             } else if json.body?.action == "users-new" {
-              let userinfo = ChatUsersInfo()
-              userinfo.userId = json.body?.data?.userId
-              userinfo.name = json.body?.data?.name
-              chatroom?.member.append(userinfo)
+              if json.body?.data?.userId != user._id {
+                let userinfo = ChatUsersInfo()
+                userinfo.userId = json.body?.data?.userId
+                userinfo.name = json.body?.data?.name
+                chatroom?.member.append(userinfo)
+              }
             } else if json.body?.action == "users-leave" {
               if json.body!.data!.userId == user._id {
                 chatroom?.Kicked = true

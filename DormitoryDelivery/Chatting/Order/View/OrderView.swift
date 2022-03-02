@@ -32,8 +32,13 @@ struct OrderView: View {
               GeometryReader { geo in
                 Button{
                   self.addanimation.toggle()
-                  let nonemenue = orderdata(id: nil, name: "", quantity: 1, description: "", price: nil)
-                    self.ordermodel.data.append(nonemenue)
+                  let nonemenue = orderdata(id: UUID().uuidString, name: "", quantity: 1, description: "", price: nil)
+//                    self.ordermodel.data.append(nonemenue)
+                  withAnimation {
+                    self.ordermodel.onanimation.toggle()
+                    self.ordermodel.data.insert(nonemenue, at: 0)
+                  }
+//                  self.ordermodel.data.insert(nonemenue, at: 0)
                 } label: {
                   Image(systemName: "plus")
                     .font(.title)
@@ -55,9 +60,32 @@ struct OrderView: View {
             
             VStack(spacing: 20){ // 뒤집힌 상태
               Spacer()
-                .frame(height: 80)
-              ForEach(ordermodel.data.indices, id: \.self) { index in // 뒤집힌 상태
+                .frame(height:3)
+//              ForEach(ordermodel.data.indices, id: \.self) { index in // 뒤집힌 상태
+              ForEach(Array(zip(0..., ordermodel.data)), id: \.1.id) { index, datasaz in // 뒤집힌 상태
                   VStack(spacing: 30){
+                    VStack {
+                      Button {
+//                        if ordermodel.data[index].id != nil {
+                        if ordermodel.isMenu.contains((ordermodel.data[index].id)) {
+                          postMenuDelete(model: ordermodel, index: index, oderdata: ordermodel.data[index], rid: self.roomid, token: naverLogin.sessionId, anima: $addanimation)
+                        } else {
+//                          self.ordermodel.onanimation.toggle()
+                          withAnimation {
+                            self.ordermodel.onanimation.toggle()
+                            ordermodel.data.remove(at: index)
+                          }
+                        }
+                      } label: {
+                        Image(systemName: "xmark")
+                          .resizable()
+                          .scaledToFit()
+                          .frame(width: 15, height: 15)
+                          .foregroundColor(.gray)
+                      }
+                    }
+                    .frame(maxWidth: .infinity, alignment: .trailing)
+                    
                     HStack(spacing: 0){
                       Text("* ")
                         .font(.system(size: 16, weight: .bold))
@@ -158,18 +186,19 @@ struct OrderView: View {
                   .cornerRadius(5)
                   .clipped()
                   .shadow(color: Color.black.opacity(0.2), radius: 8)
-                  .rotationEffect(Angle(degrees: 180)).scaleEffect(x: -1.0, y: 1.0, anchor: .center)
-                  .transition(.move(edge: .bottom))
-
+//                  .rotationEffect(Angle(degrees: 180)).scaleEffect(x: -1.0, y: 1.0, anchor: .center)
+                  .transition(.asymmetric(insertion: AnyTransition.move(edge: .top),
+                                          removal: AnyTransition.move(edge: .leading)))
+                  .animation(Animation.easeIn, value: ordermodel.onanimation)
+//                  .animation(.easeIn)
 
                   } // for문
-              
-              Spacer()
-                .frame(height:3)
             } // vstack
             .padding([.leading, .trailing])
-            .rotationEffect(Angle(degrees: 180)).scaleEffect(x: -1.0, y: 1.0, anchor: .center)
-            .animation(Animation.easeInOut, value:addanimation)
+            .frame(maxWidth: .infinity)
+//            .rotationEffect(Angle(degrees: 180)).scaleEffect(x: -1.0, y: 1.0, anchor: .center)
+//            .animation(Animation.easeInOut, value:addanimation)
+//            .animation(.default)
           } // scroll
           .onTapGesture {
               hideKeyboard()
@@ -213,28 +242,32 @@ struct OrderView: View {
           } //버튼 V
           .ignoresSafeArea(.keyboard)
         } // Z
-        .overlay(self.postalertstate ? AlertOneButton(isActivity: $postalertstate, text: "필수 항목을 모두 기입해주세요.") : nil)
-        .overlay(self.exitalertstate ? AlertTwoButton(yesButton: $exit, noButton: $exitalertstate, text1: "수정된 메뉴가 존재 합니다.", text2: "주문을 취소하고 나가시겠어요?") : nil)
+          .overlay(self.postalertstate ? AlertOneButton(isActivity: $postalertstate) { Text("필수 항목을 모두 기입해주세요.").font(.system(size: 16, weight: .regular)) } : nil)
+          .overlay(self.exitalertstate ? AlertTwoButton(YActivity: $exit, NActivity: $exitalertstate) { Text("수정된 메뉴가 존재 합니다.").font(.system(size: 16, weight: .regular))
+            Text("주문을 취소하고 나가시겠어요?").font(.system(size: 16, weight: .regular))
+          }: nil)
 
         .onChange(of: exit, perform: { _ in
           presentationMode.wrappedValue.dismiss()
         })
         
         .onAppear(perform: {
-          self.ordermodel.data = []
-          self.ordermodel.forcompare = []
-          if self.chatdata.menu.count == 0 {
-            let nonemenue = orderdata(id: nil, name: "", quantity: 1, description: "", price: nil)
-            self.ordermodel.data.append(nonemenue)
-            self.ordermodel.forcompare = self.ordermodel.data
-          } else {
-
-//            for i in chatdata.menu.indices {
-
-              getMenus(uid: UserDefaults.standard.string(forKey: "MyID")!, rid: self.roomid, mid: self.chatdata, token: naverLogin.sessionId, model: self.ordermodel)
-
-//            }
-          }
+          getMenuListIndividual(uid: UserDefaults.standard.string(forKey: "MyID")!, rid: self.roomid, token: naverLogin.sessionId, model: self.ordermodel)
+          
+//          self.ordermodel.data = []
+//          self.ordermodel.forcompare = []
+//          if self.chatdata.menu.count == 0 {
+//            let nonemenue = orderdata(id: nil, name: "", quantity: 1, description: "", price: nil)
+//            self.ordermodel.data.append(nonemenue)
+//            self.ordermodel.forcompare = self.ordermodel.data
+//          } else {
+//
+////            for i in chatdata.menu.indices {
+//
+//              getMenus(uid: UserDefaults.standard.string(forKey: "MyID")!, rid: self.roomid, mid: self.chatdata, token: naverLogin.sessionId, model: self.ordermodel)
+//
+////            }
+//          }
         })
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarTitle("주문서 작성")

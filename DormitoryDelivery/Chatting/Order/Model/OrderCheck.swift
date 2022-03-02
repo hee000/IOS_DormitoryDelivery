@@ -17,6 +17,8 @@ class OrderCheck: ObservableObject {
 
 
 struct OrdercheckTip: Codable {
-  var rid: String
   var delivery_tip : Int
+  var accountBank: String
+  var accountNum: String
+  var accountHolderName: String
 }

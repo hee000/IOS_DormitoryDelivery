@@ -105,9 +105,9 @@ struct Message: View {
       HStack{
         VStack(alignment: .leading){
           Text("방장이 메뉴를 확정했어요!")
-            .font(.system(size: 16, weight: .bold))
+            .font(.system(size: 14, weight: .bold))
           Text("이제 메뉴를 바꿀 수 없습니다.")
-            .font(.system(size: 16, weight: .bold))
+            .font(.system(size: 14, weight: .bold))
           Spacer()
         }
         .padding()
@@ -121,7 +121,7 @@ struct Message: View {
       .frame(width: UIScreen.main.bounds.width * 9/10)
       .background(.white)
       .cornerRadius(5)
-      .shadow(color: Color.black.opacity(0.2), radius: 4)
+      .shadow(color: Color.black.opacity(0.15), radius: 4)
       .padding(10)
     } else if type == .orderChecked {
       if RoomDB.superUser!.userId! != UserDefaults.standard.string(forKey: "MyID")! {
@@ -129,9 +129,10 @@ struct Message: View {
           HStack{
             VStack(alignment: .leading){
               Text("\(privacy.name!)님의")
-                .font(.system(size: 16, weight: .bold))
+                .font(.system(size: 14, weight: .bold))
               Text("보낼 금액을 확인해보세요.")
-                .font(.system(size: 16, weight: .bold))
+                .font(.system(size: 14, weight: .bold))
+              Spacer()
             }
             Spacer()
             Image("ImageOrderCheck")
@@ -145,7 +146,7 @@ struct Message: View {
             self.model.userodercheck.toggle()
           } label: {
             Text("주문내역 확인하기")
-              .font(.system(size: 14, weight: .regular))
+              .font(.system(size: 12, weight: .regular))
               .frame(height: 40)
               .frame(maxWidth: .infinity)
           }
@@ -157,30 +158,31 @@ struct Message: View {
         .frame(width: UIScreen.main.bounds.width * 9/10)
         .background(.white)
         .cornerRadius(5)
-        .shadow(color: Color.black.opacity(0.2), radius: 4)
+        .shadow(color: Color.black.opacity(0.15), radius: 4)
         .padding(10)
 
       } else {
         VStack(spacing: 0){
-          HStack{
+          HStack(alignment: .top) {
             VStack(alignment: .leading){
-              Text("영수증을 전달했습니다.")
-                .bold()
-              Text("입금이 확인되면 주문을 마무리하고 주문 완료 버튼을 눌러주세요!")
-                .bold()
+              Text("모두에게 1/n 금액을 보냈습니다.")
+                .font(.system(size: 14, weight: .bold))
+              Text("입금을 확인하고 주문을 완료해주세요.")
+                .font(.system(size: 14, weight: .bold))
+
             }
             Spacer()
-            Image("ImageOrderCheck")
+            Image("ImageChatSysBell")
               .resizable()
               .scaledToFit()
-              .frame(width: 135, height: 73)
+              .frame(width: 26, height: 26)
           }
           .padding()
         }
         .frame(width: UIScreen.main.bounds.width * 9/10)
-        .background(Color(.sRGB, red: 228/255, green: 234/255, blue: 255/255, opacity: 1))
+        .background(Color.white)
         .cornerRadius(5)
-        .shadow(color: Color.black.opacity(0.2), radius: 4)
+        .shadow(color: Color.black.opacity(0.15), radius: 4)
         .padding(10)
       }
     } else if type == .voteKickCreated {    // 강퇴 투표 시작

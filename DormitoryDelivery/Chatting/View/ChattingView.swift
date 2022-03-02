@@ -123,9 +123,11 @@ struct ChattingView: View {
           }//geo
           .clipped()
           .background(Color(.sRGB, red: 245/255, green: 245/255, blue: 251/255, opacity: 1))
+          .disabled(RoomChat?.Kicked ?? false ? true : false)
           .onTapGesture {
             hideKeyboard()
           }
+          
             //MARK:- text editor
         // 주문서 작성 & 준비완료
           if RoomChat?.state?.orderFix == false {
@@ -138,6 +140,7 @@ struct ChattingView: View {
               }
             .frame(width: UIScreen.main.bounds.size.width, height: 45, alignment: .center)
             .background(Color(.sRGB, red: 221/255, green: 221/255, blue: 221/255, opacity: 1))
+            .disabled(RoomChat?.Kicked ?? false ? true : false)
           } else {
             HStack(alignment: .center, spacing: 0){
               Button {
@@ -158,6 +161,7 @@ struct ChattingView: View {
             }
             .frame(width: geo.size.width, height: 45, alignment: .center)
             .background(Color(.sRGB, red: 221/255, green: 221/255, blue: 221/255, opacity: 1))
+            .disabled(RoomChat?.Kicked ?? false ? true : false)
           }
         }// 주문서 작성 & 준비완료 닫기
         
@@ -167,6 +171,7 @@ struct ChattingView: View {
               GeometryReader { geosender in
                 ZStack {
                   Text(RoomChat?.Kicked ?? false ? "강퇴로 인해 채팅이 불가합니다." : self.model.text)
+                    .padding(.leading)
                     .font(.system(size: 14, weight: .regular))
                     .lineLimit(1)
                     .frame(width: geosender.size.width, alignment: .leading)
@@ -224,7 +229,8 @@ struct ChattingView: View {
             .frame(width: geo.size.width ,height: self.rere ? 18.0 + (self.model.textHeight ?? 18.0) + 10 : 46)
             .background(Color(.sRGB, red: 221/255, green: 221/255, blue: 221/255, opacity: 1))
             .overlay(Rectangle().frame(width: nil, height: 1, alignment: .top).foregroundColor(Color(.sRGB, red: 210/255, green: 210/255, blue: 210/255, opacity: 1)), alignment: .top)
-        
+            .disabled(RoomChat?.Kicked ?? false ? true : false)
+          
         }//vstack
         .frame(width: geo.size.width, height: geo.size.height)
         .disabled(self.model.showMenu ? true : false)
@@ -245,10 +251,11 @@ struct ChattingView: View {
             HStack{
               VStack(alignment: .leading) {
                 Text("모두가 준비를 완료했어요.")
-                  .font(.system(size: 16, weight: .bold))
-                Text("주문을 확정하시겠습니까?")
-                  .font(.system(size: 16, weight: .bold))
+                  .font(.system(size: 14, weight: .bold))
+                Text("메뉴와 인원을 확정하시겠습니까?")
+                  .font(.system(size: 14, weight: .bold))
               }
+              .padding(.leading)
               Spacer()
               Image("ImageChatBell")
                 .resizable()
@@ -257,7 +264,7 @@ struct ChattingView: View {
             }
               .padding()
               .foregroundColor(.white)
-              .frame(maxWidth: .infinity, maxHeight: .infinity)
+              .frame(maxWidth: .infinity, maxHeight: 53)
               .background(LinearGradient(gradient: Gradient(stops: [Gradient.Stop(color: Color(.sRGB, red: 114/255, green: 160/255, blue: 253/255, opacity: 1), location: 0.05),
                                                                     Gradient.Stop(color: Color(.sRGB, red: 121/255, green: 123/255, blue: 250/255, opacity: 1), location: 0.54),
                                                                     Gradient.Stop(color: Color(.sRGB, red: 112/255, green: 64/255, blue: 255/255, opacity: 1), location: 1)
@@ -269,8 +276,8 @@ struct ChattingView: View {
           .frame(width: geo.size.width * 9/10, height: 60)
           .offset(y: -geo.size.height/2 + 45)
           .transition(AnyTransition.opacity.animation(.easeInOut(duration: 1)))
+          .disabled(RoomChat?.Kicked ?? false ? true : false)
         } // 방장 메뉴 오더 픽스 이벤트
-        
         
         if RoomChat?.superUser!.userId! == UserDefaults.standard.string(forKey: "MyID")! && RoomChat?.state?.orderFix == true && RoomChat?.state?.orderChecked == false && self.model.showMenu == false {
           Button{
@@ -278,7 +285,8 @@ struct ChattingView: View {
           } label: {
             HStack{
               Text("주문 사진과 배달 금액을 입력해주세요.")
-                .font(.system(size: 16, weight: .bold))
+                .font(.system(size: 14, weight: .bold))
+                .padding(.leading)
               Spacer()
               Image("ImageChatBell")
                 .resizable()
@@ -287,7 +295,7 @@ struct ChattingView: View {
             }
               .padding()
               .foregroundColor(.white)
-              .frame(maxWidth: .infinity, maxHeight: .infinity)
+              .frame(maxWidth: .infinity, maxHeight: 53)
               .background(LinearGradient(gradient: Gradient(stops: [Gradient.Stop(color: Color(.sRGB, red: 114/255, green: 160/255, blue: 253/255, opacity: 1), location: 0.05),
                                                                     Gradient.Stop(color: Color(.sRGB, red: 121/255, green: 123/255, blue: 250/255, opacity: 1), location: 0.54),
                                                                     Gradient.Stop(color: Color(.sRGB, red: 112/255, green: 64/255, blue: 255/255, opacity: 1), location: 1)
@@ -299,6 +307,7 @@ struct ChattingView: View {
           .frame(width: geo.size.width * 9/10, height: 60)
           .offset(y: -geo.size.height/2 + 45)
           .transition(AnyTransition.opacity.animation(.easeInOut(duration: 1)))
+          .disabled(RoomChat?.Kicked ?? false ? true : false)
         } // 방장 메뉴 확인 이벤트
         
         if RoomChat?.superUser!.userId! == UserDefaults.standard.string(forKey: "MyID")! && RoomChat?.state?.orderChecked == true && RoomChat?.state?.orderDone == false && self.model.showMenu == false {
@@ -307,7 +316,8 @@ struct ChattingView: View {
           } label: {
             HStack{
               Text("주문이 완료되면 눌러주세요.")
-                .font(.system(size: 16, weight: .bold))
+                .font(.system(size: 14, weight: .bold))
+                .padding(.leading)
               Spacer()
               Image("ImageChatBell")
                 .resizable()
@@ -316,7 +326,7 @@ struct ChattingView: View {
             }
               .padding()
               .foregroundColor(.white)
-              .frame(maxWidth: .infinity, maxHeight: .infinity)
+              .frame(maxWidth: .infinity, maxHeight: 53)
               .background(LinearGradient(gradient: Gradient(stops: [Gradient.Stop(color: Color(.sRGB, red: 114/255, green: 160/255, blue: 253/255, opacity: 1), location: 0.05),
                                                                     Gradient.Stop(color: Color(.sRGB, red: 121/255, green: 123/255, blue: 250/255, opacity: 1), location: 0.54),
                                                                     Gradient.Stop(color: Color(.sRGB, red: 112/255, green: 64/255, blue: 255/255, opacity: 1), location: 1)
@@ -328,6 +338,7 @@ struct ChattingView: View {
           .frame(width: geo.size.width * 9/10, height: 60)
           .offset(y: -geo.size.height/2 + 45)
           .transition(AnyTransition.opacity.animation(.easeInOut(duration: 1)))
+          .disabled(RoomChat?.Kicked ?? false ? true : false)
         } // 방장 주문 확인 이벤트
         
         if self.model.showMenu {
@@ -342,7 +353,6 @@ struct ChattingView: View {
         
     } //Zstack
       .gesture(drag)
-      .disabled(RoomChat?.Kicked ?? false ? true : false)
       .navigationBarTitleDisplayMode(.inline)
       .navigationBarBackButtonHidden(true)
       .navigationBarTitle(RoomChat != nil ? RoomChat!.title! : "채팅방")

@@ -135,22 +135,27 @@ struct ChatSideMenu: View {
           } // 나가기 위 vstack
           .padding()
           .padding(.trailing)
+          .disabled(RoomChat?.Kicked ?? false ? true : false)
           
           Button(action: {
             // order-done == ture || order-fix == false
 //              getRoomLeave(rid: self.rid, token: mytoken, model: model)
+            if RoomChat?.Kicked != true {
               let url = urlroomleave(rid: self.rid)
               let req = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: ["Authorization": naverLogin.sessionId])
               req.response { response in
                 print(response)
                 do {
                   if response.response?.statusCode == 200 {
-                    self.model.leave.toggle()
+                    self.model.leave = true
                   }
                 } catch {
                   print(error)
                 }
               }
+            } else {
+              self.model.leave = true
+            }
           }) {
             HStack {
               Image(systemName: "arrow.right.square")

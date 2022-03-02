@@ -110,40 +110,41 @@ struct EmailCheckView: View {
               .cornerRadius(5)
               .padding(.top)
               
-              VStack(alignment:.leading) { // 10개 제한 때문
-                Text("학교 이메일 계정이 필요한 이유")
+              
+              HStack(spacing: 0) {
+                Text("인증 진행 시 ")
                   .font(.system(size: 14, weight: .regular))
+                Text("이용약관")
+                  .font(.system(size: 14, weight: .bold))
                   .underline()
-                  .foregroundColor(.gray)
-                  .padding(.top)
-                
-                Text("문의 사항은 teamshallwe@gmail.com으로 부탁드립니다.")
+                Text(" 및 ")
                   .font(.system(size: 14, weight: .regular))
-                  .foregroundColor(.gray)
-              } // 하단 Vstack
+                Text("개인정보 취급방침")
+                  .font(.system(size: 14, weight: .bold))
+                  .underline()
+                Text("에")
+                  .font(.system(size: 14, weight: .regular))
+              }
+              .padding(.top)
+              Text("동의하는 것으로 간주합니다.")
+                .font(.system(size: 14, weight: .regular))
+              
             } //V
             .padding()
           } //scroll
           .overlay(Rectangle().frame(width: nil, height: 1, alignment: .top).foregroundColor(Color(.sRGB, red: 210/255, green: 210/255, blue: 210/255, opacity: 1)), alignment: .top)
             
-          VStack(alignment: .leading){
+          VStack(alignment: .leading, spacing: 0){
             Spacer()
-            HStack(spacing: 0) {
-              Text("인증 진행 시 ")
-                .font(.system(size: 14, weight: .regular))
-              Text("이용약관")
-                .font(.system(size: 14, weight: .bold))
-                .underline()
-              Text(" 및 ")
-                .font(.system(size: 14, weight: .regular))
-              Text("개인정보 취급방침")
-                .font(.system(size: 14, weight: .bold))
-                .underline()
-              Text("에")
-                .font(.system(size: 14, weight: .regular))
-            }
-            Text("동의하는 것으로 간주합니다.")
+            Text("학교 이메일 계정이 필요한 이유 ?")
               .font(.system(size: 14, weight: .regular))
+              .underline()
+              .foregroundColor(.gray)
+              .padding(.bottom, 5)
+            
+            Text("문의 사항은 teamshallwe@gmail.com으로 부탁드립니다.")
+              .font(.system(size: 14, weight: .regular))
+              .foregroundColor(.gray)
           }
           .frame(maxWidth: .infinity, alignment: .leading)
           .padding()

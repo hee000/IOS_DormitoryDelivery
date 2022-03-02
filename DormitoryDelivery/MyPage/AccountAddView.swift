@@ -53,6 +53,9 @@ struct AccountAddView: View {
             add.account = self.account
             try? realm.write({
               let userdb = realm.objects(UserPrivacy.self).first
+              if userdb?.mainAccount == nil {
+                userdb?.mainAccount = add
+              }
               userdb?.accounts.append(add)
             })
             presentationMode.wrappedValue.dismiss()

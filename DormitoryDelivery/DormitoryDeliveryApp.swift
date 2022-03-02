@@ -17,6 +17,12 @@ struct DormitoryDeliveryApp: App {
     var body: some Scene {
         WindowGroup {
           ContentView()
+//            .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { (_) in
+//                      print("UIApplication: active")
+//                    }
+            .onReceive(NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)) { (_) in
+              print("UIApplication: background")
+            }
             .environmentObject(NaverLogin())
             .environmentObject(DateCheck())
             .environmentObject(RoomData())

@@ -7,10 +7,15 @@
 
 import SwiftUI
 
-struct AlertOneButton: View {
+struct AlertOneButton<Content>: View where Content: View {
   @Binding var isActivity: Bool
+  var content: () -> Content
   
-  var text: String
+  init(isActivity: Binding<Bool>, @ViewBuilder content: @escaping () -> Content) {
+    self._isActivity = isActivity
+    self.content = content
+  }
+
     var body: some View {
       ZStack{
         Color.black.opacity(0.5)
@@ -19,8 +24,7 @@ struct AlertOneButton: View {
         
           VStack(spacing: 0) {
             VStack{
-              Text(self.text)
-                .font(.system(size: 16, weight: .regular))
+              content()
             }
               .padding()
               .padding([.top, .bottom])
@@ -46,12 +50,16 @@ struct AlertOneButton: View {
 
 
 
-struct AlertTwoButton: View {
+struct AlertTwoButton<Content>: View where Content: View {
   @Binding var yesButton: Bool
   @Binding var noButton: Bool
-  
-  var text1: String
-  var text2: String
+  var content: () -> Content
+
+  init(YActivity: Binding<Bool>, NActivity: Binding<Bool>, @ViewBuilder content: @escaping () -> Content) {
+    self._yesButton = YActivity
+    self._noButton = NActivity
+    self.content = content
+  }
   
     var body: some View {
       ZStack{
@@ -61,10 +69,7 @@ struct AlertTwoButton: View {
         
           VStack(spacing: 0) {
             VStack{
-              Text(self.text1)
-                .font(.system(size: 16, weight: .regular))
-              Text(self.text2)
-                .font(.system(size: 16, weight: .regular))
+              content()
             }
               .padding()
               .padding([.top, .bottom])

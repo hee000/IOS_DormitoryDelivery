@@ -35,13 +35,13 @@ struct LoginView: View {
         
         VStack{
           Spacer()
-          Button {
-            naverLogin.logout()
-          } label: {
-            Text("로그아웃")
-          }
-          .padding()
-          .padding()
+//          Button {
+//            naverLogin.logout()
+//          } label: {
+//            Text("로그아웃")
+//          }
+//          .padding()
+//          .padding()
           
         } //v
         Button {

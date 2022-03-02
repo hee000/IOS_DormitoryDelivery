@@ -49,6 +49,21 @@ struct MyPage: View {
             .padding([.leading, .trailing])
             .background(Color(.sRGB, red: 245/255, green: 245/255, blue: 251/255, opacity: 1))
             
+            Button("방 정보"){
+              let realm = try! Realm()
+              try! realm.write {
+                var a = realm.objects(ChatDB.self).last
+                var net = ChatUsersInfo()
+                net.userId = "Asdsad"
+                net.name = "하하"
+                a!.member.append(net)
+              }
+            }
+            
+            Button("방 정보"){
+              getRooms(uid: privacy._id!, token: naverLogin.sessionId)
+            }
+            
             VStack(alignment: .leading ,spacing: 0) {
               Text("설정")
                 .font(.system(size: 18, weight: .regular))

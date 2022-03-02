@@ -61,7 +61,7 @@ func getRoomJoin(matchid: String, token: String, title: String, rid: String, det
 }
 
 
-struct participantsinfo: Codable {
+struct participantsinfo: Codable, Equatable {
   var id: String;
   var name: String;
 }

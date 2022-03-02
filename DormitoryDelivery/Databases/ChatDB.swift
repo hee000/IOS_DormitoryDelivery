@@ -271,7 +271,7 @@ final class Noti: ObservableObject{
     let realm = try! Realm()
     var tmpBool = false
     for i in realm.objects(ChatDB.self) {
-      if i.messages.filter("type == 'system' AND idx > \(i.systemConfirmation)").count != 0 {
+      if i.messages.filter("type == 'system' AND idx > \(i.systemConfirmation)").filter("body.action == 'order-fixed' OR body.action == 'order-checked' OR body.action == 'order-finished'").count != 0 {
         tmpBool = true
         break
       }
@@ -288,7 +288,7 @@ final class Noti: ObservableObject{
       // When there is a change, replace the old channels array with a new one.
       var tmpBool = false
       for i in channels {
-        if i.messages.filter("type == 'system' AND idx > \(i.systemConfirmation)").count != 0 {
+        if i.messages.filter("type == 'system' AND idx > \(i.systemConfirmation)").filter("body.action == 'order-fixed' OR body.action == 'order-checked' OR body.action == 'order-finished'").count != 0 {
           tmpBool = true
           break
         }

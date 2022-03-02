@@ -28,6 +28,9 @@ struct ContentView: View {
           .edgesIgnoringSafeArea(.all)
       } else if !naverLogin.Login {
         EmailCheckView()
+          .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { (_) in
+                naverLogin.login()
+                  }
           .onAppear {
             naverLogin.login()
           }

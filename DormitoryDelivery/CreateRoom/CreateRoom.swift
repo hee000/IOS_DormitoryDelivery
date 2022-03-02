@@ -20,6 +20,8 @@ class CreateRoom: ObservableObject {
   @Published var rid = ""
   @Published var height: CGFloat? = .zero
   @Published var postalertstate = false
+  @Published var isAccount = false
+  
   
   func validcheck() -> Bool {
     var valid = true

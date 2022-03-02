@@ -33,7 +33,6 @@ struct ChatView: View {
             if chatnavi.index != nil {
               NavigationLink(destination: ChattingView(RoomChat: chatdata.chatlist[chatnavi.index!], rid: chatdata.chatlist[chatnavi.index!].rid!)
                               .onAppear(perform: {
-                print("asdasd")
                 chatnavi.Active = false
                 chatnavi.NaviJoinActive = false
                 chatnavi.NaviCreateActive = false
@@ -61,7 +60,6 @@ struct ChatView: View {
       }//geo
       .clipped()
       .onChange(of: chatnavi.NaviCreateActive) { NaviActive in
-        print("온체인지")
         if NaviActive {
           self.navi = true
         }

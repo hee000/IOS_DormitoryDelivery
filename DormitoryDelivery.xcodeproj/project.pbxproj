@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		8FAA3101DD5ECDD2B010BE19 /* Pods_DormitoryDelivery.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB9BB18865200D5B94F75300 /* Pods_DormitoryDelivery.framework */; };
+		DA065EE127C7A7E3000CB175 /* PostMenuDelete.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA065EE027C7A7E3000CB175 /* PostMenuDelete.swift */; };
 		DA12BE7227613BE800C08143 /* ChattingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA12BE7127613BE800C08143 /* ChattingView.swift */; };
 		DA12BE7427613C0500C08143 /* scrollview.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA12BE7327613C0500C08143 /* scrollview.swift */; };
 		DA12BE7627613C1A00C08143 /* bubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA12BE7527613C1A00C08143 /* bubble.swift */; };
@@ -39,6 +40,7 @@
 		DA518AE1279DECB300291CA0 /* OrderListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA518AE0279DECB300291CA0 /* OrderListView.swift */; };
 		DA518AE3279DED4000291CA0 /* getMenuList.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA518AE2279DED4000291CA0 /* getMenuList.swift */; };
 		DA518AE5279DF04500291CA0 /* getReady.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA518AE4279DF04500291CA0 /* getReady.swift */; };
+		DA62FEAE27C7A1CC002B0E4C /* BlackHanSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DA62FEAD27C7A1CC002B0E4C /* BlackHanSans-Regular.ttf */; };
 		DA6829E927A007B9008F53BB /* postOrderCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6829E827A007B9008F53BB /* postOrderCheck.swift */; };
 		DA6829EB27A00C01008F53BB /* ReceiptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6829EA27A00C01008F53BB /* ReceiptView.swift */; };
 		DA6829ED27A0B170008F53BB /* getMenus.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6829EC27A0B170008F53BB /* getMenus.swift */; };
@@ -97,6 +99,7 @@
 
 /* Begin PBXFileReference section */
 		25122BC202D697FFA306DD7E /* Pods-DormitoryDelivery.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DormitoryDelivery.debug.xcconfig"; path = "Target Support Files/Pods-DormitoryDelivery/Pods-DormitoryDelivery.debug.xcconfig"; sourceTree = "<group>"; };
+		DA065EE027C7A7E3000CB175 /* PostMenuDelete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostMenuDelete.swift; sourceTree = "<group>"; };
 		DA12BE7127613BE800C08143 /* ChattingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChattingView.swift; sourceTree = "<group>"; };
 		DA12BE7327613C0500C08143 /* scrollview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = scrollview.swift; sourceTree = "<group>"; };
 		DA12BE7527613C1A00C08143 /* bubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = bubble.swift; sourceTree = "<group>"; };
@@ -131,6 +134,7 @@
 		DA518AE2279DED4000291CA0 /* getMenuList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = getMenuList.swift; sourceTree = "<group>"; };
 		DA518AE4279DF04500291CA0 /* getReady.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = getReady.swift; sourceTree = "<group>"; };
 		DA53D1CA27AFB78000E92A8D /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		DA62FEAD27C7A1CC002B0E4C /* BlackHanSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "BlackHanSans-Regular.ttf"; sourceTree = "<group>"; };
 		DA6829E827A007B9008F53BB /* postOrderCheck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = postOrderCheck.swift; sourceTree = "<group>"; };
 		DA6829EA27A00C01008F53BB /* ReceiptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptView.swift; sourceTree = "<group>"; };
 		DA6829EC27A0B170008F53BB /* getMenus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = getMenus.swift; sourceTree = "<group>"; };
@@ -231,6 +235,7 @@
 		DA4D2D1127422FE300678FA8 = {
 			isa = PBXGroup;
 			children = (
+				DA62FEAC27C7A1AE002B0E4C /* fonts */,
 				DA4D2D1C27422FE300678FA8 /* DormitoryDelivery */,
 				DA4D2D1B27422FE300678FA8 /* Products */,
 				96602EC5794014BD04662618 /* Pods */,
@@ -281,6 +286,14 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		DA62FEAC27C7A1AE002B0E4C /* fonts */ = {
+			isa = PBXGroup;
+			children = (
+				DA62FEAD27C7A1CC002B0E4C /* BlackHanSans-Regular.ttf */,
+			);
+			path = fonts;
+			sourceTree = "<group>";
+		};
 		DABCFE5F2743AE8900B89781 /* Data */ = {
 			isa = PBXGroup;
 			children = (
@@ -329,6 +342,7 @@
 				DAC45274275FEBA400D05BB0 /* postCreateRoom.swift */,
 				DA518ADC279DE60900291CA0 /* postAddMenu.swift */,
 				DA6829F027A0DE5C008F53BB /* postMenuEdit.swift */,
+				DA065EE027C7A7E3000CB175 /* PostMenuDelete.swift */,
 				DA518ADA279D965400291CA0 /* getRoomLeave.swift */,
 				DA518AE2279DED4000291CA0 /* getMenuList.swift */,
 				DA6829EC27A0B170008F53BB /* getMenus.swift */,
@@ -544,6 +558,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA62FEAE27C7A1CC002B0E4C /* BlackHanSans-Regular.ttf in Resources */,
 				DA4D2D2E2742309500678FA8 /* Launch Screen.storyboard in Resources */,
 				DA8837AA275BC81C0034481F /* Assets.xcassets in Resources */,
 				DA4D2D2527422FE500678FA8 /* Preview Assets.xcassets in Resources */,
@@ -619,6 +634,7 @@
 				DA518AE3279DED4000291CA0 /* getMenuList.swift in Sources */,
 				DAF616DA275E7F300011C508 /* realmbackup.swift.swift in Sources */,
 				DA518ADB279D965400291CA0 /* getRoomLeave.swift in Sources */,
+				DA065EE127C7A7E3000CB175 /* PostMenuDelete.swift in Sources */,
 				DACEE4A527BB6DD0003A8AA3 /* NotificationView.swift in Sources */,
 				DA6829EB27A00C01008F53BB /* ReceiptView.swift in Sources */,
 				DAD23A6E27A6B8680094991C /* NetworkConnectionCheck.swift in Sources */,
