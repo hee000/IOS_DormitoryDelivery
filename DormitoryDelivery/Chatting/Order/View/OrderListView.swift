@@ -28,7 +28,7 @@ struct OrderListView: View {
             .frame(width: geo.size.width)
             .onAppear {
               orderlistmodel.data = nil
-              getMenuList(rid: self.rid, token: naverLogin.sessionId, model: orderlistmodel)
+              getMenuList(rid: self.rid, model: orderlistmodel)
             }
             .padding(.top)
           }//scroll

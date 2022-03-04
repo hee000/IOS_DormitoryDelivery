@@ -18,8 +18,7 @@ struct ChattingView: View {
   @EnvironmentObject var keyboardManager: KeyboardManager
   @EnvironmentObject var naverLogin: NaverLogin
   @EnvironmentObject var imsi_data: ChatData
-
-
+  @EnvironmentObject var userPrivacy: UserData
   @StateObject var model: Chatting = Chatting()
   
   @State var RoomChat: ChatDB?
@@ -29,6 +28,7 @@ struct ChattingView: View {
   @Namespace var bottomID
   
   var body: some View {
+    
     let drag = DragGesture()
       .onEnded {
         if $0.translation.width > 100 {
@@ -52,7 +52,7 @@ struct ChattingView: View {
                   if let RoomDB = RoomChat{
                     ForEach(RoomDB.messages.indices, id: \.self) { index in
                       if RoomDB.messages[index].type == "chat" {
-                        if let idvalue = UserDefaults.standard.string(forKey: "MyID") {
+                        if let idvalue = userPrivacy.data.id {
                           if RoomDB.messages[index].body!.userid == idvalue { // 내 매세지
                             ChatBubble(position: BubblePosition.right, color: Color(.sRGB, red: 87/255, green: 126/255, blue: 255/255, opacity: 1)) {
                               Text(RoomDB.messages[index].body!.message!)
@@ -131,7 +131,7 @@ struct ChattingView: View {
             //MARK:- text editor
         // 주문서 작성 & 준비완료
           if RoomChat?.state?.orderFix == false {
-            if RoomChat?.superUser!.userId! == UserDefaults.standard.string(forKey: "MyID")! || (RoomChat?.menu.count) == 0{
+            if RoomChat?.superUser!.userId! == userPrivacy.data.id || (RoomChat?.menu.count) == 0{
               Button {
                 self.model.oderview.toggle()
               } label: {
@@ -152,7 +152,7 @@ struct ChattingView: View {
               .frame(width: geo.size.width/2)
               Divider()
               Button {
-                getReady(rid: self.rid, token: naverLogin.sessionId, model: RoomChat!)
+                getReady(rid: self.rid, model: RoomChat!)
               } label: {
                 Text(RoomChat!.ready ? "준비해제" : "준비완료")
                   .font(.system(size: 14, weight: .regular))
@@ -244,9 +244,9 @@ struct ChattingView: View {
                     }}) : nil)
 
         
-        if RoomChat?.superUser!.userId! == UserDefaults.standard.string(forKey: "MyID")! && RoomChat?.state?.allReady == true && self.model.showMenu == false {
+        if RoomChat?.superUser!.userId! == userPrivacy.data.id && RoomChat?.state?.allReady == true && self.model.showMenu == false {
           Button {
-            postOderFix(rid: self.rid, token: naverLogin.sessionId)
+            postOderFix(rid: self.rid)
           } label: {
             HStack{
               VStack(alignment: .leading) {
@@ -279,7 +279,7 @@ struct ChattingView: View {
           .disabled(RoomChat?.Kicked ?? false ? true : false)
         } // 방장 메뉴 오더 픽스 이벤트
         
-        if RoomChat?.superUser!.userId! == UserDefaults.standard.string(forKey: "MyID")! && RoomChat?.state?.orderFix == true && RoomChat?.state?.orderChecked == false && self.model.showMenu == false {
+        if RoomChat?.superUser!.userId! == userPrivacy.data.id && RoomChat?.state?.orderFix == true && RoomChat?.state?.orderChecked == false && self.model.showMenu == false {
           Button{
             self.model.odercheck.toggle()
           } label: {
@@ -310,9 +310,9 @@ struct ChattingView: View {
           .disabled(RoomChat?.Kicked ?? false ? true : false)
         } // 방장 메뉴 확인 이벤트
         
-        if RoomChat?.superUser!.userId! == UserDefaults.standard.string(forKey: "MyID")! && RoomChat?.state?.orderChecked == true && RoomChat?.state?.orderDone == false && self.model.showMenu == false {
+        if RoomChat?.superUser!.userId! == userPrivacy.data.id && RoomChat?.state?.orderChecked == true && RoomChat?.state?.orderDone == false && self.model.showMenu == false {
           Button{
-            postOrderDone(rid: self.rid, token: naverLogin.sessionId)
+            postOrderDone(rid: self.rid)
           } label: {
             HStack{
               Text("주문이 완료되면 눌러주세요.")

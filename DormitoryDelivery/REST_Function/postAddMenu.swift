@@ -9,23 +9,17 @@ import Foundation
 import Alamofire
 import RealmSwift
 
-func postAddMenu(oderdata: orderdata, rid: String, token: String){
+func postAddMenu(oderdata: orderdata, rid: String){
   print("방만들기 시도")
   let addkey = addmenu(name: oderdata.name, quantity: oderdata.quantity, description: oderdata.description, price: oderdata.price!)
-  let url = urladdmenu(uid: UserDefaults.standard.string(forKey: "MyID")!, rid: rid)
-  var request = URLRequest(url: url)
-  request.httpMethod = "POST"
-  request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-  request.timeoutInterval = 10
-  request.allHTTPHeaderFields = (["Authorization": token])
+  let url = urladdmenu(uid: UserData().data.id!, rid: rid)
   
-  do {
-      try request.httpBody = JSONEncoder().encode(addkey)
-  } catch {
-      print("http Body Error")
-  }
-  
-  AF.request(request).responseString { response in
+  guard let param = try? addkey.asDictionary() else { return }
+  AF.request(url, method: .post,
+             parameters: param,
+             encoding: JSONEncoding.default,
+             headers: TokenUtils().getAuthorizationHeader()
+  ).responseString { response in
     switch response.result {
     case .success(let value):
       print(value)

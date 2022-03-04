@@ -35,8 +35,10 @@ struct emailverify: Codable {
 struct authsession: Codable {
   var type: String;
   var accessToken: String;
+  var deviceToken: String;
 }
 
-struct sessionvalue: Codable{
-  var sessionId: String;
+struct tokenvalue: Codable{
+  var accessToken: String;
+  var refreshToken: String;
 }

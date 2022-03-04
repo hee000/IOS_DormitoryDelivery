@@ -9,11 +9,11 @@ import Foundation
 import Alamofire
 import RealmSwift
 
-func getRooms(uid: String, token: String) {
+func getRooms(uid: String) {
   let url = urlrooms(uid: uid)
-  let req = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: ["Authorization": token])
+  let req = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: TokenUtils().getAuthorizationHeader())
   req.responseJSON { response in
-//    print(response)
+
     do {
       switch response.result {
       case .success(let value):
@@ -28,7 +28,7 @@ func getRooms(uid: String, token: String) {
           for room in json {
             if let db = realm.object(ofType: ChatDB.self, forPrimaryKey: room.id) {
               print(db)
-              AF.request(urlparticipants(rid: room.id), method: .get, parameters: nil, encoding: JSONEncoding.default, headers: ["Authorization": token])
+              AF.request(urlparticipants(rid: room.id), method: .get, parameters: nil, encoding: JSONEncoding.default, headers: TokenUtils().getAuthorizationHeader())
                 .responseJSON { response2 in
                   guard var participants = try? JSONDecoder().decode([participantsinfo].self, from: response2.data!) else { return }
                   for member in db.member {
@@ -52,7 +52,7 @@ func getRooms(uid: String, token: String) {
                   
                 }
             } else {
-              AF.request(urlparticipants(rid: room.id), method: .get, parameters: nil, encoding: JSONEncoding.default, headers: ["Authorization": token])
+              AF.request(urlparticipants(rid: room.id), method: .get, parameters: nil, encoding: JSONEncoding.default, headers: TokenUtils().getAuthorizationHeader())
                 .responseJSON { response2 in
                   guard let participants = try? JSONDecoder().decode([participantsinfo].self, from: response2.data!) else { return }
                   
@@ -115,7 +115,7 @@ func getRooms(uid: String, token: String) {
 
 func getparticipants(rid: String, token: String) {
   let url = urlparticipants(rid: rid)
-  let req = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: ["Authorization": token])
+  let req = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: TokenUtils().getAuthorizationHeader())
   req.responseJSON { response in
     
     print(response)

@@ -27,7 +27,7 @@ struct OrderListCard: View {
           Text(model.user.name)
             .font(.system(size: 18, weight: .bold))
           Spacer()
-          if model.user.userId == UserDefaults.standard.string(forKey: "MyID")! && RoomChat != nil && RoomChat!.state?.orderFix == false {
+          if model.user.userId == UserData().data.id && RoomChat != nil && RoomChat!.state?.orderFix == false {
             Button {
               self.order.toggle()
             } label: {

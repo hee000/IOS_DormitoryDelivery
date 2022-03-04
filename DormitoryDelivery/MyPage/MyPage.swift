@@ -35,7 +35,7 @@ struct MyPage: View {
               VStack (alignment: .leading, spacing: 3) {
                 Text(privacy.name!)
                   .font(.system(size: 16, weight: .bold))
-                Text(privacy.belong!)
+                Text(String(privacy.belong))
                   .font(.system(size: 16, weight: .regular))
                   .foregroundColor(.gray)
                 Text("email_ID")
@@ -61,7 +61,7 @@ struct MyPage: View {
             }
             
             Button("방 정보"){
-              getRooms(uid: privacy._id!, token: naverLogin.sessionId)
+              getRooms(uid: privacy.id!)
             }
             
             VStack(alignment: .leading ,spacing: 0) {
@@ -138,13 +138,13 @@ struct MyPage: View {
                   for rid in chatrids {
                     let db = realm.object(ofType: ChatDB.self, forPrimaryKey: rid)
                     guard let idx = db?.messages.last?.idx else {
-                      if let mytoken = naverLogin.loginInstance?.accessToken {
-                        getChatLog(rid: rid as! String, idx: "0", token: mytoken)
-                      }
-                      return }
-                    if let mytoken = naverLogin.loginInstance?.accessToken {
-                      getChatLog(rid: rid as! String, idx: String(idx.value!), token: mytoken)
+                      getChatLog(rid: rid as! String, idx: 0)
+                      return
+                      
                     }
+//                    print(idx.value)
+//                    getChatLog(rid: rid as! String, idx: 0)
+                    getChatLog(rid: rid as! String, idx: idx.value!)
                   }
                 }) {
                   HStack{

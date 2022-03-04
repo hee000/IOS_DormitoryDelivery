@@ -40,7 +40,7 @@ struct ChatSideMenu: View {
             Divider()
             
             Button{
-              postVoteReset(rid: self.rid, token: naverLogin.sessionId)
+              postVoteReset(rid: self.rid)
             } label: {
               HStack{
                 Text("투표하기")
@@ -81,9 +81,9 @@ struct ChatSideMenu: View {
                   }
                   Spacer()
                   
-                  if RoomChat!.state?.orderFix == true && RoomChat!.state?.orderDone == false && RoomChat!.superUser!.userId != privacy._id { //강퇴투표
+                  if RoomChat!.state?.orderFix == true && RoomChat!.state?.orderDone == false && RoomChat!.superUser!.userId != privacy.id { //강퇴투표
                     Button{
-                      postVoteKick(rid: self.rid, uid: RoomChat!.superUser!.userId!, token: naverLogin.sessionId)
+                      postVoteKick(rid: self.rid, uid: RoomChat!.superUser!.userId!)
                     } label: {
                       Text("강퇴 투표")
                         .font(.system(size: 14, weight: .regular))
@@ -106,9 +106,9 @@ struct ChatSideMenu: View {
                       Text(RoomChat!.member[index].name!)
                         .font(.system(size: 16, weight: .regular))
                       Spacer()
-                      if RoomChat!.state?.orderFix == false && RoomChat!.superUser!.userId == privacy._id { // 방장강퇴
+                      if RoomChat!.state?.orderFix == false && RoomChat!.superUser!.userId == privacy.id { // 방장강퇴
                         Button{
-                          getKick(rid: self.rid, uid: RoomChat!.member[index].userId!, token: naverLogin.sessionId)
+                          getKick(rid: self.rid, uid: RoomChat!.member[index].userId!)
                         } label: {
                           Text("강퇴하기")
                             .font(.system(size: 14, weight: .regular))
@@ -117,9 +117,9 @@ struct ChatSideMenu: View {
                         }
                       }
                       
-                      if RoomChat!.state?.orderFix == true && RoomChat!.state?.orderDone == false && RoomChat!.member[index].userId != privacy._id { //강퇴투표
+                      if RoomChat!.state?.orderFix == true && RoomChat!.state?.orderDone == false && RoomChat!.member[index].userId != privacy.id { //강퇴투표
                         Button{
-                          postVoteKick(rid: self.rid, uid: RoomChat!.member[index].userId!, token: naverLogin.sessionId)
+                          postVoteKick(rid: self.rid, uid: RoomChat!.member[index].userId!)
                         } label: {
                           Text("강퇴 투표")
                             .font(.system(size: 14, weight: .regular))
@@ -142,7 +142,8 @@ struct ChatSideMenu: View {
 //              getRoomLeave(rid: self.rid, token: mytoken, model: model)
             if RoomChat?.Kicked != true {
               let url = urlroomleave(rid: self.rid)
-              let req = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: ["Authorization": naverLogin.sessionId])
+              let tk = TokenUtils()
+              let req = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: tk.getAuthorizationHeader())
               req.response { response in
                 print(response)
                 do {

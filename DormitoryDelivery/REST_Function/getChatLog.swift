@@ -9,10 +9,10 @@ import Foundation
 import Alamofire
 import RealmSwift
 
-func getChatLog(rid: String, idx: String, token: String) {
-  var index = Int(idx)! + 1
+func getChatLog(rid: String, idx: Int) {
+  let index = idx + 1
   let url = urlchatlog(rid: rid, idx: String(index))
-  let req = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: ["Authorization": token])
+  let req = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: TokenUtils().getAuthorizationHeader())
   req.responseJSON { response in
     do {
 //      let result = response.value as! [Any]

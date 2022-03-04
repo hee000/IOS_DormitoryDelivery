@@ -12,7 +12,7 @@ struct AccountView: View {
   @Environment(\.presentationMode) var presentationMode
 
 //  @ObservedResults(UserPrivacy.self) var userPrivacys
-  @StateObject var userPrivacy = UserData()
+  @EnvironmentObject var userPrivacy: UserData
   @State var showingSheet = false
   @State var showingSheetMain = false
   @State var test: UserAccount? = nil
@@ -21,10 +21,10 @@ struct AccountView: View {
       
       GeometryReader { _ in
         VStack{
-          if !userPrivacy.chatlist.accounts.isEmpty {
+          if !userPrivacy.data.accounts.isEmpty {
             ScrollView{
               VStack(alignment: .leading, spacing: 16){
-                if let acc = userPrivacy.chatlist.mainAccount {
+                if let acc = userPrivacy.data.mainAccount {
                   VStack(alignment: .leading) {
                     HStack{
                       Text(acc.bank!)
@@ -81,13 +81,13 @@ struct AccountView: View {
                   .shadow(color: Color.black.opacity(0.15), radius: 4)
                   .padding([.leading, .trailing])
                 }
-                ForEach(userPrivacy.chatlist.accounts.indices, id:\.self) { index in
-                  if userPrivacy.chatlist.accounts[index].account != userPrivacy.chatlist.mainAccount?.account {
+                ForEach(userPrivacy.data.accounts.indices, id:\.self) { index in
+                  if userPrivacy.data.accounts[index].account != userPrivacy.data.mainAccount?.account {
                     VStack(alignment: .leading) {
-                      Text(userPrivacy.chatlist.accounts[index].bank!)
+                      Text(userPrivacy.data.accounts[index].bank!)
                         .bold()
                       
-                      Text(userPrivacy.chatlist.accounts[index].account!)
+                      Text(userPrivacy.data.accounts[index].account!)
                         .bold()
                       
                       HStack{
@@ -95,7 +95,7 @@ struct AccountView: View {
                           .font(.footnote)
                           .foregroundColor(Color.gray)
                           .padding(.top, 1)
-                        Text(userPrivacy.chatlist.accounts[index].name!)
+                        Text(userPrivacy.data.accounts[index].name!)
                           .font(.footnote)
                           .foregroundColor(Color.gray)
                           .padding(.top, 1)
@@ -103,7 +103,7 @@ struct AccountView: View {
                         Spacer()
                         
                         Button{
-                          test = userPrivacy.chatlist.accounts[index]
+                          test = userPrivacy.data.accounts[index]
                           showingSheet.toggle()
                         } label: {
                           Image(systemName: "ellipsis")

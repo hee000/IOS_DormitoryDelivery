@@ -8,9 +8,9 @@
 import Foundation
 import Alamofire
 
-func getMenuListIndividual(uid: String, rid: String, token: String, model: Order) {
+func getMenuListIndividual(uid: String, rid: String, model: Order) {
   let url = urladdmenu(uid: uid, rid: rid)
-  let req = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: ["Authorization": token])
+  let req = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: TokenUtils().getAuthorizationHeader())
   req.responseJSON { response in
     guard let menulist = try? JSONDecoder().decode([orderdata].self, from: response.data!) else { return }
 

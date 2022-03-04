@@ -16,7 +16,7 @@ class CreateRoom: ObservableObject {
   @Published var deliveryPriceAtLeast: String = ""
   @Published var shopLink: String = ""
   @Published var category: Int? = nil
-  @Published var section = 0
+  @Published var section: Int? = nil
   @Published var rid = ""
   @Published var height: CGFloat? = .zero
   @Published var postalertstate = false
@@ -25,7 +25,7 @@ class CreateRoom: ObservableObject {
   
   func validcheck() -> Bool {
     var valid = true
-    if shopName == "" || deliveryPriceAtLeast == "" || category == nil {
+    if shopName == "" || deliveryPriceAtLeast == "" || category == nil || section == nil {
       valid = false
     }
     return valid

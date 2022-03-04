@@ -21,7 +21,7 @@ class SocketIOManager:NSObject {
   
   
   
-  func establishConnection(token: String, roomdata: RoomData) {
+  func establishConnection(token: String, roomdata: RoomData, dormis: dormitoryData) {
       print("연결시작")
       socket.connect(withPayload: ["token": token])
       matchSocket.connect(withPayload: ["token": token])
@@ -30,7 +30,10 @@ class SocketIOManager:NSObject {
 //    socket.on("connect") { data, ack in
 //            socket.emit("connectWithNewId", UsersViewController.nickname)
     matchSocket.on("connect") { data, ack in
-      SocketIOManager.shared.match_emitSubscribe(rooms: roomdata, section: sectionNameEng, category: categoryNameEng)
+      SocketIOManager.shared.match_emitSubscribe(rooms: roomdata, section: dormis.data.map({ dormitory in
+        dormitory.id
+      }), category: categoryNameEng)
+      
       SocketIOManager.shared.match_onArrive(rooms: roomdata)
     }
     roomSocket.on("connect") { data, ack in
@@ -44,7 +47,7 @@ class SocketIOManager:NSObject {
         matchSocket.disconnect()
     }
     
-  func match_emitSubscribe(rooms:RoomData, section: [String], category: [String]){
+  func match_emitSubscribe(rooms:RoomData, section: [Int], category: [String]){
     
 //    rooms.data = nil
     do{
@@ -150,14 +153,14 @@ class SocketIOManager:NSObject {
               chatroom?.state?.allReady = false
               chatroom?.state?.orderFix = true
             } else if json.body?.action == "users-new" {
-              if json.body?.data?.userId != user._id {
+              if json.body?.data?.userId != user.id {
                 let userinfo = ChatUsersInfo()
                 userinfo.userId = json.body?.data?.userId
                 userinfo.name = json.body?.data?.name
                 chatroom?.member.append(userinfo)
               }
             } else if json.body?.action == "users-leave" {
-              if json.body!.data!.userId == user._id {
+              if json.body!.data!.userId == user.id {
                 chatroom?.Kicked = true
               } else{
                 let leaveuser = chatroom?.member.filter("userId == '\(json.body!.data!.userId!)'")

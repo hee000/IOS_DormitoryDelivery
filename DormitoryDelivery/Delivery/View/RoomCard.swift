@@ -30,7 +30,7 @@ struct RoomCard: View {
         VStack(spacing: 2){
           HStack{ //타이틀, 업체명
             VStack(alignment: .leading, spacing: 3){
-              Text("\(sectionNameToKor[self.deliveryZone]!)관")
+                Text(self.deliveryZone)
                 .font(.system(size: 15))
                 .foregroundColor(Color.gray)
               Text(self.deliveryTitle)

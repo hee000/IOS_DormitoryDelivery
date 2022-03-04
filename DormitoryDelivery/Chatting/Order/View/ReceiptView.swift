@@ -177,7 +177,7 @@ struct ReceiptView: View {
         })
                : nil) //overlay
       .onAppear {
-        AF.request(urlimgdownloadurl(rid: self.roomid), method: .get, parameters: nil, encoding: JSONEncoding.default, headers: ["Authorization": naverLogin.sessionId])
+        AF.request(urlimgdownloadurl(rid: self.roomid), method: .get, parameters: nil, encoding: JSONEncoding.default, headers: TokenUtils().getAuthorizationHeader())
           .responseJSON { response2 in
 //            var a = response2.
             guard let urls = response2.value as? [String] else { return }
@@ -225,7 +225,7 @@ struct ReceiptView: View {
 //          }
         
         
-        AF.request(urlreceipt(rid: self.roomid), method: .get, parameters: nil, encoding: JSONEncoding.default, headers: ["Authorization": naverLogin.sessionId])
+        AF.request(urlreceipt(rid: self.roomid), method: .get, parameters: nil, encoding: JSONEncoding.default, headers: TokenUtils().getAuthorizationHeader())
           .responseJSON { response in
             do {
               let data2 = try JSONSerialization.data(withJSONObject: response.value, options: .prettyPrinted)

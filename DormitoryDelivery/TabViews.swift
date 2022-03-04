@@ -1,75 +1,3 @@
-////
-////  Home.swift
-////  DormitoryDelivery
-////
-////  Created by cch on 2021/11/15.
-////
-//
-//import SwiftUI
-//
-//struct TabViews: View {
-//
-//  @State var tabSelect = 0
-//
-//  var body: some View {
-//
-//      TabView(selection: $tabSelect) {
-//        NavigationView {DeliveryView()} .tabItem {
-//          if self.tabSelect == 0 {
-////            Label("홈", image: "대지 8 사본")
-//            Label("", image: "23424")
-//          } else {
-////            Label("홈", image: "대지 8 사본 5")
-//            Label("", image: "대지 8 사본 5")
-//          }
-//        }
-//        .tag(0)
-//
-//        NavigationView {CreateRoomView()}.tabItem {
-//          if self.tabSelect == 1 {
-//            Label("개설", image: "대지 8 사본 3")
-//          } else {
-////            Label("개설", image: "대지 8 사본 7")
-//            Label("", image: "대지 8 사본 7")
-//          }
-//        }.tag(1)
-//
-//        NavigationView {ChatView()}.tabItem {
-//          if self.tabSelect == 2 {
-//            Label("채팅", image: "대지 8")
-//          } else {
-////            Label("채팅", image: "대지 8 사본 4")
-//            Label("", image: "대지 8 사본 4")
-//          }
-//        }.tag(2)
-//
-//        MyPage().tabItem {
-//          if self.tabSelect == 3 {
-//            Label("마이", image: "대지 8 사본 2")
-//          } else {
-////            Label("마이", image: "대지 8 사본 6")
-//            Label("", image: "대지 8 사본 6")
-//          }
-//        }.tag(3)
-//
-//      }
-//      .accentColor(Color(.sRGB, red: 112/255, green: 52/255, blue: 255/255, opacity: 1))
-//
-//
-//  }
-//}
-//
-//struct TabViews_Previews: PreviewProvider {
-//    static var previews: some View {
-//      TabViews()
-//    }
-//}
-
-
-
-
-
-
 //
 //  Home.swift
 //  DormitoryDelivery
@@ -83,12 +11,13 @@ import RealmSwift
 struct TabViews: View {
   @EnvironmentObject var chatdata: ChatData
   @EnvironmentObject var noti: Noti
+  @EnvironmentObject var dormis: dormitoryData
   
   @State var tabSelect = 0
   @State var createRoomSelect = false
   @State var tabSelectTmp = 0
   
-  @State var DeliveryViewSection = 0
+  @State var DeliveryViewSection = -1
 
   var body: some View {
     TabView(selection: $tabSelect){
@@ -157,15 +86,24 @@ struct TabViews: View {
         HStack(spacing: 0) {
           if self.tabSelect == 0 {
             Menu{
-              ForEach(0 ..< sections.count, id: \.self) { index in
+//              ForEach(0 ..< sections.count, id: \.self) { index in
+              Button(action: {
+                self.DeliveryViewSection = -1
+              }) {
+                Text("전체")
+              }
+              ForEach(dormis.data) { dormi in
                 Button(action: {
-                  self.DeliveryViewSection = index
+                  self.DeliveryViewSection = dormi.id
                 }) {
-                  Text(sections[index])
+                  Text(dormi.name)
                 }
               }
             } label: {
-              Text(sections[self.DeliveryViewSection])
+//              Text(sections[self.DeliveryViewSection])
+              Text(self.DeliveryViewSection == -1 ? "전체" : dormis.data[dormis.data.map({ dormitory in
+                dormitory.id
+              }).index(of: self.DeliveryViewSection)!].name)
                 .font(.title2)
                 .bold()
                 .foregroundColor(.black)

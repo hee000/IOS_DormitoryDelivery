@@ -11,7 +11,7 @@ import SocketIO
 
 struct homeViewOption: Codable, SocketData {
   var category: [String]
-  var section: [String]
+  var section: [Int]
   
   func socketRepresentation() -> SocketData {
       return ["category": category, "section": section]

@@ -9,9 +9,10 @@ import Foundation
 import Alamofire
 import RealmSwift
 
-func getReady(rid: String, token: String, model: ChatDB) {
+func getReady(rid: String, model: ChatDB) {
   let url = urlready(uid: UserDefaults.standard.string(forKey: "MyID")!, rid: rid, state: model.ready)
-  let req = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: ["Authorization": token])
+  let req = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: TokenUtils().getAuthorizationHeader())
+  
   req.responseString { response in
 
     let realm = try! Realm()

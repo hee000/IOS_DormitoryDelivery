@@ -64,8 +64,8 @@ struct OrderCheckView: View {
             Text("계좌를 확인해주세요.")
               .bold()
             VStack{
-              if !userPrivacy.chatlist.accounts.isEmpty {
-                if let acc = userPrivacy.chatlist.mainAccount {
+              if !userPrivacy.data.accounts.isEmpty {
+                if let acc = userPrivacy.data.mainAccount {
                   VStack(alignment: .leading) {
                     Text(acc.bank!)
                       .bold()
@@ -108,7 +108,7 @@ struct OrderCheckView: View {
             
             Button{
               if self.orderCheckData.image.size != CGSize(width: 0, height: 0){
-                postOrderCheck(rid: self.roomid, token: naverLogin.sessionId, model: orderCheckData, account: userPrivacy.chatlist.mainAccount!)
+                postOrderCheck(rid: self.roomid, model: orderCheckData, account: userPrivacy.data.mainAccount!)
               }
             } label: {
               Text("보내기")

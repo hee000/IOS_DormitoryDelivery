@@ -66,10 +66,11 @@ class ChatState: Object, ObjectKeyIdentifiable{
 }
 
 class UserPrivacy: Object, ObjectKeyIdentifiable{
-  @objc dynamic var _id: String?
+  @objc dynamic var id: String?
   @objc dynamic var emailAddress: String?
   @objc dynamic var name: String?
-  @objc dynamic var belong: String?
+  @objc dynamic var belong: Int = -1
+  @objc dynamic var belongStr: String?
   @objc dynamic var alram: Bool = false
   @objc dynamic var mainAccount: UserAccount? = nil
   var accounts = List<UserAccount>()
@@ -234,7 +235,7 @@ func addChatting(_ result : ChatDB) {
 
 
 final class UserData: ObservableObject{
-  @Published var chatlist: UserPrivacy
+  @Published var data: UserPrivacy
 
   private var chatsToken: NotificationToken?
 
@@ -242,7 +243,7 @@ final class UserData: ObservableObject{
   // Grab channels from Realm, and then activate a Realm token to listen for changes.
   init() {
     let realm = try! Realm()
-    chatlist = Array(realm.objects(UserPrivacy.self))[0] // Convert Realm results
+    data = Array(realm.objects(UserPrivacy.self))[0] // Convert Realm results
     activateChannelsToken()
   }
 
@@ -250,7 +251,7 @@ final class UserData: ObservableObject{
     let realm = try! Realm()
     let channels = realm.objects(UserPrivacy.self)
     chatsToken = channels.observe { _ in
-      self.chatlist = channels[0]
+      self.data = channels[0]
     }
   }
 

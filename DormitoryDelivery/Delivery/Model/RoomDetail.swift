@@ -38,9 +38,10 @@ class RoomDetailData: ObservableObject {
     self.roomdata = room
   }
   
-  func getRoomDetail(matchid: String, token: String) {
+  func getRoomDetail(matchid: String) {
+    let tk = TokenUtils()
     let url = roomdetail(matchId: matchid)
-    let req = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: ["Authorization": token])
+    let req = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: tk.getAuthorizationHeader())
       req.responseJSON { response in
 
         //리스폰 상태 200일떄로 이프문 걸기

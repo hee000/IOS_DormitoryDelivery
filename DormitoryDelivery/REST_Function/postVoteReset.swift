@@ -9,16 +9,10 @@ import Foundation
 import Alamofire
 
 
-func postVoteReset(rid: String, token: String){
+func postVoteReset(rid: String) {
   let url = urlvotereset(rid: rid)
-  var request = URLRequest(url: url)
-  request.httpMethod = "POST"
-  request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-  request.timeoutInterval = 10
-  request.allHTTPHeaderFields = (["Authorization": token])
   
-  
-  AF.request(request).responseString { response in
+  AF.request(url, method: .post, headers: TokenUtils().getAuthorizationHeader()).responseString { response in
     print(response)
   }
   

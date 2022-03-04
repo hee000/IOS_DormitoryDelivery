@@ -8,15 +8,15 @@
 import Foundation
 import Alamofire
 
-func getRoomJoin(matchid: String, token: String, title: String, rid: String, detaildata: RoomDetailData, navi: ChatNavi) {
+func getRoomJoin(matchid: String, title: String, rid: String, detaildata: RoomDetailData, navi: ChatNavi) {
+  let tk = TokenUtils()
   let url = roomjoin(matchId: matchid)
-  let req = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: ["Authorization": token])
+  let req = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: tk.getAuthorizationHeader())
   req.response { response in
     do {
       if response.response?.statusCode == 200 {
         
-        AF.request(urlparticipants(rid: rid), method: .get, parameters: nil, encoding: JSONEncoding.default, headers: ["Authorization": token]).responseJSON { result in
-          
+        AF.request(urlparticipants(rid: rid), method: .get, parameters: nil, encoding: JSONEncoding.default, headers: tk.getAuthorizationHeader()).responseJSON { result in
           let result2 = result.value as! [Any]
           do {
               let data2 = try JSONSerialization.data(withJSONObject: result2, options: .prettyPrinted)

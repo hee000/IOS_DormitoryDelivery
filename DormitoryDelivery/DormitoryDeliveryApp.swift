@@ -26,7 +26,7 @@ struct DormitoryDeliveryApp: App {
             .environmentObject(NaverLogin())
             .environmentObject(DateCheck())
             .environmentObject(RoomData())
-//            .environmentObject(RoomDetailData())
+            .environmentObject(dormitoryData())
             .environmentObject(ChatData())
             .environmentObject(ChatNavi())
             .environmentObject(KeyboardManager())

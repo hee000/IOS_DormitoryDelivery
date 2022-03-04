@@ -27,3 +27,4 @@ struct roomsdata: Codable {
 class RoomData: ObservableObject, Identifiable{
   @Published var data: roomsdata? = nil
 }
+

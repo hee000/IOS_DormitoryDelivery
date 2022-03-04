@@ -6,11 +6,14 @@
 //
 
 import SwiftUI
+import Alamofire
+import JWTDecode
 
 struct ContentView: View {
   @EnvironmentObject var naverLogin: NaverLogin
   @EnvironmentObject var datecheck: DateCheck
   @EnvironmentObject var roomdata: RoomData
+  @EnvironmentObject var dormis: dormitoryData
   
   init() {
 //    UITabBar.appearance().backgroundColor = UIColor.gray.withAlphaComponent(0.1)
@@ -41,13 +44,32 @@ struct ContentView: View {
               print(SocketIOManager.shared.socket.status)
             }
 
-          }
+          }//navi
+        .environmentObject(UserData())
           .onChange(of: SocketIOManager.shared.socket.status, perform: { newValue in
             print(newValue)
           })
           .onAppear {
+            
             datecheck.startAction()
-            SocketIOManager.shared.establishConnection(token: "Bearer \(naverLogin.sessionId)", roomdata: roomdata)
+            let tk = TokenUtils()
+            guard let token = tk.read(),
+                  let jwt = try? decode(jwt: token),
+                  let json = try? JSONSerialization.data(withJSONObject: jwt.body, options: .prettyPrinted),
+                  let jwtdata = try? JSONDecoder().decode(jwtdata.self, from:  json) else { return }
+            
+            let req = AF.request(urluniversitydormitory(id: String(jwtdata.univId)), method: .get, parameters: nil, encoding: JSONEncoding.default)
+
+            req.responseJSON { response in
+              guard let json = response.data else { return }
+              guard let restdata = try? JSONDecoder().decode([dormitory].self, from: json)
+              else {
+                getUniversityDormitory(dormitoryId: String(jwtdata.univId), model: dormis)
+                return
+              }
+              dormis.data = restdata
+              SocketIOManager.shared.establishConnection(token: "Bearer \(token)", roomdata: roomdata, dormis: dormis)
+            }
           }
       }
     }

@@ -8,23 +8,15 @@
 import Foundation
 import Alamofire
 
-func postCreateRoom(createRoomData: CreateRoom, section: String, deliveryPriceAtLeast: Int, token: String, navi: ChatNavi){
+func postCreateRoom(createRoomData: CreateRoom, section: Int, deliveryPriceAtLeast: Int, navi: ChatNavi){
   print("방만들기 시도")
-  let createkey = createroomdata(shopName: createRoomData.shopName, shopLink: createRoomData.shopLink, category: categoryNameToEng[category[createRoomData.category!]]!, section: section, deliveryPriceAtLeast: deliveryPriceAtLeast)
+  guard let createkey = try? createroomdata(shopName: createRoomData.shopName, shopLink: createRoomData.shopLink, category: categoryNameToEng[category[createRoomData.category!]]!, section: section, deliveryPriceAtLeast: deliveryPriceAtLeast).asDictionary() else { return }
   let url = createroomposturl
-  var request = URLRequest(url: URL(string: url)!)
-  request.httpMethod = "POST"
-  request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-  request.timeoutInterval = 10
-  request.allHTTPHeaderFields = (["Authorization": token])
+  let tk = TokenUtils()
   
-  do {
-      try request.httpBody = JSONEncoder().encode(createkey)
-  } catch {
-      print("http Body Error")
-  }
-  
-  AF.request(request).responseJSON { (response) in
+  AF.request(url, method: .post, parameters: createkey, encoding: JSONEncoding.default, headers: tk.getAuthorizationHeader()).responseJSON { (response) in
+
+    print(response)
     switch response.result {
     case .success(let value):
 //      print("방 생성 성공")
@@ -42,7 +34,7 @@ func postCreateRoom(createRoomData: CreateRoom, section: String, deliveryPriceAt
             chatroomopen.rid = rid
             chatroomopen.title = createRoomData.shopName
             let userinfo = ChatUsersInfo()
-            userinfo.userId = userprivacy._id
+            userinfo.userId = userprivacy.id
             userinfo.name = userprivacy.name
             chatroomopen.superUser = userinfo
             chatroomopen.member.append(userinfo)

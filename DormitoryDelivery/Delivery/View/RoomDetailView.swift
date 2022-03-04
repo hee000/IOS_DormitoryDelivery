@@ -40,10 +40,11 @@ struct RoomDetailView: View {
                 .font(.system(size: 15, weight: .bold))
                 .padding(.leading)
               Spacer()
-              Text(sectionNameToKor[detaildata.data!.section]!)
+              Text(detaildata.data!.section)
                 .font(.system(size: 15, weight: .regular))
                 .foregroundColor(Color.gray)
-              Text(String(Int((datecheck.nowDate.timeIntervalSince(Date(timeIntervalSince1970: TimeInterval(self.detaildata.roomdata.createdAt)/1000))) / 60)) + "분전")
+//              Text(String(Int((datecheck.nowDate.timeIntervalSince(Date(timeIntervalSince1970: TimeInterval(self.detaildata.roomdata.createdAt)/1000))) / 60)) + "분전")
+              Text(self.timestamp)
                 .font(.system(size: 15, weight: .regular))
                 .foregroundColor(Color.gray)
             }
@@ -109,7 +110,7 @@ struct RoomDetailView: View {
           Spacer()
           
           Button{
-              getRoomJoin(matchid: self.detaildata.roomdata.id, token: naverLogin.sessionId, title:detaildata.data!.shopName, rid: detaildata.data!.id, detaildata: detaildata, navi: chatnavi)
+              getRoomJoin(matchid: self.detaildata.roomdata.id, title:detaildata.data!.shopName, rid: detaildata.data!.id, detaildata: detaildata, navi: chatnavi)
           } label: {
             Text("참여하기")
               .font(.system(size: 18, weight: .bold))
@@ -133,7 +134,7 @@ struct RoomDetailView: View {
         }
       })
       .onAppear {
-        self.detaildata.getRoomDetail(matchid: self.detaildata.roomdata.id, token: naverLogin.sessionId)
+        self.detaildata.getRoomDetail(matchid: self.detaildata.roomdata.id)
       }
       .navigationBarTitleDisplayMode(.inline)
       .navigationBarBackButtonHidden(true)

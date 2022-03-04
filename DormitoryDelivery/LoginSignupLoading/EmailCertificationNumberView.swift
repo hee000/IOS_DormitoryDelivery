@@ -8,7 +8,8 @@
 import SwiftUI
 import Combine
 import Alamofire
-
+import RealmSwift
+import JWTDecode
 
 class Store: ObservableObject {
 
@@ -99,46 +100,48 @@ struct EmailCertificationNumberView: View {
           }
           if code.count == 5 {
             let url = urlemailverify()
-            var request = URLRequest(url: url)
-            let token = naverLogin.loginInstance!.accessToken!
-            request.httpMethod = "POST"
-            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            request.timeoutInterval = 10
-//              request.allHTTPHeaderFields = (["Authorization": token])
-            let createkey = emailverify(authCode: code, oauthAccessToken: token)
+            let createkey = emailverify(authCode: code, oauthAccessToken: naverLogin.loginInstance!.accessToken!)
 
-            do {
-                try request.httpBody = JSONEncoder().encode(createkey)
-            } catch {
-                print("http Body Error")
-            }
-            
-            
-            AF.request(request).responseJSON { response in
+            guard let param = try? createkey.asDictionary() else { return }
+            AF.request(url, method: .post,
+                       parameters: param,
+                       encoding: JSONEncoding.default).responseJSON { response in
               
               print("re1", response)
               
               if response.response?.statusCode == 201 {
                 let url2 = urlsession()
-                var request2 = URLRequest(url: url2)
                 let token2 = naverLogin.loginInstance!.accessToken!
-                request2.httpMethod = "POST"
-                request2.setValue("application/json", forHTTPHeaderField: "Content-Type")
-                request2.timeoutInterval = 10
-    //              request.allHTTPHeaderFields = (["Authorization": token])
-                let createkey2 = authsession(type: "naver", accessToken: token2)
+                let createkey2 = authsession(type: "naver", accessToken: naverLogin.loginInstance!.accessToken!, deviceToken: "")
 
-                do {
-                    try request2.httpBody = JSONEncoder().encode(createkey2)
-                } catch {
-                    print("http Body Error")
-                }
+                guard let param2 = try? createkey2.asDictionary() else { return }
                 
-                AF.request(request2).responseJSON { response2 in
+                AF.request(url2, method: .post,
+                           parameters: param2,
+                           encoding: JSONEncoding.default
+                ).responseJSON { response2 in
+                  
                   print("re2", response2)
+                  print("re2 status", response2.response?.statusCode)
                   if response2.response?.statusCode == 201 {
-                    guard let restdata = try? JSONDecoder().decode(sessionvalue.self, from: response2.data!) else { return }
-                    naverLogin.sessionId = restdata.sessionId
+                    guard let restdata = try? JSONDecoder().decode(tokenvalue.self, from: response2.data!) else { return }
+                    
+                    let tk = TokenUtils()
+                    tk.create(token: restdata)
+                    guard let token = tk.read(),
+                          let jwt = try? decode(jwt: token),
+                          let json = try? JSONSerialization.data(withJSONObject: jwt.body, options: .prettyPrinted),
+                          let jwtdata = try? JSONDecoder().decode(jwtdata.self, from:  json) else { return }
+                    
+                    let user = UserPrivacy()
+                    user.id = jwtdata.id
+                    user.name = jwtdata.name
+                    user.belong = jwtdata.univId
+                    
+                    let realm = try! Realm()
+                    try? realm.write {
+                        realm.add(user)
+                    }
                     naverLogin.Login = true
                   }
                 }

@@ -9,16 +9,10 @@ import Foundation
 import Alamofire
 
 
-func postVoteKick(rid: String, uid: String, token: String){
+func postVoteKick(rid: String, uid: String){
   let url = urlvotekick(rid: rid, uid: uid)
-  var request = URLRequest(url: url)
-  request.httpMethod = "POST"
-  request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-  request.timeoutInterval = 10
-  request.allHTTPHeaderFields = (["Authorization": token])
   
-  
-  AF.request(request).responseString { response in
+  AF.request(url, method: .post, headers: TokenUtils().getAuthorizationHeader()).responseString { response in
     print(response)
   }
   

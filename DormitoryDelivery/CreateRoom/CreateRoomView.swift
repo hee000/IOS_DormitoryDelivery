@@ -22,6 +22,7 @@ struct CreateRoomView: View {
   @EnvironmentObject var keyboardManager: KeyboardManager
   @Environment(\.presentationMode) var presentationMode
   @EnvironmentObject var chatnavi: ChatNavi
+  @EnvironmentObject var dormis: dormitoryData
   @Binding var tabSelect: Int
   
   @FocusState private var focusShopLink: Bool
@@ -40,25 +41,27 @@ struct CreateRoomView: View {
             
             ScrollView(.horizontal, showsIndicators: false) {
               HStack(spacing: 20){
-                  ForEach( 0  ..< sectionNameEng.count ) { index in
+                ForEach(dormis.data) { dormi in
                     Button{
-                      self.createRoomData.section = index
+                      self.createRoomData.section = dormi.id
                     } label: {
                       HStack(spacing: 3) {
-                        Image(systemName: self.createRoomData.section == index ? "largecircle.fill.circle" : "circle")
+                        Image(systemName: self.createRoomData.section == dormi.id ? "largecircle.fill.circle" : "circle")
                           .resizable()
                           .scaledToFit()
                           .frame(width: 19, height: 19)
                         
-                        if let sectionh = sectionNameEng[index] {
-                          if let sectionNamekor = sectionNameToKor[sectionh] {
-                            Text("\(sectionNamekor)관")
-                              .font(.system(size: 14, weight: .regular))
-                          }
-                        }
+                        Text(dormi.name)
+                          .font(.system(size: 14, weight: .regular))
+//                        if let sectionh = sectionNameEng[index] {
+//                          if let sectionNamekor = sectionNameToKor[sectionh] {
+//                            Text("\(sectionNamekor)관")
+//                              .font(.system(size: 14, weight: .regular))
+//                          }
+//                        }
                       }
                     }
-                    .foregroundColor(self.createRoomData.section == index ? Color(.sRGB, red: 112/255, green: 52/255, blue: 255/255, opacity: 1) : Color.gray)
+                    .foregroundColor(self.createRoomData.section == dormi.id ? Color(.sRGB, red: 112/255, green: 52/255, blue: 255/255, opacity: 1) : Color.gray)
 
                   }
               }
@@ -210,7 +213,7 @@ struct CreateRoomView: View {
               Button {
                 if createRoomData.validcheck() {
                   if let price = Int(createRoomData.deliveryPriceAtLeast) {
-                    postCreateRoom(createRoomData: createRoomData, section: sectionNameEng[createRoomData.section], deliveryPriceAtLeast: price, token: naverLogin.sessionId, navi: chatnavi)
+                    postCreateRoom(createRoomData: createRoomData, section: self.createRoomData.section!, deliveryPriceAtLeast: price, navi: chatnavi)
                   }
                 } else {
                   withAnimation {

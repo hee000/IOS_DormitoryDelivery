@@ -68,7 +68,7 @@ struct OrderView: View {
                       Button {
 //                        if ordermodel.data[index].id != nil {
                         if ordermodel.isMenu.contains((ordermodel.data[index].id)) {
-                          postMenuDelete(model: ordermodel, index: index, oderdata: ordermodel.data[index], rid: self.roomid, token: naverLogin.sessionId, anima: $addanimation)
+                          postMenuDelete(model: ordermodel, index: index, oderdata: ordermodel.data[index], rid: self.roomid, anima: $addanimation)
                         } else {
 //                          self.ordermodel.onanimation.toggle()
                           withAnimation {
@@ -219,11 +219,19 @@ struct OrderView: View {
                 }
               }
               if valid {
+//                for i in ordermodel.data.indices {
+//                  if ordermodel.data[i].id != nil {
+//                    postMenuEdit(oderdata: ordermodel.data[i], rid: self.roomid)
+//                  } else {
+//                    postAddMenu(oderdata: ordermodel.data[i], rid: self.roomid)
+//                  }
+//                }
+                
                 for i in ordermodel.data.indices {
-                  if ordermodel.data[i].id != nil {
-                    postMenuEdit(oderdata: ordermodel.data[i], rid: self.roomid, token: naverLogin.sessionId)
+                  if ordermodel.isMenu.contains((ordermodel.data[i].id)) {
+                    postMenuEdit(oderdata: ordermodel.data[i], rid: self.roomid)
                   } else {
-                    postAddMenu(oderdata: ordermodel.data[i], rid: self.roomid, token: naverLogin.sessionId)
+                    postAddMenu(oderdata: ordermodel.data[i], rid: self.roomid)
                   }
                 }
                 presentationMode.wrappedValue.dismiss()
@@ -252,7 +260,7 @@ struct OrderView: View {
         })
         
         .onAppear(perform: {
-          getMenuListIndividual(uid: UserDefaults.standard.string(forKey: "MyID")!, rid: self.roomid, token: naverLogin.sessionId, model: self.ordermodel)
+          getMenuListIndividual(uid: UserData().data.id!, rid: self.roomid, model: self.ordermodel)
           
 //          self.ordermodel.data = []
 //          self.ordermodel.forcompare = []

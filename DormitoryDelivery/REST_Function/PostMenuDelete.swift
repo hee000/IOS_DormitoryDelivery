@@ -9,22 +9,11 @@ import Foundation
 import Alamofire
 import SwiftUI
 
-func postMenuDelete(model:Order, index: Int, oderdata: orderdata, rid: String, token: String, anima: Binding<Bool>){
+func postMenuDelete(model:Order, index: Int, oderdata: orderdata, rid: String, anima: Binding<Bool>){
 
-  let url = urldeletemenu(uid: UserDefaults.standard.string(forKey: "MyID")!, rid: rid, mid: oderdata.id)
-  var request = URLRequest(url: url)
-  request.httpMethod = "Delete"
-  request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-  request.timeoutInterval = 10
-  request.allHTTPHeaderFields = (["Authorization": token])
+  let url = urldeletemenu(uid: UserData().data.id!, rid: rid, mid: oderdata.id)
   
-//  do {
-//      try request.httpBody = JSONEncoder().encode(addkey)
-//  } catch {
-//      print("http Body Error")
-//  }
-  
-  AF.request(request).responseJSON { response in
+  AF.request(url, method: .delete, headers: TokenUtils().getAuthorizationHeader()).responseJSON { response in
     print(response)
     if response.response?.statusCode == 200 {
       for (index, comparedata) in model.forcompare.enumerated() {

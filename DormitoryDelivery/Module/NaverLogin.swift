@@ -9,20 +9,8 @@ import SwiftUI
 import UIKit
 import NaverThirdPartyLogin
 import Alamofire
-
-class LoginData: ObservableObject {
-  @Published var oauthLogin: Bool = UserDefaults.standard.object(forKey: "oauthLogin") as? Bool ?? false {
-      didSet {
-          UserDefaults.standard.set(oauthLogin, forKey: "oauthLogin")
-      }
-  }
-  
-  @Published var Login: Bool = UserDefaults.standard.object(forKey: "Login") as? Bool ?? false {
-      didSet {
-          UserDefaults.standard.set(Login, forKey: "Login")
-      }
-  }
-}
+import JWTDecode
+import RealmSwift
 
 class NaverLogin: UIViewController, NaverThirdPartyLoginConnectionDelegate, ObservableObject {
   let loginInstance = NaverThirdPartyLoginConnection.getSharedInstance()
@@ -38,35 +26,40 @@ class NaverLogin: UIViewController, NaverThirdPartyLoginConnectionDelegate, Obse
           UserDefaults.standard.set(Login, forKey: "Login")
       }
   }
-  
-  @Published var sessionId: String = UserDefaults.standard.string(forKey: "sessionId") ?? "" {
-      didSet {
-          UserDefaults.standard.set(sessionId, forKey: "sessionId")
-      }
-  }
     
   func oauth20ConnectionDidFinishRequestACTokenWithAuthCode() {
       print("Success login")
-      getInfo()
+//      getInfo()
     
-      let url2 = urlsession()
-      var request2 = URLRequest(url: url2)
-      let token2 = loginInstance!.accessToken!
-      request2.httpMethod = "POST"
-      request2.setValue("application/json", forHTTPHeaderField: "Content-Type")
-      request2.timeoutInterval = 10
-      let createkey2 = authsession(type: "naver", accessToken: token2)
+    let url2 = urlsession()
+    let token2 = loginInstance!.accessToken!
+    let createkey2 = authsession(type: "naver", accessToken: loginInstance!.accessToken!, deviceToken: "")
 
-      do {
-          try request2.httpBody = JSONEncoder().encode(createkey2)
-      } catch {
-          print("http Body Error")
-      }
-      
-      AF.request(request2).responseJSON { response2 in
+    guard let param2 = try? createkey2.asDictionary() else { return }
+    
+    AF.request(url2, method: .post,
+               parameters: param2,
+               encoding: JSONEncoding.default
+    ).responseJSON { response2 in
         if response2.response?.statusCode == 201 {
-          guard let restdata = try? JSONDecoder().decode(sessionvalue.self, from: response2.data!) else { return }
-          self.sessionId = restdata.sessionId
+          guard let restdata = try? JSONDecoder().decode(tokenvalue.self, from: response2.data!) else { return }
+          
+          let tk = TokenUtils()
+          tk.create(token: restdata)
+          guard let token = tk.read(),
+                let jwt = try? decode(jwt: token),
+                let json = try? JSONSerialization.data(withJSONObject: jwt.body, options: .prettyPrinted),
+                let jwtdata = try? JSONDecoder().decode(jwtdata.self, from:  json) else { return }
+          
+          let user = UserPrivacy()
+          user.id = jwtdata.id
+          user.name = jwtdata.name
+          user.belong = jwtdata.univId
+          
+          let realm = try! Realm()
+          try? realm.write {
+              realm.add(user)
+          }
           self.Login = true
           self.oauthLogin = true
         } else {
@@ -144,11 +137,11 @@ class NaverLogin: UIViewController, NaverThirdPartyLoginConnectionDelegate, Obse
       UserDefaults.standard.set(id, forKey: "MyID")
       UserDefaults.standard.set(name, forKey: "MyName")
       
-      let user = UserPrivacy()
-      user._id = id
-      user.name = name
-      user.belong = "한경대학교"
-      adduser(user)
+//      let user = UserPrivacy()
+//      user._id = id
+//      user.name = name
+//      user.belong = "한경대학교"
+//      adduser(user)
     }
   }
 

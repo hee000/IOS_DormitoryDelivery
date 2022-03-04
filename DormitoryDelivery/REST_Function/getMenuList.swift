@@ -8,9 +8,9 @@
 import Foundation
 import Alamofire
 
-func getMenuList(rid: String, token: String, model: OrderList) {
+func getMenuList(rid: String, model: OrderList) {
   let url = urlmenulist(rid: rid)
-  let req = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: ["Authorization": token])
+  let req = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: TokenUtils().getAuthorizationHeader())
   req.responseJSON { response in
     
 
@@ -22,7 +22,7 @@ func getMenuList(rid: String, token: String, model: OrderList) {
         let session = try JSONDecoder().decode([orderlistdata].self, from: data2)
         model.data = session
         if model.data != nil{
-          if let idx = model.data!.firstIndex{$0.user.userId == UserDefaults.standard.string(forKey: "MyID")!} {
+          if let idx = model.data!.firstIndex{$0.user.userId == UserData().data.id!} {
             model.data!.move(fromOffsets: IndexSet(integer: idx), toOffset: 0)
           }
         }

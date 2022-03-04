@@ -9,11 +9,13 @@ import SwiftUI
 import SocketIO
 import Foundation
 import RealmSwift
+import JWTDecode
 
 struct DeliveryView: View {
   
   @EnvironmentObject var rooms: RoomData
   @EnvironmentObject var naverLogin: NaverLogin
+  @EnvironmentObject var dormis: dormitoryData
 //  @EnvironmentObject var noti: Noti
   @State var isRoomLinkActive = false
   
@@ -98,14 +100,22 @@ struct DeliveryView: View {
       }//geo
       .clipped()
       .onAppear{
-        getUniversityDormitory()
+        let tk = TokenUtils()
+        guard let token = tk.read(),
+              let jwt = try? decode(jwt: token),
+              let json = try? JSONSerialization.data(withJSONObject: jwt.body, options: .prettyPrinted),
+              let jwtdata = try? JSONDecoder().decode(jwtdata.self, from:  json) else { return }
+          
+//        getUniversityDormitory(dormitoryId: String(jwtdata.univId), model: dormis)
       }
       .onChange(of: mysection, perform: { newValue in
         flagAll = true
-        if newValue == 0 {
-          SocketIOManager.shared.match_emitSubscribe(rooms: rooms, section: sectionNameEng, category: categoryNameEng)
+        if newValue == -1 {
+          SocketIOManager.shared.match_emitSubscribe(rooms: rooms, section: dormis.data.map({ dormitory in
+            dormitory.id
+          }), category: categoryNameEng)
         } else {
-          SocketIOManager.shared.match_emitSubscribe(rooms: rooms, section: [sectionNameEng[mysection - 1]], category: categoryNameEng)
+          SocketIOManager.shared.match_emitSubscribe(rooms: rooms, section: [mysection], category: categoryNameEng)
         }
       })
       .onChange(of: flagAll, perform: { V in
@@ -123,19 +133,23 @@ struct DeliveryView: View {
           for i in categorydata.indices{
             categorykor.append(categoryNameToEng[categorydata[i]]!)
           }
-          if mysection == 0 {
-            SocketIOManager.shared.match_emitSubscribe(rooms: rooms, section: sectionNameEng, category: categorykor)
+          if mysection == -1 {
+            SocketIOManager.shared.match_emitSubscribe(rooms: rooms, section: dormis.data.map({ dormitory in
+              dormitory.id
+            }), category: categorykor)
           } else {
-            SocketIOManager.shared.match_emitSubscribe(rooms: rooms, section: [sectionNameEng[mysection - 1]], category: categorykor)
+            SocketIOManager.shared.match_emitSubscribe(rooms: rooms, section: [mysection], category: categorykor)
           }
         } else {
           if !self.flagAll {
             self.flagAll.toggle()
           }
-          if mysection == 0 {
-            SocketIOManager.shared.match_emitSubscribe(rooms: rooms, section: sectionNameEng, category: categoryNameEng)
+          if mysection == -1 {
+            SocketIOManager.shared.match_emitSubscribe(rooms: rooms, section: dormis.data.map({ dormitory in
+              dormitory.id
+            }), category: categoryNameEng)
           } else {
-            SocketIOManager.shared.match_emitSubscribe(rooms: rooms, section: [sectionNameEng[mysection - 1]], category: categoryNameEng)
+            SocketIOManager.shared.match_emitSubscribe(rooms: rooms, section: [mysection], category: categoryNameEng)
           }
         }
       }
