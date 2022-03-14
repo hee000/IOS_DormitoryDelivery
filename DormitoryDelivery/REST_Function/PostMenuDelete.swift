@@ -11,7 +11,7 @@ import SwiftUI
 
 func postMenuDelete(model:Order, index: Int, oderdata: orderdata, rid: String, anima: Binding<Bool>){
 
-  let url = urldeletemenu(uid: UserData().data.id!, rid: rid, mid: oderdata.id)
+  let url = urldeletemenu(uid: UserData().data!.id!, rid: rid, mid: oderdata.id)
   
   AF.request(url, method: .delete, headers: TokenUtils().getAuthorizationHeader()).responseJSON { response in
     print(response)

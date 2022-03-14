@@ -7,7 +7,8 @@
 
 import SwiftUI
 import Alamofire
-
+import MobileCoreServices // copy
+import UniformTypeIdentifiers
 
 struct ReceiptView: View {
   @Environment(\.presentationMode) var presentationMode
@@ -114,7 +115,12 @@ struct ReceiptView: View {
               }
               Spacer()
               Button{
-                
+                if model.data != nil {
+                  let accountCopy = "\(model.data!.accountNumber) \(model.data!.accountBank) \(model.data!.accountUserName)"
+                  UIPasteboard.general.setValue(accountCopy,
+                      forPasteboardType: UTType.utf8PlainText.identifier as String)
+                }
+                //액션시트와 같은 종류로 복사하기가 완료되었다는 메시지 출력하기
               } label:{
                 Text("복사하기")
                   .frame(width:60, height: 40)

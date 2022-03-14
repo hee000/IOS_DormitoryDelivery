@@ -52,7 +52,7 @@ struct ChattingView: View {
                   if let RoomDB = RoomChat{
                     ForEach(RoomDB.messages.indices, id: \.self) { index in
                       if RoomDB.messages[index].type == "chat" {
-                        if let idvalue = userPrivacy.data.id {
+                        if let idvalue = userPrivacy.data!.id {
                           if RoomDB.messages[index].body!.userid == idvalue { // 내 매세지
                             ChatBubble(position: BubblePosition.right, color: Color(.sRGB, red: 87/255, green: 126/255, blue: 255/255, opacity: 1)) {
                               Text(RoomDB.messages[index].body!.message!)
@@ -82,6 +82,16 @@ struct ChattingView: View {
                         } else if RoomDB.messages[index].body!.action! == "users-leave" {
                           ChatBubble(position: BubblePosition.systemuUserInOut, color: Color(.sRGB, red: 223/255, green: 223/255, blue: 229/255, opacity: 1)) {
                             Text("\(RoomDB.messages[index].body!.data!.name!)님이 퇴장했습니다.")
+                              .font(.system(size: 12, weight: .regular))
+                          }
+                        } else if RoomDB.messages[index].body!.action! == "users-leave-kick" {
+                          ChatBubble(position: BubblePosition.systemuUserInOut, color: Color(.sRGB, red: 223/255, green: 223/255, blue: 229/255, opacity: 1)) {
+                            Text("\(RoomDB.messages[index].body!.data!.name!)님이 강퇴되었습니다.")
+                              .font(.system(size: 12, weight: .regular))
+                          }
+                        } else if RoomDB.messages[index].body!.action! == "users-leave-vote" {
+                          ChatBubble(position: BubblePosition.systemuUserInOut, color: Color(.sRGB, red: 223/255, green: 223/255, blue: 229/255, opacity: 1)) {
+                            Text("\(RoomDB.messages[index].body!.data!.name!)님이 투표에 의해 강퇴되었습니다.")
                               .font(.system(size: 12, weight: .regular))
                           }
                         } else if RoomDB.messages[index].body!.action! == "order-fixed" {
@@ -131,7 +141,7 @@ struct ChattingView: View {
             //MARK:- text editor
         // 주문서 작성 & 준비완료
           if RoomChat?.state?.orderFix == false {
-            if RoomChat?.superUser!.userId! == userPrivacy.data.id || (RoomChat?.menu.count) == 0{
+            if RoomChat?.superUser!.userId! == userPrivacy.data!.id || (RoomChat?.menu.count) == 0{
               Button {
                 self.model.oderview.toggle()
               } label: {
@@ -244,7 +254,7 @@ struct ChattingView: View {
                     }}) : nil)
 
         
-        if RoomChat?.superUser!.userId! == userPrivacy.data.id && RoomChat?.state?.allReady == true && self.model.showMenu == false {
+        if RoomChat?.superUser!.userId! == userPrivacy.data!.id && RoomChat?.state?.allReady == true && self.model.showMenu == false {
           Button {
             postOderFix(rid: self.rid)
           } label: {
@@ -279,7 +289,7 @@ struct ChattingView: View {
           .disabled(RoomChat?.Kicked ?? false ? true : false)
         } // 방장 메뉴 오더 픽스 이벤트
         
-        if RoomChat?.superUser!.userId! == userPrivacy.data.id && RoomChat?.state?.orderFix == true && RoomChat?.state?.orderChecked == false && self.model.showMenu == false {
+        if RoomChat?.superUser!.userId! == userPrivacy.data!.id && RoomChat?.state?.orderFix == true && RoomChat?.state?.orderChecked == false && self.model.showMenu == false {
           Button{
             self.model.odercheck.toggle()
           } label: {
@@ -310,7 +320,7 @@ struct ChattingView: View {
           .disabled(RoomChat?.Kicked ?? false ? true : false)
         } // 방장 메뉴 확인 이벤트
         
-        if RoomChat?.superUser!.userId! == userPrivacy.data.id && RoomChat?.state?.orderChecked == true && RoomChat?.state?.orderDone == false && self.model.showMenu == false {
+        if RoomChat?.superUser!.userId! == userPrivacy.data!.id && RoomChat?.state?.orderChecked == true && RoomChat?.state?.orderDone == false && self.model.showMenu == false {
           Button{
             postOrderDone(rid: self.rid)
           } label: {

@@ -33,7 +33,7 @@ class NaverLogin: UIViewController, NaverThirdPartyLoginConnectionDelegate, Obse
     
     let url2 = urlsession()
     let token2 = loginInstance!.accessToken!
-    let createkey2 = authsession(type: "naver", accessToken: loginInstance!.accessToken!, deviceToken: "")
+    let createkey2 = authsession(type: "naver", accessToken: loginInstance!.accessToken!, deviceToken: TokenUtils().readDevice() ?? "")
 
     guard let param2 = try? createkey2.asDictionary() else { return }
     
@@ -41,6 +41,7 @@ class NaverLogin: UIViewController, NaverThirdPartyLoginConnectionDelegate, Obse
                parameters: param2,
                encoding: JSONEncoding.default
     ).responseJSON { response2 in
+      print(response2)
         if response2.response?.statusCode == 201 {
           guard let restdata = try? JSONDecoder().decode(tokenvalue.self, from: response2.data!) else { return }
           
@@ -75,9 +76,10 @@ class NaverLogin: UIViewController, NaverThirdPartyLoginConnectionDelegate, Obse
     print(loginInstance?.accessToken)
   }
   
-  // 로그아웃
+  
+  // 회원탈퇴
   func oauth20ConnectionDidFinishDeleteToken() {
-      print("log out")
+      print("log out // 회원탈퇴")
     logoutuserdelete()
     self.oauthLogin = false
     self.Login = false

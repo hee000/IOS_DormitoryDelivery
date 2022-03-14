@@ -11,6 +11,8 @@ import Foundation
 struct orderlistdata: Codable {
   var user: userdata;
   var menus: Array<orderlistmenudata>;
+  var deliveryTip: Int
+  var totalPrice: Int
 }
 
 struct userdata: Codable, Hashable{

@@ -160,6 +160,16 @@ class SocketIOManager:NSObject {
                 chatroom?.member.append(userinfo)
               }
             } else if json.body?.action == "users-leave" {
+              let leaveuser = chatroom?.member.filter("userId == '\(json.body!.data!.userId!)'")
+              realm.delete(leaveuser!)
+            } else if json.body?.action == "users-leave-kick" {
+              if json.body!.data!.userId == user.id {
+                chatroom?.Kicked = true
+              } else{
+                let leaveuser = chatroom?.member.filter("userId == '\(json.body!.data!.userId!)'")
+                realm.delete(leaveuser!)
+              }
+            } else if json.body?.action == "users-leave-vote" {
               if json.body!.data!.userId == user.id {
                 chatroom?.Kicked = true
               } else{

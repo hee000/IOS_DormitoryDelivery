@@ -19,10 +19,11 @@ func postOrderCheck(rid: String, model: OrderCheck, account: UserAccount) {
     }, to: imgurl, headers: TokenUtils().getAuthorizationHeader())
     .responseJSON { response in
 
-      let createkey = OrdercheckTip(delivery_tip: Int(model.tip)!, accountBank: account.bank!, accountNum: account.account!, accountHolderName: account.name!)
-
-      guard let param = try? createkey.asDictionary() else { return }
+      let createkey = OrdercheckTip(deliveryTip: Int(model.tip)!, accountBank: account.bank!, accountNum: account.account!, accountHolderName: account.name!)
       
+      guard let param = try? createkey.asDictionary() else { return }
+      print(createkey)
+      print(param)
       AF.request(checkurl, method: .post,
       parameters: param,
                  encoding: JSONEncoding.default,

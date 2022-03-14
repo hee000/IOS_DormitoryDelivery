@@ -27,7 +27,7 @@ struct OrderListCard: View {
           Text(model.user.name)
             .font(.system(size: 18, weight: .bold))
           Spacer()
-          if model.user.userId == UserData().data.id && RoomChat != nil && RoomChat!.state?.orderFix == false {
+          if model.user.userId == UserData().data!.id && RoomChat != nil && RoomChat!.state?.orderFix == false {
             Button {
               self.order.toggle()
             } label: {
@@ -64,14 +64,28 @@ struct OrderListCard: View {
           }
         }
         Divider()
+//          .padding([.top, .bottom], 3)
+        
+        if RoomChat != nil && RoomChat!.state != nil && RoomChat!.state!.orderChecked {
+          HStack{
+            Text("+ 배달팁")
+              .font(.system(size: 12, weight: .regular))
+            Spacer()
+            Text("\(model.deliveryTip)")
+              .font(.system(size: 12, weight: .regular))
+          }
+          .foregroundColor(Color(.sRGB, red: 132/255, green: 166/255, blue: 255/255, opacity: 1))
           .padding([.top, .bottom], 8)
-        HStack{
-          Text("총 주문금액")
-            .font(.system(size: 14, weight: .regular))
-          Spacer()
-          Text("\(model.menus.map{$0.price * $0.quantity}.reduce(0, +))원")
-            .font(.system(size: 18, weight: .bold))
-            .foregroundColor(Color(.sRGB, red: 91/255, green: 66/255, blue: 212/255, opacity: 1))
+
+          HStack{
+            Text("총 주문금액")
+              .font(.system(size: 14, weight: .regular))
+            Spacer()
+  //          Text("\(model.menus.map{$0.price * $0.quantity}.reduce(0, +))원")
+            Text("\(model.totalPrice)원")
+              .font(.system(size: 18, weight: .bold))
+              .foregroundColor(Color(.sRGB, red: 91/255, green: 66/255, blue: 212/255, opacity: 1))
+          }
         }
       }
       .padding()

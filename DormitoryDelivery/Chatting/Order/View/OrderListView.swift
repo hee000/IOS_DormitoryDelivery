@@ -40,6 +40,7 @@ struct OrderListView: View {
               .frame(width: geo.size.width / 2, height: geo.size.width / 2)
               .offset(x: 20)
               .rotationEffect(.degrees(15))
+              .opacity(0.3)
           }
           
         } //Z

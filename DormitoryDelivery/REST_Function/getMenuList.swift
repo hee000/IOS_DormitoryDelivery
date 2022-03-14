@@ -22,7 +22,7 @@ func getMenuList(rid: String, model: OrderList) {
         let session = try JSONDecoder().decode([orderlistdata].self, from: data2)
         model.data = session
         if model.data != nil{
-          if let idx = model.data!.firstIndex{$0.user.userId == UserData().data.id!} {
+          if let idx = model.data!.firstIndex{$0.user.userId == UserData().data!.id!} {
             model.data!.move(fromOffsets: IndexSet(integer: idx), toOffset: 0)
           }
         }

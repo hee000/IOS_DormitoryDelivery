@@ -260,7 +260,7 @@ struct OrderView: View {
         })
         
         .onAppear(perform: {
-          getMenuListIndividual(uid: UserData().data.id!, rid: self.roomid, model: self.ordermodel)
+          getMenuListIndividual(uid: UserData().data!.id!, rid: self.roomid, model: self.ordermodel)
           
 //          self.ordermodel.data = []
 //          self.ordermodel.forcompare = []

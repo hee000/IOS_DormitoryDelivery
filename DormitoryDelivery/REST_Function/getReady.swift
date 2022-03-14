@@ -10,7 +10,7 @@ import Alamofire
 import RealmSwift
 
 func getReady(rid: String, model: ChatDB) {
-  let url = urlready(uid: UserDefaults.standard.string(forKey: "MyID")!, rid: rid, state: model.ready)
+  let url = urlready(uid: UserData().data!.id!, rid: rid, state: model.ready)
   let req = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: TokenUtils().getAuthorizationHeader())
   
   req.responseString { response in

@@ -64,8 +64,8 @@ struct OrderCheckView: View {
             Text("계좌를 확인해주세요.")
               .bold()
             VStack{
-              if !userPrivacy.data.accounts.isEmpty {
-                if let acc = userPrivacy.data.mainAccount {
+              if !userPrivacy.data!.accounts.isEmpty {
+                if let acc = userPrivacy.data!.mainAccount {
                   VStack(alignment: .leading) {
                     Text(acc.bank!)
                       .bold()
@@ -90,7 +90,7 @@ struct OrderCheckView: View {
                   .cornerRadius(5)
                   .clipped()
                   .shadow(color: Color.black.opacity(0.15), radius: 8)
-                  .padding([.leading, .trailing])
+//                  .padding([.leading, .trailing])
                 }
               }
             }
@@ -108,7 +108,7 @@ struct OrderCheckView: View {
             
             Button{
               if self.orderCheckData.image.size != CGSize(width: 0, height: 0){
-                postOrderCheck(rid: self.roomid, model: orderCheckData, account: userPrivacy.data.mainAccount!)
+                postOrderCheck(rid: self.roomid, model: orderCheckData, account: userPrivacy.data!.mainAccount!)
               }
             } label: {
               Text("보내기")

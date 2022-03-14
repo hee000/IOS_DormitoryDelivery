@@ -26,6 +26,47 @@ class TokenUtils {
   private let account = "TokenService"
   private let service = Bundle.main.bundleIdentifier
   
+  func createDevice(token: String) {
+    // 1. query작성
+    let keyChainQuery: NSDictionary = [
+        kSecClass : kSecClassGenericPassword,
+        kSecAttrService: "deviceTokenService",
+        kSecAttrAccount: "deviceToken",
+        kSecValueData: token.data(using: .utf8, allowLossyConversion: false)!
+    ]
+    
+    SecItemDelete(keyChainQuery)
+    
+    let status: OSStatus = SecItemAdd(keyChainQuery, nil)
+    assert(status == noErr, "failed to saving Token")
+  }
+
+  func readDevice() -> String? {
+      let KeyChainQuery: NSDictionary = [
+          kSecClass: kSecClassGenericPassword,
+          kSecAttrService: "deviceTokenService",
+          kSecAttrAccount: "deviceToken",
+          kSecReturnData: kCFBooleanTrue, // CFData타입으로 불러오라는 의미
+          kSecMatchLimit: kSecMatchLimitOne // 중복되는 경우 하나의 값만 가져오라는 의미
+      ]
+      // CFData 타입 -> AnyObject로 받고, Data로 타입변환해서 사용하면됨
+      
+      // Read
+      var dataTypeRef: AnyObject?
+      let status = SecItemCopyMatching(KeyChainQuery, &dataTypeRef)
+      
+      // Read 성공 및 실패한 경우
+      if(status == errSecSuccess) {
+          let retrievedData = dataTypeRef as! Data
+          let value = String(data: retrievedData, encoding: String.Encoding.utf8)
+          return value
+      } else {
+          print("failed to loading, status code = \(status)")
+          return nil
+      }
+  }
+
+  
   func create(token: tokenvalue) {
     guard let value = try? JSONEncoder().encode(token) else { return }
     // 1. query작성

@@ -21,10 +21,10 @@ struct AccountView: View {
       
       GeometryReader { _ in
         VStack{
-          if !userPrivacy.data.accounts.isEmpty {
+          if !userPrivacy.data!.accounts.isEmpty {
             ScrollView{
               VStack(alignment: .leading, spacing: 16){
-                if let acc = userPrivacy.data.mainAccount {
+                if let acc = userPrivacy.data!.mainAccount {
                   VStack(alignment: .leading) {
                     HStack{
                       Text(acc.bank!)
@@ -81,13 +81,13 @@ struct AccountView: View {
                   .shadow(color: Color.black.opacity(0.15), radius: 4)
                   .padding([.leading, .trailing])
                 }
-                ForEach(userPrivacy.data.accounts.indices, id:\.self) { index in
-                  if userPrivacy.data.accounts[index].account != userPrivacy.data.mainAccount?.account {
+                ForEach(userPrivacy.data!.accounts.indices, id:\.self) { index in
+                  if userPrivacy.data!.accounts[index].account != userPrivacy.data!.mainAccount?.account {
                     VStack(alignment: .leading) {
-                      Text(userPrivacy.data.accounts[index].bank!)
+                      Text(userPrivacy.data!.accounts[index].bank!)
                         .bold()
                       
-                      Text(userPrivacy.data.accounts[index].account!)
+                      Text(userPrivacy.data!.accounts[index].account!)
                         .bold()
                       
                       HStack{
@@ -95,7 +95,7 @@ struct AccountView: View {
                           .font(.footnote)
                           .foregroundColor(Color.gray)
                           .padding(.top, 1)
-                        Text(userPrivacy.data.accounts[index].name!)
+                        Text(userPrivacy.data!.accounts[index].name!)
                           .font(.footnote)
                           .foregroundColor(Color.gray)
                           .padding(.top, 1)
@@ -103,7 +103,7 @@ struct AccountView: View {
                         Spacer()
                         
                         Button{
-                          test = userPrivacy.data.accounts[index]
+                          test = userPrivacy.data!.accounts[index]
                           showingSheet.toggle()
                         } label: {
                           Image(systemName: "ellipsis")

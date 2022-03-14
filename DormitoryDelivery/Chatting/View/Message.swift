@@ -124,7 +124,7 @@ struct Message: View {
       .shadow(color: Color.black.opacity(0.15), radius: 4)
       .padding(10)
     } else if type == .orderChecked {
-      if RoomDB.superUser!.userId! != UserDefaults.standard.string(forKey: "MyID")! {
+      if RoomDB.superUser!.userId! != UserData().data!.id! {
         VStack(spacing: 0){
           HStack{
             VStack(alignment: .leading){

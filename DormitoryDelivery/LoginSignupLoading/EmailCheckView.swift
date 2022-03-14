@@ -170,7 +170,8 @@ struct EmailCheckView: View {
         let url = urluniversity()
         let req = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default)
         req.responseJSON { response in
-          guard let restdata = try? JSONDecoder().decode([university].self, from: response.data!) else { return }
+          guard let data = response.data,
+                let restdata = try? JSONDecoder().decode([university].self, from: data) else { return }
           self.universitys.data = restdata
           
         }

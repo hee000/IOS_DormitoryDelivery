@@ -12,7 +12,7 @@ import RealmSwift
 func postAddMenu(oderdata: orderdata, rid: String){
   print("방만들기 시도")
   let addkey = addmenu(name: oderdata.name, quantity: oderdata.quantity, description: oderdata.description, price: oderdata.price!)
-  let url = urladdmenu(uid: UserData().data.id!, rid: rid)
+  let url = urladdmenu(uid: UserData().data!.id!, rid: rid)
   
   guard let param = try? addkey.asDictionary() else { return }
   AF.request(url, method: .post,

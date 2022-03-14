@@ -235,7 +235,7 @@ func addChatting(_ result : ChatDB) {
 
 
 final class UserData: ObservableObject{
-  @Published var data: UserPrivacy
+  @Published var data: UserPrivacy?
 
   private var chatsToken: NotificationToken?
 
@@ -243,7 +243,12 @@ final class UserData: ObservableObject{
   // Grab channels from Realm, and then activate a Realm token to listen for changes.
   init() {
     let realm = try! Realm()
-    data = Array(realm.objects(UserPrivacy.self))[0] // Convert Realm results
+    if Array(realm.objects(UserPrivacy.self)).isEmpty {
+      data = nil
+    } else {
+      data = Array(realm.objects(UserPrivacy.self))[0] // Convert Realm results
+    }
+//    data = Array(realm.objects(UserPrivacy.self))[0] // Convert Realm results
     activateChannelsToken()
   }
 
@@ -251,7 +256,11 @@ final class UserData: ObservableObject{
     let realm = try! Realm()
     let channels = realm.objects(UserPrivacy.self)
     chatsToken = channels.observe { _ in
-      self.data = channels[0]
+      if channels.isEmpty {
+        self.data = nil
+      } else {
+        self.data = channels[0]
+      }
     }
   }
 

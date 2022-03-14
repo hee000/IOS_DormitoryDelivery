@@ -45,6 +45,12 @@ struct ContentView: View {
             }
 
           }//navi
+        .onAppear(perform: {
+          let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+          UNUserNotificationCenter.current().requestAuthorization(
+              options: authOptions,
+              completionHandler: {_, _ in })
+        })
         .environmentObject(UserData())
           .onChange(of: SocketIOManager.shared.socket.status, perform: { newValue in
             print(newValue)
