@@ -28,23 +28,18 @@ struct AccountView: View {
                   VStack(alignment: .leading) {
                     HStack{
                       Text(acc.bank!)
-                        .bold()
+                        .font(.system(size: 18, weight: .bold))
                       Text("대표계좌")
-                        .font(.caption)
-                        .bold()
+                        .font(.system(size: 14, weight: .regular))
                         .foregroundColor(Color(.sRGB, red: 112/255, green: 52/255, blue: 255/255, opacity: 1))
                     }
                     
                     Text(acc.account!)
-                      .bold()
+                      .font(.system(size: 18, weight: .bold))
                     
                     HStack{
-                      Text("예금주: ")
-                        .font(.footnote)
-                        .foregroundColor(Color.gray)
-                        .padding(.top, 1)
-                      Text(acc.name!)
-                        .font(.footnote)
+                      Text("예금주: \(acc.name!)")
+                        .font(.system(size: 14, weight: .regular))
                         .foregroundColor(Color.gray)
                         .padding(.top, 1)
                       Spacer()
@@ -54,6 +49,7 @@ struct AccountView: View {
                         showingSheetMain.toggle()
                       } label: {
                         Image(systemName: "ellipsis")
+                          .font(.system(size: 22, weight: .regular))
                           .rotationEffect(Angle(degrees: 90))
                           .foregroundColor(Color.black)
                       }
@@ -85,18 +81,14 @@ struct AccountView: View {
                   if userPrivacy.data!.accounts[index].account != userPrivacy.data!.mainAccount?.account {
                     VStack(alignment: .leading) {
                       Text(userPrivacy.data!.accounts[index].bank!)
-                        .bold()
+                        .font(.system(size: 18, weight: .bold))
                       
                       Text(userPrivacy.data!.accounts[index].account!)
-                        .bold()
+                        .font(.system(size: 18, weight: .bold))
                       
                       HStack{
-                        Text("예금주: ")
-                          .font(.footnote)
-                          .foregroundColor(Color.gray)
-                          .padding(.top, 1)
-                        Text(userPrivacy.data!.accounts[index].name!)
-                          .font(.footnote)
+                        Text("예금주: \(userPrivacy.data!.accounts[index].name!)")
+                          .font(.system(size: 14, weight: .regular))
                           .foregroundColor(Color.gray)
                           .padding(.top, 1)
                         
@@ -107,6 +99,7 @@ struct AccountView: View {
                           showingSheet.toggle()
                         } label: {
                           Image(systemName: "ellipsis")
+                            .font(.system(size: 22, weight: .regular))
                             .rotationEffect(Angle(degrees: 90))
                             .foregroundColor(Color.black)
                         }
@@ -154,10 +147,9 @@ struct AccountView: View {
                 .scaledToFit()
                 .frame(width: 120, height: 120)
               Text("등록된 계좌가 없습니다.")
-                .font(.title3)
-                .bold()
+                .font(.system(size: 22, weight: .bold))
               Text("미리 등록하고 빠르게 채팅을 이어가세요.")
-                .font(.footnote)
+                .font(.system(size: 15, weight: .regular))
                 .foregroundColor(.gray)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)

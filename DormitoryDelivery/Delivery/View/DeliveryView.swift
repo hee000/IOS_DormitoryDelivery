@@ -16,7 +16,7 @@ struct DeliveryView: View {
   @EnvironmentObject var rooms: RoomData
   @EnvironmentObject var naverLogin: NaverLogin
   @EnvironmentObject var dormis: dormitoryData
-//  @EnvironmentObject var noti: Noti
+  @EnvironmentObject var noti: Noti
   @State var isRoomLinkActive = false
   
     
@@ -94,6 +94,7 @@ struct DeliveryView: View {
 
           } // if
 
+          
     
 
         } // V

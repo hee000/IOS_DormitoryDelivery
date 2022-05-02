@@ -18,6 +18,7 @@ struct CategoryView: View {
           presentationMode.wrappedValue.dismiss()
         } label: {
           Text(category[index])
+            .font(.system(size: 16, weight: .regular))
         }
         .padding()
       }.listStyle(InsetListStyle())

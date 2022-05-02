@@ -11,7 +11,7 @@ import RealmSwift
 
 func postAddMenu(oderdata: orderdata, rid: String){
   print("방만들기 시도")
-  let addkey = addmenu(name: oderdata.name, quantity: oderdata.quantity, description: oderdata.description, price: oderdata.price!)
+  let addkey = addmenu(name: oderdata.name, quantity: oderdata.quantity, description: oderdata.description, price: Int(oderdata.price)!)
   let url = urladdmenu(uid: UserData().data!.id!, rid: rid)
   
   guard let param = try? addkey.asDictionary() else { return }
@@ -23,12 +23,12 @@ func postAddMenu(oderdata: orderdata, rid: String){
     switch response.result {
     case .success(let value):
       print(value)
-      let realm = try! Realm()
-      let db = realm.object(ofType: ChatDB.self, forPrimaryKey: rid)
-      try! realm.write {
-//        db?.menu.insert(value, at: 0)
-        db?.menu.append(value)
-      }
+//      let realm = try! Realm()
+//      let db = realm.object(ofType: ChatDB.self, forPrimaryKey: rid)
+//      try! realm.write {
+////        db?.menu.insert(value, at: 0)
+//        db?.menu.append(value)
+//      }
     case .failure(let error):
       print(error)
     }

@@ -7,21 +7,24 @@
 
 import SwiftUI
 import RealmSwift
+import SocketIO
+import Alamofire
+
 
 
 struct MyPage: View {
     @EnvironmentObject var naverLogin: NaverLogin
     @EnvironmentObject var chatdata: ChatData
-    @ObservedResults(UserPrivacy.self) var userPrivacy
+//    @ObservedResults(UserPrivacy.self) var userPrivacy
     @ObservedResults(ChatDB.self) var chatResult
 
+  @State var alram: Bool = (UserData().data?.alram ?? true)
 //    @ObservedResults(ChatDB.self) var parents
 //    print(parents.filter(NSPredicate(format: "rid == '5'")))
   //  @ObservedRealmObject var item: ChatDB
-  //  @ObservedResults(MyEvent.self,filter:NSPredicate(format: "title != 'L'"),sortDescriptor:SortDescriptor(keyPath: "start", ascending: false)) private var results
+  //  @ObservedResults(MyEvent.self,filter:NSPredicate(format: "title  != 'L'"),sortDescriptor:SortDescriptor(keyPath: "start", ascending: false)) private var results
 
     var body: some View {
-      let privacy = userPrivacy.first!
       GeometryReader { geo in
           ScrollView{
             HStack (spacing: 20){ // 프로필부분
@@ -33,12 +36,12 @@ struct MyPage: View {
                 .cornerRadius(100)
                 .shadow(color: Color.black.opacity(0.5), radius: 1)
               VStack (alignment: .leading, spacing: 3) {
-                Text(privacy.name!)
+                Text(UserData().data!.name!)
                   .font(.system(size: 16, weight: .bold))
-                Text(String(privacy.belong))
+                Text(String(UserData().data!.belong))
                   .font(.system(size: 16, weight: .regular))
                   .foregroundColor(.gray)
-                Text("email_ID")
+                Text(UserData().data!.emailAddress!)
                   .font(.system(size: 16, weight: .regular))
                   .foregroundColor(.gray)
               }
@@ -48,29 +51,16 @@ struct MyPage: View {
             .frame(maxWidth: .infinity)
             .padding([.leading, .trailing])
             .background(Color(.sRGB, red: 245/255, green: 245/255, blue: 251/255, opacity: 1))
-            
-            Button("방 정보"){
-              let realm = try! Realm()
-              try! realm.write {
-                var a = realm.objects(ChatDB.self).last
-                var net = ChatUsersInfo()
-                net.userId = "Asdsad"
-                net.name = "하하"
-                a!.member.append(net)
-              }
-            }
-            
-            Button("방 정보"){
-              getRooms(uid: privacy.id!)
-            }
-            
+
+
+
             VStack(alignment: .leading ,spacing: 0) {
               Text("설정")
                 .font(.system(size: 18, weight: .regular))
                 .frame(height: 50)
                 .padding([.leading, .trailing])
                 .padding([.leading, .trailing])
-              
+
               Group{
                 NavigationLink(destination: AccountView()) {
                   HStack{
@@ -78,20 +68,63 @@ struct MyPage: View {
                       .font(.system(size: 18, weight: .bold))
                     Spacer()
                     Image(systemName: "chevron.right")
+                      .font(.system(size: 18, weight: .regular))
                   }
                   .frame(height: 70)
                 }
-                
+
                 Divider()
                 
+                Toggle(isOn: $alram) {
+                  Text("알림")
+                    .font(.system(size: 18, weight: .bold))
+                    .frame(height: 70)
+                }
+                .toggleStyle(SwitchToggleStyle())
+                .tint(Color(.sRGB, red: 112/255, green: 52/255, blue: 255/255, opacity: 1)) // 물빠진색 뭐냐
+                .disabled(true)
+                .onTapGesture {
+                    // 알람 Off, rest요청 응답 받으면
+                  guard let param = try? serverNotiToken(enabled: !self.alram).asDictionary() else { return }
+                  print(param)
+                  
+                  let req = AF.request(urlalramonoff(), method: .patch, parameters: param, encoding: JSONEncoding.default, headers: TokenUtils().getAuthorizationHeader())
+                  
+//                    req.responseJSON { response in
+//                        print(response)
+//                    }
+                  req.responseString { res in
+                    print(res.response)
+                    print(res.description)
+                    print(res.response?.statusCode)
+                    print(res.value)
+                    print(res.data)
+                  }
+                  withAnimation {
+                    self.alram.toggle()
+                  }
+                }
+                .onChange(of: alram) { V in
+                  print(V)
+                  let realm = try! Realm()
+                  guard let pri = realm.objects(UserPrivacy.self).first else { return }
+                  try? realm.write {
+                    pri.alram = V
+                  }
+                } // 혹은 rest요청 안에서 db 수정
+                
+                Divider()
                 Button(action: {
                   print(chatResult)
+//                  print(UserData().data)
                 }) {
                   HStack{
-                    Text("알람 설정 // chatdb")
+                    Text("쳇디비")
                       .font(.system(size: 18, weight: .bold))
                     Spacer()
                     Image(systemName: "chevron.right")
+                      .font(.system(size: 18, weight: .regular))
+
                   }
                   .frame(height: 70)
                 }
@@ -99,65 +132,52 @@ struct MyPage: View {
               .padding([.leading, .trailing])
               .padding([.leading, .trailing])
               .background(Color(.sRGB, red: 243/255, green: 243/255, blue: 244/255, opacity: 1).frame(width:geo.size.width))
-              
+
               Text("정보")
                 .font(.system(size: 18, weight: .regular))
                 .frame(height: 50)
                 .padding([.leading, .trailing])
                 .padding([.leading, .trailing])
-              
+
               Group{
-                Button(action: {
-                  print(userPrivacy)
-                }) {
+                NavigationLink(destination: HelpView()) {
                   HStack{
-                    Text("도움말 // 유저db")
+                    Text("도움말")
                       .font(.system(size: 18, weight: .bold))
                     Spacer()
                     Image(systemName: "chevron.right")
+                      .font(.system(size: 18, weight: .regular))
                   }
                   .frame(height: 70)
                 }
                 Divider()
-                
+
                 NavigationLink(destination: TOSView()) {
                   HStack{
                     Text("이용약관")
                       .font(.system(size: 18, weight: .bold))
                     Spacer()
                     Image(systemName: "chevron.right")
+                      .font(.system(size: 18, weight: .regular))
                   }
                   .frame(height: 70)
                 }
-                
+
                 Divider()
-                
-                Button(action: {
-                  let realm = try! Realm()
-                  guard let chatrids = realm.objects(ChatDB.self).value(forKey: "rid") as? Array<Any> else { return }
-                  for rid in chatrids {
-                    let db = realm.object(ofType: ChatDB.self, forPrimaryKey: rid)
-                    guard let idx = db?.messages.last?.idx else {
-                      getChatLog(rid: rid as! String, idx: 0)
-                      return
-                      
-                    }
-//                    print(idx.value)
-//                    getChatLog(rid: rid as! String, idx: 0)
-                    getChatLog(rid: rid as! String, idx: idx.value!)
-                  }
-                }) {
+
+                NavigationLink(destination: PrivacyPoliceView()) {
                   HStack{
-                    Text("개인정보 취급방침 // 쳇로그 rest")
+                    Text("개인정보 처리방침")
                       .font(.system(size: 18, weight: .bold))
                     Spacer()
                     Image(systemName: "chevron.right")
+                      .font(.system(size: 18, weight: .regular))
                   }
                   .frame(height: 70)
                 }
-                
+
                 Divider()
-                
+
                 HStack{
                   Text("버전")
                     .font(.system(size: 18, weight: .bold))
@@ -170,13 +190,13 @@ struct MyPage: View {
               .padding([.leading, .trailing])
               .padding([.leading, .trailing])
               .background(Color(.sRGB, red: 243/255, green: 243/255, blue: 244/255, opacity: 1).frame(width:geo.size.width))
-              
+
               Text("계정")
                 .font(.system(size: 18, weight: .regular))
                 .frame(height: 50)
                 .padding([.leading, .trailing])
                 .padding([.leading, .trailing])
-              
+
               Group{
                 Button(action: {
                   naverLogin.logout()
@@ -186,19 +206,21 @@ struct MyPage: View {
                       .font(.system(size: 18, weight: .bold))
                     Spacer()
                     Image(systemName: "chevron.right")
+                      .font(.system(size: 18, weight: .regular))
                   }
                   .frame(height: 70)
                 }
 
-                
+
                 Divider()
-                
+
                 NavigationLink(destination: WithdrawalView()) {
                   HStack{
                     Text("탈퇴하기")
                       .font(.system(size: 18, weight: .bold))
                     Spacer()
                     Image(systemName: "chevron.right")
+                      .font(.system(size: 18, weight: .regular))
                   }
                   .frame(height: 70)
                 }

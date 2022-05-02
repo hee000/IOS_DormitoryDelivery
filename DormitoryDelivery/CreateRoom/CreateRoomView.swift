@@ -106,27 +106,29 @@ struct CreateRoomView: View {
                       .foregroundColor(self.createRoomData.category != nil ? Color.black : Color.gray.opacity(0.5))
 
                     Image(systemName: "chevron.right")
+                      .font(.system(size: 16, weight: .regular))
+
                   }
                 }
                 .foregroundColor(.black)
               
               Divider()
             
-              HStack{
-                HStack(spacing: 0){
-                  Text("* ")
-                    .font(.system(size: 16, weight: .bold))
-                    .foregroundColor(Color(.sRGB, red: 112/255, green: 52/255, blue: 255/255, opacity: 1))
-                  Text("메뉴")
-                    .font(.system(size: 16, weight: .bold))
-                }
-                TextField("메뉴를 작성해주세요.", text: $createRoomData.shopName)
-                  .font(.system(size: 16, weight: .regular))
-                  .keyboardType(.default)
-                  .multilineTextAlignment(.trailing)
-              }
-              
-              Divider()
+//              HStack{
+//                HStack(spacing: 0){
+//                  Text("* ")
+//                    .font(.system(size: 16, weight: .bold))
+//                    .foregroundColor(Color(.sRGB, red: 112/255, green: 52/255, blue: 255/255, opacity: 1))
+//                  Text("메뉴")
+//                    .font(.system(size: 16, weight: .bold))
+//                }
+//                TextField("메뉴를 작성해주세요.", text: $createRoomData.shopName)
+//                  .font(.system(size: 16, weight: .regular))
+//                  .keyboardType(.default)
+//                  .multilineTextAlignment(.trailing)
+//              }
+//              
+//              Divider()
             } //첫번쨰그룹
                 
               VStack(alignment: .leading) {
@@ -172,7 +174,7 @@ struct CreateRoomView: View {
                   TextField("금액", text: $createRoomData.deliveryPriceAtLeast)
                     .font(.system(size: 16, weight: .regular))
                     .multilineTextAlignment(.trailing)
-                    .keyboardType(.phonePad)
+                    .keyboardType(.numberPad)
                   Text("원")
                     .font(.system(size: 16, weight: .bold))
                 }

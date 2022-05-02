@@ -31,7 +31,7 @@ struct Message: View {
     let privacy = getUserPrivacy()
     
     if type == .newLeft {
-      if RoomDB.messages[index].body!.userid == RoomDB.superUser!.userId {
+      if RoomDB.messages[index].body!.userid == RoomDB.superUser?.userId {
         HStack(alignment: .top, spacing: 0) { // 방장인경우
           Image("ImageDefaultProfile")
             .resizable()
@@ -124,7 +124,7 @@ struct Message: View {
       .shadow(color: Color.black.opacity(0.15), radius: 4)
       .padding(10)
     } else if type == .orderChecked {
-      if RoomDB.superUser!.userId! != UserData().data!.id! {
+      if RoomDB.superUser?.userId != UserData().data!.id {
         VStack(spacing: 0){
           HStack{
             VStack(alignment: .leading){

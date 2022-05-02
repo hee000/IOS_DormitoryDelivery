@@ -20,24 +20,28 @@ struct AccountAddView: View {
       ZStack(alignment: .top) {
         VStack(alignment: .leading) {
           Text("은행명")
-            .bold()
+            .font(.system(size: 16, weight: .bold))
           TextField("은행명을 입력해주세요.", text: $bank)
+            .font(.system(size: 14, weight: .bold))
             .padding()
             .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.gray, lineWidth: 1))
             .padding(.bottom)
 
           
           Text("계좌번호")
-            .bold()
+            .font(.system(size: 16, weight: .bold))
           TextField("'-' 없이 계좌번호를 입력해주세요", text: $account)
+            .font(.system(size: 14, weight: .bold))
+            .keyboardType(.numberPad)
             .padding()
             .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.gray, lineWidth: 1))
             .padding(.bottom)
 
           
           Text("예금주")
-            .bold()
+            .font(.system(size: 16, weight: .bold))
           TextField("이름을 작성해주세요.", text: $name)
+            .font(.system(size: 14, weight: .bold))
             .padding()
             .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.gray, lineWidth: 1))
         }
@@ -61,8 +65,8 @@ struct AccountAddView: View {
             presentationMode.wrappedValue.dismiss()
           } label: {
               Text("등록완료")
+              .font(.system(size: 18, weight: .bold))
               .foregroundColor(.white)
-              .bold()
               .frame(maxWidth: .infinity)
           }
           .frame(height: 47, alignment: .center)

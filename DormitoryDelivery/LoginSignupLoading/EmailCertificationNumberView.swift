@@ -61,6 +61,7 @@ struct EmailCertificationNumberView: View {
           ForEach(0..<5, id:\.self) { index in
             TextField(self.store.CertificationNumber[index], text:$store.CertificationNumber[index])
               .font(.system(size: 36, weight: .heavy, design: .default))
+              .keyboardType(.numberPad)
               .onChange(of: self.store.CertificationNumber[index], perform: { newValue in
                 store.limitText(index)
                 if store.CertificationNumber[index] != "" && index != 4 {
@@ -137,12 +138,14 @@ struct EmailCertificationNumberView: View {
                     user.id = jwtdata.id
                     user.name = jwtdata.name
                     user.belong = jwtdata.univId
+                    user.emailAddress = "네이버 로그인"
                     
                     let realm = try! Realm()
                     try? realm.write {
                         realm.add(user)
                     }
-                    naverLogin.Login = true
+                    LoginSystem().setLogin(true)
+//                    naverLogin.Login = true
                   }
                 }
 

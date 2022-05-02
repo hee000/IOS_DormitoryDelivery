@@ -27,11 +27,12 @@ struct NotificationView: View {
     } label:{
       VStack(alignment: .leading, spacing: 0) {
         Text(title)
-          .bold()
+          .font(.system(size: 18, weight: .bold))
           .padding(.bottom, 5)
         Text(action)
+          .font(.system(size: 16, weight: .bold))
         Text("\(String(Int((datecheck.nowDate.timeIntervalSince(Date(timeIntervalSince1970: TimeInterval(at)!/1000))) / 60))) 분전")
-          .font(.footnote)
+          .font(.system(size: 10, weight: .regular))
           .padding(.top)
           .foregroundColor(.gray)
       }
@@ -48,7 +49,7 @@ struct NotificationView: View {
           ScrollView{
             VStack(spacing: 2){
               ForEach(chatdata.chatlist) { chat in
-                ForEach(chat.messages.filter("type == 'system' AND idx > \(chat.systemConfirmation)")) { system in
+                ForEach(chat.messages.filter("type == 'system' AND idx > \(chat.confirmation)")) { system in
                   if system.body?.action == "order-fixed" {
                     notiButtton(rid: chat.rid!, title: chat.title!, action: "메뉴가 확정 되었습니다.", at: system.at!)
                   } else if system.body?.action == "order-checked" {
@@ -62,8 +63,7 @@ struct NotificationView: View {
           }//scroll
         } else {
           Text("신규 알람이 없습니다.")
-            .font(.title3)
-            .bold()
+            .font(.system(size: 18, weight: .bold))
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
         }
       }//geo

@@ -30,13 +30,10 @@ class ChatDB: Object, ObjectKeyIdentifiable, Decodable{
   @objc dynamic var state: ChatState? = ChatState()
   @objc dynamic var title: String?
   var member = List<ChatUsersInfo>()
-  var menu = List<String>() // 수정 필요
+  @objc dynamic var readyAvailable: Bool = false
   @objc dynamic var ready: Bool = false
   var messages = List<ChatMessageDetail>()
-  @objc dynamic var allConfirmation: Int = 0 // 확인한 모든 인덱스
-  @objc dynamic var index: Int = 0 // 쳇 인덱스
-  @objc dynamic var confirmation: Int = 0 // 확인한 쳇 인덱스
-  @objc dynamic var systemConfirmation: Int = 0 // 확인한 시스템 인덱스
+  @objc dynamic var confirmation: Int = 0
   @objc dynamic var sortforat: Int = 0
   @objc dynamic var Kicked: Bool = false
 
@@ -71,7 +68,7 @@ class UserPrivacy: Object, ObjectKeyIdentifiable{
   @objc dynamic var name: String?
   @objc dynamic var belong: Int = -1
   @objc dynamic var belongStr: String?
-  @objc dynamic var alram: Bool = false
+  @objc dynamic var alram: Bool = true
   @objc dynamic var mainAccount: UserAccount? = nil
   var accounts = List<UserAccount>()
 }
@@ -174,7 +171,7 @@ class ChatMessageDetailBodyData: Object, Decodable, ObjectKeyIdentifiable{
 }
 
 
-final class ChatData: ObservableObject{
+final class ChatData: ObservableObject, Identifiable{
   @Published var chatlist: [ChatDB]
   @Published var chatlistsortindex: [Int]
 
@@ -281,7 +278,7 @@ final class Noti: ObservableObject{
     let realm = try! Realm()
     var tmpBool = false
     for i in realm.objects(ChatDB.self) {
-      if i.messages.filter("type == 'system' AND idx > \(i.systemConfirmation)").filter("body.action == 'order-fixed' OR body.action == 'order-checked' OR body.action == 'order-finished'").count != 0 {
+      if i.messages.filter("type == 'system' AND idx > \(i.confirmation)").filter("body.action == 'order-fixed' OR body.action == 'order-checked' OR body.action == 'order-finished'").count != 0 {
         tmpBool = true
         break
       }
@@ -298,7 +295,7 @@ final class Noti: ObservableObject{
       // When there is a change, replace the old channels array with a new one.
       var tmpBool = false
       for i in channels {
-        if i.messages.filter("type == 'system' AND idx > \(i.systemConfirmation)").filter("body.action == 'order-fixed' OR body.action == 'order-checked' OR body.action == 'order-finished'").count != 0 {
+        if i.messages.filter("type == 'system' AND idx > \(i.confirmation)").filter("body.action == 'order-fixed' OR body.action == 'order-checked' OR body.action == 'order-finished'").count != 0 {
           tmpBool = true
           break
         }
@@ -309,5 +306,21 @@ final class Noti: ObservableObject{
 
   deinit {
     chatsToken?.invalidate()
+  }
+}
+
+
+extension Results {
+  var array: [Element] {
+    return self.map { $0 }
+  }
+}
+
+extension Results {
+  var list: List<Element> {
+    reduce(.init()) { list, element in
+      list.append(element)
+      return list
+    }
   }
 }

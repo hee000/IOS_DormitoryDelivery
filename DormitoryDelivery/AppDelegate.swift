@@ -51,6 +51,15 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 //      UNUserNotificationCenter.current().requestAuthorization(
 //          options: authOptions,
 //          completionHandler: {_, _ in })
+      
+
+      // 취소승인옵션, [경고를 표시하는 기능, 앱의 배지를 업데이트 하는 기능, 소리를 재상하는 기능]
+//      let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+      
+      // 로컬 및 원격 알림이 사용자의 장치로 전달될 때 사용자와 상호 작용할 수 있는 권한 부여를 요청.
+//      UNUserNotificationCenter.current().requestAuthorization(
+//          options: authOptions,
+//          completionHandler: {_, _ in })
       application.registerForRemoteNotifications()
         return true
     }

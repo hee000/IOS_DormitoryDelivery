@@ -15,6 +15,7 @@ struct EmailCheckView: View {
   @State var emailstr: String = ""
   @State private var selection: university? = nil
   @State var navi = false
+  @State var doublestop = false
   
     var body: some View {
       NavigationView{
@@ -76,6 +77,7 @@ struct EmailCheckView: View {
               .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.gray, lineWidth: 1))
               
               Button {
+                self.doublestop = true
                 //이메일 형식이 올바르다면 rest 쏘고, navi active
                 let url = urlemailsend()
                 var request = URLRequest(url: url)
@@ -95,7 +97,10 @@ struct EmailCheckView: View {
                 AF.request(request).responseJSON { response in
                   print(response)
                   if response.response?.statusCode == 201 {
-                    self.navi.toggle()
+                    self.navi = true
+                    self.doublestop = false
+                  } else {
+                    self.doublestop = false
                   }
                 }
               } label: {
@@ -114,14 +119,20 @@ struct EmailCheckView: View {
               HStack(spacing: 0) {
                 Text("인증 진행 시 ")
                   .font(.system(size: 14, weight: .regular))
-                Text("이용약관")
-                  .font(.system(size: 14, weight: .bold))
-                  .underline()
+                NavigationLink(destination: TOSView()) {
+                  Text("이용약관")
+                    .font(.system(size: 14, weight: .bold))
+                    .foregroundColor(.black)
+                    .underline()
+                }
                 Text(" 및 ")
                   .font(.system(size: 14, weight: .regular))
-                Text("개인정보 취급방침")
-                  .font(.system(size: 14, weight: .bold))
-                  .underline()
+                NavigationLink(destination: PrivacyPoliceView()) {
+                  Text("개인정보 처리방침")
+                    .font(.system(size: 14, weight: .bold))
+                    .foregroundColor(.black)
+                    .underline()
+                }
                 Text("에")
                   .font(.system(size: 14, weight: .regular))
               }
@@ -163,6 +174,7 @@ struct EmailCheckView: View {
           }
         }
       }//navi
+      .disabled(self.doublestop ? true : false)
       .onTapGesture {
           hideKeyboard()
       }
@@ -170,6 +182,7 @@ struct EmailCheckView: View {
         let url = urluniversity()
         let req = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default)
         req.responseJSON { response in
+//          print(response)
           guard let data = response.data,
                 let restdata = try? JSONDecoder().decode([university].self, from: data) else { return }
           self.universitys.data = restdata

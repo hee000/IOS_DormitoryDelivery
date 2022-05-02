@@ -68,6 +68,8 @@
 	</dict>
 	<key>UILaunchStoryboardName</key>
 	<string>Launch Screen</string>
+	<key>UIStatusBarHidden</key>
+	<false/>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

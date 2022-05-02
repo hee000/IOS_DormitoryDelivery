@@ -6,8 +6,7 @@ struct ChatCard: View {
   var lastmessage: String?
   var lastat: String?
   var users: Int?
-  var index: Int?
-  var confirmation: Int?
+  var confirmation: Int
   
     var body: some View {
       HStack{
@@ -134,8 +133,10 @@ struct ChatCard: View {
                 .foregroundColor(Color.black)
             }
             
-            if (self.index ?? 0) - (self.confirmation ?? 0) != 0 {
-              Text(String(self.index! - self.confirmation!))
+//            if (self.index ?? 0) - (self.confirmation ?? 0) != 0 {
+//              Text(String(self.index! - self.confirmation!))
+            if self.confirmation != 0 {
+              Text(String(self.confirmation))
                 .font(.system(size: 10, weight: .regular))
                 .foregroundColor(Color.white)
                 .padding(EdgeInsets(top: 2, leading: 10, bottom: 2, trailing: 10))

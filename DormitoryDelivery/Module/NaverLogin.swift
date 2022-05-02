@@ -12,20 +12,39 @@ import Alamofire
 import JWTDecode
 import RealmSwift
 
+class LoginSystem {
+  func getLogin() -> Bool {
+    return UserDefaults.standard.bool(forKey: "Login")
+  }
+  
+  func getOauthLogin() -> Bool {
+    return UserDefaults.standard.bool(forKey: "oauthLogin")
+  }
+  
+  func setLogin(_ value: Bool) {
+    UserDefaults.standard.set(value, forKey: "Login")
+  }
+  
+  func setOauthLogin(_ value: Bool) {
+    UserDefaults.standard.set(value, forKey: "oauthLogin")
+  }
+}
+
+
 class NaverLogin: UIViewController, NaverThirdPartyLoginConnectionDelegate, ObservableObject {
   let loginInstance = NaverThirdPartyLoginConnection.getSharedInstance()
   
-  @Published var oauthLogin: Bool = UserDefaults.standard.bool(forKey: "oauthLogin") {
-      didSet {
-          UserDefaults.standard.set(oauthLogin, forKey: "oauthLogin")
-      }
-  }
-  
-  @Published var Login: Bool = UserDefaults.standard.bool(forKey: "Login") {
-      didSet {
-          UserDefaults.standard.set(Login, forKey: "Login")
-      }
-  }
+//  @Published var oauthLogin: Bool = UserDefaults.standard.bool(forKey: "oauthLogin") {
+//      didSet {
+//          UserDefaults.standard.set(oauthLogin, forKey: "oauthLogin")
+//      }
+//  }
+//  
+//  @Published var Login: Bool = UserDefaults.standard.bool(forKey: "Login") {
+//      didSet {
+//          UserDefaults.standard.set(Login, forKey: "Login")
+//      }
+//  }
     
   func oauth20ConnectionDidFinishRequestACTokenWithAuthCode() {
       print("Success login")
@@ -56,15 +75,21 @@ class NaverLogin: UIViewController, NaverThirdPartyLoginConnectionDelegate, Obse
           user.id = jwtdata.id
           user.name = jwtdata.name
           user.belong = jwtdata.univId
+          user.emailAddress = "네이버 로그인"
+//          user.belongStr = "네이버 로그인 ㄱ"
           
           let realm = try! Realm()
           try? realm.write {
               realm.add(user)
           }
-          self.Login = true
-          self.oauthLogin = true
+          
+          LoginSystem().setLogin(true)
+          LoginSystem().setOauthLogin(true)
+//          self.Login = true
+//          self.oauthLogin = true
         } else {
-          self.oauthLogin = true
+          LoginSystem().setOauthLogin(true)
+//          self.oauthLogin = true
         }
       }
   }
@@ -81,8 +106,10 @@ class NaverLogin: UIViewController, NaverThirdPartyLoginConnectionDelegate, Obse
   func oauth20ConnectionDidFinishDeleteToken() {
       print("log out // 회원탈퇴")
     logoutuserdelete()
-    self.oauthLogin = false
-    self.Login = false
+//    self.oauthLogin = false
+//    self.Login = false
+    LoginSystem().setLogin(false)
+    LoginSystem().setOauthLogin(false)
   }
   
   // 모든 error
@@ -136,8 +163,9 @@ class NaverLogin: UIViewController, NaverThirdPartyLoginConnectionDelegate, Obse
 //      guard let email = object["email"] as? String else { return }
       guard let name = object["name"] as? String else { return }
       guard let id = object["id"] as? String else {return}
-      UserDefaults.standard.set(id, forKey: "MyID")
-      UserDefaults.standard.set(name, forKey: "MyName")
+      print(object)
+//      UserDefaults.standard.set(id, forKey: "MyID")
+//      UserDefaults.standard.set(name, forKey: "MyName")
       
 //      let user = UserPrivacy()
 //      user._id = id

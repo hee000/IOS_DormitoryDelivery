@@ -12,7 +12,7 @@ import UniformTypeIdentifiers
 
 struct ReceiptView: View {
   @Environment(\.presentationMode) var presentationMode
-  @ObservedObject var model: Receipt = Receipt()
+  @StateObject var model: Receipt = Receipt()
   @EnvironmentObject var naverLogin: NaverLogin
 
   @State var imagetoggle = false
@@ -24,8 +24,7 @@ struct ReceiptView: View {
           if model.data != nil {
           VStack(alignment: .leading, spacing: 0){
             Text("배달팁과 총 결제금액을 확인해주세요.")
-              .bold()
-              .font(.title3)
+              .font(.system(size: 16, weight: .bold))
               .padding([.top, .bottom])
               .padding(.bottom)
 
@@ -46,8 +45,7 @@ struct ReceiptView: View {
             .shadow(color: Color.black.opacity(0.2), radius: 8)
             
             Text("주문 내역")
-              .bold()
-              .font(.title3)
+              .font(.system(size: 16, weight: .bold))
               .padding([.top, .bottom])
               .padding(.top)
             
@@ -57,35 +55,38 @@ struct ReceiptView: View {
                   HStack{
                     VStack(alignment: .leading, spacing: 10) {
                       Text("\(model.data!.menus[index].price)원")
-                        .bold()
-                        .font(.title3)
+                        .font(.system(size: 18, weight: .bold))
                       Text(model.data!.menus[index].name)
-                        .bold()
+                        .font(.system(size: 14, weight: .bold))
                       if model.data!.menus[index].description != "" {
                         Text(model.data!.menus[index].description)
                           .foregroundColor(.gray)
+                          .font(.system(size: 14, weight: .regular))
                       }
                     }
                     Spacer()
                     Text("수량 \(model.data!.menus[index].quantity) 개")
+                      .font(.system(size: 14, weight: .regular))
                   }
                   Divider()
                     .padding([.top, .bottom], 10)
                 }
                 HStack{
                   Text("+ 배달팁")
+                    .font(.system(size: 12, weight: .regular))
                   Spacer()
                   Text("\(model.data!.tipForUser ?? 0)원")
+                    .font(.system(size: 12, weight: .regular))
                 }
                 .foregroundColor(Color(.sRGB, red: 132/255, green: 166/255, blue: 255/255, opacity: 1))
                 .padding(.bottom, 5)
 
                 HStack{
                   Text("총 주문금액")
+                    .font(.system(size: 14, weight: .regular))
                   Spacer()
                   Text("\(model.data!.totalPrice ?? 0)원")
-                    .font(.title3)
-                    .bold()
+                    .font(.system(size: 18, weight: .bold))
                     .foregroundColor(Color(.sRGB, red: 91/255, green: 66/255, blue: 212/255, opacity: 1))
                 }
               }
@@ -99,19 +100,19 @@ struct ReceiptView: View {
             
 
             Text("계좌 확인하기")
-              .bold()
-              .font(.title3)
+              .font(.system(size: 16, weight: .bold))
               .padding([.top, .bottom])
               .padding(.top)
             HStack{
-              Image(systemName: "person.circle.fill")
-                .foregroundColor(Color(.sRGB, red: 180/255, green: 200/255, blue: 255/255, opacity: 1))
               VStack(alignment: .leading) {
+                Text(model.data?.accountBank ?? "")
+                  .font(.system(size: 18, weight: .bold))
                 Text(model.data?.accountNumber ?? "")
-                HStack{
-                  Text(model.data?.accountBank ?? "")
-                  Text(model.data?.accountUserName ?? "")
-                }
+                  .font(.system(size: 18, weight: .bold))
+                  .padding(.bottom, 5)
+                Text("예금주: \(model.data?.accountUserName ?? "")")
+                  .font(.system(size: 14, weight: .regular))
+                  .foregroundColor(.gray)
               }
               Spacer()
               Button{
@@ -122,7 +123,8 @@ struct ReceiptView: View {
                 }
                 //액션시트와 같은 종류로 복사하기가 완료되었다는 메시지 출력하기
               } label:{
-                Text("복사하기")
+                Text("계좌 복사")
+                  .font(.system(size: 12, weight: .regular))
                   .frame(width:60, height: 40)
                   .foregroundColor(.white)
                   .background(Color(.sRGB, red: 165/255, green: 162/255, blue: 246/255, opacity: 1))

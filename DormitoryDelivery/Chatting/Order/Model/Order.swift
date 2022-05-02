@@ -7,10 +7,17 @@ struct orderdata: Codable, Identifiable, Equatable {
   var name: String;
   var quantity: Int;
   var description: String;
-  var price: Int?;
+  var price: String;
 }
 
 
+struct restOnlyOrderData: Codable, Identifiable, Equatable {
+  var id: String;
+  var name: String;
+  var quantity: Int;
+  var description: String;
+  var price: Int;
+}
 
 class Order: ObservableObject {
   @Published var data: [orderdata] = []

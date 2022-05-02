@@ -9,6 +9,7 @@ import Foundation
 import Alamofire
 import RealmSwift
 
+
 func getChatLog(rid: String, idx: Int) {
   let index = idx + 1
   let url = urlchatlog(rid: rid, idx: String(index))
@@ -35,11 +36,26 @@ func getChatLog(rid: String, idx: Int) {
         
         for chat in json {
           guard !(chatdb?.messages.contains(chat))! else {
-            print("이미 있음")
+//            print("이미 있음")
             continue
           }
-          print("저장함")
+//          print("저장함")
           chatdb?.messages.append(chat)
+          if chat.type == "chat" {
+            chatdb?.sortforat = Int(chat.at!)!
+          }
+        }
+        
+        if let last = chatdb?.messages.filter("type == 'chat'").last?.at {
+          chatdb?.sortforat = Int(last)!
+        }
+        
+
+      
+        if let sortmessages = chatdb?.messages.sorted(byKeyPath: "idx", ascending: true).list {
+          
+          chatdb?.messages.removeAll()
+          chatdb?.messages.append(objectsIn: sortmessages)
         }
         
         

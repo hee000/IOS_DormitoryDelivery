@@ -11,7 +11,7 @@ import RealmSwift
 
 func postMenuEdit(oderdata: orderdata, rid: String){
 
-  let addkey = addmenu(name: oderdata.name, quantity: oderdata.quantity, description: oderdata.description, price: oderdata.price!)
+  let addkey = addmenu(name: oderdata.name, quantity: oderdata.quantity, description: oderdata.description, price: Int(oderdata.price)!)
   let url = urlmenus(uid: UserData().data!.id!, rid: rid, mid: oderdata.id)
   
   

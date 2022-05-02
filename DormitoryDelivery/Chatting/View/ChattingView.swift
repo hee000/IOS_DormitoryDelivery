@@ -18,11 +18,11 @@ struct ChattingView: View {
   @EnvironmentObject var keyboardManager: KeyboardManager
   @EnvironmentObject var naverLogin: NaverLogin
   @EnvironmentObject var imsi_data: ChatData
-  @EnvironmentObject var userPrivacy: UserData
   @StateObject var model: Chatting = Chatting()
   
   @State var RoomChat: ChatDB?
   let rid: String
+  @State var isReceiver = true
 
   @FocusState private var rere: Bool
   @Namespace var bottomID
@@ -40,6 +40,15 @@ struct ChattingView: View {
 
     GeometryReader { geo in
       ZStack {
+        if isReceiver{
+          EmptyView()
+           .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { (_) in
+                   getChatLog(rid: self.rid, idx: 999)
+                   getRoomUpdate(rid: self.rid)
+                   getParticipantsUpdate(rid: self.rid)
+           }
+        } //isreceiver
+        
         VStack(spacing: 0) {
             //MARK:- ScrollView
 //        CustomScrollView(scrollToEnd: true) {
@@ -52,7 +61,7 @@ struct ChattingView: View {
                   if let RoomDB = RoomChat{
                     ForEach(RoomDB.messages.indices, id: \.self) { index in
                       if RoomDB.messages[index].type == "chat" {
-                        if let idvalue = userPrivacy.data!.id {
+                        if let idvalue = UserData().data?.id {
                           if RoomDB.messages[index].body!.userid == idvalue { // 내 매세지
                             ChatBubble(position: BubblePosition.right, color: Color(.sRGB, red: 87/255, green: 126/255, blue: 255/255, opacity: 1)) {
                               Text(RoomDB.messages[index].body!.message!)
@@ -123,6 +132,7 @@ struct ChattingView: View {
                   } //if
       
                 } //lazyV
+                .disabled(RoomChat?.Kicked ?? false ? true : false)
                 .rotationEffect(Angle(degrees: 180))
                 .scaleEffect(x: -1.0, y: 1.0, anchor: .center)
                 Spacer().frame(height: 10) // 뒤집힌 스크롤 하단 패딩
@@ -133,7 +143,6 @@ struct ChattingView: View {
           }//geo
           .clipped()
           .background(Color(.sRGB, red: 245/255, green: 245/255, blue: 251/255, opacity: 1))
-          .disabled(RoomChat?.Kicked ?? false ? true : false)
           .onTapGesture {
             hideKeyboard()
           }
@@ -141,7 +150,7 @@ struct ChattingView: View {
             //MARK:- text editor
         // 주문서 작성 & 준비완료
           if RoomChat?.state?.orderFix == false {
-            if RoomChat?.superUser!.userId! == userPrivacy.data!.id || (RoomChat?.menu.count) == 0{
+            if RoomChat?.superUser?.userId == UserData().data?.id || RoomChat?.readyAvailable == false {
               Button {
                 self.model.oderview.toggle()
               } label: {
@@ -254,7 +263,7 @@ struct ChattingView: View {
                     }}) : nil)
 
         
-        if RoomChat?.superUser!.userId! == userPrivacy.data!.id && RoomChat?.state?.allReady == true && self.model.showMenu == false {
+        if RoomChat?.superUser?.userId == UserData().data?.id && RoomChat?.state?.allReady == true && self.model.showMenu == false {
           Button {
             postOderFix(rid: self.rid)
           } label: {
@@ -289,7 +298,7 @@ struct ChattingView: View {
           .disabled(RoomChat?.Kicked ?? false ? true : false)
         } // 방장 메뉴 오더 픽스 이벤트
         
-        if RoomChat?.superUser!.userId! == userPrivacy.data!.id && RoomChat?.state?.orderFix == true && RoomChat?.state?.orderChecked == false && self.model.showMenu == false {
+        if RoomChat?.superUser?.userId == UserData().data?.id && RoomChat?.state?.orderFix == true && RoomChat?.state?.orderChecked == false && self.model.showMenu == false {
           Button{
             self.model.odercheck.toggle()
           } label: {
@@ -320,7 +329,7 @@ struct ChattingView: View {
           .disabled(RoomChat?.Kicked ?? false ? true : false)
         } // 방장 메뉴 확인 이벤트
         
-        if RoomChat?.superUser!.userId! == userPrivacy.data!.id && RoomChat?.state?.orderChecked == true && RoomChat?.state?.orderDone == false && self.model.showMenu == false {
+        if RoomChat?.superUser?.userId == UserData().data?.id && RoomChat?.state?.orderChecked == true && RoomChat?.state?.orderDone == false && self.model.showMenu == false {
           Button{
             postOrderDone(rid: self.rid)
           } label: {
@@ -406,30 +415,30 @@ struct ChattingView: View {
       self.RoomChat = nil
       presentationMode.wrappedValue.dismiss()
     }
-
     .onAppear {
+      getChatLog(rid: self.rid, idx: 999)
+      getRoomUpdate(rid: self.rid)
+      getParticipantsUpdate(rid: self.rid)
+      
       try! realm.write({
         if RoomChat != nil {
-          RoomChat!.confirmation = RoomChat!.index
           if let lastindex = RoomChat!.messages.last{
-            RoomChat!.systemConfirmation = lastindex.idx.value!
+            RoomChat!.confirmation = lastindex.idx.value!
           }
-//          RoomChat!.confirmation = Int(RoomChat!.messages.filter("type == 'chat'").last!.idx!)!
         }
       })
     }
-    .onChange(of: RoomChat?.index, perform: { V in
+    .onChange(of: RoomChat?.messages.count, perform: { V in
       try! realm.write({
         if RoomChat != nil {
-          RoomChat!.confirmation = RoomChat!.index
           if let lastindex = RoomChat!.messages.last{
-            RoomChat!.systemConfirmation = lastindex.idx.value!
+            RoomChat!.confirmation = lastindex.idx.value!
           }
-//          RoomChat!.confirmation = Int(RoomChat!.messages.filter("type == 'chat'").last!.idx!)!
         }
       })
     })
     .onDisappear {
+      isReceiver = false
       let realm = try! Realm()
       if self.model.leave {
         self.RoomChat = nil
@@ -454,11 +463,9 @@ struct ChattingView: View {
       } else{
           try! realm.write({
             if RoomChat != nil {
-              RoomChat!.confirmation = RoomChat!.index
               if let lastindex = RoomChat!.messages.last{
-                RoomChat!.systemConfirmation = lastindex.idx.value!
+                RoomChat!.confirmation = lastindex.idx.value!
               }
-//              RoomChat!.confirmation = Int(RoomChat!.messages.filter("type == 'chat'").last!.idx!)!
             }
           })
       }
@@ -467,3 +474,5 @@ struct ChattingView: View {
   }
   
 }
+
+

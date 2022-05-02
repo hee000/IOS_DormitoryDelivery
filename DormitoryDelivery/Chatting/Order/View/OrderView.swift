@@ -32,7 +32,7 @@ struct OrderView: View {
               GeometryReader { geo in
                 Button{
                   self.addanimation.toggle()
-                  let nonemenue = orderdata(id: UUID().uuidString, name: "", quantity: 1, description: "", price: nil)
+                  let nonemenue = orderdata(id: UUID().uuidString, name: "", quantity: 1, description: "", price: "")
 //                    self.ordermodel.data.append(nonemenue)
                   withAnimation {
                     self.ordermodel.onanimation.toggle()
@@ -41,7 +41,7 @@ struct OrderView: View {
 //                  self.ordermodel.data.insert(nonemenue, at: 0)
                 } label: {
                   Image(systemName: "plus")
-                    .font(.title)
+                    .font(.system(size: 22, weight: .regular))
                     .foregroundColor(.gray)
                     .frame(width: geo.size.width, height: geo.size.height)
                     .background(.white)
@@ -103,8 +103,10 @@ struct OrderView: View {
                         .foregroundColor(Color(.sRGB, red: 112/255, green: 52/255, blue: 255/255, opacity: 1))
                       Text("가격")
                         .font(.system(size: 16, weight: .bold))
-                      TextField("가격을 입력해주세요", value: $ordermodel.data[index].price, formatter: formatter)
-                          .keyboardType(.phonePad)
+                      TextField("가격을 입력해주세요", text: $ordermodel.data[index].price)
+
+//                      TextField("가격을 입력해주세요", value: $ordermodel.data[index].price, formatter: formatter)
+                          .keyboardType(.numberPad)
                           .multilineTextAlignment(.trailing)
                           .font(.system(size: 16, weight: .regular))
                     }
@@ -123,6 +125,7 @@ struct OrderView: View {
                             Color.clear
                               .frame(maxWidth: .infinity, maxHeight: .infinity)
                             Image(systemName: "minus")
+                              .font(.system(size: 16, weight: .regular))
                               .foregroundColor(self.ordermodel.data[index].quantity > 1 ? Color.black : Color.gray.opacity(0.5))
                           }
                         }
@@ -130,8 +133,9 @@ struct OrderView: View {
                           .frame(width: 20)
 
                         Text("\(self.ordermodel.data[index].quantity)개")
-                          .font(.system(size: 16, weight: .regular))
+                          .font(.system(size: 12, weight: .regular))
                           .frame(width: 40)
+                        
                         Button {
                           self.ordermodel.data[index].quantity += 1
                         } label: {
@@ -139,11 +143,14 @@ struct OrderView: View {
                             Color.clear
                               .frame(maxWidth: .infinity, maxHeight: .infinity)
                             Image(systemName: "plus")
+                              .font(.system(size: 16, weight: .regular))
                               .foregroundColor(.black)
+
                           }
                         }
                         .frame(width: 20)
                       }
+                      .frame(width: 100)
                       .padding([.leading, .trailing], 10)
                       .padding([.top, .bottom], 10)
                       .overlay(RoundedRectangle(cornerRadius: 21).stroke(Color.gray.opacity(0.5), lineWidth: 1))
@@ -204,13 +211,12 @@ struct OrderView: View {
               hideKeyboard()
           }
             
-            
           VStack{
             Spacer()
             Button {
               var valid = true
               for i in ordermodel.data.indices {
-                if ordermodel.data[i].name == "" || ordermodel.data[i].price == nil {
+                if ordermodel.data[i].name == "" || Int(ordermodel.data[i].price) == nil {
                   valid = false
                   withAnimation {
                     self.postalertstate.toggle()
@@ -238,8 +244,7 @@ struct OrderView: View {
               }
             } label: {
               Text("작성 완료")
-                .bold()
-                .font(.title3)
+                .font(.system(size: 18, weight: .bold))
                 .foregroundColor(.black)
                 .padding(.top, 15)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -259,6 +264,10 @@ struct OrderView: View {
           presentationMode.wrappedValue.dismiss()
         })
         
+        .onDisappear(perform: {
+          getRoomUpdate(rid: self.roomid)
+        })
+          
         .onAppear(perform: {
           getMenuListIndividual(uid: UserData().data!.id!, rid: self.roomid, model: self.ordermodel)
           
@@ -279,6 +288,7 @@ struct OrderView: View {
         })
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarTitle("주문서 작성")
+
         .toolbar {
           ToolbarItem(placement: .navigationBarTrailing) {
             Button {

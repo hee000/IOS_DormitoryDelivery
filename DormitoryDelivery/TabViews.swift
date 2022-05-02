@@ -8,37 +8,47 @@
 import SwiftUI
 import RealmSwift
 
+class Tab: ObservableObject {
+  @Published var tabSelect = 0
+  @Published var createRoomSelect = false
+  @Published var tabSelectTmp = 0
+  @Published var DeliveryViewSection = -1
+}
+
 struct TabViews: View {
-  @EnvironmentObject var chatdata: ChatData
-  @EnvironmentObject var noti: Noti
-  @EnvironmentObject var dormis: dormitoryData
+//  @EnvironmentObject var chatdata: ChatData
+//  @EnvironmentObject var noti: Noti
+//  @EnvironmentObject var dormis: dormitoryData
   
-  @State var tabSelect = 0
-  @State var createRoomSelect = false
-  @State var tabSelectTmp = 0
-  
-  @State var DeliveryViewSection = -1
+  @StateObject var model = Tab()
+//  @State var tabSelect = 0
+//  @State var createRoomSelect = false
+//  @State var tabSelectTmp = 0
+//
+//  @State var DeliveryViewSection = -1
 
   var body: some View {
-    TabView(selection: $tabSelect){
-      DeliveryView(mysection: $DeliveryViewSection, tabSelect: $tabSelect)
+    TabView(selection: $model.tabSelect){
+      DeliveryView(mysection: $model.DeliveryViewSection, tabSelect: $model.tabSelect)
+
         .overlay(Rectangle().frame(width: nil, height: 1, alignment: .top).foregroundColor(Color(.sRGB, red: 210/255, green: 210/255, blue: 210/255, opacity: 1)), alignment: .top)
         .overlay(Rectangle().frame(width: nil, height: 1, alignment: .top).foregroundColor(Color(.sRGB, red: 210/255, green: 210/255, blue: 210/255, opacity: 1)), alignment: .bottom)
 //        .overlay(Rectangle().frame(width: nil, height: 1, alignment: .top).foregroundColor(Color(.sRGB, red: 210/255, green: 210/255, blue: 210/255, opacity: 1)), alignment: .bottom)
+//      }
         .tabItem {
-        if self.tabSelect == 0 {
-          Label("", image: "23424")
+          if self.model.tabSelect == 0 {
+          Label("홈", image: "Tab_home")
         } else {
-          Label("", image: "대지 8 사본 5")
+          Label("홈", image: "Tabn_home")
         }
       }
       .tag(0)
-
+      
       Text("").tabItem {
-        if self.tabSelect == 1 {
-          Label("개설", image: "대지 8 사본 3")
+        if self.model.tabSelect == 1 {
+          Label("개설", image: "Tab_create")
         } else {
-          Label("", image: "대지 8 사본 7")
+          Label("개설", image: "Tabn_create")
         }
       }.tag(1)
 
@@ -46,10 +56,10 @@ struct TabViews: View {
         .overlay(Rectangle().frame(width: nil, height: 1, alignment: .top).foregroundColor(Color(.sRGB, red: 210/255, green: 210/255, blue: 210/255, opacity: 1)), alignment: .top)
         .overlay(Rectangle().frame(width: nil, height: 1, alignment: .top).foregroundColor(Color(.sRGB, red: 210/255, green: 210/255, blue: 210/255, opacity: 1)), alignment: .bottom)
         .tabItem {
-        if self.tabSelect == 2 {
-          Label("채팅", image: "대지 8")
+          if self.model.tabSelect == 2 {
+          Label("채팅", image: "Tab_chat")
         } else {
-          Label("", image: "대지 8 사본 4")
+          Label("채팅", image: "Tabn_chat")
         }
       }.tag(2)
 
@@ -57,26 +67,26 @@ struct TabViews: View {
         .overlay(Rectangle().frame(width: nil, height: 1, alignment: .top).foregroundColor(Color(.sRGB, red: 210/255, green: 210/255, blue: 210/255, opacity: 1)), alignment: .top)
         .overlay(Rectangle().frame(width: nil, height: 1, alignment: .top).foregroundColor(Color(.sRGB, red: 210/255, green: 210/255, blue: 210/255, opacity: 1)), alignment: .bottom)
         .tabItem {
-        if self.tabSelect == 3 {
-          Label("마이", image: "대지 8 사본 2")
+          if self.model.tabSelect == 3 {
+          Label("마이페이지", image: "Tab_my")
         } else {
-          Label("", image: "대지 8 사본 6")
+          Label("마이페이지", image: "Tabn_my")
         }
       }.tag(3)
     } //tabview
     
-    .fullScreenCover(isPresented: $createRoomSelect) {
-      CreateRoomView(tabSelect: $tabSelect)
+    .fullScreenCover(isPresented: $model.createRoomSelect) {
+      CreateRoomView(tabSelect: $model.tabSelect)
     }
       
-    .onChange(of: self.tabSelect, perform: { newValue in
+    .onChange(of: self.model.tabSelect, perform: { newValue in
       if newValue == 1 {
         withAnimation {
-          self.createRoomSelect.toggle()
-          self.tabSelect = self.tabSelectTmp
+          self.model.createRoomSelect.toggle()
+          self.model.tabSelect = self.model.tabSelectTmp
         }
       } else {
-        self.tabSelectTmp = newValue
+        self.model.tabSelectTmp = newValue
       }
     })
     
@@ -84,73 +94,70 @@ struct TabViews: View {
     .toolbar {
       ToolbarItem(placement: .navigationBarLeading) {
         HStack(spacing: 0) {
-          if self.tabSelect == 0 {
-            Menu{
-//              ForEach(0 ..< sections.count, id: \.self) { index in
-              Button(action: {
-                self.DeliveryViewSection = -1
-              }) {
-                Text("전체")
-              }
-              ForEach(dormis.data) { dormi in
-                Button(action: {
-                  self.DeliveryViewSection = dormi.id
-                }) {
-                  Text(dormi.name)
-                }
-              }
-            } label: {
-//              Text(sections[self.DeliveryViewSection])
-              Text(self.DeliveryViewSection == -1 ? "전체" : dormis.data[dormis.data.map({ dormitory in
-                dormitory.id
-              }).index(of: self.DeliveryViewSection)!].name)
-                .font(.title2)
-                .bold()
-                .foregroundColor(.black)
-            }
-            Image(systemName: "arrowtriangle.down.fill")
-              .resizable()
-              .scaledToFit()
-              .frame(width: 13, height: 10)
-              .foregroundColor(.gray)
-              .padding(.leading, 2)
-          } else if self.tabSelect == 2 {
-          } else if self.tabSelect == 3 {
+          if self.model.tabSelect == 0 {
+//            Menu{
+////              ForEach(0 ..< sections.count, id: \.self) { index in
+//              Button(action: {
+//                self.model.DeliveryViewSection = -1
+//              }) {
+//                Text("전체")
+//              }
+//              ForEach(dormis.data) { dormi in
+//                Button(action: {
+//                  self.model.DeliveryViewSection = dormi.id
+//                }) {
+//                  Text(dormi.name)
+//                }
+//              }
+//            } label: {
+////              Text(sections[self.DeliveryViewSection])
+//              Text(self.model.DeliveryViewSection == -1 ? "전체" : dormis.data[dormis.data.map({ dormitory in
+//                dormitory.id
+//              }).index(of: self.model.DeliveryViewSection)!].name)
+//                .font(.title2)
+//                .bold()
+//                .foregroundColor(.black)
+//            }
+//            Image(systemName: "arrowtriangle.down.fill")
+//              .resizable()
+//              .scaledToFit()
+//              .frame(width: 13, height: 10)
+//              .foregroundColor(.gray)
+//              .padding(.leading, 2)
+          } else if self.model.tabSelect == 2 {
+          } else if self.model.tabSelect == 3 {
           }
         }
       }
-      
+
       ToolbarItem(placement: .principal) {
-          if self.tabSelect == 0 {
-          } else if self.tabSelect == 2 {
+        if self.model.tabSelect == 0 {
+        } else if self.model.tabSelect == 2 {
             Text("채팅")
               .bold()
-          } else if self.tabSelect == 3 {
+        } else if self.model.tabSelect == 3 {
             Text("마이페이지")
               .bold()
           }
       }
-      
-      
+
+
       ToolbarItem(placement: .navigationBarTrailing) {
-        if self.tabSelect == 0 {
-          HStack{
-            NavigationLink(destination: NotificationView(tabSelect: $tabSelect)){
-              Image(noti.systemNoti ? "ImageBellOn" : "ImageBellOff")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 21, height: 22)
-            }
-          }
-        } else if self.tabSelect == 2 {
-        } else if self.tabSelect == 3 {
+        if self.model.tabSelect == 0 {
+//          HStack{
+//            NavigationLink(destination: NotificationView(tabSelect: $model.tabSelect)){
+//              Image(noti.systemNoti ? "ImageBellOn" : "ImageBellOff")
+//                .resizable()
+//                .scaledToFit()
+//                .frame(width: 21, height: 22)
+//            }
+//          }
+        } else if self.model.tabSelect == 2 {
+        } else if self.model.tabSelect == 3 {
         }
       }
-      
+
     } //toolbar
-
-    .accentColor(Color(.sRGB, red: 112/255, green: 52/255, blue: 255/255, opacity: 1))
-
   }
 }
 
