@@ -12,7 +12,8 @@ struct PrivacyPoliceView: View {
 
   
     var body: some View {
-        Text("개인정보 처리방침뷰")
+        Webview(url: URL(string: "https://gachihasil.link/policy/privacy.html")!)
+        .edgesIgnoringSafeArea(.bottom)
       
       
         .navigationBarTitleDisplayMode(.inline)
@@ -30,6 +31,7 @@ struct PrivacyPoliceView: View {
             }
           }
         }
+        .background(Color(.sRGB, red: 243/255, green: 242/255, blue: 238/255, opacity: 1))
     }
 }
 struct PrivacyPoliceView_Previews: PreviewProvider {

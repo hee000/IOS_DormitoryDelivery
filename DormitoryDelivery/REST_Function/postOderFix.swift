@@ -10,10 +10,12 @@ import Alamofire
 
 
 func postOderFix(rid: String){
-  let url = urloderfix(rid: rid)
-  
-  AF.request(url, method: .post, headers: TokenUtils().getAuthorizationHeader()).responseString { response in
-    print(response)
+  restApiQueue.async {
+    let url = urloderfix(rid: rid)
+    
+    AF.request(url, method: .post, headers: TokenUtils().getAuthorizationHeader()).responseString { response in
+      print(response)
+    }
   }
   
 }

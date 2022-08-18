@@ -58,9 +58,9 @@ class NaverLogin: UIViewController, NaverThirdPartyLoginConnectionDelegate, Obse
     
     AF.request(url2, method: .post,
                parameters: param2,
-               encoding: JSONEncoding.default
+               encoding: JSONEncoding.default, headers: httpAppVersion
     ).responseJSON { response2 in
-      print(response2)
+      print(response2, "@@@@@@@@@@@@@@@@@@@@@ㅁㅁ@@")
         if response2.response?.statusCode == 201 {
           guard let restdata = try? JSONDecoder().decode(tokenvalue.self, from: response2.data!) else { return }
           
@@ -75,7 +75,6 @@ class NaverLogin: UIViewController, NaverThirdPartyLoginConnectionDelegate, Obse
           user.id = jwtdata.id
           user.name = jwtdata.name
           user.belong = jwtdata.univId
-          user.emailAddress = "네이버 로그인"
 //          user.belongStr = "네이버 로그인 ㄱ"
           
           let realm = try! Realm()

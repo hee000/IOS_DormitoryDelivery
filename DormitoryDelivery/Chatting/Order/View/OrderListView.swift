@@ -5,10 +5,11 @@ struct OrderListView: View {
   @Environment(\.presentationMode) var presentationMode
   @EnvironmentObject var naverLogin: NaverLogin
   @StateObject var orderlistmodel: OrderList = OrderList()
-  @State var RoomChat: ChatDB?
+  var RoomChat: ChatDB?
   var rid: String
 
-    var body: some View {
+  var body: some View {
+    NavigationView{
       GeometryReader { geo in
         ZStack(alignment: .topTrailing) {
           ScrollView {
@@ -55,11 +56,12 @@ struct OrderListView: View {
           Button {
             presentationMode.wrappedValue.dismiss()
           } label: {
-            Image(systemName: "chevron.left")
+            Image(systemName: "xmark")
               .foregroundColor(.black)
           }
         }
       }
-    }
-  
+
+    }//navi
+  }
 }

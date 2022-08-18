@@ -102,23 +102,26 @@ extension AppDelegate: UNUserNotificationCenterDelegate {  // UNUserNotification
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        print("앱이 포그라운드에서 실행되는 동안 도착한 알림을 처리하는 방법")
-        let userInfo = notification.request.content.userInfo
-        if let messageID = userInfo[gcmMessageIDKey] {
-            print("Message ID: \(messageID)")
-        }
-        
-        if let data1 = userInfo[data1Key] {
-            print("data1: \(data1)")
-        }
-        
-        if let data2 = userInfo[data2Key] {
-            print("data2: \(data2)")
-        }
-
-        if let apsData = userInfo[aps] {
-            print("apsData : \(apsData)")
-        }
+//        print("앱이 포그라운드에서 실행되는 동안 도착한 알림을 처리하는 방법")
+//        let userInfo = notification.request.content.userInfo
+//        if let messageID = userInfo[gcmMessageIDKey] {
+//            print("Message ID: \(messageID)")
+//        }
+//
+//        if let data1 = userInfo[data1Key] {
+//            print("data1: \(data1)")
+//        }
+//        
+//        if let data2 = userInfo[data2Key] {
+//            print("data2: \(data2)")
+//        }
+//
+//        if let apsData = userInfo[aps] {
+//            print("apsData : \(apsData)")
+//        }
+      
+      
+      
         // Change this to your preferred presentation option
 //        completionHandler([[.banner, .badge, .sound]])
     }

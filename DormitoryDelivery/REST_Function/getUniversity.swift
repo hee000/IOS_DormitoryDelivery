@@ -19,10 +19,11 @@ func getUniversityDormitory(dormitoryId: String, model: dormitoryData) {
   let req = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default)
 
   req.responseJSON(queue: .global()) { response in
+//    print(response)
     guard let json = response.data else { return }
     guard let restdata = try? JSONDecoder().decode([dormitory].self, from: json)
     else {
-      getUniversityDormitory(dormitoryId: dormitoryId, model: model)
+//      getUniversityDormitory(dormitoryId: dormitoryId, model: model)
       return
     }
     model.data = restdata

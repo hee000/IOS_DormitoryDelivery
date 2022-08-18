@@ -6,55 +6,44 @@
 //
 
 import SwiftUI
-//import UIKit
-//import NaverThirdPartyLogin
+import UIKit
+import NaverThirdPartyLogin
+import Alamofire
 
 @main
 struct DormitoryDeliveryApp: App {
-//  @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+  @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
   
+  @AppStorage("appVersionVaild") var appVersionVaild: Bool = UserDefaults.standard.bool(forKey: "appVersionVaild")
 
     var body: some Scene {
         WindowGroup {
-            TESFILE()
             
-//          ContentView()
-////            .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { (_) in
-////                      print("UIApplication: active")
-////                    }
-////            .onReceive(NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)) { (_) in
-////              print("UIApplication: background")
-////            }
-//            .environmentObject(NaverLogin())
-//            .environmentObject(DateCheck())
-//            .environmentObject(RoomData())
-//            .environmentObject(dormitoryData())
-//            .environmentObject(ChatData())
-//            .environmentObject(ChatNavi())
-//            .environmentObject(KeyboardManager())
-//            .environmentObject(Order())
-//            .environmentObject(Noti())
-//            .environmentObject(OrderList())
-//            .onOpenURL(perform: { url in
-//              NaverThirdPartyLoginConnection
-//              .getSharedInstance()?
-//              .receiveAccessToken(url)
-//            })
-//            .onAppear {
-//              NetworkMonitor.shared.startMonitoring()
-//            }
+          ContentView()
+            .overlay(self.appVersionVaild ? AlertOneButton(isActivity: $appVersionVaild) { Text("앱 업데이트가 필요합니다.").font(.system(size: 16, weight: .regular)) }.onDisappear{
+                  UIApplication.shared.perform(#selector(NSXPCConnection.suspend))
+                  DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                      exit(0)
+                  }
+            } : nil)
+            .environmentObject(NaverLogin())
+            .environmentObject(DateCheck())
+            .environmentObject(RoomData())
+            .environmentObject(dormitoryData())
+            .environmentObject(ChatData())
+            .environmentObject(ChatNavi())
+            .environmentObject(KeyboardManager())
+            .environmentObject(Order())
+            .environmentObject(Noti())
+            .environmentObject(OrderList())
+            .onOpenURL(perform: { url in
+              NaverThirdPartyLoginConnection
+              .getSharedInstance()?
+              .receiveAccessToken(url)
+            })
+            .onAppear {
+              NetworkMonitor.shared.startMonitoring()
+            }
         }
     }
 }
-
-
-//extension UINavigationController: ObservableObject, UIGestureRecognizerDelegate {
-//    override open func viewDidLoad() {
-//        super.viewDidLoad()
-//        interactivePopGestureRecognizer?.delegate = self
-//    }
-//
-//    public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-//        return viewControllers.count > 1
-//    }
-//}

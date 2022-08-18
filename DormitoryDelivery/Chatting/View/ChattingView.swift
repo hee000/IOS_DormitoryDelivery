@@ -16,16 +16,38 @@ struct ChattingView: View {
   @Environment(\.presentationMode) var presentationMode
   
   @EnvironmentObject var keyboardManager: KeyboardManager
-  @EnvironmentObject var naverLogin: NaverLogin
-  @EnvironmentObject var imsi_data: ChatData
-  @StateObject var model: Chatting = Chatting()
+//  @EnvironmentObject var naverLogin: NaverLogin
+//  @EnvironmentObject var imsi_data: ChatData
   
-  @State var RoomChat: ChatDB?
+  @StateObject var model: Chatting = Chatting()
+  @StateObject var sendTextModel: ChattingSendText = ChattingSendText()
+  @StateObject var privacy = UserData()
+  
+//  @ObservedObject var createRoomData: CreateRoom = CreateRoom()
+
+//  @State var RoomChat: ChatDB?
+  @StateObject var chatdb: ObservedChatDB
+//  @ObservedObject var chatdb: ObservedChatDB
+  
   let rid: String
-  @State var isReceiver = true
+  
+  init(roomid: String) {
+    self.rid = roomid
+    self._chatdb = StateObject(wrappedValue: ObservedChatDB(roomid: roomid))
+//    self._chatdb = ObservedObject(wrappedValue: ObservedChatDB(roomid: roomid))
+  }
+
 
   @FocusState private var rere: Bool
   @Namespace var bottomID
+
+  let barColor: LinearGradient = LinearGradient(
+    gradient: Gradient(stops: [Gradient.Stop(color: Color(.sRGB, red: 114/255, green: 160/255, blue: 253/255, opacity: 1), location: 0.05),
+                               Gradient.Stop(color: Color(.sRGB, red: 121/255, green: 123/255, blue: 250/255, opacity: 1), location: 0.54),
+                               Gradient.Stop(color: Color(.sRGB, red: 112/255, green: 64/255, blue: 255/255, opacity: 1), location: 1)
+                              ]),
+    startPoint: UnitPoint(x: 0.25, y: 0.5), endPoint: UnitPoint(x: 0.75, y: 0.5)
+  )
   
   var body: some View {
     
@@ -40,117 +62,25 @@ struct ChattingView: View {
 
     GeometryReader { geo in
       ZStack {
-        if isReceiver{
+        if model.isReceiver{
           EmptyView()
            .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { (_) in
-                   getChatLog(rid: self.rid, idx: 999)
-                   getRoomUpdate(rid: self.rid)
-                   getParticipantsUpdate(rid: self.rid)
+             getChatLog(rid: self.rid, idx: 999)
+             getRoomUpdate(rid: self.rid)
+             getParticipantsUpdate(rid: self.rid)
+             print("채팅 리시버")
            }
         } //isreceiver
         
         VStack(spacing: 0) {
-            //MARK:- ScrollView
-//        CustomScrollView(scrollToEnd: true) {
-          GeometryReader { scrollgeo in
-            ScrollViewReader { proxy in
-          
-              ScrollView {
-                Spacer().frame(height: 10) // 패딩
-                LazyVStack(spacing: 3) {
-                  if let RoomDB = RoomChat{
-                    ForEach(RoomDB.messages.indices, id: \.self) { index in
-                      if RoomDB.messages[index].type == "chat" {
-                        if let idvalue = UserData().data?.id {
-                          if RoomDB.messages[index].body!.userid == idvalue { // 내 매세지
-                            ChatBubble(position: BubblePosition.right, color: Color(.sRGB, red: 87/255, green: 126/255, blue: 255/255, opacity: 1)) {
-                              Text(RoomDB.messages[index].body!.message!)
-                                .font(.system(size: 14, weight: .regular))
-                            }
-                          } else { // 상대방 처음
-                            if index != 0 {
-                              if RoomDB.messages[index - 1].type == "system" || RoomDB.messages[index].body!.userid != RoomDB.messages[index - 1].body!.userid{
-                                Message(model:model, RoomDB: RoomDB, type: .newLeft, index: index)
-                              } else { // 상대 처음 이후
-                                ChatBubble(position: BubblePosition.left2, color: .white) {
-                                  Text(RoomDB.messages[index].body!.message!)
-                                    .font(.system(size: 14, weight: .regular))
-                                }
-                              }
-                            } else {//index 0인지?
-                                Message(model:model, RoomDB: RoomDB, type: .newLeft, index: index)
-                            }
-                          }
-                        }
-                      } else { // 시스템 메시지
-                        if RoomDB.messages[index].body!.action! == "users-new" {
-                          ChatBubble(position: BubblePosition.systemuUserInOut, color: Color(.sRGB, red: 223/255, green: 223/255, blue: 229/255, opacity: 1)) {
-                            Text("\(RoomDB.messages[index].body!.data!.name!)님이 참여했습니다.")
-                              .font(.system(size: 12, weight: .regular))
-                          }
-                        } else if RoomDB.messages[index].body!.action! == "users-leave" {
-                          ChatBubble(position: BubblePosition.systemuUserInOut, color: Color(.sRGB, red: 223/255, green: 223/255, blue: 229/255, opacity: 1)) {
-                            Text("\(RoomDB.messages[index].body!.data!.name!)님이 퇴장했습니다.")
-                              .font(.system(size: 12, weight: .regular))
-                          }
-                        } else if RoomDB.messages[index].body!.action! == "users-leave-kick" {
-                          ChatBubble(position: BubblePosition.systemuUserInOut, color: Color(.sRGB, red: 223/255, green: 223/255, blue: 229/255, opacity: 1)) {
-                            Text("\(RoomDB.messages[index].body!.data!.name!)님이 강퇴되었습니다.")
-                              .font(.system(size: 12, weight: .regular))
-                          }
-                        } else if RoomDB.messages[index].body!.action! == "users-leave-vote" {
-                          ChatBubble(position: BubblePosition.systemuUserInOut, color: Color(.sRGB, red: 223/255, green: 223/255, blue: 229/255, opacity: 1)) {
-                            Text("\(RoomDB.messages[index].body!.data!.name!)님이 투표에 의해 강퇴되었습니다.")
-                              .font(.system(size: 12, weight: .regular))
-                          }
-                        } else if RoomDB.messages[index].body!.action! == "order-fixed" {
-                          Message(model:model, RoomDB: RoomDB, type: .orderFixed, index: index)
-                        } else if RoomDB.messages[index].body!.action! == "order-checked" {
-                          Message(model:model, RoomDB: RoomDB, type: .orderChecked, index: index)
-                        } else if RoomDB.messages[index].body!.action! == "order-finished" {
-                          ChatBubble(position: BubblePosition.systemuUserInOut, color: Color(.sRGB, red: 223/255, green: 223/255, blue: 229/255, opacity: 1)) {
-                            Text("방장이 주문을 완료했습니다.")
-                              .font(.system(size: 12, weight: .regular))
-                          }
-                        } else if RoomDB.messages[index].body!.action! == "vote-kick-created" {
-                          Message(model:model, RoomDB: RoomDB, type: .voteKickCreated, index: index)
-                        }
-                        else if RoomDB.messages[index].body!.action! == "vote-kick-finished" {
-                          Message(model:model, RoomDB: RoomDB, type: .voteKickFinished, index: index)
-                        }
-                        else if RoomDB.messages[index].body!.action! == "vote-reset-created" {
-                          Message(model:model, RoomDB: RoomDB, type: .voteResetCreated, index: index)
-                        }
-                        else if RoomDB.messages[index].body!.action! == "vote-reset-finished" {
-                          Message(model:model, RoomDB: RoomDB, type: .voteResetFinished, index: index)
 
-                        }// else { //나머지 시스템 액션
-//                        }
-                      }
-
-                    } //for
-                  } //if
-      
-                } //lazyV
-                .disabled(RoomChat?.Kicked ?? false ? true : false)
-                .rotationEffect(Angle(degrees: 180))
-                .scaleEffect(x: -1.0, y: 1.0, anchor: .center)
-                Spacer().frame(height: 10) // 뒤집힌 스크롤 하단 패딩
-              } //scrollview
-              .rotationEffect(Angle(degrees: 180))
-              .scaleEffect(x: -1.0, y: 1.0, anchor: .center)
-            }//reader
-          }//geo
-          .clipped()
-          .background(Color(.sRGB, red: 245/255, green: 245/255, blue: 251/255, opacity: 1))
-          .onTapGesture {
-            hideKeyboard()
-          }
+          //MARK:- chat scroll view
+          MessageView(roomid: self.rid, chatmodel: model, chatdb: chatdb)
           
             //MARK:- text editor
         // 주문서 작성 & 준비완료
-          if RoomChat?.state?.orderFix == false {
-            if RoomChat?.superUser?.userId == UserData().data?.id || RoomChat?.readyAvailable == false {
+          if chatdb.db?.state?.orderFix == false {
+            if chatdb.db?.superUser?.userId == privacy.data?.id || chatdb.db?.readyAvailable == false {
               Button {
                 self.model.oderview.toggle()
               } label: {
@@ -159,7 +89,7 @@ struct ChattingView: View {
               }
             .frame(width: UIScreen.main.bounds.size.width, height: 45, alignment: .center)
             .background(Color(.sRGB, red: 221/255, green: 221/255, blue: 221/255, opacity: 1))
-            .disabled(RoomChat?.Kicked ?? false ? true : false)
+            .disabled(chatdb.db?.Kicked ?? false ? true : false)
           } else {
             HStack(alignment: .center, spacing: 0){
               Button {
@@ -171,16 +101,16 @@ struct ChattingView: View {
               .frame(width: geo.size.width/2)
               Divider()
               Button {
-                getReady(rid: self.rid, model: RoomChat!)
+                getReady(rid: self.rid, model: chatdb.db!)
               } label: {
-                Text(RoomChat!.ready ? "준비해제" : "준비완료")
+                Text(chatdb.db!.ready ? "준비해제" : "준비완료")
                   .font(.system(size: 14, weight: .regular))
               }
               .frame(width: geo.size.width/2)
             }
             .frame(width: geo.size.width, height: 45, alignment: .center)
             .background(Color(.sRGB, red: 221/255, green: 221/255, blue: 221/255, opacity: 1))
-            .disabled(RoomChat?.Kicked ?? false ? true : false)
+            .disabled(chatdb.db?.Kicked ?? false ? true : false)
           }
         }// 주문서 작성 & 준비완료 닫기
         
@@ -189,7 +119,7 @@ struct ChattingView: View {
             HStack(spacing: 0) {
               GeometryReader { geosender in
                 ZStack {
-                  Text(RoomChat?.Kicked ?? false ? "강퇴로 인해 채팅이 불가합니다." : self.model.text)
+                  Text(chatdb.db?.Kicked ?? false ? "강퇴로 인해 채팅이 불가합니다." : self.sendTextModel.text)
                     .padding(.leading)
                     .font(.system(size: 14, weight: .regular))
                     .lineLimit(1)
@@ -204,7 +134,7 @@ struct ChattingView: View {
                     .frame(width: geosender.size.width, height: 70, alignment: .leading)
                     .frame(maxHeight: .infinity)
                     .background(
-                      Text(self.model.text)
+                      Text(self.sendTextModel.text)
                         .font(.system(size: 14, weight: .regular))
                         .opacity(0)
                         .background(
@@ -212,23 +142,23 @@ struct ChattingView: View {
                             Color.clear.preference(key: SizeKey.self, value: geo.size.height)
                           }.frame(minHeight: 18))
                         .onPreferenceChange(SizeKey.self) { value in // --- 2
-                          self.model.textHeight = value
+                          self.sendTextModel.textHeight = value
                         }
                     )
 
-                  TextEditor(text: $model.text)
+                  TextEditor(text: $sendTextModel.text)
                     .font(.system(size: 14, weight: .regular))
                     .focused($rere)
-                    .frame(width: geosender.size.width, height: 18.0 + (self.model.textHeight ?? 18.0))
+                    .frame(width: geosender.size.width, height: 18.0 + (self.sendTextModel.textHeight ?? 18.0))
                     .opacity(self.rere ? 1 : 0)
                 }
-                .frame(height: self.rere ? 18.0 + (self.model.textHeight ?? 18.0) : 36)
+                .frame(height: self.rere ? 18.0 + (self.sendTextModel.textHeight ?? 18.0) : 36)
               } //geo sender
 
               Button {
-                if self.model.text != "" {
-                  SocketIOManager.shared.room_emitChat(rid: self.rid, text: self.model.text)
-                  self.model.text = ""
+                if self.sendTextModel.text != "" {
+                  SocketIOManager.shared.room_emitChat(rid: self.rid, text: self.sendTextModel.text)
+                  self.sendTextModel.text = ""
                 }
                 } label: {
                   Image(systemName: "arrow.up.circle.fill")
@@ -240,30 +170,30 @@ struct ChattingView: View {
                 .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 3))
               }
               .background(.white)
-              .frame(height: self.rere ? 18.0 + (self.model.textHeight ?? 18.0) : 36)
+              .frame(height: self.rere ? 18.0 + (self.sendTextModel.textHeight ?? 18.0) : 36)
               .cornerRadius(20)
 
             } // 채팅샌더 닫기
             .padding([.leading, .trailing])
-            .frame(width: geo.size.width ,height: self.rere ? 18.0 + (self.model.textHeight ?? 18.0) + 10 : 46)
+            .frame(width: geo.size.width ,height: self.rere ? 18.0 + (self.sendTextModel.textHeight ?? 18.0) + 10 : 46)
             .background(Color(.sRGB, red: 221/255, green: 221/255, blue: 221/255, opacity: 1))
             .overlay(Rectangle().frame(width: nil, height: 1, alignment: .top).foregroundColor(Color(.sRGB, red: 210/255, green: 210/255, blue: 210/255, opacity: 1)), alignment: .top)
-            .disabled(RoomChat?.Kicked ?? false ? true : false)
+            .disabled(chatdb.db?.Kicked ?? false ? true : false)
           
         }//vstack
         .frame(width: geo.size.width, height: geo.size.height)
         .disabled(self.model.showMenu ? true : false)
         .overlay(self.model.showMenu ? Rectangle()
-                  .fill(Color.black.opacity(0.7))
-                  .edgesIgnoringSafeArea(.bottom)
-                  .frame(width: geo.size.width,height: geo.size.height)
-                  .onTapGesture(perform: {
-                    withAnimation {
-                      self.model.showMenu = false
-                    }}) : nil)
+          .fill(Color.black.opacity(0.7))
+          .edgesIgnoringSafeArea(.bottom)
+          .frame(width: geo.size.width,height: geo.size.height)
+          .onTapGesture(perform: {
+            withAnimation {
+              self.model.showMenu = false
+            }}) : nil)
 
         
-        if RoomChat?.superUser?.userId == UserData().data?.id && RoomChat?.state?.allReady == true && self.model.showMenu == false {
+        if chatdb.db?.superUser?.userId == privacy.data?.id && chatdb.db?.state?.allReady == true && self.model.showMenu == false {
           Button {
             postOderFix(rid: self.rid)
           } label: {
@@ -284,21 +214,16 @@ struct ChattingView: View {
               .padding()
               .foregroundColor(.white)
               .frame(maxWidth: .infinity, maxHeight: 53)
-              .background(LinearGradient(gradient: Gradient(stops: [Gradient.Stop(color: Color(.sRGB, red: 114/255, green: 160/255, blue: 253/255, opacity: 1), location: 0.05),
-                                                                    Gradient.Stop(color: Color(.sRGB, red: 121/255, green: 123/255, blue: 250/255, opacity: 1), location: 0.54),
-                                                                    Gradient.Stop(color: Color(.sRGB, red: 112/255, green: 64/255, blue: 255/255, opacity: 1), location: 1)
-                                                                   ]), startPoint: UnitPoint(x: 0.25, y: 0.5), endPoint: UnitPoint(x: 0.75, y: 0.5))
-                            .transformEffect(CGAffineTransform(a: 1.1, b: 0, c: -1.34, d: 2.94, tx: 0.61, ty: -0.98))
-              )
+              .background(self.barColor.transformEffect(CGAffineTransform(a: 1.1, b: 0, c: -1.34, d: 2.94, tx: 0.61, ty: -0.98)))
               .cornerRadius(35)
           }
           .frame(width: geo.size.width * 9/10, height: 60)
           .offset(y: -geo.size.height/2 + 45)
           .transition(AnyTransition.opacity.animation(.easeInOut(duration: 1)))
-          .disabled(RoomChat?.Kicked ?? false ? true : false)
+          .disabled(chatdb.db?.Kicked ?? false ? true : false)
         } // 방장 메뉴 오더 픽스 이벤트
         
-        if RoomChat?.superUser?.userId == UserData().data?.id && RoomChat?.state?.orderFix == true && RoomChat?.state?.orderChecked == false && self.model.showMenu == false {
+        if chatdb.db?.superUser?.userId == privacy.data?.id && chatdb.db?.state?.orderFix == true && chatdb.db?.state?.orderChecked == false && self.model.showMenu == false {
           Button{
             self.model.odercheck.toggle()
           } label: {
@@ -315,21 +240,16 @@ struct ChattingView: View {
               .padding()
               .foregroundColor(.white)
               .frame(maxWidth: .infinity, maxHeight: 53)
-              .background(LinearGradient(gradient: Gradient(stops: [Gradient.Stop(color: Color(.sRGB, red: 114/255, green: 160/255, blue: 253/255, opacity: 1), location: 0.05),
-                                                                    Gradient.Stop(color: Color(.sRGB, red: 121/255, green: 123/255, blue: 250/255, opacity: 1), location: 0.54),
-                                                                    Gradient.Stop(color: Color(.sRGB, red: 112/255, green: 64/255, blue: 255/255, opacity: 1), location: 1)
-                                                                   ]), startPoint: UnitPoint(x: 0.25, y: 0.5), endPoint: UnitPoint(x: 0.75, y: 0.5))
-                            .transformEffect(CGAffineTransform(a: 1.1, b: 0, c: -1.34, d: 2.94, tx: 0.61, ty: -0.98))
-              )
+              .background(self.barColor.transformEffect(CGAffineTransform(a: 1.1, b: 0, c: -1.34, d: 2.94, tx: 0.61, ty: -0.98)))
               .cornerRadius(35)
           }
           .frame(width: geo.size.width * 9/10, height: 60)
           .offset(y: -geo.size.height/2 + 45)
           .transition(AnyTransition.opacity.animation(.easeInOut(duration: 1)))
-          .disabled(RoomChat?.Kicked ?? false ? true : false)
+          .disabled(chatdb.db?.Kicked ?? false ? true : false)
         } // 방장 메뉴 확인 이벤트
         
-        if RoomChat?.superUser?.userId == UserData().data?.id && RoomChat?.state?.orderChecked == true && RoomChat?.state?.orderDone == false && self.model.showMenu == false {
+        if chatdb.db?.superUser?.userId == privacy.data?.id && chatdb.db?.state?.orderChecked == true && chatdb.db?.state?.orderDone == false && self.model.showMenu == false {
           Button{
             postOrderDone(rid: self.rid)
           } label: {
@@ -346,63 +266,67 @@ struct ChattingView: View {
               .padding()
               .foregroundColor(.white)
               .frame(maxWidth: .infinity, maxHeight: 53)
-              .background(LinearGradient(gradient: Gradient(stops: [Gradient.Stop(color: Color(.sRGB, red: 114/255, green: 160/255, blue: 253/255, opacity: 1), location: 0.05),
-                                                                    Gradient.Stop(color: Color(.sRGB, red: 121/255, green: 123/255, blue: 250/255, opacity: 1), location: 0.54),
-                                                                    Gradient.Stop(color: Color(.sRGB, red: 112/255, green: 64/255, blue: 255/255, opacity: 1), location: 1)
-                                                                   ]), startPoint: UnitPoint(x: 0.25, y: 0.5), endPoint: UnitPoint(x: 0.75, y: 0.5))
-                            .transformEffect(CGAffineTransform(a: 1.1, b: 0, c: -1.34, d: 2.94, tx: 0.61, ty: -0.98))
-              )
+              .background(self.barColor.transformEffect(CGAffineTransform(a: 1.1, b: 0, c: -1.34, d: 2.94, tx: 0.61, ty: -0.98)))
               .cornerRadius(35)
           }
           .frame(width: geo.size.width * 9/10, height: 60)
           .offset(y: -geo.size.height/2 + 45)
           .transition(AnyTransition.opacity.animation(.easeInOut(duration: 1)))
-          .disabled(RoomChat?.Kicked ?? false ? true : false)
+          .disabled(chatdb.db?.Kicked ?? false ? true : false)
         } // 방장 주문 확인 이벤트
         
+        if self.model.voteview {
+          VoteView(chatmodel: model, RoomDB: $chatdb.db)
+        }
+        
         if self.model.showMenu {
-          ChatSideMenu(model: model, RoomChat: $RoomChat, rid: self.rid)
+          ChatSideMenu(model: model, RoomChat: $chatdb.db, rid: self.rid)
           .frame(width: geo.size.width * (9/10), height: geo.size.height)
           .overlay(Rectangle().frame(width: nil, height: 1, alignment: .top).foregroundColor(Color(.sRGB, red: 221/255, green: 221/255, blue: 221/255, opacity: 1)), alignment: .top)
           .transition(.move(edge: .trailing))
           .offset(x: geo.size.width/10)
       } //showmenu
       
-        NavigationLink(destination: OrderListView(RoomChat: RoomChat, rid: self.rid), isActive: $model.oderlistview) {}
+//        NavigationLink(destination: OrderListView(chatdb.db: chatdb.db, rid: self.rid), isActive: $model.oderlistview) {}
         
     } //Zstack
       .gesture(drag)
       .navigationBarTitleDisplayMode(.inline)
       .navigationBarBackButtonHidden(true)
-      .navigationBarTitle(RoomChat != nil ? RoomChat!.title! : "채팅방")
+      .navigationBarTitle(chatdb.db != nil ? chatdb.db!.title! : "채팅방")
       .toolbar {
-          ToolbarItem(placement: .navigationBarLeading) {
-            HStack{
-              Button {
-                presentationMode.wrappedValue.dismiss()
-              } label: {
-                Image(systemName: "chevron.left")
-              }
+        ToolbarItem(placement: .navigationBarLeading) {
+          HStack{
+            Button {
+//              chatdb.pressDeninit()
+
+              presentationMode.wrappedValue.dismiss()
+            } label: {
+              Image(systemName: "chevron.left")
             }
           }
-          ToolbarItem(placement: .navigationBarTrailing) {
-            HStack{
-              Button {
-                withAnimation {
-                  self.model.showMenu.toggle()
-                }
-              } label: {
-                Image(systemName: "line.horizontal.3")
+        }
+        ToolbarItem(placement: .navigationBarTrailing) {
+          HStack{
+            Button {
+              withAnimation {
+                self.model.showMenu.toggle()
               }
+            } label: {
+              Image(systemName: "line.horizontal.3")
             }
           }
+        }
       }
     } //geo
     
     .fullScreenCover(isPresented: $model.oderview) {
-      if self.RoomChat != nil{
-        OrderView(chatdata: self.RoomChat!, roomid: self.rid)
+      if self.chatdb.db != nil{
+        OrderView(chatdata: self.chatdb.db!, roomid: self.rid)
       }
+    }
+    .fullScreenCover(isPresented: $model.oderlistview) {
+      OrderListView(RoomChat: chatdb.db, rid: self.rid)
     }
     .fullScreenCover(isPresented: $model.odercheck) {
       OrderCheckView(roomid: self.rid)
@@ -410,66 +334,93 @@ struct ChattingView: View {
     .fullScreenCover(isPresented: $model.userodercheck) {
       ReceiptView(roomid: self.rid)
     }
+    .fullScreenCover(isPresented: $model.resetview) {
+      ResetView(roomid: self.rid)
+    }
     .accentColor(.black)
     .onChange(of: model.leave) { newValue in
-      self.RoomChat = nil
+      self.chatdb.db = nil
       presentationMode.wrappedValue.dismiss()
     }
     .onAppear {
+//      model.isReceiver = true
       getChatLog(rid: self.rid, idx: 999)
       getRoomUpdate(rid: self.rid)
       getParticipantsUpdate(rid: self.rid)
-      
-      try! realm.write({
-        if RoomChat != nil {
-          if let lastindex = RoomChat!.messages.last{
-            RoomChat!.confirmation = lastindex.idx.value!
-          }
-        }
-      })
-    }
-    .onChange(of: RoomChat?.messages.count, perform: { V in
-      try! realm.write({
-        if RoomChat != nil {
-          if let lastindex = RoomChat!.messages.last{
-            RoomChat!.confirmation = lastindex.idx.value!
-          }
-        }
-      })
-    })
-    .onDisappear {
-      isReceiver = false
-      let realm = try! Realm()
-      if self.model.leave {
-        self.RoomChat = nil
+      if let idx = chatdb.db?.messages.last?.idx {
+        SocketIOManager.shared.room_emitChatIdx(rid: self.rid, idx: idx)
+      }
+      realmQueue.async {
+        let realm = try! Realm()
         try! realm.write({
-          for i in roomidtodbconnect(rid: self.rid)!.messages {
-            guard let body = i.body else { continue }
-            if let data = body.data {
-              realm.delete(data)
+          if let db = realm.object(ofType: ChatDB.self, forPrimaryKey: self.rid){
+            if let lastindex = db.messages.last, let idx = lastindex.idx{
+              db.confirmation = idx
             }
-            realm.delete(body)
           }
-          realm.delete(roomidtodbconnect(rid: self.rid)!.messages)
-          realm.delete(roomidtodbconnect(rid: self.rid)!.member)
-          if let superUser = roomidtodbconnect(rid: self.rid)!.superUser {
-            realm.delete(superUser)
+        }) //write
+      }//dispatch
+    }
+    .onChange(of: chatdb.db?.messages.count, perform: { V in
+      if let idx = chatdb.db?.messages.last?.idx {
+        SocketIOManager.shared.room_emitChatIdx(rid: self.rid, idx: idx)
+      }
+      realmQueue.async {
+        let realm = try! Realm()
+        try! realm.write({
+          if let db = realm.object(ofType: ChatDB.self, forPrimaryKey: self.rid){
+            if let lastindex = db.messages.last, let idx = lastindex.idx{
+              db.confirmation = idx
+            }
           }
-          if let state = roomidtodbconnect(rid: self.rid)!.state {
-            realm.delete(state)
-          }
-          realm.delete(roomidtodbconnect(rid: self.rid)!)
-        })
+        }) //write
+      } //dispatch
+    })
+    
+    .onDisappear {
+//      if !model.oderlistview {
+//        model.isReceiver = false
+//      }
+      chatdb.pressDeninit()
+      
+      model.isReceiver = false
+      if self.model.leave {
+        self.chatdb.db = nil
+        
+//        try! realm.write({
+//          print(self.rid)
+//          if let deleteDB = roomidtodbconnect(rid: self.rid) {
+//            for i in deleteDB.messages {
+//              guard let body = i.body else { continue }
+//              if let data = body.data {
+//                realm.delete(data)
+//              }
+//              realm.delete(body)
+//            }
+//            realm.delete(deleteDB.messages)
+//            realm.delete(deleteDB.member)
+//            if let superUser = deleteDB.superUser {
+//              realm.delete(superUser)
+//            }
+//            if let state = deleteDB.state {
+//              realm.delete(state)
+//            }
+//            realm.delete(deleteDB)
+//          }
+//        })
       } else{
+        realmQueue.async {
+          let realm = try! Realm()
           try! realm.write({
-            if RoomChat != nil {
-              if let lastindex = RoomChat!.messages.last{
-                RoomChat!.confirmation = lastindex.idx.value!
+            if let db = realm.object(ofType: ChatDB.self, forPrimaryKey: self.rid){
+              if let lastindex = db.messages.last, let idx = lastindex.idx{
+                db.confirmation = idx
               }
             }
-          })
+          })//write
+        }//dispatch
       }
-      
+        
     }
   }
   

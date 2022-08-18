@@ -10,10 +10,13 @@ import Alamofire
 
 
 func postVoteReset(rid: String) {
-  let url = urlvotereset(rid: rid)
-  
-  AF.request(url, method: .post, headers: TokenUtils().getAuthorizationHeader()).responseString { response in
-    print(response)
+  restApiQueue.async {
+
+    let url = urlvotereset(rid: rid)
+    
+    AF.request(url, method: .post, headers: TokenUtils().getAuthorizationHeader()).responseString { response in
+      print(response)
+    }
   }
   
 }

@@ -1,9 +1,31 @@
 import Foundation
 import SocketIO
-import SwiftUI
 import Combine
 import Alamofire
 import RealmSwift
+
+struct chatEmitData: Codable, SocketData {
+  var roomId: String
+  var message: String
+
+  func socketRepresentation() -> SocketData {
+      return ["roomId": roomId, "message": message]
+  }
+}
+
+struct chatIdxEmitData: Codable, SocketData {
+  var roomId: String
+  var messageId: Int
+
+  func socketRepresentation() -> SocketData {
+      return ["roomId": roomId, "messageId": messageId]
+  }
+}
+
+struct messageIds: Codable {
+  var roomId: String
+  var messageIds: List<ChatRead>
+}
 
 class SocketIOManager:NSObject {
   static let shared = SocketIOManager()
@@ -14,16 +36,20 @@ class SocketIOManager:NSObject {
       roomSocket = self.manager.socket(forNamespace: "/room")
     }
 
-  lazy var manager = SocketManager(socketURL: URL(string: serverurl)!, config: [.log(false), .compress, .reconnectAttempts(-1)])
+  lazy var manager = SocketManager(socketURL: URL(string: serverurl)!, config: [.log(false), .compress, .reconnectAttempts(-1), .forceNew(false), .forceWebsockets(false)])
   var socket : SocketIOClient!
   var matchSocket : SocketIOClient!
   var roomSocket : SocketIOClient!
   
   func tokenChangeReconnect() {
-    let tk = TokenUtils()
-    guard let token = tk.read() else { return }
-    matchSocket.connect(withPayload: ["token":"Bearer \(token)"])
-    roomSocket.connect(withPayload: ["token":"Bearer \(token)"])
+    restApiQueue.async {
+      let tk = TokenUtils()
+      guard let token = tk.read() else { return }
+      self.manager.disconnect()
+
+      self.matchSocket.connect(withPayload: ["token":"Bearer \(token)"])
+      self.roomSocket.connect(withPayload: ["token":"Bearer \(token)"])
+    }
   }
   
   func leave() {
@@ -32,6 +58,8 @@ class SocketIOManager:NSObject {
   }
   
   func establishConnection(token: String, roomdata: RoomData, dormis: dormitoryData) {
+//    manager.disconnect()
+    print("연결 시작 \(token)")
     matchSocket.off("connect")
     matchSocket.on("connect") { data, ack in
       SocketIOManager.shared.match_emitSubscribe(rooms: roomdata, section: dormis.data.map({ dormitory in
@@ -40,9 +68,11 @@ class SocketIOManager:NSObject {
 
       SocketIOManager.shared.match_onArrive(rooms: roomdata)
     }
+    
     roomSocket.off("connect")
     roomSocket.on("connect") { data, ack in
       SocketIOManager.shared.room_onChat()
+      SocketIOManager.shared.room_readIdUpdated()
     }
     
 //    matchSocket.off(clientEvent: .ping)
@@ -110,14 +140,19 @@ class SocketIOManager:NSObject {
 //    rooms.data = nil
     print("구독시작")
     if SocketIOManager.shared.matchSocket.status.active {
-      let subscribeform = homeViewOption(category: category, section: section)
+      guard let subscribeform = try? homeViewOption(category: category, section: section).asDictionary() else { return }
       SocketIOManager.shared.matchSocket.off("subscribe")
-      SocketIOManager.shared.matchSocket.emitWithAck("subscribe",     subscribeform).timingOut(after: 2, callback: { (data) in
-  //        if data[0] as? String != "NO ACK" {
-        guard let data = try? JSONSerialization.data(withJSONObject: data[0], options: .prettyPrinted),
-              let sessions = try? JSONDecoder().decode(roomsdata.self, from: data)
-        else { return }
-        rooms.data = sessions
+      SocketIOManager.shared.matchSocket.emitWithAck("subscribe", subscribeform).timingOut(after: 2, callback: { (data) in
+//        print("preif", data)
+        if data[0] as? String != "NO ACK" {
+  //        print(data)
+//          print("if", data)
+          guard let json = data.first,
+                let data = try? JSONSerialization.data(withJSONObject: json, options: .prettyPrinted),
+                let sessions = try? JSONDecoder().decode(roomsdata.self, from: data)
+          else { return }
+          rooms.data = sessions
+        }
       })
     } else {// 소켓 상태 이프
       rooms.data = nil
@@ -134,7 +169,9 @@ class SocketIOManager:NSObject {
             let session = try? JSONDecoder().decode(roomdata.self, from: data)
       else { return }
       print(session)
-      rooms.data!.data.append(session)
+      if rooms.data != nil {
+        rooms.data!.data.append(session)
+      }
     }
     
     SocketIOManager.shared.matchSocket.off("update")
@@ -152,7 +189,7 @@ class SocketIOManager:NSObject {
 //              rooms.data!.data[idx] = session
         }
       }
-      if updateNil {
+      if updateNil && rooms.data != nil {
         rooms.data!.data.append(session)
       }
     }
@@ -185,142 +222,55 @@ class SocketIOManager:NSObject {
             let messages = try? JSONDecoder().decode(ChatMessageDetail.self, from: dataMessages)
       else { return }
       
-      let realm = try! Realm()
-      let user = realm.objects(UserPrivacy.self)[0]
-      let chatroom = realm.object(ofType: ChatDB.self, forPrimaryKey: rid)
+//      let realm = try! Realm()
+//      let user = realm.objects(UserPrivacy.self)[0]
+//      let chatroom = realm.object(ofType: ChatDB.self, forPrimaryKey: rid)
       
-      try! realm.write {
-        realm.add(messages, update: .modified)
+      realmQueue.async {
+        let realm = try! Realm()
+        let user = realm.objects(UserPrivacy.self)[0]
+        let chatroom = realm.object(ofType: ChatDB.self, forPrimaryKey: rid)
         
-        chatroom?.messages.append(messages)
-        if messages.body?.action == "order-fixed" {
-          getRoomUpdate(rid: rid)
-        } else if messages.body?.action == "users-new" {
-          getParticipantsUpdate(rid: rid)
-        } else if messages.body?.action == "users-leave" {
-          getParticipantsUpdate(rid: rid)
-        } else if messages.body?.action == "users-leave-kick" {
-          if messages.body!.data!.userId == user.id {
-            chatroom?.Kicked = true
-          } else{
-//            let leaveuser = chatroom?.member.filter("userId == '\(messages.body!.data!.userId!)'")
-//            realm.delete(leaveuser!)
+        try! realm.write {
+          realm.add(messages, update: .modified)
+          
+          chatroom?.messages.append(messages)
+          if messages.body?.action == "order-fixed" {
+            getRoomUpdate(rid: rid)
+          } else if messages.body?.action == "users-new" {
+            getParticipantsUpdate(rid: rid)
+          } else if messages.body?.action == "users-leave" {
+            getParticipantsUpdate(rid: rid)
+          } else if messages.body?.action == "users-leave-kick" {
+            if messages.body!.data!.userId == user.id {
+              chatroom?.Kicked = true
+            } else{
+  //            let leaveuser = chatroom?.member.filter("userId == '\(messages.body!.data!.userId!)'")
+  //            realm.delete(leaveuser!)
+            }
+            getParticipantsUpdate(rid: rid)
+          } else if messages.body?.action == "users-leave-vote" {
+            if messages.body!.data!.userId == user.id {
+              chatroom?.Kicked = true
+            } else{
+  //            let leaveuser = chatroom?.member.filter("userId == '\(messages.body!.data!.userId!)'")
+  //            realm.delete(leaveuser!)
+            }
+            getParticipantsUpdate(rid: rid)
+          } else if messages.body?.action == "all-ready" {
+            getRoomUpdate(rid: rid)
+          } else if messages.body?.action == "all-ready-canceled" {
+            getRoomUpdate(rid: rid)
+          } else if messages.body?.action == "order-checked" {
+            getRoomUpdate(rid: rid)
+          } else if messages.body?.action == "order-finished" {
+            getRoomUpdate(rid: rid)
+          } else if messages.type == "chat" {
+            chatroom?.sortforat = Int(messages.at!)!
           }
-          getParticipantsUpdate(rid: rid)
-        } else if messages.body?.action == "users-leave-vote" {
-          if messages.body!.data!.userId == user.id {
-            chatroom?.Kicked = true
-          } else{
-//            let leaveuser = chatroom?.member.filter("userId == '\(messages.body!.data!.userId!)'")
-//            realm.delete(leaveuser!)
-          }
-          getParticipantsUpdate(rid: rid)
-        } else if messages.body?.action == "all-ready" {
-          getRoomUpdate(rid: rid)
-        } else if messages.body?.action == "all-ready-canceled" {
-          getRoomUpdate(rid: rid)
-        } else if messages.body?.action == "order-checked" {
-          getRoomUpdate(rid: rid)
-        } else if messages.body?.action == "order-finished" {
-          getRoomUpdate(rid: rid)
-        } else if messages.type == "chat" {
-          chatroom?.sortforat = Int(messages.at!)!
-        }
-        
-      }
-      
-
-
-
-      
-      
-//      do {
-//        print("뭐가 오긴함")
-//        var jsonResult = dataArray[0] as? Dictionary<String, AnyObject>
-////        print(jsonResult)
-//
-//        if let messages = jsonResult?["messages"] as? NSArray {
-//          let message = try! JSONSerialization.data(withJSONObject: messages.firstObject!, options: .prettyPrinted)
-//  //          print(messages)
-//  //          print(String(data: messages, encoding: .utf8)!)
-//          let json = try JSONDecoder().decode(ChatMessageDetail.self, from: message)
-//
-//          let realm = try! Realm()
-//          let user = realm.objects(UserPrivacy.self)[0]
-////           print(type(of: jsonResult!["rid"]!))
-//          let chatroom = realm.object(ofType: ChatDB.self, forPrimaryKey: jsonResult!["rid"]!)    /// 수정 필요
-//          try! realm.write {
-//            realm.add(json, update: .modified)
-////            getRoomUpdate(rid: jsonResult!["rid"] as! String) ////////////
-////            getParticipantsUpdate(rid: jsonResult!["rid"] as! String) ////////////
-//
-//
-//            chatroom?.messages.append(json)
-//            if json.body?.action == "order-fixed" {
-////              chatroom?.state?.allReady = false
-////              chatroom?.state?.orderFix = true
-//              getRoomUpdate(rid: jsonResult!["rid"] as! String) ////////////
-//
-//            } else if json.body?.action == "users-new" {
-//              getParticipantsUpdate(rid: jsonResult!["rid"] as! String)
-////              if json.body?.data?.userId != user.id {
-////                let userinfo = ChatUsersInfo()
-////                userinfo.userId = json.body?.data?.userId
-////                userinfo.name = json.body?.data?.name
-////                chatroom?.member.append(userinfo)
-////              }
-//            } else if json.body?.action == "users-leave" {
-//              let leaveuser = chatroom?.member.filter("userId == '\(json.body!.data!.userId!)'")
-//              realm.delete(leaveuser!)
-//            } else if json.body?.action == "users-leave-kick" {
-//              if json.body!.data!.userId == user.id {
-//                chatroom?.Kicked = true
-//              } else{
-//                let leaveuser = chatroom?.member.filter("userId == '\(json.body!.data!.userId!)'")
-//                realm.delete(leaveuser!)
-//              }
-//            } else if json.body?.action == "users-leave-vote" {
-//              if json.body!.data!.userId == user.id {
-//                chatroom?.Kicked = true
-//              } else{
-//                let leaveuser = chatroom?.member.filter("userId == '\(json.body!.data!.userId!)'")
-//                realm.delete(leaveuser!)
-//              }
-//            } else if json.body?.action == "all-ready" {
-////              chatroom?.state?.allReady = true
-//              getRoomUpdate(rid: jsonResult!["rid"] as! String) ////////////
-//
-//            } else if json.body?.action == "all-ready-canceled" {
-////              chatroom?.state?.allReady = false
-//              getRoomUpdate(rid: jsonResult!["rid"] as! String) ////////////
-//
-//            } else if json.body?.action == "order-checked" {
-////              chatroom?.state?.orderChecked = true
-//              getRoomUpdate(rid: jsonResult!["rid"] as! String) ////////////
-//
-//            } else if json.body?.action == "order-finished" {
-////              chatroom?.state?.orderDone = true
-//              getRoomUpdate(rid: jsonResult!["rid"] as! String) ////////////
-//
-//            } else if json.type == "chat" {
-//              chatroom?.index += 1
-//              chatroom?.sortforat = Int(json.at!)!
-//            }
-//          }
-//
-//        }
-//
-////        let data = try! JSONSerialization.data(withJSONObject: dataArray[0], options: .prettyPrinted)
-////        print("파싱결과")
-//  //        print(String(data: data, encoding: .utf8)!)
-//  //        let json = try JSONDecoder().decode(ChatDB.self, from: data)
-//  //        addChatting(json)
-//
-////        print("암것도아님")
-//      } catch {
-//        print(error)
-//      }
-      }
+        } // realm write
+      } //dispatch
+    }
   }
   
   func room_emitChat(rid: String, text: String) {
@@ -331,5 +281,44 @@ class SocketIOManager:NSObject {
     })
   }
   
+  func room_emitChatIdx(rid: String, idx: Int) {
+    print("리드 송신 중")
+    let chatEmitData = chatIdxEmitData(roomId: rid, messageId: idx)
+    
+    
+//    SocketIOManager.shared.roomSocket.emit("read", chatEmitData)
+    SocketIOManager.shared.roomSocket.emitWithAck("read", chatEmitData).timingOut(after: 2, callback: { (data) in
+//      print("송신성공", data)
+    })
+    
+  }
   
+  func room_readIdUpdated() {
+    print("리드 온")
+    SocketIOManager.shared.roomSocket.off("readIdUpdated")
+    SocketIOManager.shared.roomSocket.on("readIdUpdated") { (dataArray, ack) in
+//      print("리드 수신", dataArray)
+      guard let data = try? JSONSerialization.data(withJSONObject: dataArray[0], options: .prettyPrinted),
+            let session = try? JSONDecoder().decode(messageIds.self, from: data)
+      else { return }
+
+      
+//      let realm = try! Realm()
+//      let db = realm.object(ofType: ChatDB.self, forPrimaryKey: session.roomId)
+      realmQueue.async {
+        let realm = try! Realm()
+        let db = realm.object(ofType: ChatDB.self, forPrimaryKey: session.roomId)
+  //      print(session)
+        try! realm.write {
+  //        session.messageIds.sel
+          
+          db?.read = session.messageIds
+  //        db?.read.removeAll()
+  //        db?.read.append(objectsIn: session.messageIds)
+        } //write
+      }
+    }
+  }
 }
+
+

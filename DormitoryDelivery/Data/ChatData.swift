@@ -17,20 +17,11 @@ import SocketIO
 //  @Published var naviRid: String = ""
 //  @Published var naviRoomDB: ChatDB? = nil
 //}
+//
+//struct ChatRoom: Codable, Identifiable {
+//  let id: UUID      // vid를 의미
+//  let message: String //
+//  let user: String
+//  let userID: Bool
+//}
 
-struct ChatRoom: Codable, Identifiable {
-  let id: UUID      // vid를 의미
-  let message: String //
-  let user: String
-  let userID: Bool
-}
-
-
-struct chatEmitData: Codable, SocketData {
-  var roomId: String
-  var message: String
-  
-  func socketRepresentation() -> SocketData {
-      return ["roomId": roomId, "message": message]
-  }
-}

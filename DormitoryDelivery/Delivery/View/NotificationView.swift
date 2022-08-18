@@ -49,7 +49,7 @@ struct NotificationView: View {
           ScrollView{
             VStack(spacing: 2){
               ForEach(chatdata.chatlist) { chat in
-                ForEach(chat.messages.filter("type == 'system' AND idx > \(chat.confirmation)")) { system in
+                ForEach(chat.messages.filter("type == 'system' AND idx > \(chat.read.filter{$0.userId == UserData().data!.id}.first?.messageId ?? 0)")) { system in
                   if system.body?.action == "order-fixed" {
                     notiButtton(rid: chat.rid!, title: chat.title!, action: "메뉴가 확정 되었습니다.", at: system.at!)
                   } else if system.body?.action == "order-checked" {

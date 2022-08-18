@@ -6,13 +6,14 @@
 //
 
 import SwiftUI
+import WebKit
 
 struct TOSView: View {
   @Environment(\.presentationMode) var presentationMode
-
   
     var body: some View {
-        Text("이용약관뷰")
+        Webview(url: URL(string: "https://gachihasil.link/policy/terms.html")!)
+        .edgesIgnoringSafeArea(.bottom)
       
       
         .navigationBarTitleDisplayMode(.inline)
@@ -30,11 +31,21 @@ struct TOSView: View {
             }
           }
         }
+        .background(Color(.sRGB, red: 243/255, green: 242/255, blue: 238/255, opacity: 1))
     }
 }
 
-struct TOSView_Previews: PreviewProvider {
-    static var previews: some View {
-        TOSView()
+
+struct Webview: UIViewRepresentable {
+    let url: URL
+    func makeUIView(context: UIViewRepresentableContext<Webview>) -> WKWebView {
+        let webview = WKWebView()
+        let request = URLRequest(url: self.url, cachePolicy: .returnCacheDataElseLoad)
+        webview.load(request)
+        return webview
+    }
+    func updateUIView(_ webview: WKWebView, context: UIViewRepresentableContext<Webview>) {
+        let request = URLRequest(url: self.url, cachePolicy: .returnCacheDataElseLoad)
+        webview.load(request)
     }
 }

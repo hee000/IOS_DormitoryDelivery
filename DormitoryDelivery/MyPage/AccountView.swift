@@ -12,7 +12,7 @@ struct AccountView: View {
   @Environment(\.presentationMode) var presentationMode
 
 //  @ObservedResults(UserPrivacy.self) var userPrivacys
-  @EnvironmentObject var userPrivacy: UserData
+  @StateObject var userPrivacy: UserData = UserData()
   @State var showingSheet = false
   @State var showingSheetMain = false
   @State var test: UserAccount? = nil

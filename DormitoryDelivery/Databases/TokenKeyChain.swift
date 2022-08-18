@@ -99,16 +99,18 @@ class TokenUtils {
         let retrievedData = dataTypeRef as! Data
         guard let token = try? JSONDecoder().decode(tokenvalue.self, from: retrievedData) else { return nil}
 
+
         let jwt = try! decode(jwt: token.accessToken)
-      
         if jwt.expiresAt!.timeIntervalSince(Date()) < 0 {
           guard let para = try? token.asDictionary() else { return ""}
-          let req = AF.request(urlsession(), method: .patch, parameters: para, encoding: JSONEncoding.default)
-          
+          let req = AF.request(urlsession(), method: .patch, parameters: para, encoding: JSONEncoding.default, headers: ["Client-Version" : "ios \(AppVersion)"])
+//          print(para)
           let semaphore = DispatchSemaphore(value: 1)
           var returnValue = ""
           semaphore.wait()
-          req.responseJSON(queue: .global()) { response in
+          req.responseJSON() { response in
+//        req.responseJSON(queue: .global()) { response in
+
             if response.response?.statusCode == 200 {
               guard let json = response.data else { return }
               guard let newtoken = try? JSONDecoder().decode(tokenvalue.self, from: json) else { return }
@@ -144,9 +146,17 @@ class TokenUtils {
   
   func getAuthorizationHeader() -> HTTPHeaders? {
       if let accessToken = self.read() {
-          return ["Authorization" : "bearer \(accessToken)"] as HTTPHeaders
+        return ["Authorization" : "bearer \(accessToken)", "Client-Version" : "ios \(AppVersion)"] as HTTPHeaders
       } else {
           return nil
       }
   }
 }
+
+
+let AppVersion = "1.0.0"
+let httpAppVersion = ["Client-Version" : "ios 1.0.0"] as HTTPHeaders
+
+//let restApiQueue = DispatchQueue(label: "rest", attributes: .concurrent)
+let restApiQueue = DispatchQueue(label: "rest")
+let realmQueue = DispatchQueue(label: "realm")

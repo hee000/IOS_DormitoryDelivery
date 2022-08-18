@@ -15,7 +15,7 @@ func getMenuListIndividual(uid: String, rid: String, model: Order) {
     guard let menulist = try? JSONDecoder().decode([restOnlyOrderData].self, from: response.data!) else { return }
     
     if menulist.count == 0 {
-      let nonemenue = orderdata(id: UUID().uuidString, name: "", quantity: 1, description: "", price: "")
+      let nonemenue = orderdata(id: UUID().uuidString, name: "", quantity: 1, description: "세부 정보를 입력해주세요.", price: "")
       model.data.append(nonemenue)
       model.forcompare = model.data
     } else {

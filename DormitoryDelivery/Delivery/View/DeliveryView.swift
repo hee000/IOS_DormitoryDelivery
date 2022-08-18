@@ -17,9 +17,8 @@ struct DeliveryView: View {
   @EnvironmentObject var naverLogin: NaverLogin
   @EnvironmentObject var dormis: dormitoryData
   @EnvironmentObject var noti: Noti
-  @State var isRoomLinkActive = false
   
-    
+  @State var isRoomLinkActive = false
   @State var flagAll = true
   @State var flags = Array(repeating: false, count: category.count)
   
@@ -50,9 +49,9 @@ struct DeliveryView: View {
               }
             }
             .frame(maxHeight: .infinity)
+            .padding([.leading, .trailing], 5)
           }
           .frame(height: 50)
-          .padding([.leading, .trailing], 5)
           
           if rooms.data == nil || rooms.data!.data.count == 0 {
             VStack{
@@ -100,15 +99,7 @@ struct DeliveryView: View {
         } // V
       }//geo
       .clipped()
-      .onAppear{
-        let tk = TokenUtils()
-        guard let token = tk.read(),
-              let jwt = try? decode(jwt: token),
-              let json = try? JSONSerialization.data(withJSONObject: jwt.body, options: .prettyPrinted),
-              let jwtdata = try? JSONDecoder().decode(jwtdata.self, from:  json) else { return }
-          
-//        getUniversityDormitory(dormitoryId: String(jwtdata.univId), model: dormis)
-      }
+//      .onAppeㅌ  
       .onChange(of: mysection, perform: { newValue in
         flagAll = true
         if newValue == -1 {
@@ -125,7 +116,7 @@ struct DeliveryView: View {
         }
       })
       .onChange(of: flags) { newValue in
-        if newValue.reduce(false, {$0 || $1}) {
+        if newValue.reduce(false, {$0 || $1}) { // true가 하나라도 있음
           if self.flagAll {
             self.flagAll.toggle()
           }

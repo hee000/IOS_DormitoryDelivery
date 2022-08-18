@@ -19,7 +19,7 @@ struct AlertOneButton<Content>: View where Content: View {
     var body: some View {
       ZStack{
         Color.black.opacity(0.5)
-          .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+//          .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
           .edgesIgnoringSafeArea(.all)
         
           VStack(spacing: 0) {
@@ -48,6 +48,45 @@ struct AlertOneButton<Content>: View where Content: View {
     }
 }
 
+struct AlertOneButtonPresentationMode<Content>: View where Content: View {
+  @Binding var presentationMode: PresentationMode
+  var content: () -> Content
+  
+  init(presentationMode: Binding<PresentationMode>, @ViewBuilder content: @escaping () -> Content) {
+    self._presentationMode = presentationMode
+    self.content = content
+  }
+
+    var body: some View {
+      ZStack{
+        Color.black.opacity(0.5)
+          .edgesIgnoringSafeArea(.all)
+        
+          VStack(spacing: 0) {
+            VStack{
+              content()
+            }
+              .padding()
+              .padding([.top, .bottom])
+              .padding(.top)
+            Divider()
+            Button {
+              $presentationMode.wrappedValue.dismiss()
+            } label : {
+              Text("확인")
+                .font(.system(size: 16, weight: .regular))
+                .frame(maxWidth: .infinity)
+            }
+            .foregroundColor(.black)
+            .padding()
+          }
+          .frame(width: UIScreen.main.bounds.width * 2/3)
+          .background(.white)
+          .cornerRadius(5)
+          .transition(AnyTransition.opacity.animation(Animation.easeInOut))
+      }
+    }
+}
 
 
 struct AlertTwoButton<Content>: View where Content: View {
@@ -64,7 +103,7 @@ struct AlertTwoButton<Content>: View where Content: View {
     var body: some View {
       ZStack{
         Color.black.opacity(0.5)
-          .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+//          .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
           .edgesIgnoringSafeArea(.all)
         
           VStack(spacing: 0) {
@@ -90,6 +129,76 @@ struct AlertTwoButton<Content>: View where Content: View {
                 self.yesButton.toggle()
               } label : {
                 Text("확인")
+                  .font(.system(size: 16, weight: .regular))
+                  .frame(maxWidth: .infinity)
+              }
+              .foregroundColor(.black)
+              .padding()
+            }
+            .frame(width:UIScreen.main.bounds.width * 2/3)
+            .fixedSize()
+          }
+          .frame(width: UIScreen.main.bounds.width * 2/3)
+          .background(.white)
+          .cornerRadius(5)
+          .transition(AnyTransition.opacity.animation(Animation.easeInOut))
+      }
+    }
+}
+
+
+struct VoteAlert<Content>: View where Content: View {
+  @Binding var backButton: Bool
+  var votemodel: VoteModel
+  var content: () -> Content
+
+  init(votemodel: VoteModel, backButton: Binding<Bool>, @ViewBuilder content: @escaping () -> Content) {
+    self._backButton = backButton
+    self.votemodel = votemodel
+    
+    self.content = content
+  }
+  
+    var body: some View {
+      ZStack{
+        Color.black.opacity(0.5)
+          .edgesIgnoringSafeArea(.all)
+          .onTapGesture {
+            backButton = false
+          }
+        
+          VStack(spacing: 0) {
+            HStack{
+              Spacer()
+              Button {
+                backButton = false
+              } label: {
+                Image(systemName: "xmark")
+                  .foregroundColor(.black)
+              }
+            }
+            .padding([.top, .leading, .trailing])
+            VStack{
+              content()
+            }
+              .padding()
+              .padding(.bottom)
+            Divider()
+            HStack(spacing:0){
+              Button {
+                votemodel.voteSubmit(true)
+              } label : {
+                Text("찬성")
+                  .font(.system(size: 16, weight: .regular))
+                  .frame(maxWidth: .infinity)
+              }
+              .foregroundColor(.black)
+              .padding()
+              Divider()
+              Button {
+                votemodel.voteSubmit(false)
+              } label : {
+                Text("반대")
                   .font(.system(size: 16, weight: .regular))
                   .frame(maxWidth: .infinity)
               }

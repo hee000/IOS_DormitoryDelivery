@@ -10,10 +10,14 @@ import Alamofire
 
 
 func postVoteKick(rid: String, uid: String){
-  let url = urlvotekick(rid: rid, uid: uid)
-  
-  AF.request(url, method: .post, headers: TokenUtils().getAuthorizationHeader()).responseString { response in
-    print(response)
+  restApiQueue.async {
+
+    let url = urlvotekick(rid: rid, uid: uid)
+    
+    AF.request(url, method: .post, headers: TokenUtils().getAuthorizationHeader()).responseJSON { response in
+      appVaildCheck(res: response)
+      print(response)
+    }
   }
   
 }

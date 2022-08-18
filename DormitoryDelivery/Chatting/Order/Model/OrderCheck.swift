@@ -11,6 +11,7 @@ import UIKit
 class OrderCheck: ObservableObject {
   @Published var isShowPhotoLibrary = false
   @Published var image = UIImage()
+  @Published var images = [UIImage]()
   @Published var tip = ""
   @Published var imageupload = false
 }

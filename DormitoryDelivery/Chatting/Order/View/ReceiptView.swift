@@ -28,21 +28,18 @@ struct ReceiptView: View {
               .padding([.top, .bottom])
               .padding(.bottom)
 
-            Group {
-              Image(uiImage: model.image)
-                .resizable()
-                .scaledToFit()
+            HStack{
+              ImageSlider(images: self.model.images)
                 .frame(width: 300, height: 300)
+                .background(Color(.sRGB, red: 223/255, green: 223/255, blue: 229/255, opacity: 1))
+                .cornerRadius(5)
+                .clipped()
+                .shadow(color: Color.black.opacity(0.5), radius: 5)
                 .onTapGesture {
-                  imagetoggle.toggle()
+                  self.imagetoggle.toggle()
                 }
             }
-            .padding()
-            .frame(width: UIScreen.main.bounds.size.width * (9/10))
-            .background(.white)
-            .cornerRadius(5)
-            .clipped()
-            .shadow(color: Color.black.opacity(0.2), radius: 8)
+            .frame(maxWidth: .infinity)
             
             Text("주문 내역")
               .font(.system(size: 16, weight: .bold))
@@ -160,9 +157,11 @@ struct ReceiptView: View {
       .overlay(self.imagetoggle ?
         NavigationView{
           GeometryReader{ geo in
-            Image(uiImage: model.image)
-              .resizable()
-              .scaledToFit()
+//            Image(uiImage: model.image)
+//              .resizable()
+//              .scaledToFit()
+//              .frame(maxWidth: .infinity, maxHeight: .infinity)
+            ImageSlider(images: self.model.images)
               .frame(maxWidth: .infinity, maxHeight: .infinity)
           } //geo
           .navigationBarTitleDisplayMode(.inline)
@@ -189,26 +188,66 @@ struct ReceiptView: View {
           .responseJSON { response2 in
 //            var a = response2.
             guard let urls = response2.value as? [String] else { return }
-//            urls[0]
+            print(urls)
             
-            let destination: DownloadRequest.Destination = { _, _ in
+            var sync = [UIImage?](repeating: nil, count: 3)
+            
+            let destination : DownloadRequest.Destination  = { _, _ in
               let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory,
                                                                       .userDomainMask, true)[0]
               let documentsURL = URL(fileURLWithPath: documentsPath, isDirectory: true)
               let fileURL = documentsURL.appendingPathComponent("image.jpg")
-              return (fileURL, [.removePreviousFile, .createIntermediateDirectories]) }
+              return (fileURL, [.removePreviousFile, .createIntermediateDirectories])
+            }
 
-            AF.download(URL(string: urls[0])!, to: destination)
-              .downloadProgress { progress in
-                  print("Download Progress: \(progress.fractionCompleted)")
-              }
-              .response { response in
-                   debugPrint(response)
-                if response.error == nil, let imagePath = response.fileURL?.path {
-                  let image = UIImage(contentsOfFile: imagePath)
-                  model.image = image ?? UIImage()
+
+            let dispatchGroup = DispatchGroup()
+            let queue = DispatchQueue(label: "queue", qos: .default, attributes: .concurrent)
+            
+            for (idx, url) in urls.enumerated() {
+              dispatchGroup.enter()
+//              AF.download(URL(string: url)!, to: destination)
+//                .downloadProgress { progress in
+//  //                  print("Download Progress: \(progress.fractionCompleted)")
+//                }
+//                .response { response in
+////                     debugPrint(response)
+//                  if response.error == nil, let imagePath = response.fileURL?.path {
+//                    let image = UIImage(contentsOfFile: imagePath)
+////                    model.image = image ?? UIImage()
+//                    print(idx)
+//                    print("ala img", image)
+//                    sync[idx] = image
+//                  }
+//                  dispatchGroup.leave()
+//                }
+              AF.download(URL(string: url)!)
+                .responseData { AFdata in
+                  print(AFdata.value)
+                  
+                  guard let data = AFdata.value,
+                        let img = UIImage(data: data)
+                  else { return }
+                  sync[idx] = img
+                  dispatchGroup.leave()
                 }
-              }
+            }
+            
+            dispatchGroup.notify(queue: queue) {
+                DispatchQueue.main.async {
+//                    self.reviewTableView.reloadData()
+//                    self.dismissIndicator()
+//                  print("sync",sync)
+                  for otimage in sync {
+                    if let image = otimage {
+                      model.images.append(image)
+                    }
+                  }
+////                  model.images
+//                  print("model",model.images)
+                    print("#3")
+                }
+            }
           }
         
         UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.black]
@@ -248,4 +287,4 @@ struct ReceiptView: View {
       } // onappear
     }
 }
-
+ 

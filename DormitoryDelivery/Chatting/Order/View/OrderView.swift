@@ -32,7 +32,7 @@ struct OrderView: View {
               GeometryReader { geo in
                 Button{
                   self.addanimation.toggle()
-                  let nonemenue = orderdata(id: UUID().uuidString, name: "", quantity: 1, description: "", price: "")
+                  let nonemenue = orderdata(id: UUID().uuidString, name: "", quantity: 1, description: "세부 정보를 입력해주세요.", price: "")
 //                    self.ordermodel.data.append(nonemenue)
                   withAnimation {
                     self.ordermodel.onanimation.toggle()
@@ -123,7 +123,7 @@ struct OrderView: View {
                         } label: {
                           ZStack{
                             Color.clear
-                              .frame(maxWidth: .infinity, maxHeight: .infinity)
+                              .frame(maxWidth: .infinity)
                             Image(systemName: "minus")
                               .font(.system(size: 16, weight: .regular))
                               .foregroundColor(self.ordermodel.data[index].quantity > 1 ? Color.black : Color.gray.opacity(0.5))
@@ -131,6 +131,7 @@ struct OrderView: View {
                         }
                           .disabled(self.ordermodel.data[index].quantity > 1 ? false : true)
                           .frame(width: 20)
+                          .frame(height: 20)
 
                         Text("\(self.ordermodel.data[index].quantity)개")
                           .font(.system(size: 12, weight: .regular))
@@ -141,7 +142,7 @@ struct OrderView: View {
                         } label: {
                           ZStack{
                             Color.clear
-                              .frame(maxWidth: .infinity, maxHeight: .infinity)
+                              .frame(maxWidth: .infinity)
                             Image(systemName: "plus")
                               .font(.system(size: 16, weight: .regular))
                               .foregroundColor(.black)
@@ -149,6 +150,7 @@ struct OrderView: View {
                           }
                         }
                         .frame(width: 20)
+                        .frame(height: 20)
                       }
                       .frame(width: 100)
                       .padding([.leading, .trailing], 10)
@@ -157,34 +159,55 @@ struct OrderView: View {
                     }
                   
                     Divider()
-                    HStack(spacing: 15){
+                    HStack(alignment: .top, spacing: 15){
                       Text("상세설명")
                         .font(.system(size: 16, weight: .bold))
-                      ZStack(alignment: .trailing){
-                        Text(self.ordermodel.data[index].description != "" ? self.ordermodel.data[index].description : "세부 정보를 입력해주세요.")
-                          .font(.system(size: 16, weight: .regular))
-                          .padding([.top, .leading])
-                          .frame(maxWidth: .infinity, minHeight: 45, alignment: .topTrailing)
-                          .onTapGesture {
-                            self.focusDescription.toggle()
+                    
+                      TextEditor(text: $ordermodel.data[index].description)
+                        .font(.system(size: 16, weight: .regular))
+                        .focused($focusDescription)
+                        .frame(height: 100)
+                        .multilineTextAlignment(.trailing)
+                        .foregroundColor(focusDescription == false && ordermodel.data[index].description == "세부 정보를 입력해주세요." ? Color.gray : Color.black)
+                        .onChange(of: focusDescription) { V in
+                          if V {
+                            if ordermodel.data[index].description == "세부 정보를 입력해주세요." {
+                              ordermodel.data[index].description = ""
+                            }
+                          } else {
+                            if ordermodel.data[index].description == "" {
+                              ordermodel.data[index].description = "세부 정보를 입력해주세요."
+                            }
                           }
-                          .foregroundColor(self.ordermodel.data[index].description != "" ? Color.clear : Color.gray)
-                          .zIndex(self.ordermodel.data[index].description != "" ? 0 : 1)
-                          .background(GeometryReader { geo in
-                            Color.clear.preference(key: SizeKey.self, value: geo.size.height)
-                          }.frame(minHeight: 45))
-                          .onPreferenceChange(SizeKey.self) { value in
-                            self.height = value
-                          }
-                        TextEditor(text: $ordermodel.data[index].description)
-                          .focused($focusDescription)
-                          .frame(height: self.height)
-                          .multilineTextAlignment(.trailing)
-                          .padding([.top, .leading])
-                          .font(.system(size: 16, weight: .regular))
-                        
-                      }
-                    }.frame(maxHeight: 200)
+                        }
+                      
+//                      ZStack(alignment: .trailing){
+//                        Text(self.ordermodel.data[index].description != "" ? self.ordermodel.data[index].description : "세부 정보를 입력해주세요.")
+//                          .font(.system(size: 16, weight: .regular))
+//                          .padding([.top, .leading])
+//                          .frame(maxWidth: .infinity, minHeight: 45, alignment: .topTrailing)
+//                          .onTapGesture {
+//                            self.focusDescription.toggle()
+//                          }
+//                          .foregroundColor(self.ordermodel.data[index].description != "" ? Color.clear : Color.gray)
+//                          .zIndex(self.ordermodel.data[index].description != "" ? 0 : 1)
+//                          .background(GeometryReader { geo in
+//                            Color.clear.preference(key: SizeKey.self, value: geo.size.height)
+//                          }.frame(minHeight: 45))
+//                          .onPreferenceChange(SizeKey.self) { value in
+//                            self.height = value
+//                          }
+//                        TextEditor(text: $ordermodel.data[index].description)
+//                          .focused($focusDescription)
+//                          .frame(height: self.height)
+//                          .multilineTextAlignment(.trailing)
+//                          .padding([.top, .leading])
+//                          .font(.system(size: 16, weight: .regular))
+//                      }
+                    }
+//                    .frame(maxHeight: 135)
+                    
+                    
                   }
                   .padding([.top, .bottom], 30)
                   .padding([.leading, .trailing])
@@ -235,8 +258,14 @@ struct OrderView: View {
                 
                 for i in ordermodel.data.indices {
                   if ordermodel.isMenu.contains((ordermodel.data[i].id)) {
+                    if ordermodel.data[i].description == "세부 정보를 입력해주세요." {
+                      ordermodel.data[i].description = ""
+                    }
                     postMenuEdit(oderdata: ordermodel.data[i], rid: self.roomid)
                   } else {
+                    if ordermodel.data[i].description == "세부 정보를 입력해주세요." {
+                      ordermodel.data[i].description = ""
+                    }
                     postAddMenu(oderdata: ordermodel.data[i], rid: self.roomid)
                   }
                 }

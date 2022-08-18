@@ -7,10 +7,6 @@
 
 import Foundation
 
-// 59.25.26.152:3000
-// 59.25.26.152:3000
-
-
 let serverurl = "https://gachihasil.link/"
 let createroomposturl = "https://gachihasil.link/room"
 let emailsendurl = "https://gachihasil.link/auth/email/send"
@@ -122,9 +118,23 @@ func urlvotereset(rid: String) -> URL {
   return url
 }
 
+func urlvotevaild(rid: String, vid: String) -> URL {
+  let url = URL(string: "https://gachihasil.link/room/\(rid)/vote/\(vid)")!
+  return url
+}
+
+func urlvotesubmit(rid: String, vid: String, isagree: Bool) -> URL {
+  let url = URL(string: "https://gachihasil.link/room/\(rid)/vote/\(vid)?isAgree=\(isagree)")!
+  return url
+}
 
 func urluniversity() -> URL {
   let url = URL(string: "https://gachihasil.link/university")!
+  return url
+}
+
+func urluniversityinfo(id: Int) -> URL {
+  let url = URL(string: "https://gachihasil.link/university/\(id)")!
   return url
 }
 

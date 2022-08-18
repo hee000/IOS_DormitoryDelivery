@@ -9,7 +9,7 @@ import SwiftUI
 import RealmSwift
 import SocketIO
 import Alamofire
-
+//import PhotoLibraryPicker
 
 
 struct MyPage: View {
@@ -17,12 +17,17 @@ struct MyPage: View {
     @EnvironmentObject var chatdata: ChatData
 //    @ObservedResults(UserPrivacy.self) var userPrivacy
     @ObservedResults(ChatDB.self) var chatResult
+    @StateObject var userPrivacy = UserData()
 
   @State var alram: Bool = (UserData().data?.alram ?? true)
 //    @ObservedResults(ChatDB.self) var parents
 //    print(parents.filter(NSPredicate(format: "rid == '5'")))
   //  @ObservedRealmObject var item: ChatDB
   //  @ObservedResults(MyEvent.self,filter:NSPredicate(format: "title  != 'L'"),sortDescriptor:SortDescriptor(keyPath: "start", ascending: false)) private var results
+  
+//  @State var test: [UIImage] = []
+  @State var test = [Picture]()
+  @State var isTest = false
 
     var body: some View {
       GeometryReader { geo in
@@ -38,10 +43,10 @@ struct MyPage: View {
               VStack (alignment: .leading, spacing: 3) {
                 Text(UserData().data!.name!)
                   .font(.system(size: 16, weight: .bold))
-                Text(String(UserData().data!.belong))
+                Text(String(userPrivacy.data!.belongStr ?? ""))
                   .font(.system(size: 16, weight: .regular))
                   .foregroundColor(.gray)
-                Text(UserData().data!.emailAddress!)
+                Text(userPrivacy.data!.emailAddress ?? "")
                   .font(.system(size: 16, weight: .regular))
                   .foregroundColor(.gray)
               }
@@ -75,6 +80,11 @@ struct MyPage: View {
 
                 Divider()
                 
+                Button{
+                  print(chatdata.chatlist)
+                } label: {
+                  Text("Asdasdaa")
+                }
                 Toggle(isOn: $alram) {
                   Text("알림")
                     .font(.system(size: 18, weight: .bold))
@@ -112,22 +122,7 @@ struct MyPage: View {
                     pri.alram = V
                   }
                 } // 혹은 rest요청 안에서 db 수정
-                
-                Divider()
-                Button(action: {
-                  print(chatResult)
-//                  print(UserData().data)
-                }) {
-                  HStack{
-                    Text("쳇디비")
-                      .font(.system(size: 18, weight: .bold))
-                    Spacer()
-                    Image(systemName: "chevron.right")
-                      .font(.system(size: 18, weight: .regular))
 
-                  }
-                  .frame(height: 70)
-                }
               } // 그룹 계좌 알람
               .padding([.leading, .trailing])
               .padding([.leading, .trailing])
@@ -140,17 +135,17 @@ struct MyPage: View {
                 .padding([.leading, .trailing])
 
               Group{
-                NavigationLink(destination: HelpView()) {
-                  HStack{
-                    Text("도움말")
-                      .font(.system(size: 18, weight: .bold))
-                    Spacer()
-                    Image(systemName: "chevron.right")
-                      .font(.system(size: 18, weight: .regular))
-                  }
-                  .frame(height: 70)
-                }
-                Divider()
+//                NavigationLink(destination: HelpView()) {
+//                  HStack{
+//                    Text("도움말")
+//                      .font(.system(size: 18, weight: .bold))
+//                    Spacer()
+//                    Image(systemName: "chevron.right")
+//                      .font(.system(size: 18, weight: .regular))
+//                  }
+//                  .frame(height: 70)
+//                }
+//                Divider()
 
                 NavigationLink(destination: TOSView()) {
                   HStack{
@@ -228,11 +223,38 @@ struct MyPage: View {
               .padding([.leading, .trailing])
               .padding([.leading, .trailing])
               .background(Color(.sRGB, red: 243/255, green: 243/255, blue: 244/255, opacity: 1).frame(width:geo.size.width))
+              
+              Text("문의 사항은 teamshallwe@gmail.com으로 부탁드립니다.")
+                .font(.system(size: 14, weight: .regular))
+                .foregroundColor(.gray)
+                .padding()
             } //V
           } //scroll
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .tint(.black)
+        .onAppear {
+          if UserData().data?.belongStr == nil || UserData().data?.emailAddress == nil {
+            
+            guard let universityId = UserData().data?.belong else { return }
+            let req = AF.request(urluniversityinfo(id: universityId), method: .get, parameters: nil, encoding: JSONEncoding.default, headers: TokenUtils().getAuthorizationHeader())
+
+            req.responseJSON { response in
+              
+              guard let data = response.data,
+                    let university = try? JSONDecoder().decode(university.self, from: data) else { return }
+              
+              let realm = try! Realm()
+              guard let result = realm.objects(UserPrivacy.self).first else { return }
+              
+              try? realm.write {
+                result.belongStr = university.korName
+                result.emailAddress = university.engName
+              }
+            }
+          }
+        }
       } //geo
       .clipped()
     }
 }
+

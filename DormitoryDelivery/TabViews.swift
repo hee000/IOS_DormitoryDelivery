@@ -16,9 +16,9 @@ class Tab: ObservableObject {
 }
 
 struct TabViews: View {
-//  @EnvironmentObject var chatdata: ChatData
-//  @EnvironmentObject var noti: Noti
-//  @EnvironmentObject var dormis: dormitoryData
+  @EnvironmentObject var chatdata: ChatData
+  @EnvironmentObject var noti: Noti
+  @EnvironmentObject var dormis: dormitoryData
   
   @StateObject var model = Tab()
 //  @State var tabSelect = 0
@@ -77,6 +77,7 @@ struct TabViews: View {
     
     .fullScreenCover(isPresented: $model.createRoomSelect) {
       CreateRoomView(tabSelect: $model.tabSelect)
+        .overlay(ErrorAlertView())
     }
       
     .onChange(of: self.model.tabSelect, perform: { newValue in
@@ -95,35 +96,35 @@ struct TabViews: View {
       ToolbarItem(placement: .navigationBarLeading) {
         HStack(spacing: 0) {
           if self.model.tabSelect == 0 {
-//            Menu{
-////              ForEach(0 ..< sections.count, id: \.self) { index in
-//              Button(action: {
-//                self.model.DeliveryViewSection = -1
-//              }) {
-//                Text("전체")
-//              }
-//              ForEach(dormis.data) { dormi in
-//                Button(action: {
-//                  self.model.DeliveryViewSection = dormi.id
-//                }) {
-//                  Text(dormi.name)
-//                }
-//              }
-//            } label: {
-////              Text(sections[self.DeliveryViewSection])
-//              Text(self.model.DeliveryViewSection == -1 ? "전체" : dormis.data[dormis.data.map({ dormitory in
-//                dormitory.id
-//              }).index(of: self.model.DeliveryViewSection)!].name)
-//                .font(.title2)
-//                .bold()
-//                .foregroundColor(.black)
-//            }
-//            Image(systemName: "arrowtriangle.down.fill")
-//              .resizable()
-//              .scaledToFit()
-//              .frame(width: 13, height: 10)
-//              .foregroundColor(.gray)
-//              .padding(.leading, 2)
+            Menu{
+//              ForEach(0 ..< sections.count, id: \.self) { index in
+              Button(action: {
+                self.model.DeliveryViewSection = -1
+              }) {
+                Text("전체")
+              }
+              ForEach(dormis.data) { dormi in
+                Button(action: {
+                  self.model.DeliveryViewSection = dormi.id
+                }) {
+                  Text(dormi.name)
+                }
+              }
+            } label: {
+//              Text(sections[self.DeliveryViewSection])
+              Text(self.model.DeliveryViewSection == -1 ? "전체" : dormis.data[dormis.data.map({ dormitory in
+                dormitory.id
+              }).index(of: self.model.DeliveryViewSection)!].name)
+                .font(.title2)
+                .bold()
+                .foregroundColor(.black)
+            }
+            Image(systemName: "arrowtriangle.down.fill")
+              .resizable()
+              .scaledToFit()
+              .frame(width: 13, height: 10)
+              .foregroundColor(.gray)
+              .padding(.leading, 2)
           } else if self.model.tabSelect == 2 {
           } else if self.model.tabSelect == 3 {
           }
@@ -144,14 +145,14 @@ struct TabViews: View {
 
       ToolbarItem(placement: .navigationBarTrailing) {
         if self.model.tabSelect == 0 {
-//          HStack{
-//            NavigationLink(destination: NotificationView(tabSelect: $model.tabSelect)){
-//              Image(noti.systemNoti ? "ImageBellOn" : "ImageBellOff")
-//                .resizable()
-//                .scaledToFit()
-//                .frame(width: 21, height: 22)
-//            }
-//          }
+          HStack{
+            NavigationLink(destination: NotificationView(tabSelect: $model.tabSelect)){
+              Image(noti.systemNoti ? "ImageBellOn" : "ImageBellOff")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 21, height: 22)
+            }
+          }
         } else if self.model.tabSelect == 2 {
         } else if self.model.tabSelect == 3 {
         }

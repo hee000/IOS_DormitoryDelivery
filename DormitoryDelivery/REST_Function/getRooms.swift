@@ -10,227 +10,211 @@ import Alamofire
 import RealmSwift
 
 func getRoomUpdate(rid: String) {
-  let req = AF.request(urlroomupdate(rid: rid), method: .get, parameters: nil, encoding: JSONEncoding.default, headers: TokenUtils().getAuthorizationHeader())
-  req.responseJSON { response in
-    guard let json = response.data else { return }
-    guard let restdata = try? JSONDecoder().decode(roomupdate.self, from: json) else { return }
-    
-    print(restdata)
-    
-    
-    if let db = realm.object(ofType: ChatDB.self, forPrimaryKey: rid) {
+  restApiQueue.async {
+    let req = AF.request(urlroomupdate(rid: rid), method: .get, parameters: nil, encoding: JSONEncoding.default, headers: TokenUtils().getAuthorizationHeader())
+    req.responseJSON { response in
+      guard let json = response.data else { return }
+      guard let restdata = try? JSONDecoder().decode(roomupdate.self, from: json) else { return }
+      
+      print(restdata)
+      
       let realm = try! Realm()
       try! realm.write {
-        db.readyAvailable = restdata.isReadyAvailable
-        if restdata.state == 1 {
-          db.state?.allReady = true
-          db.state?.orderFix = false
-          db.state?.orderChecked = false
-          db.state?.orderDone = false
-        } else if restdata.state == 2 {
-          db.state?.allReady = false
-          db.state?.orderFix = true
-          db.state?.orderChecked = false
-          db.state?.orderDone = false
-        } else if restdata.state == 3 {
-          db.state?.allReady = false
-          db.state?.orderFix = true
-          db.state?.orderChecked = true
-          db.state?.orderDone = false
-        } else if restdata.state == 4 {
-          db.state?.allReady = false
-          db.state?.orderFix = true
-          db.state?.orderChecked = true
-          db.state?.orderDone = true
-        } else if restdata.state == 0 {
-          db.state?.allReady = false
-          db.state?.orderFix = false
-          db.state?.orderChecked = false
-          db.state?.orderDone = false
-        }
-      }
+        if let db = realm.object(ofType: ChatDB.self, forPrimaryKey: rid) {
+          if db.readyAvailable != restdata.isReadyAvailable {
+            db.readyAvailable.toggle()
+          }
+  //        db.readyAvailable = restdata.isReadyAvailable
+          if restdata.state == 1 {
+            db.state?.allReady = true
+            db.state?.orderFix = false
+            db.state?.orderChecked = false
+            db.state?.orderDone = false
+          } else if restdata.state == 2 {
+            db.state?.allReady = false
+            db.state?.orderFix = true
+            db.state?.orderChecked = false
+            db.state?.orderDone = false
+          } else if restdata.state == 3 {
+            db.state?.allReady = false
+            db.state?.orderFix = true
+            db.state?.orderChecked = true
+            db.state?.orderDone = false
+          } else if restdata.state == 4 {
+            db.state?.allReady = false
+            db.state?.orderFix = true
+            db.state?.orderChecked = true
+            db.state?.orderDone = true
+          } else if restdata.state == 0 {
+            db.state?.allReady = false
+            db.state?.orderFix = false
+            db.state?.orderChecked = false
+            db.state?.orderDone = false
+          }
+        } // db
+      } // try realm
     }
   }
 }
 
 func getParticipantsUpdate(rid: String) {
-  AF.request(urlparticipants(rid: rid), method: .get, parameters: nil, encoding: JSONEncoding.default, headers: TokenUtils().getAuthorizationHeader())
-    .responseJSON { response in
-      guard let json = response.data else { return }
-      guard var participants = try? JSONDecoder().decode([participantsinfo].self, from: json) else { return }
-      if let db = realm.object(ofType: ChatDB.self, forPrimaryKey: rid) {
-        let realm = try! Realm()
-        
-        if let superUser = db.superUser {
-          if participants.firstIndex(of: participantsinfo(id: superUser.userId!, name: superUser.name!)) == nil {
-            try! realm.write {
-              db.superUser = nil
+  restApiQueue.async {
+    AF.request(urlparticipants(rid: rid), method: .get, parameters: nil, encoding: JSONEncoding.default, headers: TokenUtils().getAuthorizationHeader())
+      .responseJSON { response in
+        guard let json = response.data else { return }
+        guard var participants = try? JSONDecoder().decode(List<ChatUsersInfo>.self, from: json) else { return }
+        if let db = realm.object(ofType: ChatDB.self, forPrimaryKey: rid) {
+          let realm = try! Realm()
+          
+          // 방장 나감
+          if let superUser = db.superUser {
+            var NotIn = true
+            for participant in participants {
+              if superUser.userId == participant.userId {
+                NotIn = false
+              }
+            }
+            if NotIn {
+              try! realm.write {
+                db.superUser = nil
+              }
             }
           }
-        }
-        
-        for member in db.member {
-          if let idx = participants.firstIndex(of: participantsinfo(id: member.userId!, name: member.name!)) {
-            participants.remove(at: idx)
-          } else {
-            try! realm.write {
-//              if let superUser = db.superUser {
-//                if member.userId == superUser.userId {
-//                  print("방장 나갔어")
-//                  db.superUser = nil
-//                }
-//              }
-              db.member.remove(at: db.member.index(of: member)!)
-            }
+          
+          try! realm.write {
+            db.member = participants
           }
-        }
-        
-
-        
-        try! realm.write {
-          for participant in participants {
-            let userinfo = ChatUsersInfo()
-            userinfo.userId = participant.id
-            userinfo.name = participant.name
-            db.member.append(userinfo)
-          }
+          
         }
       }
-    }
+  }
 }
 
 func getRooms(uid: String) {
-  let url = urlrooms(uid: uid)
-  let req = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: TokenUtils().getAuthorizationHeader())
-  req.responseJSON { response in
+  restApiQueue.async {
+    print("채팅목록1")
+    let url = urlrooms(uid: uid)
+    let req = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: TokenUtils().getAuthorizationHeader())
+    req.responseJSON { response in
 
-    do {
-      switch response.result {
-      case .success(let value):
-        if response.response?.statusCode == 200 {
-          let result = value as! [Any]
-          let message = try! JSONSerialization.data(withJSONObject: result, options: .prettyPrinted)
-          let json = try JSONDecoder().decode([rooms].self, from: message)
-//          print(json)
-          let realm = try! Realm()
-          
-//          let db = realm.objects(ChatDB.self)
-          for room in json {
-            if let db = realm.object(ofType: ChatDB.self, forPrimaryKey: room.id) {
-//              print(db)
-              AF.request(urlparticipants(rid: room.id), method: .get, parameters: nil, encoding: JSONEncoding.default, headers: TokenUtils().getAuthorizationHeader())
-                .responseJSON { response2 in
-                  guard var participants = try? JSONDecoder().decode([participantsinfo].self, from: response2.data!) else { return }
-                  for member in db.member {
-                    if let idx = participants.firstIndex(of: participantsinfo(id: member.userId!, name: member.name!)) {
-                      participants.remove(at: idx)
-                    } else {
-                      try! realm.write {
-                        db.member.remove(at: db.member.index(of: member)!)
+      print(response, "채팅목록2")
+      do {
+        switch response.result {
+        case .success(let value):
+          if response.response?.statusCode == 200 {
+            let result = value as! [Any]
+            let message = try! JSONSerialization.data(withJSONObject: result, options: .prettyPrinted)
+            let json = try JSONDecoder().decode([rooms].self, from: message)
+
+            let realm = try! Realm()
+            
+
+            for room in json {
+              if let db = realm.object(ofType: ChatDB.self, forPrimaryKey: room.id) {
+  //              print(db)
+                AF.request(urlparticipants(rid: room.id), method: .get, parameters: nil, encoding: JSONEncoding.default, headers: TokenUtils().getAuthorizationHeader())
+                  .responseJSON { response2 in
+                    print(response2, "채팅목록3")
+                    guard let participants = try? JSONDecoder().decode(List<ChatUsersInfo>.self, from: response2.data!) else { return }
+
+                    
+                    try! realm.write {
+                      db.readyAvailable = room.isReadyAvailable
+
+                      db.member = participants
+
+                      if room.state == 1 {
+                        db.state?.allReady = true
+                        db.state?.orderFix = false
+                        db.state?.orderChecked = false
+                        db.state?.orderDone = false
+                      } else if room.state == 2 {
+                        db.state?.allReady = false
+                        db.state?.orderFix = true
+                        db.state?.orderChecked = false
+                        db.state?.orderDone = false
+                      } else if room.state == 3 {
+                        db.state?.allReady = false
+                        db.state?.orderFix = true
+                        db.state?.orderChecked = true
+                        db.state?.orderDone = false
+                      } else if room.state == 4 {
+                        db.state?.allReady = false
+                        db.state?.orderFix = true
+                        db.state?.orderChecked = true
+                        db.state?.orderDone = true
+                      } else if room.state == 0 {
+                        db.state?.allReady = false
+                        db.state?.orderFix = false
+                        db.state?.orderChecked = false
+                        db.state?.orderDone = false
                       }
                     }
                   }
-                  
-                  try! realm.write {
-                    db.readyAvailable = room.isReadyAvailable
-                    for participant in participants {
-                      let userinfo = ChatUsersInfo()
-                      userinfo.userId = participant.id
-                      userinfo.name = participant.name
-                      db.member.append(userinfo)
-                    }
-
+              } else {
+                AF.request(urlparticipants(rid: room.id), method: .get, parameters: nil, encoding: JSONEncoding.default, headers: TokenUtils().getAuthorizationHeader())
+                  .responseJSON { response2 in
+                    print(response2, "채팅목록4")
+                    guard let participants = try? JSONDecoder().decode(List<ChatUsersInfo>.self, from: response2.data!) else { return }
+                    print("채팅목록 5")
+                    let newroom = ChatDB()
+                    newroom.rid = room.id
+                    newroom.title = room.shopName
+                    newroom.ready = room.isReady
+                    newroom.readyAvailable = room.isReadyAvailable
+                    
                     if room.state == 1 {
-                      db.state?.allReady = true
-                      db.state?.orderFix = false
-                      db.state?.orderChecked = false
-                      db.state?.orderDone = false
+                      newroom.state?.allReady = true
+                      newroom.state?.orderFix = false
+                      newroom.state?.orderChecked = false
+                      newroom.state?.orderDone = false
                     } else if room.state == 2 {
-                      db.state?.allReady = false
-                      db.state?.orderFix = true
-                      db.state?.orderChecked = false
-                      db.state?.orderDone = false
+                      newroom.state?.allReady = false
+                      newroom.state?.orderFix = true
+                      newroom.state?.orderChecked = false
+                      newroom.state?.orderDone = false
                     } else if room.state == 3 {
-                      db.state?.allReady = false
-                      db.state?.orderFix = true
-                      db.state?.orderChecked = true
-                      db.state?.orderDone = false
+                      newroom.state?.allReady = false
+                      newroom.state?.orderFix = true
+                      newroom.state?.orderChecked = true
+                      newroom.state?.orderDone = false
                     } else if room.state == 4 {
-                      db.state?.allReady = false
-                      db.state?.orderFix = true
-                      db.state?.orderChecked = true
-                      db.state?.orderDone = true
+                      newroom.state?.allReady = false
+                      newroom.state?.orderFix = true
+                      newroom.state?.orderChecked = true
+                      newroom.state?.orderDone = true
                     } else if room.state == 0 {
-                      db.state?.allReady = false
-                      db.state?.orderFix = false
-                      db.state?.orderChecked = false
-                      db.state?.orderDone = false
+                      newroom.state?.allReady = false
+                      newroom.state?.orderFix = false
+                      newroom.state?.orderChecked = false
+                      newroom.state?.orderDone = false
                     }
-                  }
+                    
+                    newroom.member = participants
+                    
+                    for participant in participants {
+                      if participant.userId == room.purchaserId {
+                        newroom.superUser = participant
+                      }
+                    }
+                    
+                    print("채팅목록 추가 ")
+                    addChatting(newroom)
                 }
-            } else {
-              AF.request(urlparticipants(rid: room.id), method: .get, parameters: nil, encoding: JSONEncoding.default, headers: TokenUtils().getAuthorizationHeader())
-                .responseJSON { response2 in
-                  guard let participants = try? JSONDecoder().decode([participantsinfo].self, from: response2.data!) else { return }
-                  
-                  let newroom = ChatDB()
-                  newroom.rid = room.id
-                  newroom.title = room.shopName
-                  newroom.ready = room.isReady
-                  newroom.readyAvailable = room.isReadyAvailable
-                  
-                  if room.state == 1 {
-                    newroom.state?.allReady = true
-                    newroom.state?.orderFix = false
-                    newroom.state?.orderChecked = false
-                    newroom.state?.orderDone = false
-                  } else if room.state == 2 {
-                    newroom.state?.allReady = false
-                    newroom.state?.orderFix = true
-                    newroom.state?.orderChecked = false
-                    newroom.state?.orderDone = false
-                  } else if room.state == 3 {
-                    newroom.state?.allReady = false
-                    newroom.state?.orderFix = true
-                    newroom.state?.orderChecked = true
-                    newroom.state?.orderDone = false
-                  } else if room.state == 4 {
-                    newroom.state?.allReady = false
-                    newroom.state?.orderFix = true
-                    newroom.state?.orderChecked = true
-                    newroom.state?.orderDone = true
-                  } else if room.state == 0 {
-                    newroom.state?.allReady = false
-                    newroom.state?.orderFix = false
-                    newroom.state?.orderChecked = false
-                    newroom.state?.orderDone = false
-                  }
-                  
-                  for participant in participants {
-                    let userinfo = ChatUsersInfo()
-                    userinfo.userId = participant.id
-                    userinfo.name = participant.name
-                    if participant.id == room.purchaserId {
-                      newroom.superUser = userinfo
-                    }
-                    newroom.member.append(userinfo)
-                  }
-                  
-                  addChatting(newroom)
+                print("디비없음")
               }
-              print("디비없음")
             }
+            
+  //              print(json)
           }
-          
-//              print(json)
+        case .failure(let error):
+          print(error)
         }
-      case .failure(let error):
+      } catch {
         print(error)
       }
-    } catch {
-      print(error)
-    }
 
+    }
   }
 }
 

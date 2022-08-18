@@ -17,15 +17,24 @@ struct ViewOffsetKey: PreferenceKey {
     }
 }
 
-class Chatting: ObservableObject {
+class ChattingSendText: ObservableObject {
   @Published var textHeight: CGFloat?
   @Published var text = ""
+}
+
+class Chatting: ObservableObject {
+//  @Published var textHeight: CGFloat?
+//  @Published var text = ""
   @Published var showMenu = false
   @Published var leave = false
   @Published var oderview = false
   @Published var oderlistview = false
   @Published var odercheck = false
   @Published var userodercheck = false
+  @Published var resetview = false
+  @Published var voteview = false
+  @Published var voteindex = 0
+  @Published var isReceiver = true
   @Published private var offset = CGFloat.zero
   @Published private var stacksize = CGFloat.zero
   @Published private var scrollsize = CGFloat.zero

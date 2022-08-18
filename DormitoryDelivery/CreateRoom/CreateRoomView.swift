@@ -8,7 +8,6 @@
 import SwiftUI
 import RealmSwift
 
-
 struct SizeKey: PreferenceKey {
   static func reduce(value: inout CGFloat?, nextValue: () -> CGFloat?) {
     value = nextValue()
@@ -27,7 +26,7 @@ struct CreateRoomView: View {
   
   @FocusState private var focusShopLink: Bool
   
-  
+  @State var asdasd = ""
   
     var body: some View {
       NavigationView {
@@ -86,6 +85,8 @@ struct CreateRoomView: View {
                   .font(.system(size: 16, weight: .regular))
                   .keyboardType(.default)
                   .multilineTextAlignment(.trailing)
+                  .disableAutocorrection(true)
+                  .autocapitalization(UITextAutocapitalizationType.none)
               }
             
               Divider()
@@ -139,30 +140,49 @@ struct CreateRoomView: View {
                   Text("주문 매장 공유하기")
                     .font(.system(size: 16, weight: .bold))
                 }
-                ZStack(alignment: .leading){
-                  Text(self.createRoomData.shopLink != "" ? self.createRoomData.shopLink : "주문할 매장 URL을 공유해주세요.")
-                    .font(.system(size: 16, weight: .regular))
-                    .padding([.top, .leading])
-                    .frame(maxWidth: .infinity, minHeight: 45, alignment: .topLeading)
-                    .onTapGesture {
-                      self.focusShopLink.toggle()
-                    }
-                    .foregroundColor(self.createRoomData.shopLink != "" ? Color.clear : Color.gray)
-                    .zIndex(self.createRoomData.shopLink != "" ? 0 : 1)
-                    .background(GeometryReader { geo in
-                      Color.clear.preference(key: SizeKey.self, value: geo.size.height)
-                    }.frame(minHeight: 45))
-                    .onPreferenceChange(SizeKey.self) { value in
-                      self.createRoomData.height = value
-                    }
-                  TextEditor(text: $createRoomData.shopLink)
-                    .font(.system(size: 16, weight: .regular))
-                    .focused($focusShopLink)
-                    .frame(height: self.createRoomData.height)
-                    .padding([.top, .leading])
-                    .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.gray.opacity(0.7), lineWidth: 1))
-                }.frame(maxHeight: 200)
+//                ZStack(alignment: .leading){
+//                  Text(self.createRoomData.shopLink != "" ? self.createRoomData.shopLink : "주문할 매장 URL을 공유해주세요. 외부 배달앱에서 매장 링크 공유하기를 눌러 클립보드로 복사해주세요.")
+//                    .font(.system(size: 16, weight: .regular))
+//                    .padding([.top, .leading])
+//                    .frame(maxWidth: .infinity, minHeight: 45, alignment: .topLeading)
+//                    .onTapGesture {
+//                      self.focusShopLink.toggle()
+//                    }
+//                    .foregroundColor(self.createRoomData.shopLink != "" ? Color.clear : Color.gray)
+//                    .zIndex(self.createRoomData.shopLink != "" ? 0 : 1)
+//                    .background(GeometryReader { geo in
+//                      Color.clear.preference(key: SizeKey.self, value: geo.size.height)
+//                    }.frame(minHeight: 45))
+//                    .onPreferenceChange(SizeKey.self) { value in
+//                      self.createRoomData.height = value
+//                    }
+//                  TextEditor(text: $createRoomData.shopLink)
+//                    .font(.system(size: 16, weight: .regular))
+//                    .focused($focusShopLink)
+//                    .frame(height: self.createRoomData.height)
+//                    .padding([.top, .leading])
+//                    .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.gray.opacity(0.7), lineWidth: 1))
+//                }.frame(maxHeight: 200)
                 
+
+                TextEditor(text: $createRoomData.shopLink)
+                  .font(.system(size: 16, weight: .regular))
+                  .focused($focusShopLink)
+                  .frame(height: 85)
+                  .foregroundColor(focusShopLink == false && createRoomData.shopLink == "주문할 매장 URL을 공유해주세요. \n외부 배달앱에서 매장 링크 공유하기를 눌러 클립보드로 복사해주세요." ? Color.gray : Color.black)
+                  .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.gray.opacity(0.7), lineWidth: 1))
+                  .onChange(of: focusShopLink) { V in
+                    if V {
+                      if createRoomData.shopLink == "주문할 매장 URL을 공유해주세요. \n외부 배달앱에서 매장 링크 공유하기를 눌러 클립보드로 복사해주세요." {
+                        createRoomData.shopLink = ""
+                      }
+                    } else {
+                      if createRoomData.shopLink == "" {
+                        createRoomData.shopLink = "주문할 매장 URL을 공유해주세요. \n외부 배달앱에서 매장 링크 공유하기를 눌러 클립보드로 복사해주세요."
+                      }
+                    }
+                  }
+
                 HStack{
                   HStack(spacing: 0){
                     Text("* ")
@@ -239,12 +259,18 @@ struct CreateRoomView: View {
         } //geo
         .clipped()
       } //navi
+      
       .overlay(self.userPrivacy.first!.mainAccount == nil ? AlertOneButton(isActivity: $createRoomData.isAccount) { Text("마이 페이지에서").font(.system(size: 16, weight: .regular))
         Text("계좌 등록을 먼저 진행해주세요").font(.system(size: 16, weight: .regular)) } : nil)
+      
       .overlay(self.createRoomData.postalertstate ? AlertOneButton(isActivity: $createRoomData.postalertstate) { Text("항목을 올바르게 기입해주세요").font(.system(size: 16, weight: .regular)) } : nil)
+      
+      .overlay(self.createRoomData.isInvalidCreateRoom ? AlertOneButton(isActivity: $createRoomData.isInvalidCreateRoom) { Text(self.createRoomData.invalidCreateRoomText).font(.system(size: 16, weight: .regular)) } : nil)
+      
       .onChange(of: createRoomData.isAccount, perform: { newValue in
         presentationMode.wrappedValue.dismiss()
       })
+      
       .onChange(of: createRoomData.rid, perform: { newValue in
         presentationMode.wrappedValue.dismiss()
         self.tabSelect = 2

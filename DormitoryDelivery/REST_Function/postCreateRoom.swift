@@ -15,41 +15,39 @@ func postCreateRoom(createRoomData: CreateRoom, section: Int, deliveryPriceAtLea
   let tk = TokenUtils()
   
   AF.request(url, method: .post, parameters: createkey, encoding: JSONEncoding.default, headers: tk.getAuthorizationHeader()).responseJSON { (response) in
+    appVaildCheck(res: response)
+//    print(response.response?.statusCode)
+//    print(response)
+    
+    guard let statusCode = response.response?.statusCode else { return }
 
-    print(response)
-    switch response.result {
-    case .success(let value):
-//      print("방 생성 성공")
-//      print(value)
-//      print("=======")
-      if let id = value as? [String: Any] {
-        if let idvalue = id["id"] {
-          let chatroomopen = ChatDB()
-          if let rid = idvalue as? String {
-            let userprivacy = realm.objects(UserPrivacy.self).first!
-            navi.State = true
-            navi.rid = rid
-            navi.Active = true
+    
+    if statusCode == 201 {
+      guard let value = response.value as? [String: Any],
+            let rid = value["id"] as? String
+      else { return }
+      
+      let chatroomopen = ChatDB()
+      let userprivacy = realm.objects(UserPrivacy.self).first!
+      navi.State = true
+      navi.rid = rid
+      navi.Active = true
+
+      chatroomopen.rid = rid
+      chatroomopen.title = createRoomData.shopName
+      let userinfo = ChatUsersInfo()
+      userinfo.userId = userprivacy.id
+      userinfo.name = userprivacy.name
+      
   
-            chatroomopen.rid = rid
-            chatroomopen.title = createRoomData.shopName
-            let userinfo = ChatUsersInfo()
-            userinfo.userId = userprivacy.id
-            userinfo.name = userprivacy.name
-            chatroomopen.superUser = userinfo
-            chatroomopen.member.append(userinfo)
-            addChatting(chatroomopen)
+      chatroomopen.superUser = userinfo
+      chatroomopen.member.append(userinfo)
+      addChatting(chatroomopen)
 
-            createRoomData.rid = rid
-            
+      createRoomData.rid = rid
+      
 
-            print("방만들기끝")
-          }
-        }
-      }
-
-    case .failure(let error):
-        print("🚫 Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
+      print("방만들기끝")
     }
   }
 }

@@ -1,5 +1,6 @@
 import Foundation
 import Network
+import SocketIO
 
 final class NetworkMonitor{
     static let shared = NetworkMonitor()
@@ -28,14 +29,24 @@ final class NetworkMonitor{
         monitor.pathUpdateHandler = { [weak self] path in
             print("path :\(path)")
 
+            let beforeConnectionType = self?.connectionType
+            let beforeIsConnected = self?.isConnected
+          
             self?.isConnected = path.status == .satisfied
             self?.getConenctionType(path)
-            
+          
+            if beforeIsConnected == false && self?.isConnected == true {
+              print("@@@@@@@@@ false -> true")
+              SocketIOManager.shared.manager.reconnect()
+            } else if beforeConnectionType == .wifi && self?.connectionType != .wifi && self?.isConnected == true {
+              print("@@@@@@@@@ wifi -> notWifi")
+              SocketIOManager.shared.manager.reconnect()
+            }
+          
             if self?.isConnected == true{
                 print("연결이된 상태임!")
             }else{
                 print("연결 안된 상태임!")
-
             }
         }
     }

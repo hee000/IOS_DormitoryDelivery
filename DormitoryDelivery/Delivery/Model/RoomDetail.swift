@@ -32,6 +32,9 @@ struct roomdetaildata: Codable, Hashable, Identifiable {
 class RoomDetailData: ObservableObject {
   @Published var data: roomdetaildata? = nil
   @Published var isActive = false
+  @Published var isInvalidCheck = false
+  @Published var invalidText = ""
+  
   var roomdata: roomdata
   
   init(room: roomdata) {
@@ -45,8 +48,12 @@ class RoomDetailData: ObservableObject {
       req.responseJSON { response in
 
         //리스폰 상태 200일떄로 이프문 걸기
-        guard let restdata = try? JSONDecoder().decode(roomdetaildata.self, from: response.data!) else { return }
-        self.data = restdata
+        guard let statusCode = response.response?.statusCode else { return }
+        
+        if statusCode == 200 {
+          guard let restdata = try? JSONDecoder().decode(roomdetaildata.self, from: response.data!) else { return }
+          self.data = restdata
+        }
         
 //      let result = response.value as! [String: Any]
 //      do {

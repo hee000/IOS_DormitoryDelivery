@@ -42,13 +42,13 @@ struct EmailCheckView: View {
                     Button{
                       self.selection = data
                     } label: {
-                      Text("\(data.korName)대학교")
+                      Text("\(data.korName)")
                         .font(.system(size: 14, weight: .regular))
                     }
                   }
               } label: {
                 HStack{
-                  Text(self.selection != nil ? "\(self.selection!.korName)대학교" : "소속 대학교를 선택해주세요.")
+                  Text(self.selection != nil ? "\(self.selection!.korName)" : "소속 대학교를 선택해주세요.")
                     .font(.system(size: 14, weight: .regular))
                     .foregroundColor(.black)
                   Spacer()
@@ -80,21 +80,12 @@ struct EmailCheckView: View {
                 self.doublestop = true
                 //이메일 형식이 올바르다면 rest 쏘고, navi active
                 let url = urlemailsend()
-                var request = URLRequest(url: url)
-                let token = naverLogin.loginInstance!.accessToken!
-                request.httpMethod = "POST"
-                request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-                request.timeoutInterval = 10
-    //              request.allHTTPHeaderFields = (["Authorization": token])
-                let createkey = emailsend(universityId: self.selection!.id, email: self.emailstr, oauthAccessToken: token)
 
-                do {
-                    try request.httpBody = JSONEncoder().encode(createkey)
-                } catch {
-                    print("http Body Error")
-                }
+                guard let token = naverLogin.loginInstance?.accessToken,
+                      let createkey = try? emailsend(universityId: self.selection!.id, email: self.emailstr, oauthAccessToken: token).asDictionary()
+                else { return }
                 
-                AF.request(request).responseJSON { response in
+                AF.request(url, method: .post, parameters: createkey, encoding: JSONEncoding.default, headers: ["Client-Version" : "ios \(AppVersion)"]).responseJSON { response in
                   print(response)
                   if response.response?.statusCode == 201 {
                     self.navi = true
@@ -143,7 +134,7 @@ struct EmailCheckView: View {
             } //V
             .padding()
           } //scroll
-          .overlay(Rectangle().frame(width: nil, height: 1, alignment: .top).foregroundColor(Color(.sRGB, red: 210/255, green: 210/255, blue: 210/255, opacity: 1)), alignment: .top)
+//          .overlay(Rectangle().frame(width: nil, height: 1, alignment: .top).foregroundColor(Color(.sRGB, red: 210/255, green: 210/255, blue: 210/255, opacity: 1)), alignment: .top)
             
           VStack(alignment: .leading, spacing: 0){
             Spacer()
@@ -180,7 +171,7 @@ struct EmailCheckView: View {
       }
       .onAppear {
         let url = urluniversity()
-        let req = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default)
+        let req = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: ["Client-Version" : "ios \(AppVersion)"])
         req.responseJSON { response in
 //          print(response)
           guard let data = response.data,

@@ -10,6 +10,12 @@ struct orderdata: Codable, Identifiable, Equatable {
   var price: String;
 }
 
+struct addmenu: Codable {
+  var name: String            // 이름
+  var quantity: Int            // 개수
+  var description: String            // 내용
+  var price: Int             // 가격
+}
 
 struct restOnlyOrderData: Codable, Identifiable, Equatable {
   var id: String;

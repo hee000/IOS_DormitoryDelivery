@@ -106,7 +106,7 @@ struct EmailCertificationNumberView: View {
             guard let param = try? createkey.asDictionary() else { return }
             AF.request(url, method: .post,
                        parameters: param,
-                       encoding: JSONEncoding.default).responseJSON { response in
+                       encoding: JSONEncoding.default, headers: ["Client-Version" : "ios \(AppVersion)"]).responseJSON { response in
               
               print("re1", response)
               
@@ -119,7 +119,8 @@ struct EmailCertificationNumberView: View {
                 
                 AF.request(url2, method: .post,
                            parameters: param2,
-                           encoding: JSONEncoding.default
+                           encoding: JSONEncoding.default,
+                           headers: ["Client-Version" : "ios \(AppVersion)"]
                 ).responseJSON { response2 in
                   
                   print("re2", response2)

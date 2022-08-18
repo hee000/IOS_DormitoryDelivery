@@ -10,10 +10,13 @@ import Alamofire
 
 
 func postOrderDone(rid: String) {
-  let url = urloderdone(rid: rid)
-  
-  AF.request(url, method: .post, headers: TokenUtils().getAuthorizationHeader()).responseString { response in
-    print(response)
+  restApiQueue.async {
+
+    let url = urloderdone(rid: rid)
+    
+    AF.request(url, method: .post, headers: TokenUtils().getAuthorizationHeader()).responseString { response in
+      print(response)
+    }
   }
   
 }

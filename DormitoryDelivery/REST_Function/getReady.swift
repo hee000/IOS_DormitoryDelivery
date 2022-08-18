@@ -17,7 +17,10 @@ func getReady(rid: String, model: ChatDB) {
 
     let realm = try! Realm()
     try! realm.write({
-      model.ready.toggle()
+      if let db = realm.object(ofType: ChatDB.self, forPrimaryKey: rid) {
+        db.ready.toggle()
+      }
+//      model.ready.toggle()
     })
     print(response)
 

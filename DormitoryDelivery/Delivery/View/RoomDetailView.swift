@@ -62,9 +62,7 @@ struct RoomDetailView: View {
             Text(detaildata.data!.shopName)
               .font(.system(size: 24, weight: .bold))
               .padding(.bottom, 15)
-            Button {
-              //링크 Text(detaildata.data!.shopLink)
-            } label: {
+            Link(destination: URL(string: detaildata.data!.shopLink)!, label: {
               Text("주문 매장 링크확인 >")
                 .font(.system(size: 10, weight: .regular))
                 .padding([.top, .bottom], 8)
@@ -73,10 +71,23 @@ struct RoomDetailView: View {
                 .foregroundColor(.gray)
                 .background(Color(.sRGB, red: 113/255, green: 46/255, blue: 255/255, opacity: 0.12))
                 .cornerRadius(13)
-//                .resizable()
-//                .scaledToFit()
-            }
+          })
             .padding(.bottom, 30)
+//            Button {
+////              detaildata.data!.shopLink
+//            } label: {
+//              Text("주문 매장 링크확인 >")
+//                .font(.system(size: 10, weight: .regular))
+//                .padding([.top, .bottom], 8)
+//                .padding([.leading, .trailing])
+//                .padding([.leading, .trailing])
+//                .foregroundColor(.gray)
+//                .background(Color(.sRGB, red: 113/255, green: 46/255, blue: 255/255, opacity: 0.12))
+//                .cornerRadius(13)
+////                .resizable()
+////                .scaledToFit()
+//            }
+//            .padding(.bottom, 30)
           }
           .frame(maxWidth: .infinity)
           .background(Color.white)
@@ -136,6 +147,8 @@ struct RoomDetailView: View {
       .onAppear {
         self.detaildata.getRoomDetail(matchid: self.detaildata.roomdata.id)
       }
+      .overlay(self.detaildata.isInvalidCheck ? AlertOneButton(isActivity: $detaildata.isInvalidCheck) { Text(self.detaildata.invalidText).font(.system(size: 16, weight: .regular)) } : nil)
+      
       .navigationBarTitleDisplayMode(.inline)
       .navigationBarBackButtonHidden(true)
       .navigationBarTitle(detaildata.roomdata.shopName)

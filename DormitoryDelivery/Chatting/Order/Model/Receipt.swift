@@ -10,6 +10,7 @@ import UIKit
 
 class Receipt: ObservableObject {
   @Published var image = UIImage()
+  @Published var images = [UIImage]()
   @Published var data: receiptdata? = nil
 }
 

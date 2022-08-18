@@ -18,7 +18,7 @@ struct ContentView: View {
   
   @AppStorage("Login") var Login: Bool = UserDefaults.standard.bool(forKey: "Login")
   @AppStorage("oauthLogin") var oauthLogin: Bool = UserDefaults.standard.bool(forKey: "oauthLogin")
-  
+
   init() {
 //    UITabBar.appearance().backgroundColor = UIColor.gray.withAlphaComponent(0.1)
     UITabBar.appearance().barTintColor = .white
@@ -29,52 +29,69 @@ struct ContentView: View {
 
     var body: some View {
 
-
-      if !oauthLogin {
-        LoginView()
-          .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
-          .edgesIgnoringSafeArea(.all)
-      } else if !Login {
-        EmailCheckView()
-          .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { (_) in
-                naverLogin.login()
-                  }
-          .onAppear {
-            naverLogin.login()
-          }
-      } else {
-        NavigationView{
-          TESFILE()
-          }//navi
-        .onAppear(perform: {
-          let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-          UNUserNotificationCenter.current().requestAuthorization(
-              options: authOptions,
-              completionHandler: {_, _ in })
-        })
-          
-        .onAppear {
-          datecheck.startAction()
-          let tk = TokenUtils()
-          guard let token = tk.read(),
-                let jwt = try? decode(jwt: token),
-                let json = try? JSONSerialization.data(withJSONObject: jwt.body, options: .prettyPrinted),
-                let jwtdata = try? JSONDecoder().decode(jwtdata.self, from:  json) else { return }
-          
-          let req = AF.request(urluniversitydormitory(id: String(jwtdata.univId)), method: .get, parameters: nil, encoding: JSONEncoding.default)
-
-          req.responseJSON { response in
-            guard let json = response.data else { return }
-            guard let restdata = try? JSONDecoder().decode([dormitory].self, from: json)
-            else {
-              getUniversityDormitory(dormitoryId: String(jwtdata.univId), model: dormis)
-              return
+      ZStack{
+        if !oauthLogin {
+          LoginView()
+            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+            .edgesIgnoringSafeArea(.all)
+        } else if !Login {
+          EmailCheckView()
+            .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { (_) in
+                  naverLogin.login()
+                    }
+            .onAppear {
+              naverLogin.login()
             }
-            dormis.data = restdata
-            SocketIOManager.shared.establishConnection(token: "Bearer \(token)", roomdata: roomdata, dormis: dormis)
+        } else {
+          NavigationView{
+            TabViews()
           }
-        }
-      }
+          .navigationViewStyle(.stack) //navi
+          .onAppear(perform: {
+            let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+            UNUserNotificationCenter.current().requestAuthorization(
+                options: authOptions,
+                completionHandler: {_, _ in })
+          })
+            
+          .onAppear {
+            datecheck.startAction()
+            
+            restApiQueue.async {
+
+              let tk = TokenUtils()
+              guard let token = tk.read(),
+                    let jwt = try? decode(jwt: token),
+                    let json = try? JSONSerialization.data(withJSONObject: jwt.body, options: .prettyPrinted),
+                    let jwtdata = try? JSONDecoder().decode(jwtdata.self, from:  json) else { return }
+              
+              let req = AF.request(urluniversitydormitory(id: String(jwtdata.univId)), method: .get, parameters: nil, encoding: JSONEncoding.default, headers: tk.getAuthorizationHeader())
+
+              req.responseJSON { response in
+                guard let code = response.response?.statusCode else { return }
+                appVaildCheck(res: response)
+    //            print(response)
+                guard let json = response.data else { return }
+                guard let restdata = try? JSONDecoder().decode([dormitory].self, from: json)
+                else {
+                  getUniversityDormitory(dormitoryId: String(jwtdata.univId), model: dormis)
+                  return
+                }
+                print("asdasdsad")
+                DispatchQueue.main.async {
+                  dormis.data = restdata
+                }
+                SocketIOManager.shared.establishConnection(token: "Bearer \(token)", roomdata: roomdata, dormis: dormis)
+              } // req
+            }
+            
+          } //onappear
+        } // main
+        
+      } // Z
+      .overlay(ErrorAlertView())
+
+      
     }
 }
 

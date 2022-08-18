@@ -19,7 +19,7 @@ struct WithdrawalView: View {
         VStack(alignment: .leading) {
           Text("회원탈퇴 시")
             .font(.system(size: 16, weight: .bold))
-          Text("유희사항을 확인해주세요")
+          Text("유의사항을 확인해주세요")
             .font(.system(size: 16, weight: .bold))
         }
         .padding([.leading, .trailing])
@@ -35,13 +35,14 @@ struct WithdrawalView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .font(.system(size: 11, weight: .regular))
             .padding([.leading, .trailing])
-          Text("탈퇴 시 고객님의 정보는 전가상거래 등에서의 소비자 보호에 관한 법률에 의거한 고객정보 보호정책에 따라 관리됩니다.")
+          Text("탈퇴 시 고객님의 정보는 개인정보 처리방침에 따라 일부 관리됩니다.")
             .frame(maxWidth: .infinity, alignment: .leading)
             .font(.system(size: 11, weight: .regular))
             .padding()
         }
         .frame(maxWidth: .infinity)
         .background(Color.black.opacity(0.1))
+        .cornerRadius(5)
         .padding([.leading, .trailing])
         .padding(.bottom)
 

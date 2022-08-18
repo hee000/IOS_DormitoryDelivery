@@ -13,7 +13,14 @@
 		DA12BE7227613BE800C08143 /* ChattingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA12BE7127613BE800C08143 /* ChattingView.swift */; };
 		DA12BE7627613C1A00C08143 /* bubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA12BE7527613C1A00C08143 /* bubble.swift */; };
 		DA12BE7A276156A300C08143 /* OrderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA12BE79276156A300C08143 /* OrderView.swift */; };
-		DA29485F281FECDF00188C84 /* TESFILE.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA29485E281FECDF00188C84 /* TESFILE.swift */; };
+		DA294AF42822378300188C84 /* getVoteVaild.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA294AF32822378300188C84 /* getVoteVaild.swift */; };
+		DA294AF62822416B00188C84 /* VoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA294AF52822416B00188C84 /* VoteView.swift */; };
+		DA294AF82829153200188C84 /* ResetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA294AF72829153200188C84 /* ResetView.swift */; };
+		DA294AFA282A062700188C84 /* photoTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA294AF9282A062700188C84 /* photoTest.swift */; };
+		DA294B0D282A4FFB00188C84 /* PhotoLibraryPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA294B0C282A4FFB00188C84 /* PhotoLibraryPicker.swift */; };
+		DA294B0F282CBB8000188C84 /* ImageSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA294B0E282CBB8000188C84 /* ImageSlider.swift */; };
+		DA294B112834C66B00188C84 /* textview.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA294B102834C66B00188C84 /* textview.swift */; };
+		DA294B132834C6D300188C84 /* MessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA294B122834C6D300188C84 /* MessageView.swift */; };
 		DA2ACF7427A6EA28005939F0 /* postOrderDone.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA2ACF7327A6EA28005939F0 /* postOrderDone.swift */; };
 		DA2ACF7627A729C8005939F0 /* getChatLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA2ACF7527A729C8005939F0 /* getChatLog.swift */; };
 		DA2ACF7827A730ED005939F0 /* getKick.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA2ACF7727A730ED005939F0 /* getKick.swift */; };
@@ -84,11 +91,11 @@
 		DACEE4AB27C384D9003A8AA3 /* EmailCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACEE4AA27C384D9003A8AA3 /* EmailCheck.swift */; };
 		DAD23A6E27A6B8680094991C /* NetworkConnectionCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAD23A6D27A6B8680094991C /* NetworkConnectionCheck.swift */; };
 		DAD3437328054D0F0099DDB7 /* PrivacyPoliceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAD3437228054D0F0099DDB7 /* PrivacyPoliceView.swift */; };
+		DADDCCEE28A0FD5F00542C72 /* ErrorAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DADDCCED28A0FD5F00542C72 /* ErrorAlertView.swift */; };
+		DADDCCF128A0FDC900542C72 /* appVaildCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = DADDCCF028A0FDC900542C72 /* appVaildCheck.swift */; };
+		DADDCCF528A0FE3100542C72 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DADDCCF428A0FE3100542C72 /* Extension.swift */; };
 		DAE945272746560E000C8D3D /* SocketIOManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE945262746560E000C8D3D /* SocketIOManager.swift */; };
 		DAF616D8275E3FE50011C508 /* getRoomDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAF616D7275E3FE50011C508 /* getRoomDetail.swift */; };
-		DAFF71BF275D589400A45D29 /* CreateRoomData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFF71BE275D589400A45D29 /* CreateRoomData.swift */; };
-		DAFF71C1275D589D00A45D29 /* RoomData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFF71C0275D589D00A45D29 /* RoomData.swift */; };
-		DAFF71C3275D58A300A45D29 /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFF71C2275D58A300A45D29 /* UserData.swift */; };
 		DAFF71C5275D58C500A45D29 /* ChatData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFF71C4275D58C500A45D29 /* ChatData.swift */; };
 		DAFF71C7275D593300A45D29 /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFF71C6275D593300A45D29 /* ChatView.swift */; };
 		DAFF71D1275D5FF900A45D29 /* SectionCategoryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFF71D0275D5FF900A45D29 /* SectionCategoryData.swift */; };
@@ -104,7 +111,14 @@
 		DA12BE7127613BE800C08143 /* ChattingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChattingView.swift; sourceTree = "<group>"; };
 		DA12BE7527613C1A00C08143 /* bubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = bubble.swift; sourceTree = "<group>"; };
 		DA12BE79276156A300C08143 /* OrderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderView.swift; sourceTree = "<group>"; };
-		DA29485E281FECDF00188C84 /* TESFILE.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TESFILE.swift; sourceTree = "<group>"; };
+		DA294AF32822378300188C84 /* getVoteVaild.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = getVoteVaild.swift; sourceTree = "<group>"; };
+		DA294AF52822416B00188C84 /* VoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteView.swift; sourceTree = "<group>"; };
+		DA294AF72829153200188C84 /* ResetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetView.swift; sourceTree = "<group>"; };
+		DA294AF9282A062700188C84 /* photoTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = photoTest.swift; sourceTree = "<group>"; };
+		DA294B0C282A4FFB00188C84 /* PhotoLibraryPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryPicker.swift; sourceTree = "<group>"; };
+		DA294B0E282CBB8000188C84 /* ImageSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSlider.swift; sourceTree = "<group>"; };
+		DA294B102834C66B00188C84 /* textview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = textview.swift; sourceTree = "<group>"; };
+		DA294B122834C6D300188C84 /* MessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageView.swift; sourceTree = "<group>"; };
 		DA2ACF7327A6EA28005939F0 /* postOrderDone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = postOrderDone.swift; sourceTree = "<group>"; };
 		DA2ACF7527A729C8005939F0 /* getChatLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = getChatLog.swift; sourceTree = "<group>"; };
 		DA2ACF7727A730ED005939F0 /* getKick.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = getKick.swift; sourceTree = "<group>"; };
@@ -177,12 +191,12 @@
 		DACEE4AA27C384D9003A8AA3 /* EmailCheck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailCheck.swift; sourceTree = "<group>"; };
 		DAD23A6D27A6B8680094991C /* NetworkConnectionCheck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConnectionCheck.swift; sourceTree = "<group>"; };
 		DAD3437228054D0F0099DDB7 /* PrivacyPoliceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPoliceView.swift; sourceTree = "<group>"; };
+		DADDCCED28A0FD5F00542C72 /* ErrorAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorAlertView.swift; sourceTree = "<group>"; };
+		DADDCCF028A0FDC900542C72 /* appVaildCheck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = appVaildCheck.swift; sourceTree = "<group>"; };
+		DADDCCF428A0FE3100542C72 /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		DAE945262746560E000C8D3D /* SocketIOManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketIOManager.swift; sourceTree = "<group>"; };
 		DAE9452C274671F4000C8D3D /* info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = info.plist; sourceTree = SOURCE_ROOT; };
 		DAF616D7275E3FE50011C508 /* getRoomDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = getRoomDetail.swift; sourceTree = "<group>"; };
-		DAFF71BE275D589400A45D29 /* CreateRoomData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateRoomData.swift; sourceTree = "<group>"; };
-		DAFF71C0275D589D00A45D29 /* RoomData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomData.swift; sourceTree = "<group>"; };
-		DAFF71C2275D58A300A45D29 /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		DAFF71C4275D58C500A45D29 /* ChatData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatData.swift; sourceTree = "<group>"; };
 		DAFF71C6275D593300A45D29 /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
 		DAFF71D0275D5FF900A45D29 /* SectionCategoryData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionCategoryData.swift; sourceTree = "<group>"; };
@@ -244,6 +258,7 @@
 		DA4D2D1C27422FE300678FA8 /* DormitoryDelivery */ = {
 			isa = PBXGroup;
 			children = (
+				DADDCCEF28A0FDB000542C72 /* Func */,
 				DABCB9E027ABEFD4002F27B6 /* DormitoryDelivery.entitlements */,
 				DA85783527D3476400C0F695 /* GoogleService-Info.plist */,
 				DA85783C27D34CA000C0F695 /* GoogleService-Info_Debug.plist */,
@@ -251,12 +266,13 @@
 				DAC45271275FEA9500D05BB0 /* REST_Function */,
 				DAC45264275F521500D05BB0 /* Databases */,
 				DAFF71B7275D577B00A45D29 /* Module */,
+				DAC4527A27600E4900D05BB0 /* LoginSignupLoading */,
 				DA4D2D2B2742306300678FA8 /* AppDelegate.swift */,
 				DA4D2D1D27422FE300678FA8 /* DormitoryDeliveryApp.swift */,
 				DA4D2D1F27422FE300678FA8 /* ContentView.swift */,
-				DA29485E281FECDF00188C84 /* TESFILE.swift */,
-				DAC4527A27600E4900D05BB0 /* LoginSignupLoading */,
+				DADDCCF428A0FE3100542C72 /* Extension.swift */,
 				DA4D2D352742378400678FA8 /* TabViews.swift */,
+				DADDCCED28A0FD5F00542C72 /* ErrorAlertView.swift */,
 				DAAB680027A2DC7700B18B78 /* AlertOneButton.swift */,
 				DABCFE602743AEC900B89781 /* Delivery */,
 				DABCFE612743AED000B89781 /* CreateRoom */,
@@ -289,9 +305,6 @@
 		DABCFE5F2743AE8900B89781 /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				DAFF71BE275D589400A45D29 /* CreateRoomData.swift */,
-				DAFF71C0275D589D00A45D29 /* RoomData.swift */,
-				DAFF71C2275D58A300A45D29 /* UserData.swift */,
 				DAFF71C4275D58C500A45D29 /* ChatData.swift */,
 				DAFF71D0275D5FF900A45D29 /* SectionCategoryData.swift */,
 				DAFF71D4275DBEE900A45D29 /* ServerUrl.swift */,
@@ -341,6 +354,7 @@
 				DA6829EC27A0B170008F53BB /* getMenus.swift */,
 				DA518AE4279DF04500291CA0 /* getReady.swift */,
 				DA2ACF7727A730ED005939F0 /* getKick.swift */,
+				DA294AF32822378300188C84 /* getVoteVaild.swift */,
 				DACEE4A827C38368003A8AA3 /* getUniversity.swift */,
 				DA2ACF7927A7387D005939F0 /* postVoteKick.swift */,
 				DA2ACF7B27A73952005939F0 /* postVoteReset.swift */,
@@ -373,6 +387,7 @@
 				DA518AE0279DECB300291CA0 /* OrderListView.swift */,
 				DA3C017C279F1BBE0090202E /* OrderListCard.swift */,
 				DA3C0178279EE5C90090202E /* OrderCheckView.swift */,
+				DA294B0E282CBB8000188C84 /* ImageSlider.swift */,
 				DA6829EA27A00C01008F53BB /* ReceiptView.swift */,
 				DA3C017A279EED000090202E /* ImagePicker.swift */,
 				DA3B03F027AFD84000FA9923 /* CombineTest.swift */,
@@ -404,7 +419,11 @@
 			children = (
 				DAFF71C6275D593300A45D29 /* ChatView.swift */,
 				DA12BE7127613BE800C08143 /* ChattingView.swift */,
+				DA294B102834C66B00188C84 /* textview.swift */,
 				DAC4ABA027A7530B00D6C7C4 /* Message.swift */,
+				DA294B122834C6D300188C84 /* MessageView.swift */,
+				DA294AF72829153200188C84 /* ResetView.swift */,
+				DA294AF52822416B00188C84 /* VoteView.swift */,
 				DAC4527F27601EF200D05BB0 /* ChatCard.swift */,
 				DA518AD6279D798600291CA0 /* ChatSideMenu.swift */,
 				DA12BE7527613C1A00C08143 /* bubble.swift */,
@@ -443,6 +462,14 @@
 			path = Order;
 			sourceTree = "<group>";
 		};
+		DADDCCEF28A0FDB000542C72 /* Func */ = {
+			isa = PBXGroup;
+			children = (
+				DADDCCF028A0FDC900542C72 /* appVaildCheck.swift */,
+			);
+			path = Func;
+			sourceTree = "<group>";
+		};
 		DAFF71B4275D571C00A45D29 /* Chatting */ = {
 			isa = PBXGroup;
 			children = (
@@ -462,6 +489,8 @@
 				DA85E9F528067C230027A4B6 /* HelpView.swift */,
 				DAD3437228054D0F0099DDB7 /* PrivacyPoliceView.swift */,
 				DACEE4A227BB6A31003A8AA3 /* WithdrawalView.swift */,
+				DA294B0C282A4FFB00188C84 /* PhotoLibraryPicker.swift */,
+				DA294AF9282A062700188C84 /* photoTest.swift */,
 				DACEE49C27BA57DB003A8AA3 /* AccountView.swift */,
 				DACEE49E27BA5AF5003A8AA3 /* AccountAddView.swift */,
 			);
@@ -602,14 +631,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA294AFA282A062700188C84 /* photoTest.swift in Sources */,
 				DAC4ABAD27A8CC4D00D6C7C4 /* Chatting.swift in Sources */,
-				DAFF71BF275D589400A45D29 /* CreateRoomData.swift in Sources */,
 				DAB5E98C274364BC00EF5B6A /* Signup.swift in Sources */,
 				DABCFE5D2743ACCF00B89781 /* MyPage.swift in Sources */,
 				DA6829ED27A0B170008F53BB /* getMenus.swift in Sources */,
+				DADDCCEE28A0FD5F00542C72 /* ErrorAlertView.swift in Sources */,
 				DA85E9F8280D5B6D0027A4B6 /* File.swift in Sources */,
 				DACEE4A127BB69C0003A8AA3 /* TOSView.swift in Sources */,
-				DA29485F281FECDF00188C84 /* TESFILE.swift in Sources */,
+				DADDCCF528A0FE3100542C72 /* Extension.swift in Sources */,
 				DAFF71C5275D58C500A45D29 /* ChatData.swift in Sources */,
 				DAFF71C7275D593300A45D29 /* ChatView.swift in Sources */,
 				DA6829F127A0DE5C008F53BB /* postMenuEdit.swift in Sources */,
@@ -627,8 +657,10 @@
 				DACEE4A527BB6DD0003A8AA3 /* NotificationView.swift in Sources */,
 				DA6829EB27A00C01008F53BB /* ReceiptView.swift in Sources */,
 				DAD23A6E27A6B8680094991C /* NetworkConnectionCheck.swift in Sources */,
+				DA294AF42822378300188C84 /* getVoteVaild.swift in Sources */,
 				DAC252D8275B4EC800EA2BFD /* NaverLogin.swift in Sources */,
 				DA518AD5279916FD00291CA0 /* RoomDetail.swift in Sources */,
+				DA294B132834C6D300188C84 /* MessageView.swift in Sources */,
 				DAC4ABA527A8CAAD00D6C7C4 /* Receipt.swift in Sources */,
 				DACEE49B27BA1FD7003A8AA3 /* EmailCertificationNumberView.swift in Sources */,
 				DAC4528027601EF200D05BB0 /* ChatCard.swift in Sources */,
@@ -647,8 +679,10 @@
 				DA4D2D1E27422FE300678FA8 /* DormitoryDeliveryApp.swift in Sources */,
 				DAD3437328054D0F0099DDB7 /* PrivacyPoliceView.swift in Sources */,
 				DA06DE5627D1ED270025F0D0 /* TokenKeyChain.swift in Sources */,
+				DA294B0F282CBB8000188C84 /* ImageSlider.swift in Sources */,
 				DA2ACF7A27A7387D005939F0 /* postVoteKick.swift in Sources */,
 				DAC4ABA927A8CB3600D6C7C4 /* OrderCheck.swift in Sources */,
+				DA294B112834C66B00188C84 /* textview.swift in Sources */,
 				DAB5E9942743906400EF5B6A /* RoomCard.swift in Sources */,
 				DAFF71D1275D5FF900A45D29 /* SectionCategoryData.swift in Sources */,
 				DAE945272746560E000C8D3D /* SocketIOManager.swift in Sources */,
@@ -657,7 +691,7 @@
 				DA12BE7A276156A300C08143 /* OrderView.swift in Sources */,
 				DA2ACF7827A730ED005939F0 /* getKick.swift in Sources */,
 				DAFF71D3275D60D600A45D29 /* RoomDetailView.swift in Sources */,
-				DAFF71C3275D58A300A45D29 /* UserData.swift in Sources */,
+				DA294AF62822416B00188C84 /* VoteView.swift in Sources */,
 				DAC4ABB127A8D3A200D6C7C4 /* Room.swift in Sources */,
 				DACEE4A927C38368003A8AA3 /* getUniversity.swift in Sources */,
 				DA3C0177279ED5510090202E /* postOderFix.swift in Sources */,
@@ -675,9 +709,11 @@
 				DA518AD32798F70F00291CA0 /* CreateRoom.swift in Sources */,
 				DAC45273275FEAAF00D05BB0 /* getRoomJoin.swift in Sources */,
 				DA4D2D362742378400678FA8 /* TabViews.swift in Sources */,
+				DADDCCF128A0FDC900542C72 /* appVaildCheck.swift in Sources */,
 				DAFF71D7275DD50200A45D29 /* DateCheck.swift in Sources */,
-				DAFF71C1275D589D00A45D29 /* RoomData.swift in Sources */,
+				DA294AF82829153200188C84 /* ResetView.swift in Sources */,
 				DAB5E99027436B9B00EF5B6A /* DeliveryView.swift in Sources */,
+				DA294B0D282A4FFB00188C84 /* PhotoLibraryPicker.swift in Sources */,
 				DA3C017D279F1BBE0090202E /* OrderListCard.swift in Sources */,
 				DAF616D8275E3FE50011C508 /* getRoomDetail.swift in Sources */,
 				DA518AE1279DECB300291CA0 /* OrderListView.swift in Sources */,
