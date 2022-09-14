@@ -67,13 +67,18 @@ struct WithdrawalView: View {
         
         Button {
           print("탈퇴시작")
-          guard let uid = UserData().data else { return }
-          let req = AF.request(urlwithdrawal(uid: uid.id!), method: .delete,
+          guard let user = UserData().data else { return }
+          let req = AF.request(urlwithdrawal(uid: user.id!), method: .delete,
                                encoding: JSONEncoding.default, headers: TokenUtils().getAuthorizationHeader())
           req.responseJSON { response in
             print(response)
+            appVaildCheck(res: response)
             if response.response?.statusCode == 200 {
-              naverLogin.logout()
+              if user.provider == LoginProviders.naver.rawValue {
+                naverLogin.logout()
+              } else if user.provider == LoginProviders.apple.rawValue {
+                LoginSystem().logout()
+              }
             }
           }
 //          naverLogin.loginInstance?.requestDeleteToken()

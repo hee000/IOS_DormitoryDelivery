@@ -75,6 +75,7 @@ class UserPrivacy: Object, ObjectKeyIdentifiable{
   @Persisted var name: String?
   @Persisted var belong: Int?
   @Persisted var belongStr: String?
+  @Persisted var provider: String?
   @Persisted var alram: Bool = true
   @Persisted var mainAccount: UserAccount? = nil
   @Persisted var accounts: List<UserAccount>
@@ -197,7 +198,7 @@ final class ChatData: ObservableObject, Identifiable{
   init() {
     
     let config = Realm.Configuration(
-    schemaVersion: 8,
+    schemaVersion: 9,
     migrationBlock: { migration, oldSchemaVersion in
       print(migration)
       print("new", migration.newSchema)

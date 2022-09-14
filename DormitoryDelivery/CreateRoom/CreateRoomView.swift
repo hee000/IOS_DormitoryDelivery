@@ -204,7 +204,7 @@ struct CreateRoomView: View {
               Divider()
             
             Spacer()
-              .frame(height: 60)
+              .frame(height: 300)
           } //v
           .textFieldStyle(PlainTextFieldStyle())
           

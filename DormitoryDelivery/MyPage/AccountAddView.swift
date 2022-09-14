@@ -18,34 +18,42 @@ struct AccountAddView: View {
   
     var body: some View {
       ZStack(alignment: .top) {
-        VStack(alignment: .leading) {
-          Text("은행명")
-            .font(.system(size: 16, weight: .bold))
-          TextField("은행명을 입력해주세요.", text: $bank)
-            .font(.system(size: 14, weight: .bold))
-            .padding()
-            .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.gray, lineWidth: 1))
-            .padding(.bottom)
+        ScrollView(showsIndicators: false) {
+          VStack(alignment: .leading) {
+            Text("은행명")
+              .font(.system(size: 16, weight: .bold))
+            TextField("은행명을 입력해주세요.", text: $bank)
+              .font(.system(size: 14, weight: .bold))
+              .padding()
+              .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.gray, lineWidth: 1))
+              .padding(.bottom)
 
-          
-          Text("계좌번호")
-            .font(.system(size: 16, weight: .bold))
-          TextField("'-' 없이 계좌번호를 입력해주세요", text: $account)
-            .font(.system(size: 14, weight: .bold))
-            .keyboardType(.numberPad)
-            .padding()
-            .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.gray, lineWidth: 1))
-            .padding(.bottom)
+            
+            Text("계좌번호")
+              .font(.system(size: 16, weight: .bold))
+            TextField("'-' 없이 계좌번호를 입력해주세요", text: $account)
+              .font(.system(size: 14, weight: .bold))
+              .keyboardType(.numberPad)
+              .padding()
+              .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.gray, lineWidth: 1))
+              .padding(.bottom)
 
+            
+            Text("예금주")
+              .font(.system(size: 16, weight: .bold))
+            TextField("이름을 작성해주세요.", text: $name)
+              .font(.system(size: 14, weight: .bold))
+              .padding()
+              .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.gray, lineWidth: 1))
+          }
+          .padding()
           
-          Text("예금주")
-            .font(.system(size: 16, weight: .bold))
-          TextField("이름을 작성해주세요.", text: $name)
-            .font(.system(size: 14, weight: .bold))
-            .padding()
-            .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.gray, lineWidth: 1))
+          Spacer()
+            .frame(height: 300)
+        } // scroll
+        .onTapGesture {
+            hideKeyboard()
         }
-        .padding()
         
         VStack{
           Spacer()

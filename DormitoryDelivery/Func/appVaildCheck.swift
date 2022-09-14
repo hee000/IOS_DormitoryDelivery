@@ -11,17 +11,19 @@ import Alamofire
 
 func appVaildCheck(res: AFDataResponse<Any>) {
   print(res)
+//  print(String(data: res.data!, encoding: .utf8))
   guard let statusCode = res.response?.statusCode else { return }
   print(statusCode)
   if statusCode == 410 {
     UserDefaults.standard.set(true, forKey: "appVersionVaild")
   }
   
-  if statusCode == 400 || statusCode == 409 {
+  if statusCode == 400 || statusCode == 409 || statusCode == 404{
+    print(res.value as? [String: Any])
     guard let error = res.value as? [String: Any],
           let errorMessages = error["message"] as? [String]
     else { return }
-    
+
     let restErrorMessage = errorMessages.reduce(""){
       if $0 == "" {
         return $1

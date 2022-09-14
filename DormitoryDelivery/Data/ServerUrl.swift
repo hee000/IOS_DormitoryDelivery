@@ -145,12 +145,17 @@ func urluniversitydormitory(id: String) -> URL {
 
 
 func urlemailsend() -> URL {
-  let url = URL(string: "https://gachihasil.link/auth/email/send")!
+  let url = URL(string: "https://gachihasil.link/signup/v1/session")!
   return url
 }
 
-func urlemailverify() -> URL {
-  let url = URL(string: "https://gachihasil.link/auth/email/verify")!
+func urlemailverify(sid: String) -> URL {
+  let url = URL(string: "https://gachihasil.link/signup/v1/session/\(sid)/verifyCode")!
+  return url
+}
+
+func urlemailuserinfo(sid: String) -> URL {
+  let url = URL(string: "https://gachihasil.link/signup/v1/session/\(sid)/userInfo")!
   return url
 }
 

@@ -180,32 +180,9 @@ struct OrderView: View {
                             }
                           }
                         }
-                      
-//                      ZStack(alignment: .trailing){
-//                        Text(self.ordermodel.data[index].description != "" ? self.ordermodel.data[index].description : "세부 정보를 입력해주세요.")
-//                          .font(.system(size: 16, weight: .regular))
-//                          .padding([.top, .leading])
-//                          .frame(maxWidth: .infinity, minHeight: 45, alignment: .topTrailing)
-//                          .onTapGesture {
-//                            self.focusDescription.toggle()
-//                          }
-//                          .foregroundColor(self.ordermodel.data[index].description != "" ? Color.clear : Color.gray)
-//                          .zIndex(self.ordermodel.data[index].description != "" ? 0 : 1)
-//                          .background(GeometryReader { geo in
-//                            Color.clear.preference(key: SizeKey.self, value: geo.size.height)
-//                          }.frame(minHeight: 45))
-//                          .onPreferenceChange(SizeKey.self) { value in
-//                            self.height = value
-//                          }
-//                        TextEditor(text: $ordermodel.data[index].description)
-//                          .focused($focusDescription)
-//                          .frame(height: self.height)
-//                          .multilineTextAlignment(.trailing)
-//                          .padding([.top, .leading])
-//                          .font(.system(size: 16, weight: .regular))
-//                      }
+
                     }
-//                    .frame(maxHeight: 135)
+
                     
                     
                   }
@@ -216,19 +193,18 @@ struct OrderView: View {
                   .cornerRadius(5)
                   .clipped()
                   .shadow(color: Color.black.opacity(0.2), radius: 8)
-//                  .rotationEffect(Angle(degrees: 180)).scaleEffect(x: -1.0, y: 1.0, anchor: .center)
                   .transition(.asymmetric(insertion: AnyTransition.move(edge: .top),
                                           removal: AnyTransition.move(edge: .leading)))
                   .animation(Animation.easeIn, value: ordermodel.onanimation)
-//                  .animation(.easeIn)
 
                   } // for문
             } // vstack
             .padding([.leading, .trailing])
             .frame(maxWidth: .infinity)
-//            .rotationEffect(Angle(degrees: 180)).scaleEffect(x: -1.0, y: 1.0, anchor: .center)
-//            .animation(Animation.easeInOut, value:addanimation)
-//            .animation(.default)
+              
+            Spacer()
+              .frame(height: 300)
+        
           } // scroll
           .onTapGesture {
               hideKeyboard()
@@ -248,13 +224,6 @@ struct OrderView: View {
                 }
               }
               if valid {
-//                for i in ordermodel.data.indices {
-//                  if ordermodel.data[i].id != nil {
-//                    postMenuEdit(oderdata: ordermodel.data[i], rid: self.roomid)
-//                  } else {
-//                    postAddMenu(oderdata: ordermodel.data[i], rid: self.roomid)
-//                  }
-//                }
                 
                 for i in ordermodel.data.indices {
                   if ordermodel.isMenu.contains((ordermodel.data[i].id)) {

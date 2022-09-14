@@ -59,6 +59,7 @@
 		DA8837AA275BC81C0034481F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA4D2D2127422FE500678FA8 /* Assets.xcassets */; };
 		DAAB680127A2DC7700B18B78 /* AlertOneButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAB680027A2DC7700B18B78 /* AlertOneButton.swift */; };
 		DAAB680827A4434C00B18B78 /* CategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAB680727A4434C00B18B78 /* CategoryView.swift */; };
+		DAABCBB228C8734600F8244E /* NicknameCreateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAABCBB128C8734600F8244E /* NicknameCreateView.swift */; };
 		DAB5E98C274364BC00EF5B6A /* Signup.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB5E98B274364BC00EF5B6A /* Signup.swift */; };
 		DAB5E99027436B9B00EF5B6A /* DeliveryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB5E98F27436B9B00EF5B6A /* DeliveryView.swift */; };
 		DAB5E9942743906400EF5B6A /* RoomCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB5E9932743906400EF5B6A /* RoomCard.swift */; };
@@ -158,6 +159,7 @@
 		DA85E9F7280D5B6D0027A4B6 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		DAAB680027A2DC7700B18B78 /* AlertOneButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertOneButton.swift; sourceTree = "<group>"; };
 		DAAB680727A4434C00B18B78 /* CategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryView.swift; sourceTree = "<group>"; };
+		DAABCBB128C8734600F8244E /* NicknameCreateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameCreateView.swift; sourceTree = "<group>"; };
 		DAB5E98B274364BC00EF5B6A /* Signup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Signup.swift; sourceTree = "<group>"; };
 		DAB5E98F27436B9B00EF5B6A /* DeliveryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryView.swift; sourceTree = "<group>"; };
 		DAB5E9932743906400EF5B6A /* RoomCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomCard.swift; sourceTree = "<group>"; };
@@ -376,6 +378,7 @@
 				DACEE49827BA1396003A8AA3 /* EmailCheckView.swift */,
 				DACEE4AA27C384D9003A8AA3 /* EmailCheck.swift */,
 				DACEE49A27BA1FD7003A8AA3 /* EmailCertificationNumberView.swift */,
+				DAABCBB128C8734600F8244E /* NicknameCreateView.swift */,
 			);
 			path = LoginSignupLoading;
 			sourceTree = "<group>";
@@ -655,6 +658,7 @@
 				DA518ADB279D965400291CA0 /* getRoomLeave.swift in Sources */,
 				DA065EE127C7A7E3000CB175 /* PostMenuDelete.swift in Sources */,
 				DACEE4A527BB6DD0003A8AA3 /* NotificationView.swift in Sources */,
+				DAABCBB228C8734600F8244E /* NicknameCreateView.swift in Sources */,
 				DA6829EB27A00C01008F53BB /* ReceiptView.swift in Sources */,
 				DAD23A6E27A6B8680094991C /* NetworkConnectionCheck.swift in Sources */,
 				DA294AF42822378300188C84 /* getVoteVaild.swift in Sources */,
@@ -762,6 +766,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = NO;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;

@@ -16,6 +16,12 @@ struct DormitoryDeliveryApp: App {
   
   @AppStorage("appVersionVaild") var appVersionVaild: Bool = UserDefaults.standard.bool(forKey: "appVersionVaild")
 
+  init (){
+    UserDefaults.standard.removeObject(forKey: "OauthProvider")
+    UserDefaults.standard.register(defaults: ["OauthProvider" : "None"])
+  }
+  
+  
     var body: some Scene {
         WindowGroup {
             
@@ -36,6 +42,7 @@ struct DormitoryDeliveryApp: App {
             .environmentObject(Order())
             .environmentObject(Noti())
             .environmentObject(OrderList())
+            .environmentObject(AppleToken())
             .onOpenURL(perform: { url in
               NaverThirdPartyLoginConnection
               .getSharedInstance()?
@@ -43,6 +50,7 @@ struct DormitoryDeliveryApp: App {
             })
             .onAppear {
               NetworkMonitor.shared.startMonitoring()
+//              UserDefaults.standard.removeObject(forKey: "OauthProvider")
             }
         }
     }

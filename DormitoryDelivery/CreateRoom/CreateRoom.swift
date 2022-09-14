@@ -29,10 +29,10 @@ class CreateRoom: ObservableObject {
   @Published var isActive = false
   @Published var userId: String = ""
   @Published var shopName: String = ""
-  @Published var deliveryPriceAtLeast: String = "8000"
-  @Published var shopLink: String = "https://baemin.me/1a64sSKxS"
+  @Published var deliveryPriceAtLeast: String = ""
+  @Published var shopLink: String = "주문할 매장 URL을 공유해주세요. \n외부 배달앱에서 매장 링크 공유하기를 눌러 클립보드로 복사해주세요."
 //  @Published var category: Int? = nil
-  @Published var category: Int? = 2
+  @Published var category: Int? = nil
   @Published var section: Int? = nil
   @Published var rid = ""
   @Published var height: CGFloat? = .zero

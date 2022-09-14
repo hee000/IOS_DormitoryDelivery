@@ -10,6 +10,7 @@ import Alamofire
 import JWTDecode
 import SocketIO
 
+
 struct ContentView: View {
   @EnvironmentObject var naverLogin: NaverLogin
   @EnvironmentObject var datecheck: DateCheck
@@ -17,31 +18,30 @@ struct ContentView: View {
   @EnvironmentObject var dormis: dormitoryData
   
   @AppStorage("Login") var Login: Bool = UserDefaults.standard.bool(forKey: "Login")
-  @AppStorage("oauthLogin") var oauthLogin: Bool = UserDefaults.standard.bool(forKey: "oauthLogin")
+  
+  static let defaultOauth = "None"
+  @AppStorage("OauthProvider") var OauthProvider: String = Self.defaultOauth
+  
 
   init() {
 //    UITabBar.appearance().backgroundColor = UIColor.gray.withAlphaComponent(0.1)
     UITabBar.appearance().barTintColor = .white
     UITabBar.appearance().backgroundColor = .white
 //    UINavigationBar.appearance().backgroundColor = .white
-
   }
 
     var body: some View {
 
       ZStack{
-        if !oauthLogin {
+        if (!Login && OauthProvider == "None") {
           LoginView()
             .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
             .edgesIgnoringSafeArea(.all)
-        } else if !Login {
+        } else if (!Login && (OauthProvider == LoginProviders.naver.rawValue || OauthProvider == LoginProviders.apple.rawValue)) {
           EmailCheckView()
-            .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { (_) in
-                  naverLogin.login()
-                    }
-            .onAppear {
-              naverLogin.login()
-            }
+//            .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { (_) in
+//                  naverLogin.login()
+//                    }
         } else {
           NavigationView{
             TabViews()

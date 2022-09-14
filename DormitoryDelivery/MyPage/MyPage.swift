@@ -41,12 +41,15 @@ struct MyPage: View {
                 .cornerRadius(100)
                 .shadow(color: Color.black.opacity(0.5), radius: 1)
               VStack (alignment: .leading, spacing: 3) {
-                Text(UserData().data!.name!)
+                Text(UserData().data?.name ?? "")
                   .font(.system(size: 16, weight: .bold))
-                Text(String(userPrivacy.data!.belongStr ?? ""))
+                Text(String(userPrivacy.data?.belongStr ?? ""))
                   .font(.system(size: 16, weight: .regular))
                   .foregroundColor(.gray)
-                Text(userPrivacy.data!.emailAddress ?? "")
+//                Text(userPrivacy.data?.emailAddress ?? "")
+//                  .font(.system(size: 16, weight: .regular))
+//                  .foregroundColor(.gray)
+                Text("\(userPrivacy.data?.provider?.uppercased() ?? "") 로그인")
                   .font(.system(size: 16, weight: .regular))
                   .foregroundColor(.gray)
               }
@@ -80,11 +83,6 @@ struct MyPage: View {
 
                 Divider()
                 
-                Button{
-                  print(chatdata.chatlist)
-                } label: {
-                  Text("Asdasdaa")
-                }
                 Toggle(isOn: $alram) {
                   Text("알림")
                     .font(.system(size: 18, weight: .bold))
@@ -194,7 +192,18 @@ struct MyPage: View {
 
               Group{
                 Button(action: {
-                  naverLogin.logout()
+//                  naverLogin.logout()
+//                  print(userPrivacy.data!.provider!)
+                  if let provider = userPrivacy.data?.provider {
+                    if (provider == LoginProviders.naver.rawValue) {
+                      print("navsss")
+                      naverLogin.logout()
+//                      LoginSystem().testLogout()
+                    } else if (provider == LoginProviders.apple.rawValue) {
+                      print("sss")
+                      LoginSystem().logout()
+                    }
+                  }
                 }) {
                   HStack{
                     Text("로그아웃")
@@ -248,7 +257,7 @@ struct MyPage: View {
               
               try? realm.write {
                 result.belongStr = university.korName
-                result.emailAddress = university.engName
+//                result.emailAddress = university.engName
               }
             }
           }

@@ -31,7 +31,10 @@ struct EmailCertificationNumberView: View {
   @FocusState private var focusedField: Int?
   @StateObject var store = Store()
   
+  @State var navi = false
+  
   var email: String
+  var sid: String
 
     var body: some View {
       VStack(alignment: .leading) {
@@ -53,6 +56,9 @@ struct EmailCertificationNumberView: View {
           Text("메일에 있는 인증번호를 아래 빈칸에 입력해주세요.")
             .font(.system(size: 15, weight: .regular))
             .foregroundColor(.gray)
+            .onAppear{
+              print("asdsad", self.sid)
+            }
         }
         .padding([.top, .bottom])
         
@@ -100,57 +106,17 @@ struct EmailCertificationNumberView: View {
             code = code + num
           }
           if code.count == 5 {
-            let url = urlemailverify()
-            let createkey = emailverify(authCode: code, oauthAccessToken: naverLogin.loginInstance!.accessToken!)
-
-            guard let param = try? createkey.asDictionary() else { return }
+            let url = urlemailverify(sid: self.sid)
+            let param = ["code" : "\(code)"] as Dictionary
+            
             AF.request(url, method: .post,
                        parameters: param,
-                       encoding: JSONEncoding.default, headers: ["Client-Version" : "ios \(AppVersion)"]).responseJSON { response in
+                       encoding: JSONEncoding.default, headers: ["Client-Version" : "ios \(AppVersion)", "sId" : "\(self.sid)"]).responseJSON { response in
               
               print("re1", response)
-              
+              print("re1", response.response?.statusCode)
               if response.response?.statusCode == 201 {
-                let url2 = urlsession()
-                let token2 = naverLogin.loginInstance!.accessToken!
-                let createkey2 = authsession(type: "naver", accessToken: naverLogin.loginInstance!.accessToken!, deviceToken: "")
-
-                guard let param2 = try? createkey2.asDictionary() else { return }
-                
-                AF.request(url2, method: .post,
-                           parameters: param2,
-                           encoding: JSONEncoding.default,
-                           headers: ["Client-Version" : "ios \(AppVersion)"]
-                ).responseJSON { response2 in
-                  
-                  print("re2", response2)
-                  print("re2 status", response2.response?.statusCode)
-                  if response2.response?.statusCode == 201 {
-                    guard let restdata = try? JSONDecoder().decode(tokenvalue.self, from: response2.data!) else { return }
-                    
-                    let tk = TokenUtils()
-                    tk.create(token: restdata)
-                    guard let token = tk.read(),
-                          let jwt = try? decode(jwt: token),
-                          let json = try? JSONSerialization.data(withJSONObject: jwt.body, options: .prettyPrinted),
-                          let jwtdata = try? JSONDecoder().decode(jwtdata.self, from:  json) else { return }
-                    
-                    let user = UserPrivacy()
-                    user.id = jwtdata.id
-                    user.name = jwtdata.name
-                    user.belong = jwtdata.univId
-                    user.emailAddress = "네이버 로그인"
-                    
-                    let realm = try! Realm()
-                    try? realm.write {
-                        realm.add(user)
-                    }
-                    LoginSystem().setLogin(true)
-//                    naverLogin.Login = true
-                  }
-                }
-
-                
+                self.navi = true
               }//상태 201
             }
           }
@@ -168,6 +134,8 @@ struct EmailCertificationNumberView: View {
         .padding([.leading, .trailing])
         .padding([.leading, .trailing])
         .padding([.top, .bottom])
+        
+        NavigationLink(destination: NicknameCreateView(sid: sid), isActive: $navi) {}
         
         Spacer()
       }

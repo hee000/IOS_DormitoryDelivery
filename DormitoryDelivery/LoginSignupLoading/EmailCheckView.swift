@@ -7,23 +7,34 @@
 
 import SwiftUI
 import Alamofire
+import AuthenticationServices
+
+
+struct SignUpData: Codable {
+  var universityId: Int;
+  var email: String;
+  var oauthInfo: oauthInfo;
+}
 
 struct EmailCheckView: View {
   @EnvironmentObject var naverLogin: NaverLogin
   @StateObject var universitys = universityList()
+  @EnvironmentObject var appleToken: AppleToken
+  
+  @AppStorage("OauthProvider") var OauthProvider: String = UserDefaults.standard.string(forKey: "OauthProvider") ?? "None"
   
   @State var emailstr: String = ""
   @State private var selection: university? = nil
   @State var navi = false
   @State var doublestop = false
-  
+  @State var sid = ""
     var body: some View {
       NavigationView{
         ZStack{
           ScrollView{
             VStack(alignment: .leading) {
               if let domain = selection?.emailDomain{
-                NavigationLink(destination: EmailCertificationNumberView(email: emailstr + "@" + domain), isActive: $navi) {}
+                NavigationLink(destination: EmailCertificationNumberView(email: emailstr + "@" + domain, sid: sid), isActive: $navi) {}
               }
               Group{
                 Image("ImageSplashLogo_H")
@@ -78,18 +89,53 @@ struct EmailCheckView: View {
               
               Button {
                 self.doublestop = true
+                
+                print(OauthProvider)
+                
                 //이메일 형식이 올바르다면 rest 쏘고, navi active
                 let url = urlemailsend()
-
-                guard let token = naverLogin.loginInstance?.accessToken,
-                      let createkey = try? emailsend(universityId: self.selection!.id, email: self.emailstr, oauthAccessToken: token).asDictionary()
-                else { return }
+                var signUpData = SignUpData(universityId: 0, email: "", oauthInfo: oauthInfo(provider: "", payload: ""))
+                
+                if OauthProvider == LoginProviders.naver.rawValue {
+                  let payload = "{\"accessToken\": \"\(naverLogin.loginInstance!.accessToken!)\"}"
+                  let oauth = oauthInfo(provider: OauthProvider, payload: payload)
+                  signUpData = SignUpData(universityId: self.selection!.id, email: self.emailstr, oauthInfo: oauth)
+                } else if OauthProvider == LoginProviders.apple.rawValue {
+                  guard let authResults = appleToken.authResults,
+                        let credentials = authResults.credential as? ASAuthorizationAppleIDCredential,
+                        let identityToken = credentials.identityToken,
+                        let identityTokenString = String(data: identityToken, encoding: .utf8),
+                        let authorizationCode = credentials.authorizationCode,
+                        let authorizationCodeString = String(data: authorizationCode, encoding: .utf8)
+                  else { return }
+                  
+                  let payload = "{\"identityToken\": \"\(identityTokenString)\", \"authorizationCode\": \"\(authorizationCodeString)\", \"state\": \"\(credentials.state ?? "")\", \"user\": \"\(credentials.user)\"}"
+                  
+                  let oauth = oauthInfo(provider: OauthProvider, payload: payload)
+                  
+                  signUpData = SignUpData(universityId: self.selection!.id, email: self.emailstr, oauthInfo: oauth)
+                }
+                
+//                guard let token = naverLogin.loginInstance?.accessToken,
+//                      let createkey = try? emailsend(universityId: self.selection!.id, email: self.emailstr, oauthAccessToken: token).asDictionary()
+//                else { return }
+                
+                guard let createkey = try? signUpData.asDictionary() else { return }
+                
+                print(createkey)
                 
                 AF.request(url, method: .post, parameters: createkey, encoding: JSONEncoding.default, headers: ["Client-Version" : "ios \(AppVersion)"]).responseJSON { response in
                   print(response)
                   if response.response?.statusCode == 201 {
+                    guard let json = response.value as? [String: String],
+                          let sid = json["sessionId"]
+                    else { return }
+                    
+                    self.sid = sid
+                    
                     self.navi = true
                     self.doublestop = false
+                    
                   } else {
                     self.doublestop = false
                   }
@@ -157,7 +203,11 @@ struct EmailCheckView: View {
         .toolbar {
           ToolbarItem(placement: .navigationBarLeading) {
             Button {
-              naverLogin.logout()
+              if OauthProvider == "naver" {
+                print("ddddddd")
+                naverLogin.logout()
+              }
+              LoginSystem().removeOauthLogin()
             } label: {
               Image(systemName: "xmark")
                 .foregroundColor(.black)
