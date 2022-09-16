@@ -10,6 +10,9 @@ import Alamofire
 import RealmSwift
 
 struct ChatSideMenu: View {
+  @ObservedObject var blockedUser = BlockedUserData()
+//  @(BlockedUser.self) var blockedUser
+
   @StateObject var model: Chatting
   @Binding var RoomChat: ChatDB?
   var rid: String
@@ -82,16 +85,36 @@ struct ChatSideMenu: View {
                       .font(.system(size: 16, weight: .regular))
                     Spacer()
                     
-//                    if RoomChat!.state?.orderFix == true && RoomChat!.state?.orderDone == false && RoomChat!.superUser!.userId != privacy.id { //강퇴투표
-//                      Button{
-//                        postVoteKick(rid: self.rid, uid: RoomChat!.superUser!.userId!)
-//                      } label: {
-//                        Text("강퇴 투표")
-//                          .font(.system(size: 14, weight: .regular))
-//                          .padding(7)
-//                          .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.gray.opacity(0.7), lineWidth: 1.5))
-//                      }
-//                    }
+                    if privacy.id != RoomChat!.superUser!.userId {
+                      Button{
+                        let uid = RoomChat!.superUser!.userId!
+                        
+                        if blockedUser.data.contains { BlockedUser in
+                          BlockedUser.userId == uid
+                        } {
+                          guard let del = realm.object(ofType: BlockedUser.self, forPrimaryKey: uid) else { return }
+                          let realm = try! Realm()
+                          try? realm.write {
+                            realm.delete(del)
+                          }
+                        } else if privacy.id != uid {
+                          print("차단추가")
+                          let newblockedUser = BlockedUser()
+                          newblockedUser.userId = uid
+                          addBlockedUser(newblockedUser)
+                          
+                        }
+                        
+                      } label: {
+                        ZStack{
+                          Image(systemName: "xmark.octagon")
+                            .foregroundColor(blockedUser.data.contains { BlockedUser in
+                              BlockedUser.userId == RoomChat!.superUser!.userId
+                            } ? Color.red : Color.gray)
+                        }
+                      }
+                    } // 차단 if
+                    
                   }
                 }//if
               
@@ -139,6 +162,37 @@ struct ChatSideMenu: View {
                             .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.gray.opacity(0.7), lineWidth: 1.5))
                         }
                       }
+                      
+                      if privacy.id != RoomChat!.member[index].userId {
+                        Button{
+                          let uid = RoomChat!.member[index].userId!
+                          
+                          if blockedUser.data.contains { BlockedUser in
+                            BlockedUser.userId == uid
+                          } {
+                            guard let del = realm.object(ofType: BlockedUser.self, forPrimaryKey: uid) else { return }
+                            let realm = try! Realm()
+                            try? realm.write {
+                              realm.delete(del)
+                            }
+                          } else if privacy.id != uid {
+                            print("차단추가")
+                            let newblockedUser = BlockedUser()
+                            newblockedUser.userId = uid
+                            addBlockedUser(newblockedUser)
+                            
+                          }
+                          
+                        } label: {
+                          ZStack{
+                            Image(systemName: "xmark.octagon")
+                              .foregroundColor(blockedUser.data.contains { BlockedUser in
+                                BlockedUser.userId == RoomChat!.member[index].userId
+                              } ? Color.red : Color.gray)
+                          }
+                        }
+                      } // 차단 if
+                      
                     }//h
                   } //if
                 } //for
@@ -187,6 +241,7 @@ struct ChatSideMenu: View {
         } // vstack
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(.white)
+        
       } // geo
       .onAppear {
         print("asdasd")

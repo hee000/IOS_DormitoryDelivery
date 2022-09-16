@@ -95,7 +95,8 @@ class ObservedChatDB: ObservableObject {
 
 struct MessageView: View {
 //  @ObservedRealmObject var chatdb: ChatDB
-  
+  @ObservedObject var blockedUser = BlockedUserData()
+
   @StateObject var chatdb: ObservedChatDB
 //  @ObservedObject var chatdb: ObservedChatDB
 //  @StateObject var messagesdb: ObservedMessagesDB
@@ -132,16 +133,21 @@ struct MessageView: View {
                     if chatdb.db!.messages[index].type == "chat" {
                         if chatdb.db!.messages[index].body!.userid == UserData().data?.id { // 내 매세지
                           Message(model:chatmodel, RoomDB: chatdb.db!, type: .right, index: index)
-                        } else { // 상대방 처음
-                          if index != 0 {
-                            if chatdb.db!.messages[index - 1].type == "system" || chatdb.db!.messages[index].body!.userid != chatdb.db!.messages[index - 1].body!.userid{
-                              Message(model:chatmodel, RoomDB: chatdb.db!, type: .newLeft, index: index)
-                            } else { // 상대 처음 이후
-                              Message(model:chatmodel, RoomDB: chatdb.db!, type: .left, index: index)
+                        } else { // 상대방
+                          if !(blockedUser.data.contains { BlockedUser in
+                            BlockedUser.userId == chatdb.db?.messages[index].body?.userid
+                          }) { // 차단기능
+                            if index != 0 { // 상대방 처음
+                              if chatdb.db!.messages[index - 1].type == "system" || chatdb.db!.messages[index].body!.userid != chatdb.db!.messages[index - 1].body!.userid{
+                                Message(model:chatmodel, RoomDB: chatdb.db!, type: .newLeft, index: index)
+                              } else { // 상대 처음 이후
+                                Message(model:chatmodel, RoomDB: chatdb.db!, type: .left, index: index)
+                              }
+                            } else {//index 0인지?
+                                Message(model:chatmodel, RoomDB: chatdb.db!, type: .newLeft, index: index)
                             }
-                          } else {//index 0인지?
-                              Message(model:chatmodel, RoomDB: chatdb.db!, type: .newLeft, index: index)
                           }
+                          
                         }
                       } else { // 시스템 메시지
                         if chatdb.db!.messages[index].body!.action! == "users-new" {

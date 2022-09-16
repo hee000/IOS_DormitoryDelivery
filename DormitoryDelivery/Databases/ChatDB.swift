@@ -186,6 +186,12 @@ class ChatMessageDetailBodyData: Object, ObjectKeyIdentifiable, Decodable{
 }
 
 
+class BlockedUser: Object, ObjectKeyIdentifiable{
+  @Persisted(primaryKey: true) var userId: String
+  
+}
+
+
 final class ChatData: ObservableObject, Identifiable{
   @Published var chatlist: [ChatDB]
   @Published var chatlistsortindex: [Int]
@@ -198,7 +204,7 @@ final class ChatData: ObservableObject, Identifiable{
   init() {
     
     let config = Realm.Configuration(
-    schemaVersion: 9,
+    schemaVersion: 11,
     migrationBlock: { migration, oldSchemaVersion in
       print(migration)
       print("new", migration.newSchema)
@@ -262,6 +268,17 @@ func addChatting(_ result : ChatDB) {
       }
 //    }
 //  }
+}
+
+func addBlockedUser(_ result : BlockedUser) {
+  DispatchQueue(label: "background").async {
+    autoreleasepool {
+      let realm = try! Realm()
+      try? realm.write {
+          realm.add(result)
+      }
+    }
+  }
 }
 
 
@@ -343,6 +360,36 @@ final class Noti: ObservableObject{
         self.systemNoti = tmpBool
       }
     }
+  }
+
+  deinit {
+    chatsToken?.invalidate()
+  }
+}
+
+
+final class BlockedUserData: ObservableObject{
+  @Published var data: [BlockedUser]
+
+  private var chatsToken: NotificationToken?
+
+
+  // Grab channels from Realm, and then activate a Realm token to listen for changes.
+  init() {
+    let realm = try! Realm()
+    data = Array(realm.objects(BlockedUser.self).freeze())
+    activateChannelsToken()
+  }
+
+  private func activateChannelsToken() {
+    let realm = try! Realm()
+    let channels = realm.objects(BlockedUser.self)
+    DispatchQueue.main.async {
+
+      self.chatsToken = channels.observe { _ in
+        self.data = Array(channels.freeze())
+      }
+    }//dispatch
   }
 
   deinit {
