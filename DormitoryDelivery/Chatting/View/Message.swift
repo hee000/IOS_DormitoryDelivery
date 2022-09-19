@@ -7,6 +7,8 @@
 
 import SwiftUI
 import RealmSwift
+import MobileCoreServices // copy
+import UniformTypeIdentifiers
 
 //class ObservedChatDB: ObservableObject {
 //  @Published var db: ChatDB?
@@ -109,17 +111,37 @@ struct Message: View {
             }
             .padding([.top, .bottom], 3)
             HStack(alignment: .bottom) {
-              Text(RoomDB.messages[index].body!.message!)
-                .font(.system(size: 14, weight: .regular))
-                .padding(10)
-                .foregroundColor(Color.black)
-                .background(.white)
-                .clipShape(RoundedRectangle(cornerRadius: 10))
-                .background(Color.white
-                              .frame(width: 30, height:30)
-                              .position(x: 0, y: 0)
-                )
-                .clipped()
+              Menu{
+                Button{
+                  guard let message = RoomDB.messages[index].body?.message
+                  else { return }
+                  UIPasteboard.general.setValue(message,
+                      forPasteboardType: UTType.utf8PlainText.identifier as String)
+                } label: {
+                  Label("복사", systemImage: "doc.on.doc")
+                }
+                
+                Button(role: .destructive) {
+                  guard let messageId = RoomDB.messages[index].id
+                  else { return }
+                  model.messageId = messageId
+                  model.isReport.toggle()
+                } label: {
+                  Label("신고", systemImage: "exclamationmark.triangle")
+                }
+              } label: {
+                Text(RoomDB.messages[index].body!.message!)
+                  .font(.system(size: 14, weight: .regular))
+                  .padding(10)
+                  .foregroundColor(Color.black)
+                  .background(.white)
+                  .clipShape(RoundedRectangle(cornerRadius: 10))
+                  .background(Color.white
+                                .frame(width: 30, height:30)
+                                .position(x: 0, y: 0)
+                  )
+                  .clipped()
+              }
               
               VStack(alignment: .leading) {
                 if readCount() != "0" {
@@ -164,17 +186,38 @@ struct Message: View {
 //              .font(.footnote)
               .padding([.top, .bottom], 3)
             HStack(alignment: .bottom) {
-              Text(RoomDB.messages[index].body!.message!)
-                .font(.system(size: 14, weight: .regular))
-                .padding(10)
-                .foregroundColor(Color.black)
-                .background(.white)
-                .clipShape(RoundedRectangle(cornerRadius: 10))
-                .background(Color.white
-                              .frame(width: 30, height:30)
-                              .position(x: 0, y: 0)
-                )
-                .clipped()
+              Menu{
+                Button{
+                  guard let message = RoomDB.messages[index].body?.message
+                  else { return }
+                  UIPasteboard.general.setValue(message,
+                      forPasteboardType: UTType.utf8PlainText.identifier as String)
+                } label: {
+                  Label("복사", systemImage: "doc.on.doc")
+                }
+                
+                Button(role: .destructive) {
+                  guard let messageId = RoomDB.messages[index].id
+                  else { return }
+                  model.messageId = messageId
+                  model.isReport.toggle()
+                } label: {
+                  Label("신고", systemImage: "exclamationmark.triangle")
+                }
+              } label: {
+                Text(RoomDB.messages[index].body!.message!)
+                  .font(.system(size: 14, weight: .regular))
+                  .padding(10)
+                  .foregroundColor(Color.black)
+                  .background(.white)
+                  .clipShape(RoundedRectangle(cornerRadius: 10))
+                  .background(Color.white
+                                .frame(width: 30, height:30)
+                                .position(x: 0, y: 0)
+                  )
+                  .clipped()
+              }
+              
               
               
               VStack(alignment: .leading) {
@@ -218,12 +261,44 @@ struct Message: View {
           .opacity(0)
         
         HStack(alignment: .bottom) {
-          Text(RoomDB.messages[index].body!.message!)
-            .font(.system(size: 14, weight: .regular))
-            .padding(10)
-            .foregroundColor(Color.black)
-            .background(.white)
-            .clipShape(RoundedRectangle(cornerRadius: 10))
+          Menu{
+            Button{
+              guard let message = RoomDB.messages[index].body?.message
+              else { return }
+              UIPasteboard.general.setValue(message,
+                  forPasteboardType: UTType.utf8PlainText.identifier as String)
+            } label: {
+              Label("복사", systemImage: "doc.on.doc")
+            }
+            
+            Button(role: .destructive) {
+              guard let messageId = RoomDB.messages[index].id
+              else { return }
+              model.messageId = messageId
+              model.isReport.toggle()
+            } label: {
+              Label("신고", systemImage: "exclamationmark.triangle")
+            }
+          } label: {
+            Text(RoomDB.messages[index].body!.message!)
+              .font(.system(size: 14, weight: .regular))
+              .padding(10)
+              .foregroundColor(Color.black)
+              .background(.white)
+              .clipShape(RoundedRectangle(cornerRadius: 10))
+          }
+//          Text(RoomDB.messages[index].body!.message!)
+//            .font(.system(size: 14, weight: .regular))
+//            .padding(10)
+//            .foregroundColor(Color.black)
+//            .background(.white)
+//            .clipShape(RoundedRectangle(cornerRadius: 10))
+//            .onLongPressGesture {
+//              guard let messageId = RoomDB.messages[index].id
+//              else { return }
+//              model.messageId = messageId
+//              model.isLongPress.toggle()
+//            }
           
           VStack(alignment: .leading) {
             if readCount() != "0" {

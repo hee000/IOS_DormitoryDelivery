@@ -26,6 +26,7 @@
 		DA2ACF7827A730ED005939F0 /* getKick.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA2ACF7727A730ED005939F0 /* getKick.swift */; };
 		DA2ACF7A27A7387D005939F0 /* postVoteKick.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA2ACF7927A7387D005939F0 /* postVoteKick.swift */; };
 		DA2ACF7C27A73952005939F0 /* postVoteReset.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA2ACF7B27A73952005939F0 /* postVoteReset.swift */; };
+		DA2DFC5B28D84C210025FCAE /* ReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA2DFC5A28D84C210025FCAE /* ReportView.swift */; };
 		DA3B03F127AFD84000FA9923 /* CombineTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA3B03F027AFD84000FA9923 /* CombineTest.swift */; };
 		DA3C0177279ED5510090202E /* postOderFix.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA3C0176279ED5510090202E /* postOderFix.swift */; };
 		DA3C0179279EE5C90090202E /* OrderCheckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA3C0178279EE5C90090202E /* OrderCheckView.swift */; };
@@ -125,6 +126,7 @@
 		DA2ACF7727A730ED005939F0 /* getKick.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = getKick.swift; sourceTree = "<group>"; };
 		DA2ACF7927A7387D005939F0 /* postVoteKick.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = postVoteKick.swift; sourceTree = "<group>"; };
 		DA2ACF7B27A73952005939F0 /* postVoteReset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = postVoteReset.swift; sourceTree = "<group>"; };
+		DA2DFC5A28D84C210025FCAE /* ReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportView.swift; sourceTree = "<group>"; };
 		DA3B03F027AFD84000FA9923 /* CombineTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineTest.swift; sourceTree = "<group>"; };
 		DA3C0176279ED5510090202E /* postOderFix.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = postOderFix.swift; sourceTree = "<group>"; };
 		DA3C0178279EE5C90090202E /* OrderCheckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderCheckView.swift; sourceTree = "<group>"; };
@@ -424,6 +426,7 @@
 				DA12BE7127613BE800C08143 /* ChattingView.swift */,
 				DA294B102834C66B00188C84 /* textview.swift */,
 				DAC4ABA027A7530B00D6C7C4 /* Message.swift */,
+				DA2DFC5A28D84C210025FCAE /* ReportView.swift */,
 				DA294B122834C6D300188C84 /* MessageView.swift */,
 				DA294AF72829153200188C84 /* ResetView.swift */,
 				DA294AF52822416B00188C84 /* VoteView.swift */,
@@ -702,6 +705,7 @@
 				DA518AE5279DF04500291CA0 /* getReady.swift in Sources */,
 				DAAB680127A2DC7700B18B78 /* AlertOneButton.swift in Sources */,
 				DAC4528427603A5400D05BB0 /* HashTag.swift in Sources */,
+				DA2DFC5B28D84C210025FCAE /* ReportView.swift in Sources */,
 				DA3B03F127AFD84000FA9923 /* CombineTest.swift in Sources */,
 				DA12BE7627613C1A00C08143 /* bubble.swift in Sources */,
 				DABCFE632743B0F500B89781 /* CreateRoomView.swift in Sources */,
@@ -858,6 +862,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.cb.gachihasil;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -994,6 +1001,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.cb.gachihasil.Debug;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;

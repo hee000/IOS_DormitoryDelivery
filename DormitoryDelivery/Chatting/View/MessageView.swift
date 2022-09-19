@@ -125,7 +125,7 @@ struct MessageView: View {
         ScrollViewReader { proxy in
           ScrollView {
             Spacer().frame(height: 10) // 패딩
-              LazyVStack(spacing: 3) {
+              LazyVStack(spacing: 0) {
                 if chatdb.db != nil {
 //                  ForEach(chatdb.db!.messages.indices, id: \.self) { index in
                   ForEach(chatdb.dbCount, id: \.self) { index in
@@ -195,6 +195,8 @@ struct MessageView: View {
                       }
                     }//v
                     .rotationEffect(Angle(degrees: 180))
+                    .padding([.top, .bottom], 1.5)
+
                     
                     } //for
                   } //if

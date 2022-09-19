@@ -40,6 +40,9 @@ class Chatting: ObservableObject {
   @Published private var scrollsize = CGFloat.zero
   @Published var voteId = ""
   
+  @Published var messageId = ""
+  @Published var isReport = false
+  
   func getRoomLeave(rid: String, token: String) {
     let url = urlroomleave(rid: rid)
     let req = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: ["Authorization": token])

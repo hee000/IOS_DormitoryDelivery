@@ -337,6 +337,13 @@ struct ChattingView: View {
     .fullScreenCover(isPresented: $model.resetview) {
       ResetView(roomid: self.rid)
     }
+    .fullScreenCover(isPresented: $model.resetview) {
+      ResetView(roomid: self.rid)
+    }
+    .fullScreenCover(isPresented: $model.isReport) {
+      ReportView(messageId: self.model.messageId)
+    }
+
     .accentColor(.black)
     .onChange(of: model.leave) { newValue in
       self.chatdb.db = nil

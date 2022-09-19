@@ -42,6 +42,11 @@ func urlmenulist(rid: String) -> URL {
   return url
 }
 
+func urlreport(mid: String) -> URL {
+  let url = URL(string: "https://gachihasil.link/report/v1/message/\(mid)")!
+  return url
+}
+
 func urlready(uid: String, rid: String, state: Bool) -> URL {
   let value = state ? "false" : "true"
   let url = URL(string: "https://gachihasil.link/user/" + uid + "/room/" + rid + "/ready?state=" + value)!

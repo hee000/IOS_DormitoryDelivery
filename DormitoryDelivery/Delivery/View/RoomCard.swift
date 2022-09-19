@@ -93,7 +93,8 @@ struct RoomCard: View {
                 .background(Image("Rectangle302")
                               .resizable()
                               .scaledToFit()
-                              .frame(width: 123, height: 28))
+                              .frame(width: 123, height: 28)
+                              .cornerRadius(3))
             }
         } //v
       .padding()

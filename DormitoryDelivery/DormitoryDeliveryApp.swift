@@ -28,7 +28,7 @@ struct DormitoryDeliveryApp: App {
           ContentView()
             .overlay(self.appVersionVaild ? AlertOneButton(isActivity: $appVersionVaild) { Text("앱 업데이트가 필요합니다.").font(.system(size: 16, weight: .regular)) }.onDisappear{
                   UIApplication.shared.perform(#selector(NSXPCConnection.suspend))
-                  DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+              DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                       exit(0)
                   }
             } : nil)
