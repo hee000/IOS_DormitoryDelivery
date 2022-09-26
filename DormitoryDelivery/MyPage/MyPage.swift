@@ -68,7 +68,7 @@ struct MyPage: View {
                 .frame(height: 50)
                 .padding([.leading, .trailing])
                 .padding([.leading, .trailing])
-
+              
               Group{
                 NavigationLink(destination: AccountView()) {
                   HStack{
@@ -93,6 +93,7 @@ struct MyPage: View {
                 .disabled(true)
                 .onTapGesture {
                     // 알람 Off, rest요청 응답 받으면
+                  let after = !self.alram
                   guard let param = try? serverNotiToken(enabled: !self.alram).asDictionary() else { return }
                   print(param)
                   
@@ -102,14 +103,16 @@ struct MyPage: View {
 //                        print(response)
 //                    }
                   req.responseString { res in
-                    print(res.response)
-                    print(res.description)
-                    print(res.response?.statusCode)
-                    print(res.value)
-                    print(res.data)
-                  }
-                  withAnimation {
-                    self.alram.toggle()
+//                    print(res.response)
+//                    print(res.description)
+//                    print(res.response?.statusCode)
+//                    print(res.value)
+//                    print(res.data)
+                    if res.response?.statusCode == 200 {
+                      withAnimation {
+                        self.alram = after
+                      }
+                    }
                   }
                 }
                 .onChange(of: alram) { V in

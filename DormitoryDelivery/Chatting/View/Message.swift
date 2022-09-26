@@ -170,6 +170,7 @@ struct Message: View {
         .padding(.leading, 10)
         .padding(.trailing, 60)
         .frame(width: UIScreen.main.bounds.width, alignment:.leading)
+        .padding([.top, .bottom], 1.5)
       } else {
         HStack(alignment: .top, spacing: 0) {
           Image("ImageDefaultProfile")
@@ -246,6 +247,7 @@ struct Message: View {
         .padding(.leading, 10)
         .padding(.trailing, 60)
         .frame(width: UIScreen.main.bounds.width, alignment:.leading)
+        .padding([.top, .bottom], 1.5)
       }
     } else if type == .left {
 
@@ -326,7 +328,7 @@ struct Message: View {
       .padding(.leading, 10)
       .padding(.trailing, 60)
       .frame(width: UIScreen.main.bounds.width, alignment:.leading)
-    
+      .padding([.top, .bottom], 1.5)
 
     } else if type == .right {
       HStack(alignment: .bottom) {
@@ -365,7 +367,8 @@ struct Message: View {
       .padding(.trailing , 15)
       .padding(.leading , 60)
       .frame(width: UIScreen.main.bounds.width, alignment:.trailing)
-
+      .padding([.top, .bottom], 1.5)
+      
     } else if type == .orderFixed {
       HStack{
         VStack(alignment: .leading){
@@ -388,6 +391,7 @@ struct Message: View {
       .cornerRadius(5)
       .shadow(color: Color.black.opacity(0.15), radius: 4)
       .padding(10)
+      .padding([.top, .bottom], 1.5)
     } else if type == .orderChecked {
       if RoomDB.superUser?.userId != UserData().data!.id {
         VStack(spacing: 0){
@@ -425,6 +429,7 @@ struct Message: View {
         .cornerRadius(5)
         .shadow(color: Color.black.opacity(0.15), radius: 4)
         .padding(10)
+        .padding([.top, .bottom], 1.5)
       } else {
         VStack(spacing: 0){
           HStack(alignment: .top) {
@@ -448,47 +453,56 @@ struct Message: View {
         .cornerRadius(5)
         .shadow(color: Color.black.opacity(0.15), radius: 4)
         .padding(10)
+        .padding([.top, .bottom], 1.5)
       }
     } else if type == .voteKickCreated {    // 강퇴 투표 시작
-      
-      VStack(spacing: 0){
-        HStack{
-          VStack(alignment: .leading){
-            Text("\(RoomDB.messages[index].body!.data!.targetUser!.name!)님에 대한")
-              .font(.system(size: 14, weight: .bold))
-            Text("강퇴 투표가 시작되었습니다.")
-              .font(.system(size: 14, weight: .bold))
+//      let _ = print("@@@@@@@@@@", RoomDB.messages[index].body?.data)
+      if RoomDB.messages[index].body?.data?.requestedUser?.userId != privacy.id && RoomDB.messages[index].body?.data?.targetUser?.userId != privacy.id {
+        VStack(spacing: 0){
+          HStack{
+            VStack(alignment: .leading){
+              Text("\(RoomDB.messages[index].body!.data!.targetUser!.name!)님에 대한")
+                .font(.system(size: 14, weight: .bold))
+              Text("강퇴 투표가 시작되었습니다.")
+                .font(.system(size: 14, weight: .bold))
+              Spacer()
+            }
             Spacer()
+            Image("ImageVoteMark")
+              .resizable()
+              .renderingMode(.template)
+              .scaledToFit()
+              .frame(width: 135, height: 73)
+              .foregroundColor(Color(.sRGB, red: 112/255, green: 52/255, blue: 255/255, opacity: 1))
           }
-          Spacer()
-          Image("ImageVoteMark")
-            .resizable()
-            .renderingMode(.template)
-            .scaledToFit()
-            .frame(width: 135, height: 73)
-            .foregroundColor(Color(.sRGB, red: 112/255, green: 52/255, blue: 255/255, opacity: 1))
-        }
-        .padding()
-        .background(Color(.sRGB, red: 228/255, green: 234/255, blue: 255/255, opacity: 1))
-        Button{
-          self.model.voteindex = index
-          self.model.voteview = true
-        } label: {
-          Text("투표하기")
-            .font(.system(size: 12, weight: .regular))
-            .frame(height: 40)
-            .frame(maxWidth: .infinity)
-        }
-        .background(Color(.sRGB, red: 225/255, green: 225/255, blue: 231/255, opacity: 1))
+          .padding()
+          .background(Color(.sRGB, red: 228/255, green: 234/255, blue: 255/255, opacity: 1))
+          Button{
+            self.model.voteindex = index
+            self.model.voteview = true
+          } label: {
+            Text("투표하기")
+              .font(.system(size: 12, weight: .regular))
+              .frame(height: 40)
+              .frame(maxWidth: .infinity)
+          }
+          .background(Color(.sRGB, red: 225/255, green: 225/255, blue: 231/255, opacity: 1))
+          .cornerRadius(5)
+          .padding([.leading, .trailing])
+          .padding([.top, .bottom], 10)
+        } //v
+        .frame(width: UIScreen.main.bounds.width * 9/10)
+        .background(.white)
         .cornerRadius(5)
-        .padding([.leading, .trailing])
-        .padding([.top, .bottom], 10)
-      } //v
-      .frame(width: UIScreen.main.bounds.width * 9/10)
-      .background(.white)
-      .cornerRadius(5)
-      .shadow(color: Color.black.opacity(0.15), radius: 4)
-      .padding(10)
+        .shadow(color: Color.black.opacity(0.15), radius: 4)
+        .padding(10)
+        .padding([.top, .bottom], 1.5)
+      } else { //해당자일때
+        ChatBubble(position: BubblePosition.systemuUserInOut, color: Color(.sRGB, red: 223/255, green: 223/255, blue: 229/255, opacity: 1)) {
+          Text("[\(RoomDB.messages[index].body!.data!.targetUser!.name!)] 강퇴투표가 시작되었습니다.")
+            .font(.system(size: 12, weight: .regular))
+        }
+      }
       
     } else if type == .voteKickFinished {   // 강퇴 투표 끝
       
@@ -521,78 +535,96 @@ struct Message: View {
       .cornerRadius(5)
       .shadow(color: Color.black.opacity(0.15), radius: 4)
       .padding(10)
+      .padding([.top, .bottom], 1.5)
       
     } else if type == .voteResetCreated {   // 리셋 투표 시작
-      VStack(spacing: 0){
+//      if RoomDB.messages[index].body?.data?.requestedUser?.userId != privacy.id && privacy.id != RoomDB.superUser?.userId {
+      if RoomDB.messages[index].body?.data?.requestedUser?.userId != privacy.id {
+        VStack(spacing: 0){
+          HStack{
+            VStack(alignment: .leading){
+              Text("채팅방에 대한")
+                .font(.system(size: 14, weight: .bold))
+              Text("리셋 투표가 시작되었습니다.")
+                .font(.system(size: 14, weight: .bold))
+              Spacer()
+            }
+            Spacer()
+            Image("ImageVoteMark")
+              .resizable()
+              .renderingMode(.template)
+              .scaledToFit()
+              .frame(width: 135, height: 73)
+              .foregroundColor(Color(.sRGB, red: 112/255, green: 52/255, blue: 255/255, opacity: 1))
+          }
+          .padding()
+          .background(Color(.sRGB, red: 228/255, green: 234/255, blue: 255/255, opacity: 1))
+          Button{
+            self.model.voteindex = index
+            self.model.voteview = true
+          } label: {
+            Text("투표하기")
+              .font(.system(size: 12, weight: .regular))
+              .frame(height: 40)
+              .frame(maxWidth: .infinity)
+          }
+          .background(Color(.sRGB, red: 225/255, green: 225/255, blue: 231/255, opacity: 1))
+          .cornerRadius(5)
+          .padding([.leading, .trailing])
+          .padding([.top, .bottom], 10)
+        } //v
+        .frame(width: UIScreen.main.bounds.width * 9/10)
+        .background(.white)
+        .cornerRadius(5)
+        .shadow(color: Color.black.opacity(0.15), radius: 4)
+        .padding(10)
+        .padding([.top, .bottom], 1.5)
+      } else {
+        ChatBubble(position: BubblePosition.systemuUserInOut, color: Color(.sRGB, red: 223/255, green: 223/255, blue: 229/255, opacity: 1)) {
+          Text("채팅방 리셋 투표가 시작되었습니다.")
+            .font(.system(size: 12, weight: .regular))
+        }
+      }
+    } else if type == .voteResetFinished {
+      VStack(spacing: 0) {
         HStack{
           VStack(alignment: .leading){
-            Text("채팅방에 대한")
+            Text("채팅방에 대한 리셋 투표가")
               .font(.system(size: 14, weight: .bold))
-            Text("리셋 투표가 시작되었습니다.")
-              .font(.system(size: 14, weight: .bold))
+            if RoomDB.messages[index].body!.data!.result == true  {
+              Text("가결되었습니다")
+                .font(.system(size: 14, weight: .bold))
+            } else {
+              Text("부결되었습니다")
+                .font(.system(size: 14, weight: .bold))
+            }
+            
             Spacer()
           }
+          .padding()
           Spacer()
           Image("ImageVoteMark")
             .resizable()
             .renderingMode(.template)
             .scaledToFit()
             .frame(width: 135, height: 73)
-            .foregroundColor(Color(.sRGB, red: 112/255, green: 52/255, blue: 255/255, opacity: 1))
+            .padding()
+            .foregroundColor((RoomDB.messages[index].body!.data!.result == true) ? Color.red : Color.gray)
         }
-        .padding()
-        .background(Color(.sRGB, red: 228/255, green: 234/255, blue: 255/255, opacity: 1))
-        Button{
-          self.model.voteindex = index
-          self.model.voteview = true
-        } label: {
-          Text("투표하기")
-            .font(.system(size: 12, weight: .regular))
-            .frame(height: 40)
-            .frame(maxWidth: .infinity)
-        }
-        .background(Color(.sRGB, red: 225/255, green: 225/255, blue: 231/255, opacity: 1))
+        .frame(width: UIScreen.main.bounds.width * 9/10)
+        .background(.white)
         .cornerRadius(5)
-        .padding([.leading, .trailing])
-        .padding([.top, .bottom], 10)
-      } //v
-      .frame(width: UIScreen.main.bounds.width * 9/10)
-      .background(.white)
-      .cornerRadius(5)
-      .shadow(color: Color.black.opacity(0.15), radius: 4)
-      .padding(10)
-      
-    } else if type == .voteResetFinished {
-      
-      HStack{
-        VStack(alignment: .leading){
-          Text("채팅방에 대한 리셋 투표가")
-            .font(.system(size: 14, weight: .bold))
-          if RoomDB.messages[index].body!.data!.result == true  {
-            Text("가결되었습니다")
-              .font(.system(size: 14, weight: .bold))
-          } else {
-            Text("부결되었습니다")
-              .font(.system(size: 14, weight: .bold))
+        .shadow(color: Color.black.opacity(0.15), radius: 4)
+        .padding(10)
+        .padding([.top, .bottom], 1.5)
+        
+        if RoomDB.messages[index].body!.data!.result == true  {
+          ChatBubble(position: BubblePosition.systemuUserInOut, color: Color(.sRGB, red: 223/255, green: 223/255, blue: 229/255, opacity: 1)) {
+            Text("방이 리셋되었습니다.")
+              .font(.system(size: 12, weight: .regular))
           }
-          
-          Spacer()
         }
-        .padding()
-        Spacer()
-        Image("ImageVoteMark")
-          .resizable()
-          .renderingMode(.template)
-          .scaledToFit()
-          .frame(width: 135, height: 73)
-          .padding()
-          .foregroundColor((RoomDB.messages[index].body!.data!.result == true) ? Color.red : Color.gray)
       }
-      .frame(width: UIScreen.main.bounds.width * 9/10)
-      .background(.white)
-      .cornerRadius(5)
-      .shadow(color: Color.black.opacity(0.15), radius: 4)
-      .padding(10)
       
     }
   }

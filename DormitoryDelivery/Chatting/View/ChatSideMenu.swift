@@ -17,6 +17,22 @@ struct ChatSideMenu: View {
   @Binding var RoomChat: ChatDB?
   var rid: String
   
+  func userBlock(uid: String) {
+    if blockedUser.data.contains { BlockedUser in
+      BlockedUser.userId == uid
+    } {
+      guard let del = realm.object(ofType: BlockedUser.self, forPrimaryKey: uid) else { return }
+      let realm = try! Realm()
+      try? realm.write {
+        realm.delete(del)
+      }
+    } else if getUserPrivacy().id != uid {
+      print("차단추가")
+      let newblockedUser = BlockedUser()
+      newblockedUser.userId = uid
+      addBlockedUser(newblockedUser)
+    }
+  }
     var body: some View {
       let privacy = getUserPrivacy()
       GeometryReader { geo in
@@ -40,7 +56,7 @@ struct ChatSideMenu: View {
             
             Divider()
             
-            if RoomChat != nil && RoomChat!.state?.orderFix == true && RoomChat!.state?.orderDone == false {
+            if let state = RoomChat?.state, state.orderFix == true && state.orderDone == false && state.orderCancel == false {
               Button{
                 self.model.resetview.toggle()
               } label: {
@@ -63,9 +79,9 @@ struct ChatSideMenu: View {
               .font(.system(size: 18, weight: .bold))
               .padding(.bottom)
             
-            if RoomChat != nil {
+            if let state = RoomChat?.state {
               VStack{
-                if RoomChat?.superUser != nil {
+                if let superUser = RoomChat?.superUser {
                   HStack{
                     ZStack{
                       Image("ImageDefaultProfile")
@@ -75,43 +91,73 @@ struct ChatSideMenu: View {
                         .background(Color(.sRGB, red: 180/255, green: 200/255, blue: 255/255, opacity: 1))
                         .cornerRadius(28)
                         .shadow(color: Color.black.opacity(0.5), radius: 1)
+                        .overlay(blockedUser.data.contains { BlockedUser in
+                          BlockedUser.userId == superUser.userId
+                        } ? Image(systemName: "xmark").foregroundColor(Color.red) : nil)
                       Image("ImageSuperMark")
                         .resizable()
                         .scaledToFit()
                         .frame(width: 10, height: 10)
                         .offset(x: 10, y: 10)
+                      
+//                      if blockedUser.data.contains { BlockedUser in
+//                        BlockedUser.userId == RoomChat!.superUser!.userId
+//                      } {
+//                        Image(systemName: "xmark")
+//                          .resizable()
+//                          .scaledToFit()
+//                          .frame(width: 32, height: 32)
+//                          .foregroundColor(Color.red)
+//                      }
                     }
-                    Text(RoomChat!.superUser!.name!)
+//                    .foregroundColor(blockedUser.data.contains { BlockedUser in
+//                      BlockedUser.userId == RoomChat!.superUser!.userId
+//                    } ? Color.red : Color.gray)
+                    
+                    Text(superUser.name!)
                       .font(.system(size: 16, weight: .regular))
                     Spacer()
                     
-                    if privacy.id != RoomChat!.superUser!.userId {
-                      Button{
-                        let uid = RoomChat!.superUser!.userId!
-                        
-                        if blockedUser.data.contains { BlockedUser in
-                          BlockedUser.userId == uid
-                        } {
-                          guard let del = realm.object(ofType: BlockedUser.self, forPrimaryKey: uid) else { return }
-                          let realm = try! Realm()
-                          try? realm.write {
-                            realm.delete(del)
-                          }
-                        } else if privacy.id != uid {
-                          print("차단추가")
-                          let newblockedUser = BlockedUser()
-                          newblockedUser.userId = uid
-                          addBlockedUser(newblockedUser)
+                    if let uid = superUser.userId, privacy.id != uid {
+                      Menu{
+                        Button{
+//                          let uid = superUser.userId!
                           
+                          userBlock(uid: uid)
+//                          if blockedUser.data.contains { BlockedUser in
+//                            BlockedUser.userId == uid
+//                          } {
+//                            guard let del = realm.object(ofType: BlockedUser.self, forPrimaryKey: uid) else { return }
+//                            let realm = try! Realm()
+//                            try? realm.write {
+//                              realm.delete(del)
+//                            }
+//                          } else if privacy.id != uid {
+//                            print("차단추가")
+//                            let newblockedUser = BlockedUser()
+//                            newblockedUser.userId = uid
+//                            addBlockedUser(newblockedUser)
+//
+//                          }
+                        } label: {
+                          Label("차단", systemImage: "xmark.octagon")
                         }
+                        
+                        Button{
+//                          guard let messageId = superUser.userId
+//                          else { return }
+
+                          model.messageId = uid
+                          model.isReport.toggle()
+                        } label: {
+                          Label("신고", systemImage: "exclamationmark.triangle")
+                        }
+                        
+                        
                         
                       } label: {
-                        ZStack{
-                          Image(systemName: "xmark.octagon")
-                            .foregroundColor(blockedUser.data.contains { BlockedUser in
-                              BlockedUser.userId == RoomChat!.superUser!.userId
-                            } ? Color.red : Color.gray)
-                        }
+                        Image(systemName: "ellipsis")
+                          .rotationEffect(Angle(degrees: 90))
                       }
                     } // 차단 if
                     
@@ -119,7 +165,7 @@ struct ChatSideMenu: View {
                 }//if
               
                 ForEach(RoomChat!.member.indices, id: \.self) { index in
-                  if RoomChat!.member[index].userId != RoomChat!.superUser?.userId {
+                  if let member = RoomChat!.member[index], member.userId != RoomChat!.superUser?.userId {
                     HStack{
                       Image("ImageDefaultProfile")
                         .resizable()
@@ -128,22 +174,27 @@ struct ChatSideMenu: View {
                         .background(Color(.sRGB, red: 180/255, green: 200/255, blue: 255/255, opacity: 1))
                         .cornerRadius(28)
                         .shadow(color: Color.black.opacity(0.5), radius: 1)
-                      Text(RoomChat!.member[index].name!)
+                        .overlay(blockedUser.data.contains { BlockedUser in
+                          BlockedUser.userId == member.userId
+                        } ? Image(systemName: "xmark").foregroundColor(Color.red): nil)
+
+                      
+                      Text(member.name!)
                         .font(.system(size: 16, weight: .regular))
                       
-                      if RoomChat!.state?.orderFix == false {
-                        Text(RoomChat!.member[index].isReady ? "준비완료" : "메뉴고르는중")
+                      if state.orderFix == false {
+                        Text(member.isReady ? "준비완료" : "메뉴고르는중")
                           .font(.system(size: 8, weight: .regular))
                           .padding(.leading)
-                          .foregroundColor(RoomChat!.member[index].isReady ? Color(.sRGB, red: 112/255, green: 52/255, blue: 255/255, opacity: 1) : Color.gray)
+                          .foregroundColor(member.isReady ? Color(.sRGB, red: 112/255, green: 52/255, blue: 255/255, opacity: 1) : Color.gray)
                       }
                       
                       Spacer()
                       
                       
-                      if RoomChat!.state?.orderFix == false && RoomChat!.superUser?.userId == privacy.id { // 방장강퇴
+                      if state.orderFix == false && RoomChat!.superUser?.userId == privacy.id { // 방장강퇴
                         Button{
-                          getKick(rid: self.rid, uid: RoomChat!.member[index].userId!)
+                          getKick(rid: self.rid, uid: member.userId!)
                         } label: {
                           Text("강퇴하기")
                             .font(.system(size: 14, weight: .regular))
@@ -152,9 +203,9 @@ struct ChatSideMenu: View {
                         }
                       }
                       
-                      if RoomChat!.state?.orderFix == true && RoomChat!.state?.orderDone == false && RoomChat!.superUser?.userId == privacy.id && RoomChat!.member.count > 2{ //강퇴투표
+                      if state.orderFix == true && state.orderDone == false && RoomChat!.superUser?.userId == privacy.id && RoomChat!.member.count > 2 && state.orderCancel == false { //강퇴투표
                         Button{
-                          postVoteKick(rid: self.rid, uid: RoomChat!.member[index].userId!)
+                          postVoteKick(rid: self.rid, uid: member.userId!)
                         } label: {
                           Text("강퇴 투표")
                             .font(.system(size: 14, weight: .regular))
@@ -163,33 +214,45 @@ struct ChatSideMenu: View {
                         }
                       }
                       
-                      if privacy.id != RoomChat!.member[index].userId {
-                        Button{
-                          let uid = RoomChat!.member[index].userId!
-                          
-                          if blockedUser.data.contains { BlockedUser in
-                            BlockedUser.userId == uid
-                          } {
-                            guard let del = realm.object(ofType: BlockedUser.self, forPrimaryKey: uid) else { return }
-                            let realm = try! Realm()
-                            try? realm.write {
-                              realm.delete(del)
-                            }
-                          } else if privacy.id != uid {
-                            print("차단추가")
-                            let newblockedUser = BlockedUser()
-                            newblockedUser.userId = uid
-                            addBlockedUser(newblockedUser)
-                            
+                      if let uid = member.userId, privacy.id != uid {
+                        Menu{
+                          Button{
+//                            let uid = RoomChat!.member[index].userId!
+                            userBlock(uid: uid)
+//                            if blockedUser.data.contains { BlockedUser in
+//                              BlockedUser.userId == uid
+//                            } {
+//                              guard let del = realm.object(ofType: BlockedUser.self, forPrimaryKey: uid) else { return }
+//                              let realm = try! Realm()
+//                              try? realm.write {
+//                                realm.delete(del)
+//                              }
+//                            } else if privacy.id != uid {
+//                              print("차단추가")
+//                              let newblockedUser = BlockedUser()
+//                              newblockedUser.userId = uid
+//                              addBlockedUser(newblockedUser)
+//
+//                            }
+                          } label: {
+                            Label("차단", systemImage: "xmark.octagon")
                           }
+                          
+                          Button{
+//                            guard let messageId = RoomChat?.member[index].userId
+//                            else { return }
+
+                            model.messageId = uid
+                            model.isReport.toggle()
+                          } label: {
+                            Label("신고", systemImage: "exclamationmark.triangle")
+                          }
+                          
+                          
                           
                         } label: {
-                          ZStack{
-                            Image(systemName: "xmark.octagon")
-                              .foregroundColor(blockedUser.data.contains { BlockedUser in
-                                BlockedUser.userId == RoomChat!.member[index].userId
-                              } ? Color.red : Color.gray)
-                          }
+                          Image(systemName: "ellipsis")
+                            .rotationEffect(Angle(degrees: 90))
                         }
                       } // 차단 if
                       

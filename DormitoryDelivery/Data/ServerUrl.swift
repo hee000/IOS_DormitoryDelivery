@@ -108,6 +108,11 @@ func urlchatlog(rid: String, idx: String) -> URL {
   return url
 }
 
+func urlchatread(rid: String) -> URL {
+  let url = URL(string: "https://gachihasil.link/room/\(rid)/chat/read")!
+  return url
+}
+
 func urlkick(rid: String, uid: String) -> URL {
   let url = URL(string: "https://gachihasil.link/room/" + rid + "/kick?uid=" + uid)!
   return url

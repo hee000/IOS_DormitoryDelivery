@@ -195,7 +195,7 @@ struct MessageView: View {
                       }
                     }//v
                     .rotationEffect(Angle(degrees: 180))
-                    .padding([.top, .bottom], 1.5)
+//                    .padding([.top, .bottom], 1.5)
 
                     
                     } //for

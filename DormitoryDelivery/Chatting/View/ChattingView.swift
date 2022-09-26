@@ -140,8 +140,10 @@ struct ChattingView: View {
                         .background(
                           GeometryReader { geo in
                             Color.clear.preference(key: SizeKey.self, value: geo.size.height)
-                          }.frame(minHeight: 18))
+                          }.frame(minHeight: 18, maxHeight: 100.33333333333333))
+//                        .frame(maxHeight: 150)
                         .onPreferenceChange(SizeKey.self) { value in // --- 2
+//                          print(value)
                           self.sendTextModel.textHeight = value
                         }
                     )
@@ -151,6 +153,7 @@ struct ChattingView: View {
                     .focused($rere)
                     .frame(width: geosender.size.width, height: 18.0 + (self.sendTextModel.textHeight ?? 18.0))
                     .opacity(self.rere ? 1 : 0)
+                  
                 }
                 .frame(height: self.rere ? 18.0 + (self.sendTextModel.textHeight ?? 18.0) : 36)
               } //geo sender
@@ -161,12 +164,22 @@ struct ChattingView: View {
                   self.sendTextModel.text = ""
                 }
                 } label: {
-                  Image(systemName: "arrow.up.circle.fill")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width:30, height: 30)
-                    .foregroundColor(Color(.sRGB, red: 87/255, green: 126/255, blue: 255/255, opacity: 1))
+                  VStack(spacing: 0){
+                    if self.rere && 18.0 + (self.sendTextModel.textHeight ?? 18.0) > 40{
+                      Spacer()
+                    }
+                    
+                    HStack{
+                      Image(systemName: "arrow.up.circle.fill")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width:30, height: 30)
+                        .foregroundColor(self.sendTextModel.text != "" ? Color(.sRGB, red: 87/255, green: 126/255, blue: 255/255, opacity: 1) : Color.gray)
+                    }
+                    .frame(height: 36)
+                  }
                 }
+                .disabled(self.sendTextModel.text != "" ? false : true)
                 .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 3))
               }
               .background(.white)
@@ -193,7 +206,7 @@ struct ChattingView: View {
             }}) : nil)
 
         
-        if chatdb.db?.superUser?.userId == privacy.data?.id && chatdb.db?.state?.allReady == true && self.model.showMenu == false {
+        if chatdb.db?.superUser?.userId == privacy.data?.id && chatdb.db?.state?.allReady == true && self.model.showMenu == false && chatdb.db?.state?.orderCancel == false {
           Button {
             postOderFix(rid: self.rid)
           } label: {
@@ -223,7 +236,7 @@ struct ChattingView: View {
           .disabled(chatdb.db?.Kicked ?? false ? true : false)
         } // 방장 메뉴 오더 픽스 이벤트
         
-        if chatdb.db?.superUser?.userId == privacy.data?.id && chatdb.db?.state?.orderFix == true && chatdb.db?.state?.orderChecked == false && self.model.showMenu == false {
+        if chatdb.db?.superUser?.userId == privacy.data?.id && chatdb.db?.state?.orderFix == true && chatdb.db?.state?.orderChecked == false && self.model.showMenu == false && chatdb.db?.state?.orderCancel == false {
           Button{
             self.model.odercheck.toggle()
           } label: {
@@ -249,7 +262,7 @@ struct ChattingView: View {
           .disabled(chatdb.db?.Kicked ?? false ? true : false)
         } // 방장 메뉴 확인 이벤트
         
-        if chatdb.db?.superUser?.userId == privacy.data?.id && chatdb.db?.state?.orderChecked == true && chatdb.db?.state?.orderDone == false && self.model.showMenu == false {
+        if chatdb.db?.superUser?.userId == privacy.data?.id && chatdb.db?.state?.orderChecked == true && chatdb.db?.state?.orderDone == false && self.model.showMenu == false && chatdb.db?.state?.orderCancel == false {
           Button{
             postOrderDone(rid: self.rid)
           } label: {
@@ -333,9 +346,6 @@ struct ChattingView: View {
     }
     .fullScreenCover(isPresented: $model.userodercheck) {
       ReceiptView(roomid: self.rid)
-    }
-    .fullScreenCover(isPresented: $model.resetview) {
-      ResetView(roomid: self.rid)
     }
     .fullScreenCover(isPresented: $model.resetview) {
       ResetView(roomid: self.rid)

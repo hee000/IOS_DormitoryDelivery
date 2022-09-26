@@ -67,6 +67,7 @@ class ChatState: Object, ObjectKeyIdentifiable{
     @Persisted var orderFix: Bool = false
     @Persisted var orderChecked: Bool = false
     @Persisted var orderDone: Bool = false
+    @Persisted var orderCancel: Bool = false
 }
 
 class UserPrivacy: Object, ObjectKeyIdentifiable{
@@ -178,7 +179,7 @@ class ChatMessageDetailBodyData: Object, ObjectKeyIdentifiable, Decodable{
   private enum CodingKeys: String, CodingKey {
       case name = "name"
       case userId = "userId"
-      case requestedUser = "target"
+      case requestedUser = "requestedUser"
       case targetUser = "targetUser"
       case voteId = "voteId"
       case result = "result"
@@ -204,11 +205,11 @@ final class ChatData: ObservableObject, Identifiable{
   init() {
     
     let config = Realm.Configuration(
-    schemaVersion: 11,
+    schemaVersion: 12,
     migrationBlock: { migration, oldSchemaVersion in
-      print(migration)
-      print("new", migration.newSchema)
-      print("old", migration.oldSchema)
+//      print(migration)
+//      print("new", migration.newSchema)
+//      print("old", migration.oldSchema)
         // Any migration logic older Realm files may need
     })
 

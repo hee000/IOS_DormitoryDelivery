@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Alamofire
 
 struct ResetView: View {
   @Environment(\.presentationMode) var presentationMode
@@ -55,7 +56,25 @@ struct ResetView: View {
           Spacer()
           
           Button {
-            postVoteReset(rid: self.roomid)
+//            postVoteReset(rid: self.roomid)
+            print("dddsad")
+            restApiQueue.async {
+
+              let url = urlvotereset(rid: self.roomid)
+              
+              AF.request(url, method: .post, headers: TokenUtils().getAuthorizationHeader()).responseJSON { response in
+//                print(response.response?.statusCode)
+                appVaildCheck(res: response)
+                
+                if response.response?.statusCode == 201 {
+                  DispatchQueue.main.async {
+                    
+                    presentationMode.wrappedValue.dismiss()
+                  }
+
+                }
+              }
+            }
           } label: {
               Text("그만하기")
               .foregroundColor(.black)

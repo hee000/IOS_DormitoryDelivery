@@ -25,7 +25,6 @@ struct createroomdata: Codable {
 }
 
 class CreateRoom: ObservableObject {
-
   @Published var isActive = false
   @Published var userId: String = ""
   @Published var shopName: String = ""

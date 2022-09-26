@@ -16,13 +16,16 @@ func getRoomUpdate(rid: String) {
       guard let json = response.data else { return }
       guard let restdata = try? JSONDecoder().decode(roomupdate.self, from: json) else { return }
       
-      print(restdata)
+//      print(restdata)
       
       let realm = try! Realm()
       try! realm.write {
         if let db = realm.object(ofType: ChatDB.self, forPrimaryKey: rid) {
           if db.readyAvailable != restdata.isReadyAvailable {
-            db.readyAvailable.toggle()
+            db.readyAvailable = restdata.isReadyAvailable
+          }
+          if db.ready != restdata.isReady {
+            db.ready = restdata.isReady
           }
   //        db.readyAvailable = restdata.isReadyAvailable
           if restdata.state == 1 {
@@ -30,26 +33,37 @@ func getRoomUpdate(rid: String) {
             db.state?.orderFix = false
             db.state?.orderChecked = false
             db.state?.orderDone = false
+            db.state?.orderCancel = false
           } else if restdata.state == 2 {
             db.state?.allReady = false
             db.state?.orderFix = true
             db.state?.orderChecked = false
             db.state?.orderDone = false
+            db.state?.orderCancel = false
           } else if restdata.state == 3 {
             db.state?.allReady = false
             db.state?.orderFix = true
             db.state?.orderChecked = true
             db.state?.orderDone = false
+            db.state?.orderCancel = false
           } else if restdata.state == 4 {
             db.state?.allReady = false
             db.state?.orderFix = true
             db.state?.orderChecked = true
             db.state?.orderDone = true
+            db.state?.orderCancel = false
+          } else if restdata.state == 5 {
+            db.state?.allReady = false
+            db.state?.orderFix = true
+            db.state?.orderChecked = true
+            db.state?.orderDone = true
+            db.state?.orderCancel = true
           } else if restdata.state == 0 {
             db.state?.allReady = false
             db.state?.orderFix = false
             db.state?.orderChecked = false
             db.state?.orderDone = false
+            db.state?.orderCancel = false
           }
         } // db
       } // try realm
@@ -97,7 +111,7 @@ func getRooms(uid: String) {
     let req = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: TokenUtils().getAuthorizationHeader())
     req.responseJSON { response in
 
-      print(response, "채팅목록2")
+//      print(response, "채팅목록2")
       do {
         switch response.result {
         case .success(let value):
@@ -114,7 +128,7 @@ func getRooms(uid: String) {
   //              print(db)
                 AF.request(urlparticipants(rid: room.id), method: .get, parameters: nil, encoding: JSONEncoding.default, headers: TokenUtils().getAuthorizationHeader())
                   .responseJSON { response2 in
-                    print(response2, "채팅목록3")
+//                    print(response2, "채팅목록3")
                     guard let participants = try? JSONDecoder().decode(List<ChatUsersInfo>.self, from: response2.data!) else { return }
 
                     
@@ -154,7 +168,7 @@ func getRooms(uid: String) {
               } else {
                 AF.request(urlparticipants(rid: room.id), method: .get, parameters: nil, encoding: JSONEncoding.default, headers: TokenUtils().getAuthorizationHeader())
                   .responseJSON { response2 in
-                    print(response2, "채팅목록4")
+//                    print(response2, "채팅목록4")
                     guard let participants = try? JSONDecoder().decode(List<ChatUsersInfo>.self, from: response2.data!) else { return }
                     print("채팅목록 5")
                     let newroom = ChatDB()
@@ -225,7 +239,7 @@ func getparticipants(rid: String, token: String) {
   let req = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: TokenUtils().getAuthorizationHeader())
   req.responseJSON { response in
     
-    print(response)
+//    print(response)
   }
 }
 

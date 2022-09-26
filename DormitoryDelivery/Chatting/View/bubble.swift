@@ -108,6 +108,7 @@ struct ChatBubble<Content>: View where Content: View {
                 .clipShape(RoundedRectangle(cornerRadius: 5))
         }
         .frame(width: UIScreen.main.bounds.width, alignment: .center)
+        .padding([.top, .bottom], 1.5)
       } else if position == .order {
         HStack(spacing: 0 ) {
             content()

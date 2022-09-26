@@ -170,6 +170,14 @@ struct VoteView: View {
               .font(.system(size: 10, weight: .regular))
           }
           
+        } else if votemodel.type == .ResetFinished {
+          AlertOneButton(isActivity: $chatmodel.voteview) {
+            Text("투표가 종료되었습니다.")
+          }
+        } else if votemodel.type == .ResetSubmitted {
+          AlertOneButton(isActivity: $chatmodel.voteview) {
+            Text("이미 투표를 했습니다.")
+          }
         } // if
       } //v
         .onChange(of: votemodel.active) { _ in

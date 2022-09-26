@@ -73,6 +73,7 @@ class SocketIOManager:NSObject {
     roomSocket.on("connect") { data, ack in
       SocketIOManager.shared.room_onChat()
       SocketIOManager.shared.room_readIdUpdated()
+      SocketIOManager.shared.room_participantStateChanged()
     }
     
 //    matchSocket.off(clientEvent: .ping)
@@ -265,6 +266,8 @@ class SocketIOManager:NSObject {
             getRoomUpdate(rid: rid)
           } else if messages.body?.action == "order-finished" {
             getRoomUpdate(rid: rid)
+          } else if messages.body?.action == "vote-reset-finished" {
+            getRoomUpdate(rid: rid)
           } else if messages.type == "chat" {
             chatroom?.sortforat = Int(messages.at!)!
           }
@@ -319,6 +322,41 @@ class SocketIOManager:NSObject {
       }
     }
   }
+  
+  func room_participantStateChanged() {
+    print("준비 온")
+    SocketIOManager.shared.roomSocket.off("participantStateChanged")
+    SocketIOManager.shared.roomSocket.on("participantStateChanged") { (dataArray, ack) in
+//      print("준비 수신", dataArray)
+      guard let data = try? JSONSerialization.data(withJSONObject: dataArray[0], options: .prettyPrinted),
+            let session = try? JSONDecoder().decode(ChatUsersInfo.self, from: data)
+      else { return }
+//      print(session)
+
+      
+//      let realm = try! Realm()
+//      let db = realm.object(ofType: ChatDB.self, forPrimaryKey: session.roomId)
+      realmQueue.async {
+        let realm = try! Realm()
+        let db = realm.object(ofType: ChatDB.self, forPrimaryKey: session.roomId)
+//  //      print(session)
+        try! realm.write {
+          guard let members = db?.member else { return }
+          for i in members {
+            if i.userId == session.userId {
+              i.isReady = session.isReady
+              break
+            }
+          }
+
+//          db?.read = session.messageIds
+//  //        db?.read.removeAll()
+//  //        db?.read.append(objectsIn: session.messageIds)
+        } //write
+      }
+    }
+  }
+  
 }
 
 

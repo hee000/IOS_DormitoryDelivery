@@ -10,10 +10,10 @@ import SwiftUI
 import Alamofire
 
 func appVaildCheck(res: AFDataResponse<Any>) {
-  print(res)
+//  print(res)
 //  print(String(data: res.data!, encoding: .utf8))
   guard let statusCode = res.response?.statusCode else { return }
-  print(statusCode)
+//  print(statusCode)
   if statusCode == 410 {
     UserDefaults.standard.set(true, forKey: "appVersionVaild")
   }
