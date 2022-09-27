@@ -57,13 +57,13 @@ struct ResetView: View {
           
           Button {
 //            postVoteReset(rid: self.roomid)
-            print("dddsad")
+//            print("dddsad")
             restApiQueue.async {
 
               let url = urlvotereset(rid: self.roomid)
               
               AF.request(url, method: .post, headers: TokenUtils().getAuthorizationHeader()).responseJSON { response in
-//                print(response.response?.statusCode)
+
                 appVaildCheck(res: response)
                 
                 if response.response?.statusCode == 201 {

@@ -154,7 +154,7 @@ class TokenUtils {
 }
 
 
-let AppVersion = "1.0.0"
+let AppVersion = "1.1.1"
 let httpAppVersion = ["Client-Version" : "ios 1.1.0"] as HTTPHeaders
 
 //let restApiQueue = DispatchQueue(label: "rest", attributes: .concurrent)

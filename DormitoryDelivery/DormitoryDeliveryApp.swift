@@ -19,6 +19,10 @@ struct DormitoryDeliveryApp: App {
   init (){
     UserDefaults.standard.removeObject(forKey: "OauthProvider")
     UserDefaults.standard.register(defaults: ["OauthProvider" : "None"])
+    UserDefaults.standard.removeObject(forKey: "restError")
+    UserDefaults.standard.register(defaults: ["restError" : false])
+    UserDefaults.standard.removeObject(forKey: "restErrorMessage")
+    UserDefaults.standard.register(defaults: ["restErrorMessage" : ""])
   }
   
   

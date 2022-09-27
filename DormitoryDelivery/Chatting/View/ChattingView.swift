@@ -349,6 +349,7 @@ struct ChattingView: View {
     }
     .fullScreenCover(isPresented: $model.resetview) {
       ResetView(roomid: self.rid)
+        .overlay(ErrorAlertView())
     }
     .fullScreenCover(isPresented: $model.isReport) {
       ReportView(messageId: self.model.messageId)

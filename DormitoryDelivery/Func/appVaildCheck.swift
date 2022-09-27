@@ -19,7 +19,7 @@ func appVaildCheck(res: AFDataResponse<Any>) {
   }
   
   if statusCode == 400 || statusCode == 409 || statusCode == 404{
-    print(res.value as? [String: Any])
+//    print(res.value as? [String: Any])
     guard let error = res.value as? [String: Any],
           let errorMessages = error["message"] as? [String]
     else { return }
@@ -32,6 +32,7 @@ func appVaildCheck(res: AFDataResponse<Any>) {
       }
     }
     
+//    print("22222", error, errorMessages, restErrorMessage)
     UserDefaults.standard.set(restErrorMessage, forKey: "restErrorMessage")
     
     withAnimation {

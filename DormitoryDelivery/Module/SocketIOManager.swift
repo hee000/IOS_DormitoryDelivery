@@ -45,10 +45,14 @@ class SocketIOManager:NSObject {
     restApiQueue.async {
       let tk = TokenUtils()
       guard let token = tk.read() else { return }
-      self.manager.disconnect()
-
-      self.matchSocket.connect(withPayload: ["token":"Bearer \(token)"])
-      self.roomSocket.connect(withPayload: ["token":"Bearer \(token)"])
+      DispatchQueue.main.async {
+        self.manager.disconnect()
+        
+        self.matchSocket.connect(withPayload: ["token":"Bearer \(token)"])
+        self.roomSocket.connect(withPayload: ["token":"Bearer \(token)"])
+        
+        self.manager.reconnect()
+      }
     }
   }
   
@@ -58,8 +62,7 @@ class SocketIOManager:NSObject {
   }
   
   func establishConnection(token: String, roomdata: RoomData, dormis: dormitoryData) {
-//    manager.disconnect()
-    print("연결 시작 \(token)")
+    
     matchSocket.off("connect")
     matchSocket.on("connect") { data, ack in
       SocketIOManager.shared.match_emitSubscribe(rooms: roomdata, section: dormis.data.map({ dormitory in
