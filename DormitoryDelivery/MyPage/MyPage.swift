@@ -178,7 +178,7 @@ struct MyPage: View {
                   Text("버전")
                     .font(.system(size: 18, weight: .bold))
                   Spacer()
-                  Text("1.1.1")
+                  Text("1.1.2")
                     .font(.system(size: 18, weight: .bold))
                 }
                 .frame(height: 70)
