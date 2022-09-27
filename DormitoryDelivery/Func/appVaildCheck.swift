@@ -16,6 +16,10 @@ func appVaildCheck(res: AFDataResponse<Any>) {
 //  print(statusCode)
   if statusCode == 410 {
     UserDefaults.standard.set(true, forKey: "appVersionVaild")
+  } else {
+    if UserDefaults.standard.bool(forKey: "appVersionVaild") {
+      UserDefaults.standard.set(false, forKey: "appVersionVaild")
+    }
   }
   
   if statusCode == 400 || statusCode == 409 || statusCode == 404{
