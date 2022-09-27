@@ -28,6 +28,8 @@ struct EmailCheckView: View {
   @State var navi = false
   @State var doublestop = false
   @State var sid = ""
+  @State var IsEmailNeed = false
+  
     var body: some View {
       NavigationView{
         ZStack{
@@ -184,11 +186,20 @@ struct EmailCheckView: View {
             
           VStack(alignment: .leading, spacing: 0){
             Spacer()
-            Text("학교 이메일 계정이 필요한 이유 ?")
-              .font(.system(size: 14, weight: .regular))
-              .underline()
-              .foregroundColor(.gray)
-              .padding(.bottom, 5)
+            Button{
+              IsEmailNeed.toggle()
+            } label: {
+              Text("학교 이메일 계정이 필요한 이유 ?")
+                .font(.system(size: 14, weight: .regular))
+                .underline()
+                .foregroundColor(.gray)
+                .padding(.bottom, 5)
+            }
+//            Text("학교 이메일 계정이 필요한 이유 ?")
+//              .font(.system(size: 14, weight: .regular))
+//              .underline()
+//              .foregroundColor(.gray)
+//              .padding(.bottom, 5)
             
             Text("문의 사항은 teamshallwe@gmail.com으로 부탁드립니다.")
               .font(.system(size: 14, weight: .regular))
@@ -198,6 +209,8 @@ struct EmailCheckView: View {
           .padding()
           .ignoresSafeArea(.keyboard)
         } //z
+        .overlay(IsEmailNeed ? AlertOneButton(isActivity: $IsEmailNeed) { Text("재학생인지 확인하기 위한").font(.system(size: 16, weight: .regular))
+          Text("절차 입니다.").font(.system(size: 16, weight: .regular)) } : nil)
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarTitle("회원가입")
         .toolbar {

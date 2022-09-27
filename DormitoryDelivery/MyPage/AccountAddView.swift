@@ -20,6 +20,20 @@ struct AccountAddView: View {
       ZStack(alignment: .top) {
         ScrollView(showsIndicators: false) {
           VStack(alignment: .leading) {
+            Text("방장이 배달 확정을 했을 때 구성원들에게 입금 받을 계좌번호입니다.")
+              .font(.system(size: 14, weight: .regular))
+              .foregroundColor(.gray)
+              .frame(maxWidth: .infinity, alignment: .leading)
+//              .padding(.bottom)
+            
+            Text("계좌 등록 시 유효 계좌 확인 절차가 없으니 정확하게 기입해주세요.")
+              .font(.system(size: 14, weight: .regular))
+              .foregroundColor(.gray)
+              .frame(maxWidth: .infinity, alignment: .leading)
+            
+            Divider()
+              .padding([.top, .bottom])
+            
             Text("은행명")
               .font(.system(size: 16, weight: .bold))
             TextField("은행명을 입력해주세요.", text: $bank)

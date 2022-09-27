@@ -61,7 +61,6 @@
 		DAAB680127A2DC7700B18B78 /* AlertOneButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAB680027A2DC7700B18B78 /* AlertOneButton.swift */; };
 		DAAB680827A4434C00B18B78 /* CategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAB680727A4434C00B18B78 /* CategoryView.swift */; };
 		DAABCBB228C8734600F8244E /* NicknameCreateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAABCBB128C8734600F8244E /* NicknameCreateView.swift */; };
-		DAB1CF4128E375F400B66468 /* NeedEmail.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB1CF4028E375F400B66468 /* NeedEmail.swift */; };
 		DAB5E98C274364BC00EF5B6A /* Signup.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB5E98B274364BC00EF5B6A /* Signup.swift */; };
 		DAB5E99027436B9B00EF5B6A /* DeliveryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB5E98F27436B9B00EF5B6A /* DeliveryView.swift */; };
 		DAB5E9942743906400EF5B6A /* RoomCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB5E9932743906400EF5B6A /* RoomCard.swift */; };
@@ -163,7 +162,6 @@
 		DAAB680027A2DC7700B18B78 /* AlertOneButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertOneButton.swift; sourceTree = "<group>"; };
 		DAAB680727A4434C00B18B78 /* CategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryView.swift; sourceTree = "<group>"; };
 		DAABCBB128C8734600F8244E /* NicknameCreateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameCreateView.swift; sourceTree = "<group>"; };
-		DAB1CF4028E375F400B66468 /* NeedEmail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeedEmail.swift; sourceTree = "<group>"; };
 		DAB5E98B274364BC00EF5B6A /* Signup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Signup.swift; sourceTree = "<group>"; };
 		DAB5E98F27436B9B00EF5B6A /* DeliveryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryView.swift; sourceTree = "<group>"; };
 		DAB5E9932743906400EF5B6A /* RoomCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomCard.swift; sourceTree = "<group>"; };
@@ -380,7 +378,6 @@
 				DAB5E98B274364BC00EF5B6A /* Signup.swift */,
 				DAC252D9275B551B00EA2BFD /* Loading.swift */,
 				DACEE49827BA1396003A8AA3 /* EmailCheckView.swift */,
-				DAB1CF4028E375F400B66468 /* NeedEmail.swift */,
 				DACEE4AA27C384D9003A8AA3 /* EmailCheck.swift */,
 				DACEE49A27BA1FD7003A8AA3 /* EmailCertificationNumberView.swift */,
 				DAABCBB128C8734600F8244E /* NicknameCreateView.swift */,
@@ -728,7 +725,6 @@
 				DA3C017D279F1BBE0090202E /* OrderListCard.swift in Sources */,
 				DAF616D8275E3FE50011C508 /* getRoomDetail.swift in Sources */,
 				DA518AE1279DECB300291CA0 /* OrderListView.swift in Sources */,
-				DAB1CF4128E375F400B66468 /* NeedEmail.swift in Sources */,
 				DA3C017B279EED000090202E /* ImagePicker.swift in Sources */,
 				DAC45266275F522B00D05BB0 /* ChatDB.swift in Sources */,
 			);
