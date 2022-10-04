@@ -4,6 +4,8 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>Localization native development region</key>
+	<string>Korea</string>
 	<key>CFBundleDisplayName</key>
 	<string>같이하실</string>
 	<key>CFBundleExecutable</key>

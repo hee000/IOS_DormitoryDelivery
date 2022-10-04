@@ -14,7 +14,7 @@ func getReady(rid: String, model: ChatDB) {
   let req = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: TokenUtils().getAuthorizationHeader())
   
   req.responseJSON { response in
-
+    appVaildCheck(res: response)
 //    print("@@@@@", response.response?.statusCode)
 //    print(response)
     if response.response?.statusCode == 200 {

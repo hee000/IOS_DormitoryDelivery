@@ -15,7 +15,7 @@ func getRoomDetail(matchid: String, token: String, detaildata: RoomDetailData, d
   let req = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: ["Authorization": token])
   req.responseJSON { response in
 //    print(response.value)
-    
+    appVaildCheck(res: response)
     let result = response.value as! [String: Any]
     do {
         let data2 = try JSONSerialization.data(withJSONObject: result, options: .prettyPrinted)

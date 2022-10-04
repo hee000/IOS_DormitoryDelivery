@@ -13,14 +13,12 @@ func appVaildCheck(res: AFDataResponse<Any>) {
 //  print(res)
 //  print(String(data: res.data!, encoding: .utf8))
   guard let statusCode = res.response?.statusCode else { return }
+//  print(res, statusCode)
 //  print(statusCode)
   if statusCode == 410 {
     UserDefaults.standard.set(true, forKey: "appVersionVaild")
-  } else {
-    if UserDefaults.standard.bool(forKey: "appVersionVaild") {
-      UserDefaults.standard.set(false, forKey: "appVersionVaild")
-    }
   }
+  
   
   if statusCode == 400 || statusCode == 409 || statusCode == 404{
 //    print(res.value as? [String: Any])

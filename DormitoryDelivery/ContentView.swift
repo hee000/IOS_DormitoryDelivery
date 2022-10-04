@@ -37,6 +37,9 @@ struct ContentView: View {
           LoginView()
             .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
             .edgesIgnoringSafeArea(.all)
+            .onAppear{
+              naverLogin.logout()
+            }
         } else if (!Login && (OauthProvider == LoginProviders.naver.rawValue || OauthProvider == LoginProviders.apple.rawValue)) {
           EmailCheckView()
 //            .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { (_) in

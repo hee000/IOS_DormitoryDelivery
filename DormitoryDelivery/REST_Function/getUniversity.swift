@@ -20,6 +20,7 @@ func getUniversityDormitory(dormitoryId: String, model: dormitoryData) {
 
   req.responseJSON(queue: .global()) { response in
 //    print(response)
+    appVaildCheck(res: response)
     guard let json = response.data else { return }
     guard let restdata = try? JSONDecoder().decode([dormitory].self, from: json)
     else {

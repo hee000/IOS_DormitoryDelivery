@@ -20,7 +20,8 @@ func postMenuEdit(oderdata: orderdata, rid: String){
              parameters: param,
              encoding: JSONEncoding.default,
              headers: TokenUtils().getAuthorizationHeader()
-  ).responseString { response in
+  ).responseJSON { response in
+    appVaildCheck(res: response)
     print(response)
   }
   

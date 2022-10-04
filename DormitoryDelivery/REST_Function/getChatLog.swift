@@ -15,6 +15,7 @@ func getChatLog(rid: String, idx: Int) {
     let url1 = urlchatread(rid: rid)
     let req1 = AF.request(url1, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: TokenUtils().getAuthorizationHeader())
     req1.responseJSON { response in
+      appVaildCheck(res: response)
 
       guard let data = response.data,
             let json = try? JSONDecoder().decode(List<ChatRead>.self, from: data)

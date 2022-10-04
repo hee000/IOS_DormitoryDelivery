@@ -19,19 +19,9 @@ func postAddMenu(oderdata: orderdata, rid: String){
              parameters: param,
              encoding: JSONEncoding.default,
              headers: TokenUtils().getAuthorizationHeader()
-  ).responseString { response in
-    switch response.result {
-    case .success(let value):
-      print(value)
-//      let realm = try! Realm()
-//      let db = realm.object(ofType: ChatDB.self, forPrimaryKey: rid)
-//      try! realm.write {
-////        db?.menu.insert(value, at: 0)
-//        db?.menu.append(value)
-//      }
-    case .failure(let error):
-      print(error)
-    }
+  ).responseJSON { response in
+
+    appVaildCheck(res: response)
   }
   
 }

@@ -13,8 +13,9 @@ func postOderFix(rid: String){
   restApiQueue.async {
     let url = urloderfix(rid: rid)
     
-    AF.request(url, method: .post, headers: TokenUtils().getAuthorizationHeader()).responseString { response in
+    AF.request(url, method: .post, headers: TokenUtils().getAuthorizationHeader()).responseJSON { response in
       print(response)
+      appVaildCheck(res: response)
     }
   }
   

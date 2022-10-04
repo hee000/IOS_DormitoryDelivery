@@ -113,6 +113,8 @@ struct EmailCertificationNumberView: View {
                        parameters: param,
                        encoding: JSONEncoding.default, headers: ["Client-Version" : "ios \(AppVersion)", "sId" : "\(self.sid)"]).responseJSON { response in
               
+              appVaildCheck(res: response)
+              
               print("re1", response)
               print("re1", response.response?.statusCode)
               if response.response?.statusCode == 201 {

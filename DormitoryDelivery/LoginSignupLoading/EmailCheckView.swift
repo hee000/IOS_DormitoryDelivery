@@ -127,7 +127,8 @@ struct EmailCheckView: View {
                 print(createkey)
                 
                 AF.request(url, method: .post, parameters: createkey, encoding: JSONEncoding.default, headers: ["Client-Version" : "ios \(AppVersion)"]).responseJSON { response in
-                  print(response)
+//                  print(response)
+                  appVaildCheck(res: response)
                   if response.response?.statusCode == 201 {
                     guard let json = response.value as? [String: String],
                           let sid = json["sessionId"]
@@ -237,6 +238,7 @@ struct EmailCheckView: View {
         let req = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: ["Client-Version" : "ios \(AppVersion)"])
         req.responseJSON { response in
 //          print(response)
+          appVaildCheck(res: response)
           guard let data = response.data,
                 let restdata = try? JSONDecoder().decode([university].self, from: data) else { return }
           self.universitys.data = restdata

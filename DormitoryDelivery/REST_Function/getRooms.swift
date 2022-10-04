@@ -13,6 +13,7 @@ func getRoomUpdate(rid: String) {
   restApiQueue.async {
     let req = AF.request(urlroomupdate(rid: rid), method: .get, parameters: nil, encoding: JSONEncoding.default, headers: TokenUtils().getAuthorizationHeader())
     req.responseJSON { response in
+      appVaildCheck(res: response)
       guard let json = response.data else { return }
       guard let restdata = try? JSONDecoder().decode(roomupdate.self, from: json) else { return }
       
@@ -75,6 +76,7 @@ func getParticipantsUpdate(rid: String) {
   restApiQueue.async {
     AF.request(urlparticipants(rid: rid), method: .get, parameters: nil, encoding: JSONEncoding.default, headers: TokenUtils().getAuthorizationHeader())
       .responseJSON { response in
+        appVaildCheck(res: response)
         guard let json = response.data else { return }
         guard var participants = try? JSONDecoder().decode(List<ChatUsersInfo>.self, from: json) else { return }
         if let db = realm.object(ofType: ChatDB.self, forPrimaryKey: rid) {
@@ -110,6 +112,7 @@ func getRooms(uid: String) {
     let url = urlrooms(uid: uid)
     let req = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: TokenUtils().getAuthorizationHeader())
     req.responseJSON { response in
+      appVaildCheck(res: response)
 
 //      print(response, "채팅목록2")
       do {

@@ -13,6 +13,7 @@ func getVoteVaild(rid: String, vid: String) {
   let url = urlvotevaild(rid: rid, vid: vid)
   let req = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: TokenUtils().getAuthorizationHeader())
   req.responseJSON { response in
+    appVaildCheck(res: response)
     guard let resdata = response.data,
           let voteState = try? JSONDecoder().decode(VoteStateData.self, from: resdata) else { return }
     print("guard", voteState)

@@ -15,6 +15,7 @@ func postMenuDelete(model:Order, index: Int, oderdata: orderdata, rid: String, a
   
   AF.request(url, method: .delete, headers: TokenUtils().getAuthorizationHeader()).responseJSON { response in
     print(response)
+    appVaildCheck(res: response)
     if response.response?.statusCode == 200 {
       for (index, comparedata) in model.forcompare.enumerated() {
         if comparedata.id == oderdata.id {

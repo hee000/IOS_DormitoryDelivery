@@ -31,6 +31,16 @@ struct DormitoryDeliveryApp: App {
             
           ContentView()
             .overlay(self.appVersionVaild ? AlertOneButton(isActivity: $appVersionVaild) { Text("앱 업데이트가 필요합니다.").font(.system(size: 16, weight: .regular)) }.onDisappear{
+              
+              let url = "itms-apps://itunes.apple.com/app/1618195217"
+              if let url = URL(string: url), UIApplication.shared.canOpenURL(url) {
+                  if #available(iOS 10.0, *) {
+                      UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                  } else {
+                      UIApplication.shared.openURL(url)
+                  }
+              }
+              
                   UIApplication.shared.perform(#selector(NSXPCConnection.suspend))
               DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                       exit(0)

@@ -99,9 +99,14 @@ class TokenUtils {
         let retrievedData = dataTypeRef as! Data
         guard let token = try? JSONDecoder().decode(tokenvalue.self, from: retrievedData) else { return nil}
 
-
+      
         let jwt = try! decode(jwt: token.accessToken)
         if jwt.expiresAt!.timeIntervalSince(Date()) < 0 {
+          let refresh = try! decode(jwt: token.refreshToken)
+          if refresh.expired {
+            UserDefaults.standard.set(false, forKey: "Login")
+          }
+          
           guard let para = try? token.asDictionary() else { return ""}
           let req = AF.request(urlsession(), method: .patch, parameters: para, encoding: JSONEncoding.default, headers: ["Client-Version" : "ios \(AppVersion)"])
 //          print(para)
@@ -154,8 +159,8 @@ class TokenUtils {
 }
 
 
-let AppVersion = "1.1.2"
-let httpAppVersion = ["Client-Version" : "ios 1.1.0"] as HTTPHeaders
+let AppVersion = "1.1.3"
+let httpAppVersion = ["Client-Version" : "ios \(AppVersion)"] as HTTPHeaders
 
 //let restApiQueue = DispatchQueue(label: "rest", attributes: .concurrent)
 let restApiQueue = DispatchQueue(label: "rest")

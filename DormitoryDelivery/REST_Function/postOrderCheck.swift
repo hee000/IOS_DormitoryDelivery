@@ -45,6 +45,7 @@ func postOrderCheck(rid: String, model: OrderCheck, account: UserAccount) {
         print("Upload Progress: \(progress.fractionCompleted)")
     })
     .responseJSON { response in
+      appVaildCheck(res: response)
       print("status", response.response?.statusCode)
       print("upload response: ",response)
       print("upload response.error: ",response.error)
