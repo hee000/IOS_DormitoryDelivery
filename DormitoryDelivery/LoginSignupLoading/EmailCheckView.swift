@@ -127,7 +127,7 @@ struct EmailCheckView: View {
                 print(createkey)
                 
                 AF.request(url, method: .post, parameters: createkey, encoding: JSONEncoding.default, headers: ["Client-Version" : "ios \(AppVersion)"]).responseJSON { response in
-//                  print(response)
+                  print(response)
                   appVaildCheck(res: response)
                   if response.response?.statusCode == 201 {
                     guard let json = response.value as? [String: String],

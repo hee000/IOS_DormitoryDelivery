@@ -58,6 +58,7 @@
 		DA85E9F628067C230027A4B6 /* HelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA85E9F528067C230027A4B6 /* HelpView.swift */; };
 		DA85E9F8280D5B6D0027A4B6 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA85E9F7280D5B6D0027A4B6 /* File.swift */; };
 		DA8837AA275BC81C0034481F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA4D2D2127422FE500678FA8 /* Assets.xcassets */; };
+		DA9561DE28F01E1E0071D3A2 /* StringMatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9561DD28F01E1E0071D3A2 /* StringMatch.swift */; };
 		DAAB680127A2DC7700B18B78 /* AlertOneButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAB680027A2DC7700B18B78 /* AlertOneButton.swift */; };
 		DAAB680827A4434C00B18B78 /* CategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAB680727A4434C00B18B78 /* CategoryView.swift */; };
 		DAABCBB228C8734600F8244E /* NicknameCreateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAABCBB128C8734600F8244E /* NicknameCreateView.swift */; };
@@ -159,6 +160,7 @@
 		DA85783C27D34CA000C0F695 /* GoogleService-Info_Debug.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info_Debug.plist"; sourceTree = "<group>"; };
 		DA85E9F528067C230027A4B6 /* HelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpView.swift; sourceTree = "<group>"; };
 		DA85E9F7280D5B6D0027A4B6 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
+		DA9561DD28F01E1E0071D3A2 /* StringMatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringMatch.swift; sourceTree = "<group>"; };
 		DAAB680027A2DC7700B18B78 /* AlertOneButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertOneButton.swift; sourceTree = "<group>"; };
 		DAAB680727A4434C00B18B78 /* CategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryView.swift; sourceTree = "<group>"; };
 		DAABCBB128C8734600F8244E /* NicknameCreateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameCreateView.swift; sourceTree = "<group>"; };
@@ -472,6 +474,7 @@
 			isa = PBXGroup;
 			children = (
 				DADDCCF028A0FDC900542C72 /* appVaildCheck.swift */,
+				DA9561DD28F01E1E0071D3A2 /* StringMatch.swift */,
 			);
 			path = Func;
 			sourceTree = "<group>";
@@ -559,6 +562,7 @@
 			developmentRegion = ko;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				ko,
 				en,
 				Base,
 			);
@@ -651,6 +655,7 @@
 				DA6829F127A0DE5C008F53BB /* postMenuEdit.swift in Sources */,
 				DAC4ABB527A9029C00D6C7C4 /* Navi.swift in Sources */,
 				DA2ACF7627A729C8005939F0 /* getChatLog.swift in Sources */,
+				DA9561DE28F01E1E0071D3A2 /* StringMatch.swift in Sources */,
 				DA4D2D2C2742306300678FA8 /* AppDelegate.swift in Sources */,
 				DA518ADF279DE84300291CA0 /* Order.swift in Sources */,
 				DACEE4AB27C384D9003A8AA3 /* EmailCheck.swift in Sources */,
@@ -801,7 +806,7 @@
 				CODE_SIGN_ENTITLEMENTS = DormitoryDelivery/DormitoryDelivery.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "\"DormitoryDelivery/Preview Content\"";
 				DEVELOPMENT_TEAM = P6Z9B6CV2H;
 				ENABLE_PREVIEWS = YES;
@@ -820,7 +825,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACH_O_TYPE = mh_execute;
-				MARKETING_VERSION = 1.1.2;
+				MARKETING_VERSION = 1.1.3;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -941,7 +946,7 @@
 				CODE_SIGN_ENTITLEMENTS = DormitoryDelivery/DormitoryDelivery.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "\"DormitoryDelivery/Preview Content\"";
 				DEVELOPMENT_TEAM = P6Z9B6CV2H;
 				ENABLE_PREVIEWS = YES;
@@ -960,7 +965,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACH_O_TYPE = mh_execute;
-				MARKETING_VERSION = 1.1.2;
+				MARKETING_VERSION = 1.1.3;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",

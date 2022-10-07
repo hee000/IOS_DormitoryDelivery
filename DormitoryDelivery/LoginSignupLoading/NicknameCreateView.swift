@@ -29,6 +29,9 @@ struct NicknameCreateView: View {
         TextField("닉네임을 입력해주세요.", text: $nickname)
           .font(.system(size: 14, weight: .regular))
           .padding()
+          .onChange(of: nickname) { newValue in
+            nickname = inputNicknameMatchString(_string: newValue)
+          }
         
         Button {
           //이메일 형식이 올바르다면 rest 쏘고, navi active
@@ -70,11 +73,12 @@ struct NicknameCreateView: View {
             .frame(maxWidth: .infinity)
         }
         .frame(height: 60, alignment: .center)
-        .background(Color(.sRGB, red: 113/255, green: 46/255, blue: 255/255, opacity: 1))
+        .background(outputNicknameMatchString(_string: nickname) ? Color(.sRGB, red: 113/255, green: 46/255, blue: 255/255, opacity: 1) : Color.gray)
         .cornerRadius(5)
         .padding([.leading, .trailing])
         .padding([.leading, .trailing])
         .padding([.top, .bottom])
+        .disabled(outputNicknameMatchString(_string: nickname) ? false : true)
         
         Spacer()
       }

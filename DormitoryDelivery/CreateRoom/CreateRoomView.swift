@@ -171,6 +171,12 @@ struct CreateRoomView: View {
                   .frame(height: 85)
                   .foregroundColor(focusShopLink == false && createRoomData.shopLink == "주문할 매장 URL을 공유해주세요. \n외부 배달앱에서 매장 링크 공유하기를 눌러 클립보드로 복사해주세요." ? Color.gray : Color.black)
                   .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.gray.opacity(0.7), lineWidth: 1))
+                  .onChange(of: createRoomData.shopLink, perform: { newValue in
+                    if newValue != "" && newValue != "주문할 매장 URL을 공유해주세요. \n외부 배달앱에서 매장 링크 공유하기를 눌러 클립보드로 복사해주세요." {
+                      print("함수전 \(newValue)")
+                      createRoomData.shopLink = inputUrlMatchString(_string: newValue)
+                    }
+                  })
                   .onChange(of: focusShopLink) { V in
                     if V {
                       if createRoomData.shopLink == "주문할 매장 URL을 공유해주세요. \n외부 배달앱에서 매장 링크 공유하기를 눌러 클립보드로 복사해주세요." {

@@ -90,9 +90,9 @@ struct EmailCertificationNumberView: View {
           Text("메일을 받지 못하셨나요?")
             .font(.system(size: 12, weight: .regular))
           Button{
-            print(store.CertificationNumber)
+            presentationMode.wrappedValue.dismiss()
           } label: {
-            Text("재발급 요청")
+            Text("다시하기")
             .font(.system(size: 12, weight: .regular))
           }
         }
