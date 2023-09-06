@@ -6,8 +6,8 @@
 
 사용자의 비매너 활동을 막기 위해 사용자가 속한 커뮤니티(대학교) 인증을 받고 실명 기반으로 서비스를 이용하게 됩니다.
 
-<img src="https://raw.githubusercontent.com/hee000/portfolio/main/images/g_preview_1.jpg" width="100%" height="500"/>
-<img src="https://raw.githubusercontent.com/hee000/portfolio/main/images/g_preview_2.jpg" width="100%" height="500"/>
+![img1](https://raw.githubusercontent.com/hee000/portfolio/main/images/g_preview_1.jpg) | ![img2](https://raw.githubusercontent.com/hee000/portfolio/main/images/g_preview_2.jpg)
+---|---|
 
 ## 주요 기능
 
